@@ -35,7 +35,8 @@ def embed_st(texts: list[str], cfg: dict, batch_size: int | None, max_len: int |
     from sentence_transformers import SentenceTransformer
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    kwargs = {"torch_dtype": torch.float16} if device == "cuda" else {}
+    # fp16 on GPU; on CPU, float32 is much faster than the bf16 some models default to.
+    kwargs = {"torch_dtype": torch.float16 if device == "cuda" else torch.float32}
     model = SentenceTransformer(
         cfg["name"], device=device, model_kwargs=kwargs, trust_remote_code=cfg.get("trust_remote_code", False)
     )

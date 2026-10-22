@@ -38,7 +38,7 @@ _SPACE_BEFORE_PUNCT = re.compile(r"\s+([,.;:!?)])")
 
 def clean_description(text: str | None) -> str:
     """Strip entities, BBCode, HTML, URLs and repeated whitespace."""
-    if not text:
+    if not isinstance(text, str) or not text:
         return ""
     # BGG double-escapes entities (e.g. "&amp;mdash;"); unescape until stable.
     for _ in range(3):

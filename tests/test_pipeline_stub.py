@@ -25,6 +25,7 @@ def test_stub_pipeline(tmp_path, monkeypatch):
     run("embed.py", "--model", "tfidf", env=env)
     run("project.py", "--model", "tfidf", "--min-cluster-size", "15", "--coarse-cluster-size", "60", env=env)
     run("label.py", "--model", "tfidf", "--offline", env=env)
+    run("evaluate.py", env=env)
 
     games = pd.read_parquet(tmp_path / "games.parquet")
     assert len(games) == 320
@@ -37,7 +38,15 @@ def test_stub_pipeline(tmp_path, monkeypatch):
     clustered = m[m["cluster"] >= 0]
     purity = genre[clustered.index].groupby(clustered["cluster"]).agg(lambda s: s.value_counts().iloc[0] / len(s))
     assert len(clustered) > 0.8 * len(m)
-    assert purity.mean() > 0.9
+    # Genres overlap and publisher boilerplate pulls games together, so purity is high, not perfect.
+    assert purity.mean() > 0.6
+
+    import json
+    metrics = json.loads((tmp_path / "eval" / "metrics.json").read_text())[0]
+    assert metrics["mechanics_agreement"] > 2 * metrics["mechanics_random"]
+    # The stub's publisher boilerplate is a confound the evaluation must catch.
+    assert metrics["publisher_shared"] > 2 * metrics["publisher_shared_random"]
+    assert "Spot check" in (tmp_path / "eval" / "report.md").read_text()
 
     nbrs = np.load(tmp_path / "neighbors_tfidf.npy")
     assert nbrs.shape == (320, 10)

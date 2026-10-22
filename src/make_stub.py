@@ -73,15 +73,25 @@ FILLER = ["Players take turns", "Each round", "During the game", "Over several r
           "In this game", "Throughout play"]
 NAME_A = ["Iron", "Golden", "Lost", "Twilight", "Crimson", "Silent", "Grand", "Hidden", "Ancient", "Wild"]
 NAME_B = ["Empire", "Harvest", "Frontier", "Crown", "Realm", "Express", "Tides", "Legacy", "Gambit", "Hollow"]
-PUBLISHERS = ["Stub Games", "Placeholder Press", "Mock Meeple Co.", "Example Editions"]
+# Each publisher stamps the same promotional boilerplate on its descriptions,
+# a writing-style confound the evaluation should notice.
+PUBLISHERS = {
+    "Stub Games": "Stub Games is proud to present another award winning family title from our acclaimed catalogue.",
+    "Placeholder Press": "Back us on Kickstarter! Stretch goals unlock deluxe upgrades, metal coins and exclusive promos.",
+    "Mock Meeple Co.": "Translated from the original edition. Contents may vary. Not suitable for children under three.",
+    "Example Editions": "",
+}
 DESIGNERS = ["A. Designer", "B. Maker", "C. Inventor", "D. Creator", "E. Author"]
 
 
-def description(genre: dict, rng: random.Random, n_sentences: int) -> str:
+def description(genre: dict, rng: random.Random, n_sentences: int, other: dict, boilerplate: str) -> str:
     sentences = []
     for _ in range(n_sentences):
-        words = rng.sample(genre["words"], 3)
+        # A quarter of sentences borrow from a second genre, so genres overlap.
+        words = rng.sample((other if rng.random() < 0.25 else genre)["words"], 3)
         sentences.append(f"{rng.choice(FILLER)}, players deal with {words[0]}, {words[1]} and {words[2]}.")
+    if boilerplate:
+        sentences += [boilerplate] * 2
     # Real descriptions arrive double-escaped with BBCode and &#10; line breaks.
     text = "&#10;&#10;".join(" ".join(sentences[k : k + 3]) for k in range(0, len(sentences), 3))
     return "[b]" + text + "[/b] &amp;mdash; see [url=https://example.com]the rules[/url]."
@@ -89,6 +99,8 @@ def description(genre: dict, rng: random.Random, n_sentences: int) -> str:
 
 def item_xml(gid: int, name: str, genre_key: str, rng: random.Random) -> str:
     genre = GENRES[genre_key]
+    other = GENRES[rng.choice([g for g in GENRES if g != genre_key])]
+    publisher = rng.choice(list(PUBLISHERS))
     n_sent = rng.choice([1, 2, 6, 9, 12])  # some short descriptions on purpose
     lo = rng.choice([1, 2, 2, 3])
     hi = lo + rng.choice([0, 1, 2, 3])
@@ -97,7 +109,7 @@ def item_xml(gid: int, name: str, genre_key: str, rng: random.Random) -> str:
     for kind, pool, k in [("boardgamecategory", genre["categories"], 2),
                           ("boardgamemechanic", genre["mechanics"], 3),
                           ("boardgamedesigner", DESIGNERS, 1),
-                          ("boardgamepublisher", PUBLISHERS, 1)]:
+                          ("boardgamepublisher", [publisher], 1)]:
         for value in rng.sample(pool, min(k, len(pool))):
             links.append(f'<link type="{kind}" id="{zlib.crc32(value.encode()) % 10000}" value="{html.escape(value)}"/>')
     polls = "".join(
@@ -109,7 +121,7 @@ def item_xml(gid: int, name: str, genre_key: str, rng: random.Random) -> str:
     return f"""<item type="boardgame" id="{gid}">
 <thumbnail>https://example.com/thumb/{gid}.jpg</thumbnail>
 <name type="primary" sortindex="1" value="{html.escape(name)}"/>
-<description>{html.escape(description(genre, rng, n_sent), quote=False)}</description>
+<description>{html.escape(description(genre, rng, n_sent, other, PUBLISHERS[publisher]), quote=False)}</description>
 <yearpublished value="{rng.randint(1980, 2025)}"/>
 <minplayers value="{lo}"/><maxplayers value="{hi}"/>
 <poll name="suggested_numplayers" title="User Suggested Number of Players" totalvotes="100">{polls}</poll>
