@@ -3,11 +3,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Unbounded:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&family=DM+Mono:wght@400;500&display=swap">
 <style>
-/* Two looks on one layout. Light = "Punchboard": cardboard tiles, ink outlines, hard shadows.
-   Dark = "Holo Table": a glowing tactical display with cut-corner panels. Both use hex tiles
-   and a meeple marker. Full-bleed map; toolkit card top-left; game card top-right. */
+/* Two looks on one layout. Light = "Punchboard": a board of coloured hex terrain with games as dice,
+   ink outlines, hard shadows. Dark = "Holo Table": a holographic star field where games are stars,
+   moons and planets, and the selected game becomes a spaceship. Toolkit card top-left, game card top-right. */
 :root {
-  --bg: #dfe5e8;
+  --bg: #e4e7e2;
   --panel: #f7f3ea;
   --panel-2: #ffffff;
   --fg: #1c2226;
@@ -23,8 +23,7 @@
   --radius: 14px;
   --radius-sm: 8px;
   --clip: none;
-  --pattern: linear-gradient(rgba(28, 34, 38, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(28, 34, 38, 0.06) 1px, transparent 1px);
-  --pattern-size: 48px 48px;
+  --field: none;
   --font-display: "Unbounded", "Atkinson Hyperlegible", system-ui, sans-serif;
   --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-data: "DM Mono", ui-monospace, Menlo, monospace;
@@ -33,24 +32,22 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #050a14; --panel: rgba(8, 20, 38, 0.84); --panel-2: rgba(0, 0, 0, 0.3); --fg: #d6f1fb; --muted: #8fb9c8;
+    --bg: #03060f; --panel: rgba(8, 20, 38, 0.84); --panel-2: rgba(0, 0, 0, 0.3); --fg: #d6f1fb; --muted: #8fb9c8;
     --line: rgba(62, 230, 255, 0.34); --soft-line: rgba(62, 230, 255, 0.16); --accent: #3ee6ff; --accent-ink: #04121c;
     --link: #3ee6ff; --shadow: 0 0 0 transparent; --shadow-sm: 0 0 0 transparent; --border-w: 1px; --radius: 0; --radius-sm: 0;
     --clip: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
-    --pattern: linear-gradient(30deg, rgba(62, 230, 255, 0.05) 1px, transparent 1px), linear-gradient(150deg, rgba(62, 230, 255, 0.05) 1px, transparent 1px), radial-gradient(ellipse at 50% 50%, rgba(20, 60, 110, 0.35), transparent 65%);
-    --pattern-size: 56px 32px, 56px 32px, 100% 100%;
+    --field: block;
     --font-display: "Chakra Petch", "IBM Plex Sans", system-ui, sans-serif; --font-body: "IBM Plex Sans", system-ui, sans-serif;
     --font-data: "IBM Plex Mono", ui-monospace, Menlo, monospace; --title-case: uppercase; --title-track: 0.16em;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #050a14; --panel: rgba(8, 20, 38, 0.84); --panel-2: rgba(0, 0, 0, 0.3); --fg: #d6f1fb; --muted: #8fb9c8;
+  --bg: #03060f; --panel: rgba(8, 20, 38, 0.84); --panel-2: rgba(0, 0, 0, 0.3); --fg: #d6f1fb; --muted: #8fb9c8;
   --line: rgba(62, 230, 255, 0.34); --soft-line: rgba(62, 230, 255, 0.16); --accent: #3ee6ff; --accent-ink: #04121c;
   --link: #3ee6ff; --shadow: 0 0 0 transparent; --shadow-sm: 0 0 0 transparent; --border-w: 1px; --radius: 0; --radius-sm: 0;
   --clip: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
-  --pattern: linear-gradient(30deg, rgba(62, 230, 255, 0.05) 1px, transparent 1px), linear-gradient(150deg, rgba(62, 230, 255, 0.05) 1px, transparent 1px), radial-gradient(ellipse at 50% 50%, rgba(20, 60, 110, 0.35), transparent 65%);
-  --pattern-size: 56px 32px, 56px 32px, 100% 100%;
+  --field: block;
   --font-display: "Chakra Petch", "IBM Plex Sans", system-ui, sans-serif; --font-body: "IBM Plex Sans", system-ui, sans-serif;
   --font-data: "IBM Plex Mono", ui-monospace, Menlo, monospace; --title-case: uppercase; --title-track: 0.16em;
   color-scheme: dark;
@@ -58,7 +55,20 @@
 [hidden] { display: none !important; }
 html, body { height: 100%; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 var(--font-body); overflow: hidden; }
-#map { position: fixed; inset: 0; background-image: var(--pattern); background-size: var(--pattern-size); }
+#map { position: fixed; inset: 0; }
+/* Holo field: a projection grid, a soft bloom and a slow scan line. Hidden in the light theme. */
+#field { position: fixed; inset: 0; display: var(--field, none); pointer-events: none; overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(30, 90, 160, 0.35), transparent 62%),
+    repeating-linear-gradient(0deg, rgba(62, 230, 255, 0.045) 0 1px, transparent 1px 40px),
+    repeating-linear-gradient(90deg, rgba(62, 230, 255, 0.045) 0 1px, transparent 1px 40px),
+    radial-gradient(1px 1px at 17% 23%, rgba(255, 255, 255, 0.5), transparent), radial-gradient(1px 1px at 71% 81%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 41% 67%, rgba(255, 255, 255, 0.35), transparent), radial-gradient(1px 1px at 87% 13%, rgba(255, 255, 255, 0.45), transparent);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 260px 260px, 260px 260px, 260px 260px, 260px 260px; }
+#field::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 3px); }
+#field::after { content: ""; position: absolute; left: 0; right: 0; height: 160px; top: -160px;
+  background: linear-gradient(180deg, transparent, rgba(62, 230, 255, 0.07), transparent); animation: scan 9s linear infinite; }
+@keyframes scan { to { transform: translateY(calc(100vh + 160px)); } }
 .card {
   position: fixed; z-index: 2; background: var(--panel); border: var(--border-w) solid var(--line);
   border-radius: var(--radius); box-shadow: var(--shadow); clip-path: var(--clip); backdrop-filter: blur(10px);
@@ -79,22 +89,23 @@ input[type="search"], input[type="text"], input[type="number"], select {
   width: 100%; box-sizing: border-box; background: var(--panel-2); border: var(--border-w) solid var(--line);
   border-radius: var(--radius-sm); padding: 7px 9px;
 }
+input.armed { outline: 2px dashed var(--link); outline-offset: 2px; }
 input:disabled, button:disabled { opacity: 0.55; cursor: not-allowed; }
 :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 .row { display: flex; gap: 8px; align-items: center; }
 .row > * { flex: 1; min-width: 0; }
-.search { position: relative; }
-.results { position: absolute; left: 0; right: 0; top: 100%; margin: 4px 0 0; padding: 4px; list-style: none; z-index: 5;
-  background: var(--panel); backdrop-filter: blur(12px); border: var(--border-w) solid var(--line); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
-.results li { padding: 5px 8px; border-radius: 5px; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
-.results li[aria-selected="true"], .results li:hover { background: color-mix(in srgb, var(--accent) 28%, transparent); }
-.results .yr { color: var(--muted); font: 12px var(--font-data); }
+#suggest { position: fixed; z-index: 8; margin: 0; padding: 4px; list-style: none; max-height: 50vh; overflow: auto; box-sizing: border-box;
+  background: var(--panel); backdrop-filter: blur(14px); border: var(--border-w) solid var(--line); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
+#suggest li { padding: 6px 8px; border-radius: 5px; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+#suggest li[aria-selected="true"], #suggest li:hover { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+#suggest .yr { color: var(--muted); font: 12px var(--font-data); flex: none; }
 .tabs { display: flex; gap: 4px; }
 .tab { flex: 1; background: var(--panel-2); border: var(--border-w) solid var(--line); border-bottom-width: 0; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
   font: 700 12.5px var(--font-body); padding: 8px 4px; cursor: pointer; color: var(--muted); }
 .tab[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
 .tabpanel { border: var(--border-w) solid var(--line); border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--panel-2); padding: 12px; display: flex; flex-direction: column; gap: 12px; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips:empty { display: none; }
 .chip { background: var(--panel); border: var(--border-w) solid var(--line); border-radius: 999px; padding: 4px 10px; cursor: pointer; font: 600 12.5px var(--font-body); box-shadow: var(--shadow-sm); }
 .chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
 .tool { border-top: 1px solid var(--soft-line); padding-top: 10px; }
@@ -119,8 +130,7 @@ input:disabled, button:disabled { opacity: 0.55; cursor: not-allowed; }
 .list li button:hover { background: color-mix(in srgb, var(--accent) 22%, transparent); }
 .list .n { font: 500 11px var(--font-data); color: var(--muted); width: 1.6em; flex: none; }
 .list .nm { flex: 1; min-width: 0; }
-.list .yr { color: var(--muted); font: 12px var(--font-data); }
-.route-steps li .yr { color: var(--fg); }
+.list .yr { color: var(--muted); font: 12px var(--font-data); text-align: right; }
 .mini { font: 12px var(--font-data); color: var(--muted); }
 #legend .bar { height: 8px; border-radius: 4px; margin: 4px 0 2px; }
 #legend .ends { display: flex; justify-content: space-between; font: 12px var(--font-data); color: var(--muted); }
@@ -137,7 +147,7 @@ input:disabled, button:disabled { opacity: 0.55; cursor: not-allowed; }
 #detail img { width: 72px; height: 72px; object-fit: cover; border-radius: var(--radius-sm); border: var(--border-w) solid var(--line); flex: none; }
 #detail h2 { margin: 0; font: 700 18px/1.2 var(--font-display); text-wrap: balance; }
 #detail .meta { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
-.region-pill { display: inline-block; margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--link); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; }
+.region-pill { display: inline-block; margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--link); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; text-decoration: underline; text-underline-offset: 2px; }
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0; }
 .stat { display: flex; flex-direction: column; align-items: center; justify-content: center; aspect-ratio: 0.9; background: var(--panel-2); border: var(--border-w) solid var(--line);
   clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
@@ -154,34 +164,36 @@ a { color: var(--link); }
 #tooltip img { width: 44px; height: 44px; object-fit: cover; border-radius: 4px; flex: none; }
 #tooltip b { display: block; font-weight: 700; }
 #tooltip .meta { color: var(--muted); font: 12px var(--font-data); }
-#yearBadge { position: fixed; z-index: 2; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
-  font: 700 44px var(--font-display); letter-spacing: var(--title-track); color: var(--fg); opacity: 0.85; pointer-events: none; }
+#timebar { left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); width: min(620px, calc(100vw - 28px));
+  padding: 10px 14px; display: flex; align-items: center; gap: 12px; box-sizing: border-box; }
+#timebar input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent); }
+#timeYear { font: 700 26px var(--font-display); letter-spacing: var(--title-track); min-width: 3.2em; text-align: center; font-variant-numeric: tabular-nums; }
+#timeKey { display: flex; gap: 10px; font: 11px var(--font-data); color: var(--muted); }
+#timeKey i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 3px; vertical-align: -1px; }
 #status { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); z-index: 1; }
 @media (max-width: 720px) {
   #detail { top: auto; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); max-height: 46%; }
   #controls { max-height: 48%; }
-  body.has-detail #controls > :not(.brand):not(.search) { display: none; }
+  body.has-detail #controls > :not(.brand):not(.searchbox) { display: none; }
+  #timeKey { display: none; }
 }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } #field::after { animation: none; display: none; } }
 </style>
 
+<div id="field" aria-hidden="true"></div>
 <div id="map" aria-label="Map of board games"></div>
 <div id="status">Loading map…</div>
-<div id="yearBadge" hidden></div>
 
 <section id="controls" class="card" aria-label="Map controls">
   <div class="brand">
     <div class="brand-mark" aria-hidden="true">B</div>
-    <div>
-      <h1 id="title">BGMap</h1>
-    </div>
-    <button id="themeBtn" type="button" aria-label="Switch theme">Theme</button>
+    <h1 id="title">BGMap</h1>
+    <button id="themeBtn" type="button">Theme</button>
   </div>
   <p class="note" id="note"></p>
-  <div class="search">
+  <div class="searchbox">
     <label class="cap" for="q">Find a game</label>
-    <input id="q" type="search" placeholder="e.g. Brass: Birmingham" autocomplete="off">
-    <ul class="results" hidden></ul>
+    <input id="q" type="search" placeholder="Type a name, or click the map" autocomplete="off">
   </div>
 
   <div>
@@ -214,6 +226,7 @@ a { color: var(--link); }
         <select id="mechanic"></select>
       </div>
       <div id="legend" aria-live="polite"></div>
+      <p class="help" id="shapeKey"></p>
       <div class="row">
         <div><label class="cap" for="yearMin">Year from</label><input id="yearMin" type="number" placeholder="any"></div>
         <div><label class="cap" for="yearMax">to</label><input id="yearMax" type="number" placeholder="any"></div>
@@ -233,7 +246,7 @@ a { color: var(--link); }
         </div>
         <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 14px">
           <label class="mini"><input id="sizePop" type="checkbox" checked> Size by ratings</label>
-          <label class="mini"><input id="showTiles" type="checkbox" checked> Hex territories</label>
+          <label class="mini"><input id="showTiles" type="checkbox" checked> <span id="tilesLabel">Hex board</span></label>
         </div>
       </div>
       <button id="reset" class="btn ghost" type="button">Reset filters</button>
@@ -243,28 +256,29 @@ a { color: var(--link); }
       <details class="tool" open>
         <summary>I like these together</summary>
         <div class="stack">
-          <div class="search">
-            <label class="cap" for="likeQ">Add a game you love</label>
-            <input id="likeQ" type="search" placeholder="Add a game" autocomplete="off">
-            <ul class="results" hidden></ul>
-          </div>
+          <label class="cap" for="likeQ">Add a game you love</label>
+          <input id="likeQ" type="search" placeholder="Type a name, or click the map" autocomplete="off">
           <div class="chips" id="likeChips"></div>
-          <p class="help" id="likeHelp">Pick two or three games. The map highlights games close to all of them, and a meeple marks the centre of your taste.</p>
+          <p class="help" id="likeHelp">Add two or three games. Each gets a meeple, and the map highlights games close to all of them.</p>
           <ol class="list" id="likeList"></ol>
         </div>
       </details>
-      <details class="tool">
+      <details class="tool" id="gnTool">
         <summary>Game night</summary>
         <div class="stack">
           <div class="row">
             <div><label class="cap" for="gnPlayers">Players</label>
-              <select id="gnPlayers"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></div>
+              <select id="gnPlayers"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></div>
             <div><label class="cap" for="gnTime">Time</label>
               <select id="gnTime"><option value="30">≤ 30 min</option><option value="60">≤ 60 min</option><option value="90" selected>≤ 90 min</option><option value="180">≤ 3 h</option><option value="9999">Any</option></select></div>
             <div><label class="cap" for="gnWeight">Weight</label>
               <select id="gnWeight"><option value="any">Any</option><option value="light">Light</option><option value="medium" selected>Medium</option><option value="heavy">Heavy</option></select></div>
           </div>
-          <button id="gnGo" class="btn" type="button">Show tonight's options</button>
+          <label class="cap" for="gnSimilar">Similar to (optional)</label>
+          <input id="gnSimilar" type="search" placeholder="Games the group already enjoys" autocomplete="off">
+          <div class="chips" id="gnChips"></div>
+          <button id="gnGo" class="btn" type="button">Curate list</button>
+          <p class="help" id="gnHelp"></p>
           <ol class="list" id="gnList"></ol>
         </div>
       </details>
@@ -282,54 +296,46 @@ a { color: var(--link); }
       <details class="tool" id="routeTool" open>
         <summary>Route between games</summary>
         <div class="stack">
-          <div class="search">
-            <label class="cap" for="routeFrom">From</label>
-            <input id="routeFrom" type="search" placeholder="Older game, e.g. Dominion" autocomplete="off">
-            <ul class="results" hidden></ul>
-          </div>
-          <div class="search">
-            <label class="cap" for="routeTo">To</label>
-            <input id="routeTo" type="search" placeholder="Newer game, e.g. Arkham Horror: The Card Game" autocomplete="off">
-            <ul class="results" hidden></ul>
-          </div>
+          <div><label class="cap" for="routeFrom">From</label>
+            <input id="routeFrom" type="search" placeholder="Older game, or click the map" autocomplete="off"></div>
+          <div><label class="cap" for="routeTo">To</label>
+            <input id="routeTo" type="search" placeholder="Newer game, or click the map" autocomplete="off"></div>
           <div class="seg" role="group" aria-label="Route type">
             <button id="modeInfluence" type="button" aria-pressed="true">Influence</button>
             <button id="modeSimilar" type="button" aria-pressed="false">Similarity only</button>
           </div>
           <p class="help" id="routeHelp">Influence routes only step to similar games published the same year or later, so the chain reads as possible influence.</p>
-          <ol class="list route-steps" id="routeList"></ol>
+          <ol class="list" id="routeList"></ol>
+          <button id="routeClear" class="btn ghost" type="button" hidden>Clear route</button>
         </div>
       </details>
       <details class="tool" id="regionTool">
         <summary>Region guide <small>click a label</small></summary>
-        <div class="stack" id="regionBody"><p class="help">Click a region label on the map, or a game's region in its card.</p></div>
+        <div class="stack" id="regionBody"><p class="help">Click any region name on the map, or the region link on a game's card.</p></div>
       </details>
-      <details class="tool">
+      <details class="tool" id="timeTool">
         <summary>Time-lapse</summary>
         <div class="stack">
-          <p class="help">Watch the map fill in year by year.</p>
-          <div class="row"><button id="playBtn" class="btn" type="button">Play from 1960</button><button id="stopBtn" class="btn ghost" type="button" disabled>Stop</button></div>
+          <p class="help">Scrub through the years. New releases glow in full colour, fade over the next few years, and games not yet published show as outlines.</p>
+          <button id="timeOpen" class="btn" type="button">Open the time slider</button>
         </div>
       </details>
-      <details class="tool">
+      <details class="tool" id="gemsTool">
         <summary>Hidden gems &amp; gaps</summary>
         <div class="stack">
           <div class="seg" role="group" aria-label="Highlight">
             <button id="gemsBtn" type="button" aria-pressed="false">Hidden gems</button>
             <button id="gapsBtn" type="button" aria-pressed="false">Sparse, loved areas</button>
           </div>
-          <p class="help" id="gemsHelp">Gems: rated 7.5+ on average by 100–2,000 people. Gaps: hex tiles with few games but a high average rating.</p>
+          <p class="help" id="gemsHelp">Gems: rated 7.5+ on average by 100–2,000 people. Sparse, loved areas: small patches of the map with only a few games, all rated highly. They hint at niches with room for more games.</p>
           <ol class="list" id="gemsList"></ol>
         </div>
       </details>
       <details class="tool">
         <summary>Designer lens</summary>
         <div class="stack">
-          <div class="search">
-            <label class="cap" for="designerQ">Designer</label>
-            <input id="designerQ" type="search" placeholder="e.g. Uwe Rosenberg" autocomplete="off">
-            <ul class="results" hidden></ul>
-          </div>
+          <label class="cap" for="designerQ">Designer</label>
+          <input id="designerQ" type="search" placeholder="e.g. Uwe Rosenberg" autocomplete="off">
           <ol class="list" id="designerList"></ol>
         </div>
       </details>
@@ -340,6 +346,16 @@ a { color: var(--link); }
 </section>
 
 <aside id="detail" class="card" hidden aria-live="polite"></aside>
+<section id="timebar" class="card" hidden aria-label="Time slider">
+  <button id="timePlay" class="btn" type="button" aria-label="Play">Play</button>
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+    <input id="timeRange" type="range" min="1950" max="2025" step="1" value="2000" aria-label="Year">
+    <div id="timeKey"><span><i style="background: var(--accent)"></i>new</span><span><i style="background: color-mix(in srgb, var(--accent) 45%, grey)"></i>a few years old</span><span><i style="background: grey"></i>older</span><span><i style="border: 1px solid var(--muted)"></i>not yet published</span></div>
+  </div>
+  <div id="timeYear">2000</div>
+  <button id="timeClose" class="close" type="button" aria-label="Close the time slider">Close</button>
+</section>
+<ul id="suggest" role="listbox" hidden></ul>
 <div id="tooltip" hidden></div>
 
 <script src="https://unpkg.com/deck.gl@9.1.0/dist.min.js"></script>
@@ -353,69 +369,142 @@ a { color: var(--link); }
     colorBy: "cluster", mechanic: 0, sizePop: true, showTiles: true,
     filters: { yearMin: null, yearMax: null, wMin: null, wMax: null, players: null },
     selected: null, viewState: null,
-    highlight: null,   // Set of game indices to emphasise, or null
-    route: null,       // array of game indices
-    routeStop: null,   // index into route that the meeple stands on
-    routeMode: "influence", routeFrom: null, routeTo: null,
-    likes: [], taste: null, gapsOn: false,
+    highlight: null, route: null, routeStop: null, routeMode: "influence", routeFrom: null, routeTo: null,
+    likes: [], gnSeeds: [], timeYear: null, gapBins: null,
   };
-  let deckgl = null, colors = null, radii = null, passes = null, mechSets = null, adjacency = null, bins = null, atlas = null;
+  let deckgl = null, colors = null, radii = null, icons = null, passes = null, mechSets = null, adjacency = null, bins = null, board = null, atlas = null, T = null;
 
   // ---------- theme ----------
-  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   const isDark = () => getComputedStyle(document.documentElement).colorScheme.includes("dark");
-  function rgb(hex) {
-    const m = hex.replace("#", "");
-    return [parseInt(m.slice(0, 2), 16), parseInt(m.slice(2, 4), 16), parseInt(m.slice(4, 6), 16)];
-  }
+  const rgb = (hex) => { const m = hex.replace("#", ""); return [0, 2, 4].map((k) => parseInt(m.slice(k, k + 2), 16)); };
   const INK = [28, 34, 38];
   function themeColors() {
     const dark = isDark();
     return {
-      dark, ink: dark ? [5, 10, 20] : INK, accent: rgb(dark ? "#3ee6ff" : "#ffd23f"),
-      route: dark ? [62, 230, 255] : INK, alt: dark ? [255, 79, 216] : [232, 111, 79],
-      noise: dark ? [44, 66, 80] : [185, 194, 199], label: dark ? [214, 241, 251] : INK,
-      labelBg: dark ? [5, 10, 20, 0] : [255, 253, 248, 245], dim: dark ? 30 : 45,
+      dark, accent: rgb(dark ? "#3ee6ff" : "#ffd23f"), route: dark ? [62, 230, 255] : INK, alt: dark ? [255, 79, 216] : [232, 111, 79],
+      grey: dark ? [70, 92, 108] : [150, 158, 162], label: dark ? [214, 241, 251] : INK,
+      labelBg: dark ? [5, 10, 20, 0] : [255, 253, 248, 245], dim: dark ? 34 : 55,
     };
   }
-  let T = null;
 
-  // Icon atlas drawn on a canvas: a filled hex (tinted per point), a hex outline and the meeple.
+  // ---------- icon atlas, drawn per theme ----------
+  // Light: dice whose shape follows weight (d4 light … d20 heavy); a d6 shows the best player count.
+  // Dark: stars, moons, planets and ringed planets by how many people rated the game; a spaceship and a holo meeple.
+  const CELL = 128;
   function buildAtlas() {
+    const names = T.dark
+      ? ["tile", "ring", "star", "moon", "planet", "ringed", "ship", "meeple", "meeple2"]
+      : ["tile", "ring", "d4", "d6_1", "d6_2", "d6_3", "d6_4", "d6_5", "d6_6", "d8", "d10", "d12", "d20", "meeple", "meeple2"];
     const c = document.createElement("canvas");
-    c.width = 384; c.height = 128;
-    const x = c.getContext("2d");
-    const hex = (cx, cy, r) => {
+    c.width = CELL * names.length; c.height = CELL;
+    const x = c.getContext("2d"), mapping = {};
+    const poly = (cx, cy, r, sides, rot) => {
       x.beginPath();
-      for (let i = 0; i < 6; i++) {
-        const a = Math.PI / 180 * (60 * i - 90);
-        x.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a));
-      }
+      for (let k = 0; k < sides; k++) { const a = rot + (2 * Math.PI * k) / sides; x.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a)); }
       x.closePath();
     };
-    x.fillStyle = "#fff"; hex(64, 64, 63); x.fill();
-    x.strokeStyle = "#fff"; x.lineWidth = 10; hex(192, 64, 56); x.stroke();
-    x.save(); x.translate(256 + 8, 4); x.scale(112 / 24, 112 / 24);
-    const p = new Path2D(MEEPLE);
-    if (T.dark) {
-      x.shadowColor = "#3ee6ff"; x.shadowBlur = 3;
-      x.fillStyle = "rgba(62,230,255,0.28)"; x.fill(p);
-      x.save(); x.clip(p); x.fillStyle = "rgba(159,243,255,0.55)";
-      for (let yy = 0; yy < 24; yy += 1.4) x.fillRect(0, yy, 24, 0.5);
+    const cut = (fn) => { x.save(); x.globalCompositeOperation = "destination-out"; fn(); x.restore(); };
+    const corners = (cx, cy, r, sides, rot) => Array.from({ length: sides }, (_, k) => { const a = rot + (2 * Math.PI * k) / sides; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; });
+    const spokes = (from, to) => cut(() => {
+      x.lineWidth = 7; x.lineJoin = "round"; x.beginPath();
+      to.forEach(([px, py], k) => { const [fx, fy] = from[k % from.length]; x.moveTo(fx, fy); x.lineTo(px, py); });
+      x.stroke();
+    });
+    const meeple = (ox, fill, stroke, holo) => {
+      x.save(); x.translate(ox + 8, 4); x.scale(112 / 24, 112 / 24);
+      const p = new Path2D(MEEPLE);
+      if (holo) {
+        x.shadowColor = stroke; x.shadowBlur = 3; x.fillStyle = fill; x.fill(p);
+        x.save(); x.clip(p); x.fillStyle = "rgba(255,255,255,0.35)"; for (let yy = 0; yy < 24; yy += 1.4) x.fillRect(0, yy, 24, 0.5); x.restore();
+        x.lineWidth = 0.8; x.strokeStyle = stroke; x.stroke(p);
+      } else { x.fillStyle = fill; x.fill(p); x.lineWidth = 1.4; x.strokeStyle = "#1c2226"; x.stroke(p); }
       x.restore();
-      x.lineWidth = 0.7; x.strokeStyle = "#9ff3ff"; x.stroke(p);
-    } else {
-      x.fillStyle = "#ffd23f"; x.fill(p); x.lineWidth = 1.3; x.strokeStyle = "#1c2226"; x.stroke(p);
-    }
-    x.restore();
-    return {
-      url: c.toDataURL(),
-      mapping: {
-        hex: { x: 0, y: 0, width: 128, height: 128, mask: true },
-        ring: { x: 128, y: 0, width: 128, height: 128, mask: true },
-        meeple: { x: 256, y: 0, width: 128, height: 128, mask: false, anchorY: 124 },
-      },
     };
+    names.forEach((name, k) => {
+      const ox = k * CELL, cx = ox + 64, cy = 64;
+      let mask = true, anchorY = 64;
+      x.save(); x.beginPath(); x.rect(ox, 0, CELL, CELL); x.clip();
+      x.fillStyle = "#fff"; x.strokeStyle = "#fff";
+      if (name === "tile") { poly(cx, cy, 63, 6, -Math.PI / 2); x.fill(); }
+      else if (name === "ring") {
+        if (T.dark) { x.lineWidth = 9; x.beginPath(); x.arc(cx, cy, 52, 0, 7); x.stroke(); }
+        else { x.lineWidth = 10; poly(cx, cy, 55, 6, -Math.PI / 2); x.stroke(); }
+      }
+      else if (name === "d4") { poly(cx, cy + 12, 62, 3, -Math.PI / 2); x.fill(); spokes([[cx, cy + 12]], corners(cx, cy + 12, 62, 3, -Math.PI / 2)); }
+      else if (name.startsWith("d6_")) {
+        x.beginPath(); x.roundRect(cx - 52, cy - 52, 104, 104, 22); x.fill();
+        const n = +name.slice(3), d = 28;
+        const spots = { 1: [[0, 0]], 2: [[-1, -1], [1, 1]], 3: [[-1, -1], [0, 0], [1, 1]], 4: [[-1, -1], [1, -1], [-1, 1], [1, 1]],
+          5: [[-1, -1], [1, -1], [0, 0], [-1, 1], [1, 1]], 6: [[-1, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [1, 1]] }[n];
+        cut(() => spots.forEach(([sx, sy]) => { x.beginPath(); x.arc(cx + sx * d, cy + sy * d, 11, 0, 7); x.fill(); }));
+      }
+      else if (name === "d8") {
+        const p = corners(cx, cy, 62, 4, -Math.PI / 2); poly(cx, cy, 62, 4, -Math.PI / 2); x.fill();
+        cut(() => { x.lineWidth = 7; x.beginPath(); x.moveTo(p[3][0], p[3][1]); x.lineTo(p[1][0], p[1][1]); x.stroke(); });
+      }
+      else if (name === "d10") {
+        x.beginPath(); x.moveTo(cx, cy - 62); x.lineTo(cx + 52, cy + 6); x.lineTo(cx, cy + 62); x.lineTo(cx - 52, cy + 6); x.closePath(); x.fill();
+        cut(() => { x.lineWidth = 7; x.lineJoin = "round"; x.beginPath(); x.moveTo(cx - 52, cy + 6); x.lineTo(cx, cy + 22); x.lineTo(cx + 52, cy + 6); x.moveTo(cx, cy + 22); x.lineTo(cx, cy + 62); x.stroke(); });
+      }
+      else if (name === "d12") {
+        poly(cx, cy, 62, 5, -Math.PI / 2); x.fill();
+        const inner = corners(cx, cy, 30, 5, -Math.PI / 2);
+        spokes(inner, corners(cx, cy, 62, 5, -Math.PI / 2));
+        cut(() => { x.lineWidth = 7; poly(cx, cy, 30, 5, -Math.PI / 2); x.stroke(); });
+      }
+      else if (name === "d20") {
+        const p = corners(cx, cy, 62, 6, -Math.PI / 2); poly(cx, cy, 62, 6, -Math.PI / 2); x.fill();
+        const t = corners(cx, cy, 30, 3, Math.PI / 2);
+        cut(() => {
+          x.lineWidth = 7; x.lineJoin = "round"; x.beginPath();
+          x.moveTo(t[0][0], t[0][1]); x.lineTo(t[1][0], t[1][1]); x.lineTo(t[2][0], t[2][1]); x.closePath();
+          [[0, 1], [0, 2], [1, 3], [1, 4], [2, 5], [2, 0]].forEach(([a, b]) => { x.moveTo(t[a][0], t[a][1]); x.lineTo(p[b][0], p[b][1]); });
+          x.stroke();
+        });
+      }
+      else if (name === "star") {
+        const g = x.createRadialGradient(cx, cy, 0, cx, cy, 60); g.addColorStop(0, "rgba(255,255,255,0.55)"); g.addColorStop(1, "rgba(255,255,255,0)");
+        x.fillStyle = g; x.fillRect(ox, 0, CELL, CELL); x.fillStyle = "#fff";
+        x.beginPath(); for (let a = 0; a < 8; a++) { const r = a % 2 ? 9 : 52, ang = -Math.PI / 2 + (a * Math.PI) / 4; x.lineTo(cx + r * Math.cos(ang), cy + r * Math.sin(ang)); } x.closePath(); x.fill();
+        x.beginPath(); x.arc(cx, cy, 11, 0, 7); x.fill();
+      }
+      else if (name === "moon") {
+        const g = x.createRadialGradient(cx, cy, 30, cx, cy, 62); g.addColorStop(0, "rgba(255,255,255,0.35)"); g.addColorStop(1, "rgba(255,255,255,0)");
+        x.fillStyle = g; x.fillRect(ox, 0, CELL, CELL); x.fillStyle = "#fff";
+        x.beginPath(); x.arc(cx, cy, 40, 0, 7); x.fill();
+        cut(() => { x.beginPath(); x.arc(cx + 22, cy - 12, 36, 0, 7); x.fill(); });
+      }
+      else if (name === "planet" || name === "ringed") {
+        const r = name === "ringed" ? 30 : 44;
+        const g = x.createRadialGradient(cx, cy, r, cx, cy, 63); g.addColorStop(0, "rgba(255,255,255,0.4)"); g.addColorStop(1, "rgba(255,255,255,0)");
+        x.fillStyle = g; x.fillRect(ox, 0, CELL, CELL);
+        const body = x.createRadialGradient(cx - r * 0.4, cy - r * 0.4, r * 0.1, cx, cy, r);
+        body.addColorStop(0, "rgba(255,255,255,1)"); body.addColorStop(1, "rgba(255,255,255,0.55)");
+        x.fillStyle = body; x.beginPath(); x.arc(cx, cy, r, 0, 7); x.fill();
+        if (name === "ringed") { x.lineWidth = 6; x.strokeStyle = "#fff"; x.beginPath(); x.ellipse(cx, cy, 60, 17, -0.35, 0, 7); x.stroke(); }
+      }
+      else if (name === "ship") {
+        mask = false;
+        const glow = x.createRadialGradient(cx, cy + 46, 2, cx, cy + 46, 30); glow.addColorStop(0, "rgba(255,170,90,0.95)"); glow.addColorStop(1, "rgba(255,120,60,0)");
+        x.fillStyle = glow; x.beginPath(); x.arc(cx, cy + 46, 30, 0, 7); x.fill();
+        x.shadowColor = "#3ee6ff"; x.shadowBlur = 12;
+        x.fillStyle = "#dff8ff"; x.beginPath(); x.moveTo(cx, cy - 60);
+        x.bezierCurveTo(cx + 16, cy - 30, cx + 16, cy + 10, cx + 12, cy + 34); x.lineTo(cx - 12, cy + 34);
+        x.bezierCurveTo(cx - 16, cy + 10, cx - 16, cy - 30, cx, cy - 60); x.fill();
+        x.fillStyle = "#3ee6ff";
+        x.beginPath(); x.moveTo(cx - 12, cy + 2); x.lineTo(cx - 46, cy + 36); x.lineTo(cx - 12, cy + 30); x.closePath(); x.fill();
+        x.beginPath(); x.moveTo(cx + 12, cy + 2); x.lineTo(cx + 46, cy + 36); x.lineTo(cx + 12, cy + 30); x.closePath(); x.fill();
+        x.shadowBlur = 0; x.fillStyle = "#04121c"; x.beginPath(); x.ellipse(cx, cy - 26, 6, 12, 0, 0, 7); x.fill();
+      }
+      else if (name === "meeple" || name === "meeple2") {
+        mask = false; anchorY = 124;
+        if (T.dark) meeple(ox, name === "meeple" ? "rgba(62,230,255,0.3)" : "rgba(255,79,216,0.32)", name === "meeple" ? "#9ff3ff" : "#ff9be9", true);
+        else meeple(ox, name === "meeple" ? "#ffd23f" : "#e86f4f", "#1c2226", false);
+      }
+      x.restore();
+      mapping[name] = { x: ox, y: 0, width: CELL, height: CELL, mask, anchorY };
+    });
+    return { url: c.toDataURL(), mapping };
   }
 
   function setTheme(next) {
@@ -424,7 +513,11 @@ a { color: var(--link); }
     atlas = buildAtlas();
     $("themeBtn").textContent = T.dark ? "Punchboard" : "Holo table";
     $("themeBtn").setAttribute("aria-label", T.dark ? "Switch to the light Punchboard theme" : "Switch to the dark Holo Table theme");
-    if (state.games) { recolor(); redraw(); }
+    $("tilesLabel").textContent = T.dark ? "Region glow" : "Hex board";
+    $("shapeKey").textContent = T.dark
+      ? "Ringed planets are the most-rated games, then planets, moons and stars. The selected game becomes a spaceship."
+      : "Dice shape shows weight: d4 lightest, then d6, d8, d10, d12, d20 heaviest. A d6 shows the best player count.";
+    if (state.games && colors) { assignIcons(); resize(); recolor(); labelCache.key = null; redraw(); }
   }
 
   // ---------- colour ----------
@@ -440,20 +533,29 @@ a { color: var(--link); }
     const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
     return [255 * f(0), 255 * f(8), 255 * f(4)];
   }
-  const clusterColor = (c) => hsl((c * 137.508) % 360, T.dark ? 80 : 62, T.dark ? 62 : 52);
+  const clusterColor = (c) => hsl((c * 137.508) % 360, T.dark ? 80 : 66, T.dark ? 66 : 54);
   const PLAYER_COLORS = [[230, 159, 0], [86, 180, 233], [0, 158, 115], [240, 228, 66], [0, 114, 178], [213, 94, 0], [204, 121, 167]];
+  const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
   function quantiles(arr) {
     const v = arr.filter((x) => x != null).sort((a, b) => a - b);
     return [v[Math.floor(v.length * 0.02)], v[Math.floor(v.length * 0.98)]];
   }
 
+  // Games standing under a marker (meeple / spaceship) are hidden so the marker replaces them.
+  function markedGames() {
+    const s = new Set(state.likes);
+    if (state.selected != null) s.add(state.selected);
+    if (state.route && state.routeStop != null) s.add(state.route[state.routeStop]);
+    return s;
+  }
+
   function recolor() {
-    const g = state.games, m = state.models[state.model], n = state.n, hl = state.highlight;
+    const g = state.games, m = state.models[state.model], n = state.n, hl = state.highlight, ty = state.timeYear, marked = markedGames();
     colors = new Uint8ClampedArray(n * 4);
     let range = null;
     if (["weight", "year", "rating"].includes(state.colorBy)) range = quantiles(g[state.colorBy]);
     for (let i = 0; i < n; i++) {
-      let c = T.noise, a = 220;
+      let c = T.grey, a = 230;
       if (state.colorBy === "cluster") {
         const cl = m.cluster[i];
         if (cl >= 0) c = clusterColor(cl); else a = 150;
@@ -462,20 +564,47 @@ a { color: var(--link); }
         if (v != null) c = ramp((v - range[0]) / (range[1] - range[0] || 1)); else a = 110;
       } else if (state.colorBy === "bestp") {
         const v = g.bestp[i];
-        if (v != null) c = PLAYER_COLORS[Math.min(v, 7) - 1] || T.noise; else a = 110;
+        if (v != null) c = PLAYER_COLORS[Math.min(v, 7) - 1] || T.grey; else a = 110;
       } else if (state.colorBy === "mechanic") {
         if (mechSets[i].has(state.mechanic)) c = T.accent; else a = 70;
       }
-      if (!passes[i] || (hl && !hl.has(i))) { c = T.noise; a = T.dim; }
+      if (ty != null) {
+        const y = g.year[i];
+        if (y == null || y > ty) { c = T.grey; a = 2; }   // a = 2 marks "not yet published": drawn as an outline
+        else {
+          const f = Math.min(1, (ty - y) / 6);              // fully grey six years after release
+          c = mix(c, T.grey, f * 0.9); a = Math.round(255 - f * 180);
+        }
+      }
+      if (!passes[i] || (hl && !hl.has(i))) { c = T.grey; a = a === 2 ? 2 : Math.min(a, T.dim); }
+      if (marked.has(i)) a = 0;
       colors.set([c[0], c[1], c[2], a], i * 4);
     }
     renderLegend(range);
   }
 
+  function assignIcons() {
+    const g = state.games, n = state.n;
+    icons = new Array(n);
+    for (let i = 0; i < n; i++) {
+      if (T.dark) {
+        const u = g.users[i] || 0;
+        icons[i] = u >= 5000 ? "ringed" : u >= 800 ? "planet" : u >= 150 ? "moon" : "star";
+      } else {
+        const w = g.weight[i];
+        if (w == null || (w >= 1.6 && w < 2.1)) icons[i] = "d6_" + Math.min(6, Math.max(1, g.bestp[i] || ((g.id[i] % 6) + 1)));
+        else icons[i] = w < 1.6 ? "d4" : w < 2.6 ? "d8" : w < 3.1 ? "d10" : w < 3.6 ? "d12" : "d20";
+      }
+    }
+  }
+
   function resize() {
     const users = state.games.users;
     radii = new Float32Array(state.n);
-    for (let i = 0; i < state.n; i++) radii[i] = state.sizePop ? 2.2 + Math.log10(1 + (users[i] || 0)) * 1.3 : 3;
+    for (let i = 0; i < state.n; i++) {
+      const pop = Math.log10(1 + (users[i] || 0));
+      radii[i] = state.sizePop ? (T.dark ? 3 + pop * 1.9 : 3.2 + pop * 1.5) : (T.dark ? 6 : 5);
+    }
   }
 
   function applyFilters() {
@@ -505,11 +634,9 @@ a { color: var(--link); }
     if (range) {
       const stops = [0, 0.25, 0.5, 0.75, 1].map((t) => `rgb(${ramp(t).map(Math.round).join(",")})`).join(",");
       const fmtv = (v) => (state.colorBy === "year" ? Math.round(v) : v.toFixed(1));
-      el.innerHTML = `<div class="bar" style="background:linear-gradient(90deg,${stops})"></div>
-        <div class="ends"><span>${fmtv(range[0])}</span><span>${fmtv(range[1])}</span></div>`;
+      el.innerHTML = `<div class="bar" style="background:linear-gradient(90deg,${stops})"></div><div class="ends"><span>${fmtv(range[0])}</span><span>${fmtv(range[1])}</span></div>`;
     } else if (state.colorBy === "bestp") {
-      el.innerHTML = `<div class="swatches">${PLAYER_COLORS.map((c, i) =>
-        `<span class="sw"><i class="dot" style="background:rgb(${c.join(",")})"></i>${i === 6 ? "7+" : i + 1}</span>`).join("")}</div>`;
+      el.innerHTML = `<div class="swatches">${PLAYER_COLORS.map((c, i) => `<span class="sw"><i class="dot" style="background:rgb(${c.join(",")})"></i>${i === 6 ? "7+" : i + 1}</span>`).join("")}</div>`;
     } else if (state.colorBy === "mechanic") {
       el.innerHTML = `<span class="mini">Lit: has ${esc(state.manifest.mechanics[state.mechanic])}</span>`;
     } else {
@@ -517,156 +644,176 @@ a { color: var(--link); }
     }
   }
 
-  // ---------- hex territories (hexbins of the 2D layout) ----------
+  // ---------- hex grids: region bins (both themes) and the terrain board (light) ----------
+  const SQ3 = Math.sqrt(3);
+  const hexCenter = (q, r, s) => [s * SQ3 * (q + r / 2), s * 1.5 * r];
   function buildBins() {
     const m = state.models[state.model], g = state.games;
     const xs = Float64Array.from(m.x).sort(), ys = Float64Array.from(m.y).sort();
-    const span = Math.max(xs[Math.floor(xs.length * 0.99)] - xs[Math.floor(xs.length * 0.01)], ys[Math.floor(ys.length * 0.99)] - ys[Math.floor(ys.length * 0.01)]);
-    const size = span / 70, sq3 = Math.sqrt(3), map = new Map();
+    const lo = (v) => v[Math.floor(v.length * 0.01)], hi = (v) => v[Math.floor(v.length * 0.99)];
+    const size = Math.max(hi(xs) - lo(xs), hi(ys) - lo(ys)) / 70, map = new Map();
     for (let i = 0; i < state.n; i++) {
-      const q = (sq3 / 3 * m.x[i] - m.y[i] / 3) / size, r = (2 / 3 * m.y[i]) / size;
-      let rx = Math.round(q), rz = Math.round(r), ry = Math.round(-q - r);
+      const q = (SQ3 / 3 * m.x[i] - m.y[i] / 3) / size, r = (2 / 3 * m.y[i]) / size;
+      let rx = Math.round(q), rz = Math.round(r);
+      const ry = Math.round(-q - r);
       const dx = Math.abs(rx - q), dz = Math.abs(rz - r), dy = Math.abs(ry + q + r);
       if (dx > dy && dx > dz) rx = -ry - rz; else if (dz >= dy) rz = -rx - ry;
       const key = rx + "," + rz;
       let b = map.get(key);
-      if (!b) { b = { q: rx, r: rz, count: 0, votes: new Map(), rating: 0, rated: 0, members: [] }; map.set(key, b); }
-      b.count++; b.members.push(i);
+      if (!b) { b = { q: rx, r: rz, members: [], votes: new Map() }; map.set(key, b); }
+      b.members.push(i);
       if (m.cluster[i] >= 0) b.votes.set(m.cluster[i], (b.votes.get(m.cluster[i]) || 0) + 1);
-      if (g.avg[i] != null) { b.rating += g.avg[i]; b.rated++; }
     }
     bins = [...map.values()].map((b) => {
       let top = -1, best = 0;
       b.votes.forEach((v, k) => { if (v > best) { best = v; top = k; } });
-      return { x: size * sq3 * (b.q + b.r / 2), y: size * 1.5 * b.r, count: b.count, cluster: top,
-        purity: b.count ? best / b.count : 0, rating: b.rated ? b.rating / b.rated : null, members: b.members };
+      const rated = b.members.filter((i) => g.avg[i] != null && (g.users[i] || 0) >= 10);
+      const [x, y] = hexCenter(b.q, b.r, size);
+      return { q: b.q, r: b.r, x, y, count: b.members.length, cluster: top, purity: best / b.members.length, members: b.members,
+        rating: rated.length ? rated.reduce((s, i) => s + g.avg[i], 0) / rated.length : null, rated: rated.length };
     });
     bins.size = size;
+    // Terrain board: every hex over the map's extent, coloured in patches like a board of land tiles.
+    const TERRAIN = ["#f1d27a", "#9cc59a", "#e7a785", "#b9c1c9", "#c7df92", "#ead7af", "#a8d1e3"].map(rgb);
+    const ps = bins.map((b) => [b.x, b.y]), pad = 45 * size;  // wide enough to fill the screen when zoomed out
+    const bx0 = Math.min(...ps.map((p) => p[0])) - pad, bx1 = Math.max(...ps.map((p) => p[0])) + pad;
+    const by0 = Math.min(...ps.map((p) => p[1])) - pad, by1 = Math.max(...ps.map((p) => p[1])) + pad;
+    const patch = (q, r) => { const h = Math.sin(Math.floor(q / 3) * 127.1 + Math.floor(r / 3) * 311.7) * 43758.5453; return h - Math.floor(h); };
+    board = [];
+    for (let r = Math.floor(by0 / (1.5 * size)); r <= Math.ceil(by1 / (1.5 * size)); r++) {
+      const qStart = Math.floor(bx0 / (SQ3 * size) - r / 2), qEnd = Math.ceil(bx1 / (SQ3 * size) - r / 2);
+      for (let q = qStart; q <= qEnd; q++) {
+        const [x, y] = hexCenter(q, r, size);
+        board.push({ x, y, c: TERRAIN[Math.floor(patch(q + Math.floor(r / 2), r) * TERRAIN.length)] });
+      }
+    }
+    // Sparse, loved areas: thinly populated cells (2–8 games, at least two with 10+ ratings) whose games average 7.0+,
+    // best loved first. Ratings use the plain average, since the geek rating pulls little-known games toward 5.5.
+    state.gapBins = bins.filter((b) => b.count >= 2 && b.count <= 8 && b.rated >= 2 && b.rating >= 7.0).sort((a, b) => b.rating - a.rating).slice(0, 40);
   }
 
   // ---------- layers ----------
   const indexData = () => ({ length: state.n });
   const pos = (i) => { const m = state.models[state.model]; return [m.x[i], m.y[i]]; };
+  const pointSize = (i) => { const a = colors[i * 4 + 3]; return a <= 60 && a > 2 ? Math.min(radii[i], 3) * 1.6 : radii[i] * 2; };
+  const iconAt = (i) => (colors[i * 4 + 3] === 2 ? "ring" : icons[i]);
+  const gapsOn = () => $("gapsBtn").getAttribute("aria-pressed") === "true";
 
   function layers() {
-    const m = state.models[state.model], out = [];
+    const out = [], atlasProps = { iconAtlas: atlas.url, iconMapping: atlas.mapping };
     if (state.showTiles && bins) {
+      if (!T.dark) {
+        out.push(new deck.IconLayer({
+          id: "board", data: board, ...atlasProps, getIcon: () => "tile", sizeUnits: "common", getSize: bins.size * 2 * 0.93,
+          getPosition: (b) => [b.x, b.y], getColor: (b) => b.c.concat(150), updateTriggers: { getColor: [state.model] },
+        }));
+      } else {
+        out.push(new deck.IconLayer({
+          id: "glow", data: bins, ...atlasProps, getIcon: () => "tile", sizeUnits: "common", getSize: bins.size * 2 * 0.94,
+          getPosition: (b) => [b.x, b.y],
+          getColor: (b) => (b.cluster >= 0 ? clusterColor(b.cluster) : T.grey).concat(Math.round(Math.min(1, 0.2 + b.count / 14) * (b.cluster >= 0 ? 0.3 + 0.7 * b.purity : 0.4) * 46)),
+          updateTriggers: { getColor: [state.model, T.dark] },
+        }));
+      }
+    }
+    if (gapsOn() && state.gapBins) {
       out.push(new deck.IconLayer({
-        id: "tiles", data: bins, iconAtlas: atlas.url, iconMapping: atlas.mapping, getIcon: () => "hex",
-        sizeUnits: "common", getSize: bins.size * 2 * 0.94, getPosition: (b) => [b.x, b.y],
-        getColor: (b) => {
-          if (state.gapsOn) {
-            const gap = b.count <= 4 && b.rating != null && b.rating >= 7.3;
-            return gap ? T.accent.concat(200) : T.noise.concat(T.dark ? 25 : 60);
-          }
-          const base = b.cluster >= 0 ? clusterColor(b.cluster) : T.noise;
-          const a = Math.min(1, 0.25 + b.count / 12) * (b.cluster >= 0 ? 0.35 + 0.65 * b.purity : 0.5);
-          return base.concat(Math.round(a * (T.dark ? 60 : 105)));
-        },
-        updateTriggers: { getColor: [state.model, T.dark, state.gapsOn] },
+        id: "gaps", data: state.gapBins, ...atlasProps, getIcon: () => "ring", sizeUnits: "common", getSize: bins.size * 2 * 1.1,
+        getPosition: (b) => [b.x, b.y], getColor: T.alt.concat(255),
       }));
     }
-    const common = {
-      data: indexData(), iconAtlas: atlas.url, iconMapping: atlas.mapping, getIcon: () => "hex", sizeUnits: "pixels",
-      getPosition: (_, { index }) => pos(index),
-    };
+    const common = { data: indexData(), ...atlasProps, sizeUnits: "pixels", getPosition: (_, { index }) => pos(index), getIcon: (_, { index }) => iconAt(index) };
+    const triggers = { getPosition: state.model, getSize: [state.sizePop, colors, T.dark], getColor: [colors], getIcon: [colors, T.dark] };
     if (!T.dark) {
       out.push(new deck.IconLayer({
         ...common, id: "points-ink", getSize: (_, { index }) => pointSize(index) + 3,
-        getColor: (_, { index }) => { const a = colors[index * 4 + 3]; return [28, 34, 38, a >= 200 ? 255 : a * 0.45]; },
-        updateTriggers: { getPosition: state.model, getSize: [state.sizePop, colors], getColor: [colors] },
+        getColor: (_, { index }) => { const a = colors[index * 4 + 3]; return [28, 34, 38, a === 2 ? 0 : a >= 200 ? 255 : a * 0.5]; },
+        updateTriggers: triggers,
       }));
     }
     out.push(new deck.IconLayer({
       ...common, id: "points", pickable: true,
       getSize: (_, { index }) => pointSize(index),
-      getColor: (_, { index }) => colors.subarray(index * 4, index * 4 + 4),
-      updateTriggers: { getPosition: state.model, getSize: [state.sizePop, colors], getColor: [colors] },
-      onHover, onClick: (info) => info.index >= 0 && select(info.index, false),
+      getColor: (_, { index }) => { const a = colors[index * 4 + 3]; return a === 2 ? T.grey.concat(T.dark ? 60 : 95) : colors.subarray(index * 4, index * 4 + 4); },
+      updateTriggers: triggers, onHover,
     }));
     if (state.selected != null && !state.route) {
       const s = state.selected, nb = neighbors(s).slice(0, 10);
       out.push(new deck.LineLayer({
         id: "nb-lines", data: nb, getSourcePosition: () => pos(s), getTargetPosition: (j) => pos(j),
-        getColor: T.route.concat(T.dark ? 170 : 150), getWidth: T.dark ? 1.2 : 1.6, widthUnits: "pixels",
+        getColor: T.route.concat(T.dark ? 150 : 140), getWidth: T.dark ? 1.2 : 1.6, widthUnits: "pixels",
         updateTriggers: { getSourcePosition: [s, state.model], getTargetPosition: [state.model] },
       }));
       out.push(new deck.IconLayer({
-        id: "nb-rings", data: nb, iconAtlas: atlas.url, iconMapping: atlas.mapping, getIcon: () => "ring",
-        sizeUnits: "pixels", getSize: 14, getPosition: (j) => pos(j), getColor: T.route.concat(255),
-        updateTriggers: { getPosition: [state.model, s] },
+        id: "nb-rings", data: nb, ...atlasProps, getIcon: () => "ring", sizeUnits: "pixels", getSize: 16,
+        getPosition: (j) => pos(j), getColor: T.route.concat(255), updateTriggers: { getPosition: [state.model, s] },
       }));
     }
     if (state.route) {
-      const path = state.route.map(pos);
       out.push(new deck.PathLayer({
-        id: "route", data: [{ path }], getPath: (d) => d.path, widthUnits: "pixels",
-        getWidth: T.dark ? 3 : 4, getColor: (state.routeMode === "influence" ? T.route : T.alt).concat(235),
-        jointRounded: true, capRounded: true,
+        id: "route", data: [{ path: state.route.map(pos) }], getPath: (d) => d.path, widthUnits: "pixels",
+        getWidth: T.dark ? 3 : 4, getColor: (state.routeMode === "influence" ? T.route : T.alt).concat(235), jointRounded: true, capRounded: true,
         updateTriggers: { getColor: [state.routeMode, T.dark] },
       }));
-      const stops = state.route.map((i, k) => ({ i, k }));
+      const stops = state.route.map((i, k) => ({ i, k })).filter((d) => d.k !== state.routeStop);
       out.push(new deck.IconLayer({
-        id: "route-stops", data: stops, iconAtlas: atlas.url, iconMapping: atlas.mapping, getIcon: () => "hex",
-        sizeUnits: "pixels", getSize: 26, getPosition: (d) => pos(d.i),
-        getColor: (d) => (d.k === state.routeStop ? T.accent : (T.dark ? [8, 20, 38] : [255, 255, 255])).concat(255),
-        updateTriggers: { getColor: [state.routeStop, T.dark], getPosition: [state.model] },
+        id: "route-stops", data: stops, ...atlasProps, getIcon: () => "tile", sizeUnits: "pixels", getSize: 26,
+        getPosition: (d) => pos(d.i), getColor: (T.dark ? [8, 20, 38] : [255, 255, 255]).concat(255), updateTriggers: { getPosition: [state.model] },
       }));
       out.push(new deck.IconLayer({
-        id: "route-rings", data: stops, iconAtlas: atlas.url, iconMapping: atlas.mapping, getIcon: () => "ring",
-        sizeUnits: "pixels", getSize: 27, getPosition: (d) => pos(d.i), getColor: T.route.concat(255),
+        id: "route-rings", data: stops, ...atlasProps, getIcon: () => "ring", sizeUnits: "pixels", getSize: 27,
+        getPosition: (d) => pos(d.i), getColor: T.route.concat(255), updateTriggers: { getPosition: [state.model] },
+      }));
+      out.push(new deck.TextLayer({
+        id: "route-nums", data: stops, getPosition: (d) => pos(d.i), getText: (d) => String(d.k + 1), getSize: 11, sizeUnits: "pixels",
+        fontFamily: "IBM Plex Mono, DM Mono, monospace", fontWeight: 600, getColor: (T.dark ? [214, 241, 251] : INK).concat(255),
         updateTriggers: { getPosition: [state.model] },
       }));
       out.push(new deck.TextLayer({
-        id: "route-nums", data: stops, getPosition: (d) => pos(d.i), getText: (d) => String(d.k + 1),
-        getSize: 11, sizeUnits: "pixels", fontFamily: "IBM Plex Mono, DM Mono, monospace", fontWeight: 600,
-        getColor: (d) => (d.k === state.routeStop ? [4, 18, 28] : T.dark ? [214, 241, 251] : INK).concat(255),
-        updateTriggers: { getColor: [state.routeStop, T.dark], getPosition: [state.model] },
-      }));
-      out.push(new deck.TextLayer({
-        id: "route-years", data: stops, getPosition: (d) => pos(d.i),
-        getText: (d) => `${state.games.year[d.i] ?? "?"} · ${trim(state.games.name[d.i], 28)}`,
-        getSize: 12, sizeUnits: "pixels", getTextAnchor: (d) => (d.k % 2 ? "end" : "start"), getPixelOffset: (d) => [d.k % 2 ? -16 : 16, 0],
+        id: "route-years", data: state.route.map((i, k) => ({ i, k })), getPosition: (d) => pos(d.i),
+        getText: (d) => `${state.games.year[d.i] ?? "?"} · ${trim(state.games.name[d.i], 28)}`, getSize: 12, sizeUnits: "pixels",
+        getTextAnchor: (d) => (d.k % 2 ? "end" : "start"), getPixelOffset: (d) => [d.k % 2 ? -20 : 20, 0],
         fontFamily: "IBM Plex Mono, DM Mono, monospace", fontWeight: 500, characterSet: "auto",
-        getColor: T.label.concat(255), outlineWidth: 4, outlineColor: rgb(T.dark ? "#050a14" : "#dfe5e8").concat(230), fontSettings: { sdf: true },
+        getColor: T.label.concat(255), outlineWidth: 4, outlineColor: rgb(T.dark ? "#03060f" : "#e4e7e2").concat(230), fontSettings: { sdf: true },
         updateTriggers: { getPosition: [state.model], getColor: [T.dark] },
       }));
     }
-    if (state.taste) {
-      out.push(new deck.IconLayer({
-        id: "taste", data: [state.taste], iconAtlas: atlas.url, iconMapping: atlas.mapping, getIcon: () => "hex",
-        sizeUnits: "pixels", getSize: 30, getPosition: (d) => d, getColor: T.dark ? [255, 79, 216, 200] : [232, 111, 79, 230],
-      }));
-    }
-    if (state.showLabels !== false) {
+    if (state.likes.length > 1) {
+      const xs = state.likes.map(pos);
+      const taste = [xs.reduce((s, p) => s + p[0], 0) / xs.length, xs.reduce((s, p) => s + p[1], 0) / xs.length];
+      out.push(new deck.IconLayer({ id: "taste", data: [taste], ...atlasProps, getIcon: () => "ring", sizeUnits: "pixels", getSize: 30, getPosition: (d) => d, getColor: T.alt.concat(230) }));
       out.push(new deck.TextLayer({
-        id: "labels", data: visibleLabels(), characterSet: "auto", pickable: true,
-        getPosition: (d) => [d.x, d.y], getText: (d) => d.text, getSize: (d) => d.px, sizeUnits: "pixels",
-        fontFamily: T.dark ? "Chakra Petch, IBM Plex Sans, sans-serif" : "Unbounded, Atkinson Hyperlegible, sans-serif",
-        fontWeight: T.dark ? 600 : 700, lineHeight: 1.15, getColor: T.label.concat(255),
-        background: !T.dark, getBackgroundColor: T.labelBg, backgroundPadding: [7, 4, 7, 4],
-        getBorderColor: INK.concat(255), getBorderWidth: T.dark ? 0 : 2,
-        outlineWidth: T.dark ? 4 : 0, outlineColor: [5, 10, 20, 230], fontSettings: { sdf: true },
-        onClick: (info) => info.object && showRegion(info.object.id),
-        updateTriggers: { getColor: [T.dark], getText: [state.model, T.dark] },
+        id: "taste-label", data: [taste], getPosition: (d) => d, getText: () => "your taste", getSize: 11, sizeUnits: "pixels", getPixelOffset: [0, 24],
+        fontFamily: "IBM Plex Mono, DM Mono, monospace", getColor: T.label.concat(255), outlineWidth: 4,
+        outlineColor: rgb(T.dark ? "#03060f" : "#e4e7e2").concat(230), fontSettings: { sdf: true },
       }));
     }
-    const marker = state.route && state.routeStop != null ? state.route[state.routeStop] : state.selected;
-    const meepleAt = marker != null ? pos(marker) : state.taste;
-    if (meepleAt) {
+    out.push(new deck.TextLayer({
+      id: "labels", data: visibleLabels(), characterSet: "auto", pickable: true,
+      getPosition: (d) => [d.x, d.y], getText: (d) => d.text, getSize: (d) => d.px, sizeUnits: "pixels",
+      fontFamily: T.dark ? "Chakra Petch, IBM Plex Sans, sans-serif" : "Unbounded, Atkinson Hyperlegible, sans-serif",
+      fontWeight: T.dark ? 600 : 700, lineHeight: 1.15, getColor: T.label.concat(255),
+      background: !T.dark, getBackgroundColor: T.labelBg, backgroundPadding: [7, 4, 7, 4], getBorderColor: INK.concat(255), getBorderWidth: T.dark ? 0 : 2,
+      outlineWidth: T.dark ? 4 : 0, outlineColor: [3, 6, 15, 230], fontSettings: { sdf: true },
+      updateTriggers: { getColor: [T.dark], getText: [state.model, T.dark] },
+    }));
+    // Markers replace the games they stand on: liked games get meeples; the selected game (or current route stop) gets the main marker.
+    const markers = state.likes.map((i) => ({ i, icon: "meeple2" }));
+    const main = state.route && state.routeStop != null ? state.route[state.routeStop] : state.selected;
+    if (main != null) markers.push({ i: main, icon: T.dark ? "ship" : "meeple" });
+    if (markers.length) {
       out.push(new deck.IconLayer({
-        id: "meeple", data: [meepleAt], iconAtlas: atlas.url, iconMapping: atlas.mapping, getIcon: () => "meeple",
-        sizeUnits: "pixels", getSize: T.dark ? 52 : 44, getPosition: (d) => d, getPixelOffset: [0, -6],
+        id: "markers", data: markers, ...atlasProps, getIcon: (d) => d.icon, sizeUnits: "pixels", pickable: true,
+        getSize: (d) => (d.icon === "ship" ? 50 : 40), getPosition: (d) => pos(d.i),
+        updateTriggers: { getPosition: [state.model] },
       }));
     }
     return out;
   }
 
-  // Dimmed points (filtered out or outside a highlight) shrink so they read as background.
-  const pointSize = (i) => (colors[i * 4 + 3] <= 60 ? Math.min(radii[i], 3) * 1.6 : radii[i] * 2);
   const trim = (s, n) => (s.length > n ? s.slice(0, n - 1) + "…" : s);
 
-  // Region labels: coarse regions zoomed out, fine ones zoomed in; biggest first, no overlaps.
+  // Region labels: broad regions zoomed out, fine ones zoomed in; biggest first, no overlaps.
   let labelCache = { key: null, items: [] };
   function visibleLabels() {
     const m = state.models[state.model], zoom = state.viewState.zoom;
@@ -682,7 +829,7 @@ a { color: var(--link); }
       const w = Math.max(...lines.map((l) => l.length)) * px * (T.dark ? 0.66 : 0.7) + (T.dark ? 18 : 40), h = lines.length * px * 1.2 + (T.dark ? 12 : 26);
       const box = { x0: d.x * scale - w / 2, x1: d.x * scale + w / 2, y0: d.y * scale - h / 2, y1: d.y * scale + h / 2 };
       if (placed.some((b) => box.x0 < b.x1 && box.x1 > b.x0 && box.y0 < b.y1 && box.y1 > b.y0)) continue;
-      placed.push({ ...box, x: d.x, y: d.y, text, px, id: fine ? d.id : null, coarse: fine ? null : d.id });
+      placed.push({ ...box, x: d.x, y: d.y, text, px, id: d.id, kind: fine ? "fine" : "coarse" });
     }
     labelCache = { key, items: placed };
     return placed;
@@ -690,9 +837,7 @@ a { color: var(--link); }
   function wrap(text) {
     const words = text.split(" "), lines = [];
     let line = "";
-    for (const w of words) {
-      if ((line + " " + w).trim().length > 18 && line) { lines.push(line); line = w; } else line = (line + " " + w).trim();
-    }
+    for (const w of words) { if ((line + " " + w).trim().length > 18 && line) { lines.push(line); line = w; } else line = (line + " " + w).trim(); }
     lines.push(line);
     return lines.join("\n");
   }
@@ -701,13 +846,14 @@ a { color: var(--link); }
   // ---------- helpers ----------
   const neighbors = (i) => { const m = state.models[state.model]; return m.neighbors.slice(i * m.k, i * m.k + m.k); };
   const thumb = (i) => (state.games.thumb[i] ? state.manifest.thumbPrefix + state.games.thumb[i] : "");
-  const players = (i) => {
-    const lo = state.games.minp[i], hi = state.games.maxp[i];
-    return lo == null ? "?" : hi == null || hi === lo ? `${lo}` : `${lo}–${hi}`;
-  };
+  const players = (i) => { const lo = state.games.minp[i], hi = state.games.maxp[i]; return lo == null ? "?" : hi == null || hi === lo ? `${lo}` : `${lo}–${hi}`; };
   const fmt = (v, d = 0) => (v == null ? "–" : d ? v.toFixed(d) : Math.round(v).toLocaleString());
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const regionLabel = (cl) => (cl >= 0 ? (state.models[state.model].labels.find((d) => d.id === cl) || {}).label : "Between regions");
+  const regionName = (kind, id) => {
+    const m = state.models[state.model];
+    if (id == null || id < 0) return "Between regions";
+    return ((kind === "coarse" ? m.coarseLabels : m.labels).find((d) => d.id === id) || {}).label || "Region";
+  };
   const median = (arr) => { const v = arr.filter((x) => x != null).sort((a, b) => a - b); return v.length ? v[Math.floor(v.length / 2)] : null; };
   function listHtml(items, extra) {
     return items.map((i, k) => `<li><button type="button" data-i="${i}"><span class="n">${k + 1}</span><span class="nm">${esc(state.games.name[i])}</span><span class="yr">${extra ? extra(i) : state.games.year[i] ?? ""}</span></button></li>`).join("");
@@ -731,14 +877,34 @@ a { color: var(--link); }
     tip.style.top = Math.min(info.y + 14, window.innerHeight - tip.offsetHeight - 8) + "px";
   }
 
+  // Clicks are detected here rather than with deck.gl's tap gesture, which waits out a possible double
+  // click and can miss taps on slow devices. A press that barely moves is a click on whatever is under it.
+  function initClicks() {
+    let down = null;
+    const el = $("map");
+    el.addEventListener("pointerdown", (e) => { down = e.button === 0 ? { x: e.clientX, y: e.clientY, t: performance.now() } : null; });
+    el.addEventListener("pointerup", (e) => {
+      const d = down; down = null;
+      if (!d || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 6 || performance.now() - d.t > 800) return;
+      const r = el.getBoundingClientRect();
+      const info = deckgl.pickObject({ x: e.clientX - r.left, y: e.clientY - r.top, radius: 4, layerIds: ["markers", "labels", "points"] });
+      if (!info || !info.layer) return;
+      if (info.layer.id === "labels") showRegion(info.object.kind, info.object.id);
+      else if (info.layer.id === "markers") mapClick(info.object.i);
+      else if (info.index >= 0) mapClick(info.index);
+    });
+  }
+
+  // A click on the map fills whichever game box is waiting for one; otherwise it selects the game.
+  function mapClick(i) {
+    if (armed) { const a = armed; disarm(); a.pick(i, a.input); return; }
+    select(i, false);
+  }
+
   function select(i, fly) {
     state.selected = i;
-    if (state.route) {
-      const k = state.route.indexOf(i);
-      state.routeStop = k >= 0 ? k : state.routeStop;
-      renderRouteList();
-    }
-    renderDetail(); redraw();
+    if (state.route) { const k = state.route.indexOf(i); if (k >= 0) { state.routeStop = k; renderRouteList(); } }
+    renderDetail(); recolor(); redraw();
     if (fly) flyTo(pos(i));
   }
 
@@ -751,6 +917,7 @@ a { color: var(--link); }
     });
   }
   function fitTo(indices) {
+    if (!indices.length) return;
     const xs = indices.map((i) => pos(i)[0]), ys = indices.map((i) => pos(i)[1]);
     const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
     const z = Math.log2(Math.min(window.innerWidth / Math.max(x1 - x0, 1e-3), window.innerHeight / Math.max(y1 - y0, 1e-3)) * 0.45);
@@ -761,15 +928,13 @@ a { color: var(--link); }
     const el = $("detail"), i = state.selected;
     document.body.classList.toggle("has-detail", i != null);
     if (i == null) { el.hidden = true; return; }
-    const g = state.games, m = state.models[state.model], man = state.manifest;
-    const cl = m.cluster[i];
+    const g = state.games, m = state.models[state.model], man = state.manifest, cl = m.cluster[i];
     const mechs = g.mech[i].slice(0, 8).map((t) => `<span class="tag">${esc(man.mechanics[t])}</span>`).join("");
-    const nbs = neighbors(i).slice(0, 10);
     el.innerHTML = `
       <div class="head">${thumb(i) ? `<img src="${thumb(i)}" alt="">` : ""}
         <div><h2>${esc(g.name[i])}</h2>
           <div class="meta">${g.year[i] ?? "Year unknown"} · rank ${fmt(g.rank[i])}${g.short[i] ? " · short description" : ""}</div>
-          <button class="region-pill" type="button" id="dRegion">${esc(regionLabel(cl) || "")}</button></div></div>
+          ${cl >= 0 ? `<button class="region-pill" type="button" id="dRegion">${esc(regionName("fine", cl))}</button>` : `<span class="meta">Between regions</span>`}</div></div>
       <div class="stats">
         <div class="stat"><b>${fmt(g.weight[i], 1)}</b><span>Weight</span></div>
         <div class="stat"><b>${players(i)}</b><span>Players</span></div>
@@ -783,105 +948,119 @@ a { color: var(--link); }
         <button class="chip" type="button" id="dLike">I like this</button>
       </div>
       <span class="cap">Nearest neighbors</span>
-      <ol class="list" id="dNbs">${listHtml(nbs, (j) => g.year[j] ?? "")}</ol>
+      <ol class="list" id="dNbs">${listHtml(neighbors(i).slice(0, 10))}</ol>
       <div class="links"><a href="https://boardgamegeek.com/boardgame/${g.id[i]}" target="_blank" rel="noopener">Open on BoardGameGeek</a>
         <button class="close" type="button" id="closeDetail">Close</button></div>`;
     el.hidden = false;
     bindList($("dNbs"));
-    $("dRegion").addEventListener("click", () => cl >= 0 && showRegion(cl));
+    if ($("dRegion")) $("dRegion").addEventListener("click", () => showRegion("fine", cl));
     $("dFrom").addEventListener("click", () => { setRouteEnd("from", i); openTool("explore", "routeTool"); });
     $("dTo").addEventListener("click", () => { setRouteEnd("to", i); openTool("explore", "routeTool"); });
     $("dLike").addEventListener("click", () => { addLike(i); openTool("personal"); });
-    $("closeDetail").addEventListener("click", () => { state.selected = null; renderDetail(); redraw(); });
+    $("closeDetail").addEventListener("click", () => { state.selected = null; renderDetail(); recolor(); redraw(); });
   }
 
-  function openTool(tab, toolId) {
-    selectTab(tab);
-    if (toolId) $(toolId).open = true;
-  }
+  function openTool(tab, toolId) { selectTab(tab); if (toolId) $(toolId).open = true; }
   function selectTab(name) {
-    ["map", "personal", "explore"].forEach((t) => {
-      $("tab-" + t).setAttribute("aria-selected", String(t === name));
-      $("panel-" + t).hidden = t !== name;
-    });
+    ["map", "personal", "explore"].forEach((t) => { $("tab-" + t).setAttribute("aria-selected", String(t === name)); $("panel-" + t).hidden = t !== name; });
   }
 
-  // ---------- search (shared by every game picker) ----------
-  let lowerNames = null;
-  function attachSearch(input, onPick, source) {
-    const list = input.parentElement.querySelector(".results");
-    let matches = [], active = 0;
-    const names = source ? source.lower : lowerNames;
-    const label = source ? (i) => source.names[i] : (i) => state.games.name[i];
-    const sub = source ? (i) => `${source.counts[i]} games` : (i) => state.games.year[i] ?? "";
-    const rankOf = source ? (i) => -source.counts[i] : (i) => state.games.rank[i] ?? 1e9;
-    input.setAttribute("role", "combobox"); input.setAttribute("aria-expanded", "false");
-    function show(text) {
-      const q = text.trim().toLowerCase();
-      if (q.length < 2) { list.hidden = true; input.setAttribute("aria-expanded", "false"); return; }
+  // ---------- search: one floating suggestion list for every game box ----------
+  // While a box has focus it is "armed": clicking a game on the map fills it.
+  let lowerNames = null, armed = null, suggestFor = null;
+  const suggest = () => $("suggest");
+  function disarm() { if (armed) armed.input.classList.remove("armed"); armed = null; }
+  function hideSuggest() { suggest().hidden = true; if (suggestFor) suggestFor.input.setAttribute("aria-expanded", "false"); suggestFor = null; }
+  function attachSearch(input, pick, source) {
+    const entry = { input, pick, matches: [], active: 0 };
+    const names = () => (source ? source.lower : lowerNames);
+    const label = (i) => (source ? source.names[i] : state.games.name[i]);
+    const sub = (i) => (source ? `${source.counts[i]} games` : state.games.year[i] ?? "");
+    const rankOf = (i) => (source ? -source.counts[i] : state.games.rank[i] ?? 1e9);
+    input.setAttribute("role", "combobox"); input.setAttribute("aria-expanded", "false"); input.setAttribute("aria-controls", "suggest");
+    function show() {
+      const q = input.value.trim().toLowerCase(), list = suggest(), nm = names();
+      if (q.length < 2) { hideSuggest(); return; }
       const starts = [], contains = [];
-      for (let i = 0; i < names.length; i++) {
-        const p = names[i].indexOf(q);
-        if (p === 0) starts.push(i); else if (p > 0) contains.push(i);
-      }
-      const byRank = (a, b) => (names[b] === q) - (names[a] === q) || rankOf(a) - rankOf(b);
-      matches = starts.sort(byRank).concat(contains.sort(byRank)).slice(0, 8);
-      active = 0;
-      list.innerHTML = matches.length ? matches.map((i, k) =>
-        `<li role="option" data-i="${i}" aria-selected="${k === 0}"><span>${esc(label(i))}</span><span class="yr">${sub(i)}</span></li>`).join("")
-        : `<li role="option" aria-disabled="true">No match for “${esc(text.trim())}”</li>`;
-      list.hidden = false; input.setAttribute("aria-expanded", "true");
-      list.querySelectorAll("li[data-i]").forEach((li) => li.addEventListener("mousedown", (e) => { e.preventDefault(); pick(+li.dataset.i); }));
+      for (let i = 0; i < nm.length; i++) { const p = nm[i].indexOf(q); if (p === 0) starts.push(i); else if (p > 0) contains.push(i); }
+      const byRank = (a, b) => (nm[b] === q) - (nm[a] === q) || rankOf(a) - rankOf(b);
+      entry.matches = starts.sort(byRank).concat(contains.sort(byRank)).slice(0, 8);
+      entry.active = 0;
+      list.innerHTML = entry.matches.length
+        ? entry.matches.map((i, k) => `<li role="option" data-i="${i}" aria-selected="${k === 0}"><span>${esc(label(i))}</span><span class="yr">${sub(i)}</span></li>`).join("")
+        : `<li role="option" aria-disabled="true">No match for “${esc(input.value.trim())}”</li>`;
+      const r = input.getBoundingClientRect();
+      list.style.left = r.left + "px"; list.style.width = Math.max(r.width, 240) + "px";
+      const below = window.innerHeight - r.bottom;
+      if (below < 240 && r.top > below) { list.style.top = "auto"; list.style.bottom = window.innerHeight - r.top + 4 + "px"; }
+      else { list.style.bottom = "auto"; list.style.top = r.bottom + 4 + "px"; }
+      list.hidden = false; suggestFor = entry; input.setAttribute("aria-expanded", "true");
     }
-    function pick(i) { list.hidden = true; input.setAttribute("aria-expanded", "false"); onPick(i, input); }
-    input.addEventListener("input", (e) => show(e.target.value));
+    entry.choose = (i) => { hideSuggest(); disarm(); pick(i, input); };
+    input.addEventListener("input", show);
+    input.addEventListener("focus", () => { disarm(); armed = entry; input.classList.add("armed"); });
     input.addEventListener("keydown", (e) => {
       if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-        if (!matches.length) return;
-        active = (active + (e.key === "ArrowDown" ? 1 : -1) + matches.length) % matches.length;
-        list.querySelectorAll("li").forEach((li, k) => li.setAttribute("aria-selected", String(k === active)));
+        if (!entry.matches.length || suggest().hidden) return;
+        entry.active = (entry.active + (e.key === "ArrowDown" ? 1 : -1) + entry.matches.length) % entry.matches.length;
+        suggest().querySelectorAll("li").forEach((li, k) => li.setAttribute("aria-selected", String(k === entry.active)));
         e.preventDefault();
-      } else if (e.key === "Enter" && matches.length && !list.hidden) pick(matches[active]);
-      else if (e.key === "Escape") list.hidden = true;
+      } else if (e.key === "Enter" && entry.matches.length && !suggest().hidden) entry.choose(entry.matches[entry.active]);
+      else if (e.key === "Escape") { hideSuggest(); disarm(); input.blur(); }
     });
-    input.addEventListener("blur", () => setTimeout(() => { list.hidden = true; }, 150));
+  }
+  function initSearchUi() {
+    // The shared list keeps the input focused, so choosing works by mouse, pen and touch.
+    suggest().addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      const li = e.target.closest("li[data-i]");
+      if (li && suggestFor) suggestFor.choose(+li.dataset.i);
+    });
+    // Clicking anywhere except the map or the armed box disarms it.
+    document.addEventListener("pointerdown", (e) => {
+      if (e.target.closest("#suggest")) return;
+      if (suggestFor && e.target !== suggestFor.input) hideSuggest();
+      if (armed && e.target !== armed.input && !e.target.closest("#map")) disarm();
+    }, true);
+    $("controls").addEventListener("scroll", hideSuggest);
   }
 
-  // ---------- routes ----------
-  // Undirected similarity graph from each game's 15 nearest neighbors.
+  // ---------- similarity graph, routes, closeness ----------
   function buildAdjacency() {
-    const m = state.models[state.model], n = state.n, k = m.k;
-    const adj = Array.from({ length: n }, () => []);
-    for (let i = 0; i < n; i++) {
-      for (let t = 0; t < k; t++) {
-        const j = m.neighbors[i * k + t], s = m.sims[i * k + t] / 100;
-        adj[i].push(j, s); adj[j].push(i, s);
-      }
-    }
+    const m = state.models[state.model], n = state.n, k = m.k, adj = Array.from({ length: n }, () => []);
+    for (let i = 0; i < n; i++) for (let t = 0; t < k; t++) { const j = m.neighbors[i * k + t], s = m.sims[i * k + t] / 100; adj[i].push(j, s); adj[j].push(i, s); }
     adjacency = adj;
   }
-  // Dijkstra with a binary heap. Cost per hop = (1 - similarity) + 0.02 so routes stay short.
+  function heap() {
+    const h = [];
+    return {
+      size: () => h.length,
+      push(x) { h.push(x); let c = h.length - 1; while (c > 0) { const p = (c - 1) >> 1; if (h[p][0] <= h[c][0]) break; [h[p], h[c]] = [h[c], h[p]]; c = p; } },
+      pop() {
+        const top = h[0], last = h.pop();
+        if (h.length) {
+          h[0] = last; let c = 0;
+          for (;;) { const l = 2 * c + 1, r = l + 1; let s = c; if (l < h.length && h[l][0] < h[s][0]) s = l; if (r < h.length && h[r][0] < h[s][0]) s = r; if (s === c) break; [h[s], h[c]] = [h[c], h[s]]; c = s; }
+        }
+        return top;
+      },
+    };
+  }
+  // Dijkstra: cost per hop = (1 - similarity) + 0.02. Influence mode only steps forward in time.
   function findRoute(a, b, influence) {
-    const year = state.games.year, n = state.n;
-    const ya = year[a] ?? -1e9, yb = year[b] ?? 1e9;
-    const dist = new Float64Array(n).fill(Infinity), prev = new Int32Array(n).fill(-1);
-    const heap = [[0, a]];
-    const push = (x) => { heap.push(x); let c = heap.length - 1; while (c > 0) { const p = (c - 1) >> 1; if (heap[p][0] <= heap[c][0]) break; [heap[p], heap[c]] = [heap[c], heap[p]]; c = p; } };
-    const pop = () => { const top = heap[0], last = heap.pop(); if (heap.length) { heap[0] = last; let c = 0; for (;;) { const l = 2 * c + 1, r = l + 1; let s = c; if (l < heap.length && heap[l][0] < heap[s][0]) s = l; if (r < heap.length && heap[r][0] < heap[s][0]) s = r; if (s === c) break; [heap[s], heap[c]] = [heap[c], heap[s]]; c = s; } } return top; };
-    dist[a] = 0;
-    while (heap.length) {
-      const [d, u] = pop();
+    const year = state.games.year, n = state.n, ya = year[a] ?? -1e9, yb = year[b] ?? 1e9;
+    const dist = new Float64Array(n).fill(Infinity), prev = new Int32Array(n).fill(-1), q = heap();
+    dist[a] = 0; q.push([0, a]);
+    while (q.size()) {
+      const [d, u] = q.pop();
       if (u === b) break;
       if (d > dist[u]) continue;
       const yu = year[u] ?? ya, edges = adjacency[u];
       for (let e = 0; e < edges.length; e += 2) {
         const v = edges[e];
-        if (influence) {
-          const yv = year[v];
-          if (yv == null || yv < yu || yv > yb || yv < ya) continue;
-        }
+        if (influence) { const yv = year[v]; if (yv == null || yv < yu || yv > yb || yv < ya) continue; }
         const nd = d + (1 - edges[e + 1]) + 0.02;
-        if (nd < dist[v]) { dist[v] = nd; prev[v] = u; push([nd, v]); }
+        if (nd < dist[v]) { dist[v] = nd; prev[v] = u; q.push([nd, v]); }
       }
     }
     if (prev[b] < 0 && a !== b) return null;
@@ -889,15 +1068,37 @@ a { color: var(--link); }
     while (path[path.length - 1] !== a) path.push(prev[path[path.length - 1]]);
     return path.reverse();
   }
+  // Games ordered by graph distance from any of the seeds, closest first.
+  function closest(seeds, limit) {
+    const dist = new Map(), q = heap(), order = [];
+    seeds.forEach((s) => { dist.set(s, 0); q.push([0, s]); });
+    while (q.size() && order.length < limit) {
+      const [d, u] = q.pop();
+      if (d > dist.get(u)) continue;
+      order.push(u);
+      const edges = adjacency[u];
+      for (let e = 0; e < edges.length; e += 2) {
+        const v = edges[e], nd = d + (1 - edges[e + 1]) + 0.02;
+        if (nd < (dist.get(v) ?? Infinity)) { dist.set(v, nd); q.push([nd, v]); }
+      }
+    }
+    return order;
+  }
   function setRouteEnd(which, i) {
     if (which === "from") { state.routeFrom = i; $("routeFrom").value = state.games.name[i]; }
     else { state.routeTo = i; $("routeTo").value = state.games.name[i]; }
     computeRoute();
   }
   function computeRoute() {
-    const a = state.routeFrom, b = state.routeTo, help = $("routeHelp");
-    if (a == null || b == null) { state.route = null; renderRouteList(); redraw(); return; }
-    const g = state.games;
+    const a = state.routeFrom, b = state.routeTo, help = $("routeHelp"), g = state.games;
+    $("routeClear").hidden = a == null && b == null;
+    if (a == null || b == null) {
+      state.route = null;
+      help.textContent = a == null && b == null
+        ? "Influence routes only step to similar games published the same year or later, so the chain reads as possible influence."
+        : `Now pick the ${a == null ? "starting" : "destination"} game: type it, or click it on the map.`;
+      renderRouteList(); recolor(); redraw(); return;
+    }
     let from = a, to = b, swapped = false;
     if (state.routeMode === "influence" && (g.year[a] ?? 0) > (g.year[b] ?? 0)) { from = b; to = a; swapped = true; }
     const path = findRoute(from, to, state.routeMode === "influence");
@@ -914,7 +1115,7 @@ a { color: var(--link); }
         : `${path.length} stops by similarity alone.${backwards ? " This route goes back in time, so it can't be read as influence." : " It happens to run forward in time."}`;
       fitTo(path);
     }
-    renderRouteList(); redraw();
+    renderRouteList(); recolor(); redraw();
   }
   function renderRouteList() {
     const el = $("routeList");
@@ -923,18 +1124,16 @@ a { color: var(--link); }
     const simTo = (i, j) => { const k = m.k; for (let t = 0; t < k; t++) { if (m.neighbors[i * k + t] === j) return m.sims[i * k + t]; if (m.neighbors[j * k + t] === i) return m.sims[j * k + t]; } return null; };
     el.innerHTML = state.route.map((i, k) => {
       const s = k ? simTo(state.route[k - 1], i) : null;
-      const cur = k === state.routeStop ? ' style="font-weight:700"' : "";
-      return `<li><button type="button" data-i="${i}"${cur}><span class="n">${k + 1}</span><span class="nm">${esc(g.name[i])}</span><span class="yr">${g.year[i] ?? "?"}${s != null ? ` · ${(s / 100).toFixed(2)}` : ""}</span></button></li>`;
+      return `<li><button type="button" data-i="${i}"${k === state.routeStop ? ' style="font-weight:700"' : ""}><span class="n">${k + 1}</span><span class="nm">${esc(g.name[i])}</span><span class="yr">${g.year[i] ?? "?"}${s != null ? ` · ${(s / 100).toFixed(2)}` : ""}</span></button></li>`;
     }).join("");
     bindList(el);
   }
 
   // ---------- region guide ----------
-  function showRegion(cid) {
-    if (cid == null) return;
-    const m = state.models[state.model], g = state.games;
-    const members = [];
-    for (let i = 0; i < state.n; i++) if (m.cluster[i] === cid) members.push(i);
+  function showRegion(kind, id) {
+    if (id == null || id < 0) return;
+    const m = state.models[state.model], g = state.games, field = kind === "coarse" ? m.coarse : m.cluster, members = [];
+    for (let i = 0; i < state.n; i++) if (field[i] === id) members.push(i);
     if (!members.length) return;
     const byRating = members.slice().sort((a, b) => (g.rating[b] ?? 0) - (g.rating[a] ?? 0));
     const weights = members.map((i) => g.weight[i]).filter((w) => w != null).sort((a, b) => a - b);
@@ -944,95 +1143,96 @@ a { color: var(--link); }
     members.forEach((i) => g.mech[i].forEach((t) => mechCount.set(t, (mechCount.get(t) || 0) + 1)));
     const topMech = [...mechCount.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4).map(([t]) => state.manifest.mechanics[t]);
     $("regionBody").innerHTML = `
-      <h3 style="margin:0;font:700 16px var(--font-display)">${esc(regionLabel(cid))}</h3>
-      <p class="mini" style="margin:0">${members.length.toLocaleString()} games · median weight ${fmt(median(members.map((i) => g.weight[i])), 1)} · median year ${median(members.map((i) => g.year[i])) ?? "?"} · ${fmt(median(members.map((i) => g.time[i])))} min</p>
+      <h3 style="margin:0;font:700 16px var(--font-display)">${esc(regionName(kind, id))}</h3>
+      <p class="mini" style="margin:0">${kind === "coarse" ? "Broad region · " : ""}${members.length.toLocaleString()} games · median weight ${fmt(median(members.map((i) => g.weight[i])), 1)} · median year ${median(members.map((i) => g.year[i])) ?? "?"} · ${fmt(median(members.map((i) => g.time[i])))} min</p>
       <p class="help">Common mechanics: ${topMech.map(esc).join(", ")}</p>
       ${starter != null ? `<p class="help">Start here: <button class="region-pill" type="button" data-i="${starter}">${esc(g.name[starter])}</button>, the best-rated of its lighter games.</p>` : ""}
       <span class="cap">Top rated</span>
       <ol class="list" id="regionList">${listHtml(byRating.slice(0, 6))}</ol>
       <button class="btn ghost" type="button" id="regionHL">Highlight this region</button>`;
-    bindList($("regionBody"));
+    bindList($("regionList"));
     $("regionBody").querySelectorAll(".region-pill[data-i]").forEach((b) => b.addEventListener("click", () => select(+b.dataset.i, true)));
     $("regionHL").addEventListener("click", () => { setHighlight(new Set(members)); fitTo(members); });
     openTool("explore", "regionTool");
+    $("regionTool").scrollIntoView({ block: "nearest" });
   }
 
-  // ---------- personal: like-together, game night ----------
-  function addLike(i) {
-    if (!state.likes.includes(i)) state.likes.push(i);
-    renderLikes();
-  }
+  // ---------- personal ----------
+  function addLike(i) { if (!state.likes.includes(i)) state.likes.push(i); renderLikes(); }
   function renderLikes() {
     const g = state.games, chips = $("likeChips");
     chips.innerHTML = state.likes.map((i) => `<button class="chip" type="button" aria-pressed="true" data-i="${i}" aria-label="Remove ${esc(g.name[i])}">${esc(trim(g.name[i], 26))} ×</button>`).join("");
     chips.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => { state.likes = state.likes.filter((x) => x !== +b.dataset.i); renderLikes(); }));
-    if (!state.likes.length) { state.taste = null; $("likeList").innerHTML = ""; setHighlight(null); return; }
-    // Score candidates by similarity to every liked game, through one or two neighbor hops.
-    const score = new Map(), m = state.models[state.model], k = m.k;
+    if (!state.likes.length) {
+      $("likeList").innerHTML = "";
+      $("likeHelp").textContent = "Add two or three games. Each gets a meeple, and the map highlights games close to all of them.";
+      setHighlight(null); return;
+    }
+    // Score candidates by closeness to each liked game; games near every pick rank first.
+    const need = state.likes.length, score = new Map();
     state.likes.forEach((a) => {
-      const best = new Map();
-      for (let t = 0; t < k; t++) {
-        const j = m.neighbors[a * k + t], s = m.sims[a * k + t] / 100;
-        best.set(j, Math.max(best.get(j) || 0, s));
-        for (let u = 0; u < k; u++) {
-          const j2 = m.neighbors[j * k + u], s2 = s * (m.sims[j * k + u] / 100);
-          best.set(j2, Math.max(best.get(j2) || 0, s2));
-        }
-      }
-      best.forEach((s, j) => { const e = score.get(j) || { sum: 0, hits: 0 }; e.sum += s; e.hits++; score.set(j, e); });
+      closest([a], 400).forEach((j, rank) => { const e = score.get(j) || { hits: 0, sum: 0 }; e.hits++; e.sum += 1 / (1 + rank); score.set(j, e); });
     });
-    const need = state.likes.length;
-    const entries = [...score.entries()].filter(([j]) => !state.likes.includes(j))
-      .sort((a, b) => b[1].hits - a[1].hits || b[1].sum - a[1].sum).slice(0, 12);
+    const entries = [...score.entries()].filter(([j]) => !state.likes.includes(j)).sort((a, b) => b[1].hits - a[1].hits || b[1].sum - a[1].sum).slice(0, 12);
     const ranked = entries.map(([j]) => j), nearAll = entries.filter(([, e]) => e.hits === need).length;
-    const xs = state.likes.map((i) => pos(i));
-    state.taste = [xs.reduce((s, p) => s + p[0], 0) / xs.length, xs.reduce((s, p) => s + p[1], 0) / xs.length];
     $("likeHelp").textContent = need === 1 ? "Games close to this pick:"
-      : nearAll ? `${nearAll} game${nearAll > 1 ? "s" : ""} close to all ${need} picks, then games close to some of them:`
+      : nearAll ? `${nearAll} game${nearAll > 1 ? "s" : ""} close to all ${need} picks first:`
       : "Nothing sits close to all of these at once, so these are close to at least one:";
     $("likeList").innerHTML = listHtml(ranked);
     bindList($("likeList"));
     setHighlight(new Set([...ranked, ...state.likes]));
-    if (ranked.length) fitTo([...ranked, ...state.likes]);
+    fitTo([...ranked, ...state.likes]);
   }
-  function gameNight() {
+  function renderGnChips() {
+    const g = state.games;
+    $("gnChips").innerHTML = state.gnSeeds.map((i) => `<button class="chip" type="button" aria-pressed="true" data-i="${i}" aria-label="Remove ${esc(g.name[i])}">${esc(trim(g.name[i], 26))} ×</button>`).join("");
+    $("gnChips").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => { state.gnSeeds = state.gnSeeds.filter((x) => x !== +b.dataset.i); renderGnChips(); }));
+  }
+  function curate() {
     const g = state.games, p = +$("gnPlayers").value, t = +$("gnTime").value, w = $("gnWeight").value;
     const band = { any: [0, 9], light: [0, 2], medium: [2, 3.2], heavy: [3.2, 9] }[w];
-    const hits = [];
-    for (let i = 0; i < state.n; i++) {
-      if (g.minp[i] == null || g.maxp[i] == null || p < g.minp[i] || p > g.maxp[i]) continue;
-      if (g.time[i] == null || g.time[i] > t) continue;
-      if (w !== "any" && (g.weight[i] == null || g.weight[i] < band[0] || g.weight[i] >= band[1])) continue;
-      hits.push(i);
+    const fits = (i) => !(g.minp[i] == null || g.maxp[i] == null || p < g.minp[i] || p > g.maxp[i] || g.time[i] == null || g.time[i] > t
+      || (w !== "any" && (g.weight[i] == null || g.weight[i] < band[0] || g.weight[i] >= band[1])));
+    let hits;
+    if (state.gnSeeds.length) {
+      hits = closest(state.gnSeeds, 6000).filter((i) => !state.gnSeeds.includes(i) && fits(i));
+      $("gnHelp").textContent = hits.length ? `${hits.length.toLocaleString()} games fit, most similar to your picks first:` : "Nothing similar fits those settings. Loosen the time or weight.";
+    } else {
+      hits = [];
+      for (let i = 0; i < state.n; i++) if (fits(i)) hits.push(i);
+      hits.sort((a, b) => (g.rating[b] ?? 0) - (g.rating[a] ?? 0));
+      $("gnHelp").textContent = `${hits.length.toLocaleString()} games fit. Best rated first:`;
     }
-    hits.sort((a, b) => (g.rating[b] ?? 0) - (g.rating[a] ?? 0));
-    $("gnList").innerHTML = `<p class="mini" style="margin:0 0 4px">${hits.length.toLocaleString()} games fit. Best rated:</p>` + listHtml(hits.slice(0, 10));
+    $("gnList").innerHTML = listHtml(hits.slice(0, 12), (i) => `${players(i)}p · ${fmt(g.time[i])}′`);
     bindList($("gnList"));
-    setHighlight(new Set(hits));
+    setHighlight(new Set(hits.slice(0, 400)));
+    if (hits.length) fitTo(hits.slice(0, 12));
   }
 
-  // ---------- explore: time-lapse, gems, gaps, designer ----------
+  // ---------- time slider ----------
   let timer = null;
+  function setYear(y) {
+    state.timeYear = y; $("timeRange").value = y; $("timeYear").textContent = y;
+    let shown = 0;
+    for (let i = 0; i < state.n; i++) if (state.games.year[i] != null && state.games.year[i] <= y) shown++;
+    $("count").textContent = `${shown.toLocaleString()} games published by ${y}`;
+    recolor(); redraw();
+  }
+  function openTime() { $("timebar").hidden = false; setYear(state.timeYear ?? 2000); }
+  function closeTime() { pause(); $("timebar").hidden = true; state.timeYear = null; applyFilters(); recolor(); redraw(); }
   function play() {
-    stop();
-    let year = 1960;
-    const end = new Date().getFullYear();
-    $("playBtn").disabled = true; $("stopBtn").disabled = false; $("yearBadge").hidden = false;
-    timer = setInterval(() => {
-      state.filters.yearMax = year; $("yearMax").value = year; $("yearBadge").textContent = year;
-      applyFilters(); recolor(); redraw();
-      if (++year > end) stop(true);
-    }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 400 : 160);
+    if (timer) { pause(); return; }
+    let y = +$("timeRange").value;
+    if (y >= +$("timeRange").max) y = +$("timeRange").min;
+    $("timePlay").textContent = "Pause"; $("timePlay").setAttribute("aria-label", "Pause");
+    timer = setInterval(() => { setYear(y); if (++y > +$("timeRange").max) pause(); }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 600 : 280);
   }
-  function stop(keep) {
-    if (timer) clearInterval(timer);
-    timer = null;
-    $("playBtn").disabled = false; $("stopBtn").disabled = true;
-    if (!keep) $("yearBadge").hidden = true; else setTimeout(() => { $("yearBadge").hidden = true; }, 1500);
-  }
+  function pause() { if (timer) clearInterval(timer); timer = null; $("timePlay").textContent = "Play"; $("timePlay").setAttribute("aria-label", "Play"); }
+
+  // ---------- explore: gems, gaps, designer ----------
   function toggleGems() {
     const on = $("gemsBtn").getAttribute("aria-pressed") !== "true";
-    $("gemsBtn").setAttribute("aria-pressed", String(on));
+    $("gemsBtn").setAttribute("aria-pressed", String(on)); $("gapsBtn").setAttribute("aria-pressed", "false");
     if (!on) { $("gemsList").innerHTML = ""; setHighlight(null); return; }
     const g = state.games, gems = [];
     for (let i = 0; i < state.n; i++) if (g.avg[i] >= 7.5 && g.users[i] >= 100 && g.users[i] <= 2000) gems.push(i);
@@ -1042,10 +1242,20 @@ a { color: var(--link); }
     setHighlight(new Set(gems));
   }
   function toggleGaps() {
-    state.gapsOn = !state.gapsOn;
-    $("gapsBtn").setAttribute("aria-pressed", String(state.gapsOn));
-    if (state.gapsOn) { state.showTiles = true; $("showTiles").checked = true; }
-    redraw();
+    const on = $("gapsBtn").getAttribute("aria-pressed") !== "true";
+    $("gapsBtn").setAttribute("aria-pressed", String(on)); $("gemsBtn").setAttribute("aria-pressed", "false");
+    if (!on) { $("gemsList").innerHTML = ""; setHighlight(null); return; }
+    const g = state.games, gaps = state.gapBins;
+    if (!gaps.length) { $("gemsList").innerHTML = `<p class="help">No sparse, highly rated patches on this layout.</p>`; setHighlight(null); return; }
+    $("gemsList").innerHTML = `<p class="mini" style="margin:0 0 4px">${gaps.length} patches circled on the map. Best loved:</p>` + gaps.slice(0, 10).map((b, k) => {
+      const best = b.members.slice().sort((x, y) => (g.avg[y] ?? 0) - (g.avg[x] ?? 0))[0];
+      return `<li><button type="button" data-gap="${k}"><span class="n">${k + 1}</span><span class="nm">${esc(g.name[best])}<span class="mini"> + ${b.count - 1} · ${esc(regionName("fine", b.cluster))}</span></span><span class="yr">${b.rating.toFixed(1)}</span></button></li>`;
+    }).join("");
+    $("gemsList").querySelectorAll("button[data-gap]").forEach((btn) => btn.addEventListener("click", () => {
+      const b = gaps[+btn.dataset.gap];
+      setHighlight(new Set(b.members)); fitTo(b.members);
+    }));
+    setHighlight(new Set(gaps.flatMap((b) => b.members)));
   }
   function designerPicked(d, input) {
     input.value = state.manifest.designers[d];
@@ -1055,7 +1265,7 @@ a { color: var(--link); }
     $("designerList").innerHTML = listHtml(hits);
     bindList($("designerList"));
     setHighlight(new Set(hits));
-    if (hits.length) fitTo(hits);
+    fitTo(hits);
   }
 
   // ---------- setup ----------
@@ -1067,8 +1277,7 @@ a { color: var(--link); }
     const pct = (arr, q) => { const v = Float64Array.from(arr).sort(); return v[Math.floor(q * (v.length - 1))]; };
     const x0 = pct(m.x, 0.01), x1 = pct(m.x, 0.99), y0 = pct(m.y, 0.01), y1 = pct(m.y, 0.99);
     const zoom = Math.log2(Math.min(window.innerWidth / (x1 - x0), window.innerHeight / (y1 - y0)) * 0.8);
-    state.minZoom = zoom - 1.5;
-    state.labelSwitchZoom = zoom + 1.2;
+    state.minZoom = zoom - 1.5; state.labelSwitchZoom = zoom + 1.2;
     return { target: [(x0 + x1) / 2, (y0 + y1) / 2, 0], zoom, minZoom: zoom - 1.5, maxZoom: 14 };
   }
   function refreshAll() { applyFilters(); recolor(); redraw(); }
@@ -1081,17 +1290,15 @@ a { color: var(--link); }
   }
 
   async function init() {
-    setTheme();
+    T = themeColors();
+    let manifest, games;
     try {
-      const [manifest, games] = await Promise.all([
-        fetch("data/manifest.json").then((r) => r.json()),
-        fetch("data/games.json").then((r) => r.json()),
-      ]);
-      Object.assign(state, { manifest, games, n: games.id.length, model: manifest.models[0].key });
+      [manifest, games] = await Promise.all([fetch("data/manifest.json").then((r) => r.json()), fetch("data/games.json").then((r) => r.json())]);
     } catch (err) {
       $("status").textContent = "The map data didn't load. Run src/export.py, then serve this folder over HTTP.";
       return;
     }
+    Object.assign(state, { manifest, games, n: games.id.length, model: manifest.models[0].key });
     const man = state.manifest;
     $("title").textContent = man.title;
     document.title = man.title;
@@ -1099,27 +1306,32 @@ a { color: var(--link); }
     $("model").innerHTML = man.models.map((m) => `<option value="${m.key}">${esc(m.label)}</option>`).join("");
     $("modelWrap").hidden = man.models.length < 2;
     $("mechanic").innerHTML = man.mechanics.slice(0, 80).map((t, i) => `<option value="${i}">${esc(t)}</option>`).join("");
-    lowerNames = state.games.name.map((s) => s.toLowerCase());
-    mechSets = state.games.mech.map((a) => new Set(a));
+    lowerNames = games.name.map((s) => s.toLowerCase());
+    mechSets = games.mech.map((a) => new Set(a));
+    const years = games.year.filter((y) => y != null).sort((a, b) => a - b);
+    $("timeRange").min = Math.max(1900, years[Math.floor(years.length * 0.01)]);
+    $("timeRange").max = years[years.length - 1];
     const desCounts = new Array(man.designers.length).fill(0);
-    state.games.des.forEach((ds) => ds.forEach((d) => { desCounts[d]++; }));
+    games.des.forEach((ds) => ds.forEach((d) => { desCounts[d]++; }));
     const designerSource = { names: man.designers, lower: man.designers.map((s) => s.toLowerCase()), counts: desCounts };
 
     const m = await loadModel(state.model);
     state.viewState = fitView(m);
+    setTheme();
     buildAdjacency(); buildBins();
-    applyFilters(); resize(); recolor();
+    applyFilters(); resize(); assignIcons(); recolor();
     deckgl = new deck.Deck({
       parent: $("map"), views: new deck.OrthographicView({ flipY: false }),
       initialViewState: state.viewState, controller: true, layers: layers(),
       onViewStateChange: ({ viewState }) => {
         const relabel = viewState.zoom.toFixed(1) !== state.viewState.zoom.toFixed(1);
-        state.viewState = viewState;
+        state.viewState = viewState; hideSuggest();
         if (relabel) redraw();
       },
-      getCursor: ({ isHovering, isDragging }) => (isDragging ? "grabbing" : isHovering ? "pointer" : "grab"),
+      getCursor: ({ isHovering, isDragging }) => (isDragging ? "grabbing" : isHovering ? "pointer" : armed ? "crosshair" : "grab"),
     });
     $("status").hidden = true;
+    initClicks();
 
     // Map tab
     $("colorBy").addEventListener("change", (e) => { state.colorBy = e.target.value; $("mechWrap").hidden = state.colorBy !== "mechanic"; recolor(); redraw(); });
@@ -1145,27 +1357,44 @@ a { color: var(--link); }
     $("themeBtn").addEventListener("click", () => setTheme(isDark() ? "light" : "dark"));
     $("clearHL").addEventListener("click", () => {
       setHighlight(null);
-      $("gemsBtn").setAttribute("aria-pressed", "false"); $("gemsList").innerHTML = "";
+      ["gemsBtn", "gapsBtn"].forEach((id) => $(id).setAttribute("aria-pressed", "false")); $("gemsList").innerHTML = "";
+      redraw();
     });
 
-    // Search boxes
+    // Game boxes: type a name, or click the map while the box is focused
+    initSearchUi();
     attachSearch($("q"), (i, input) => { input.value = state.games.name[i]; select(i, true); });
     attachSearch($("likeQ"), (i, input) => { input.value = ""; addLike(i); });
+    attachSearch($("gnSimilar"), (i, input) => { input.value = ""; if (!state.gnSeeds.includes(i)) state.gnSeeds.push(i); renderGnChips(); });
     attachSearch($("routeFrom"), (i) => setRouteEnd("from", i));
     attachSearch($("routeTo"), (i) => setRouteEnd("to", i));
     attachSearch($("designerQ"), designerPicked, designerSource);
 
     // Explore + personal
-    $("modeInfluence").addEventListener("click", () => { state.routeMode = "influence"; $("modeInfluence").setAttribute("aria-pressed", "true"); $("modeSimilar").setAttribute("aria-pressed", "false"); computeRoute(); });
-    $("modeSimilar").addEventListener("click", () => { state.routeMode = "similar"; $("modeSimilar").setAttribute("aria-pressed", "true"); $("modeInfluence").setAttribute("aria-pressed", "false"); computeRoute(); });
-    $("playBtn").addEventListener("click", play);
-    $("stopBtn").addEventListener("click", () => stop());
+    const setMode = (mode) => {
+      state.routeMode = mode;
+      $("modeInfluence").setAttribute("aria-pressed", String(mode === "influence")); $("modeSimilar").setAttribute("aria-pressed", String(mode === "similar"));
+      computeRoute();
+    };
+    $("modeInfluence").addEventListener("click", () => setMode("influence"));
+    $("modeSimilar").addEventListener("click", () => setMode("similar"));
+    $("routeClear").addEventListener("click", () => { state.routeFrom = state.routeTo = null; $("routeFrom").value = $("routeTo").value = ""; computeRoute(); });
+    $("timeOpen").addEventListener("click", openTime);
+    $("timePlay").addEventListener("click", play);
+    $("timeClose").addEventListener("click", closeTime);
+    $("timeRange").addEventListener("input", (e) => { pause(); setYear(+e.target.value); });
+    $("timebar").addEventListener("wheel", (e) => {
+      e.preventDefault(); pause();
+      const r = $("timeRange");
+      setYear(Math.min(+r.max, Math.max(+r.min, +r.value + (e.deltaY > 0 ? 1 : -1))));
+    }, { passive: false });
     $("gemsBtn").addEventListener("click", toggleGems);
     $("gapsBtn").addEventListener("click", toggleGaps);
-    $("gnGo").addEventListener("click", gameNight);
+    $("gnGo").addEventListener("click", curate);
+    window.addEventListener("resize", hideSuggest);
 
     matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => setTheme());
-    new MutationObserver(() => { const d = isDark(); if (d !== T.dark) setTheme(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    new MutationObserver(() => { if (isDark() !== T.dark) setTheme(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   }
 
   init();
