@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+
+# Pipeline outputs: large and regenerable. Raw BGG responses must never be committed.
+data/*
+!data/.gitkeep
+web/*.html
+!web/index.html

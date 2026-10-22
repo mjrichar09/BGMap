@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items termsofuse="https://boardgamegeek.com/xmlapi/termsofuse">
+<item type="boardgame" id="13">
+	<thumbnail>https://cf.geekdo-images.com/example__thumb/img/catan.jpg</thumbnail>
+	<image>https://cf.geekdo-images.com/example__original/img/catan.jpg</image>
+	<name type="primary" sortindex="1" value="CATAN" />
+	<name type="alternate" sortindex="1" value="Die Siedler von Catan" />
+	<description>In CATAN (formerly [i]The Settlers of Catan[/i]), players try to be the dominant force on the island of Catan by building settlements, cities, and roads.&amp;#10;&amp;#10;On each turn dice are rolled to determine what resources the island produces &amp;mdash; see [url=https://example.com/rules]the rules[/url] or https://example.com/faq for more.</description>
+	<yearpublished value="1995" />
+	<minplayers value="3" />
+	<maxplayers value="4" />
+	<poll name="suggested_numplayers" title="User Suggested Number of Players" totalvotes="2400">
+		<results numplayers="3"><result value="Best" numvotes="300" /><result value="Recommended" numvotes="900" /><result value="Not Recommended" numvotes="100" /></results>
+		<results numplayers="4"><result value="Best" numvotes="1500" /><result value="Recommended" numvotes="400" /><result value="Not Recommended" numvotes="20" /></results>
+		<results numplayers="4+"><result value="Best" numvotes="5000" /></results>
+	</poll>
+	<poll-summary name="suggested_numplayers" title="User Suggested Number of Players"><result name="bestwith" value="Best with 4 players" /></poll-summary>
+	<playingtime value="120" />
+	<minplaytime value="60" />
+	<maxplaytime value="120" />
+	<minage value="10" />
+	<link type="boardgamecategory" id="1026" value="Negotiation" />
+	<link type="boardgamemechanic" id="2072" value="Dice Rolling" />
+	<link type="boardgamemechanic" id="2008" value="Trading" />
+	<link type="boardgamefamily" id="3237" value="Series: Catan" />
+	<link type="boardgamedesigner" id="11" value="Klaus Teuber" />
+	<link type="boardgamepublisher" id="37" value="KOSMOS" />
+	<statistics page="1">
+		<ratings>
+			<usersrated value="125000" />
+			<average value="7.09" />
+			<bayesaverage value="6.92" />
+			<ranks>
+				<rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="520" bayesaverage="6.92" />
+				<rank type="family" id="5497" name="strategygames" friendlyname="Strategy Game Rank" value="400" bayesaverage="6.9" />
+			</ranks>
+			<owned value="230000" />
+			<numweights value="8000" />
+			<averageweight value="2.29" />
+		</ratings>
+	</statistics>
+</item>
+<item type="boardgame" id="999999">
+	<name type="primary" sortindex="1" value="Unranked Prototype" />
+	<description>Short.</description>
+	<yearpublished value="0" />
+	<statistics page="1"><ratings><usersrated value="3" /><ranks><rank type="subtype" id="1" name="boardgame" value="Not Ranked" /></ranks><averageweight value="0" /></ratings></statistics>
+</item>
+<item type="boardgameexpansion" id="926">
+	<name type="primary" sortindex="1" value="CATAN: Seafarers" />
+	<description>Expansion.</description>
+	<statistics page="1"><ratings><ranks><rank type="subtype" id="1" name="boardgame" value="900" /></ranks></ratings></statistics>
+</item>
+</items>
