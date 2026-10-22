@@ -1,0 +1,61 @@
+{
+ "title": "BGMap",
+ "note": "synthetic stub data, real BGG data after API approval",
+ "count": 480,
+ "thumbPrefix": "https://cf.geekdo-images.com/",
+ "models": [
+  {
+   "key": "tfidf",
+   "label": "TF-IDF baseline"
+  }
+ ],
+ "mechanics": [
+  "Dice Rolling",
+  "Grid Movement",
+  "Cooperative Game",
+  "Campaign / Battle Card Driven",
+  "Area Majority / Influence",
+  "Variable Player Powers",
+  "Tech Trees / Tech Tracks",
+  "Tile Placement",
+  "Pattern Building",
+  "Network and Route Building",
+  "Auction/Bidding",
+  "Stock Holding",
+  "Scenario / Mission / Campaign Game",
+  "Worker Placement",
+  "Hexagon Grid",
+  "Real-Time",
+  "Team-Based Game",
+  "End Game Bonuses",
+  "Simulation",
+  "Resource Management",
+  "Voting",
+  "Variable Set-up",
+  "Communication Limits"
+ ],
+ "categories": [
+  "Economic",
+  "Abstract Strategy",
+  "Horror",
+  "Wargame",
+  "Humor",
+  "Space Exploration",
+  "Modern Warfare",
+  "Party Game",
+  "Transportation",
+  "Exploration",
+  "Farming",
+  "Civilization",
+  "Trains",
+  "Science Fiction",
+  "Medieval",
+  "Word Game",
+  "World War II",
+  "Miniatures",
+  "Adventure",
+  "Novel-based",
+  "Fantasy",
+  "Fighting"
+ ]
+}

@@ -18,7 +18,9 @@ Each stage reads the previous stage's file and writes its own. Only stage 2 touc
 | 4 | `src/embed.py` | `games.parquet` | `data/embeddings/<model>.npy` + `.json` |
 | 5 | `src/project.py` | embeddings | `data/map_<model>.parquet`, `data/neighbors_<model>.npy` |
 | 6 | `src/label.py` | map + embeddings | cluster labels in the map file, `data/labels_<model>.json` cache |
-| — | `src/render.py` | labeled map | `data/map_<model>.png`, `web/map_<model>.html` |
+| — | `src/evaluate.py` | maps + neighbors | `data/eval/report.md`, `metrics.json` |
+| — | `src/export.py` | labeled maps | `site/` (interactive page + JSON data) |
+| — | `src/render.py` | labeled map | `data/map_<model>.png`, `web/map_<model>.html` (datamapplot version) |
 
 Embedding models (`--model`): `qwen3` (primary, Qwen3-Embedding-0.6B), `nomic`, `bge` (512-token baseline), and `tfidf` (no torch; used for stub runs and as a bag-of-words floor).
 
@@ -33,6 +35,22 @@ pip install -e ".[embed,dev]"
 cp .env.example .env   # then fill in BGG_TOKEN (and ANTHROPIC_API_KEY for LLM cluster labels)
 ```
 
+## Dry run on a public BGG dump (no token needed)
+
+`src/import_external.py` builds `games.parquet` from a "games_detailed_info" dump (a 2025 copy is on Hugging Face as `mmpa/board_game_analysis`), limited to the games in `data/ids.csv`. It covers about 88% of today's ranked games. The dump is unlicensed scraped data: keep it local and use it only for tuning.
+
+```bash
+python src/ids.py boardgames_ranks.csv
+python src/import_external.py data/external/games_detailed_info2025.csv --out data/dryrun
+export BGMAP_DATA=data/dryrun
+python src/embed.py --model bge && python src/embed.py --model qwen3   # GPU strongly recommended
+python src/project.py --model bge && python src/label.py --model bge     # same for qwen3
+python src/evaluate.py --stability                                       # -> data/dryrun/eval/report.md
+python src/export.py --out data/dryrun/site                              # serve with python -m http.server
+```
+
+Spot-check games default to a list of 20 in `src/evaluate.py`; put your own, one per line, in `$BGMAP_DATA/spot_check.txt`.
+
 ## Try it on stub data (no BGG token needed)
 
 ```bash
@@ -42,10 +60,11 @@ python src/parse.py
 python src/embed.py --model tfidf           # or bge / qwen3
 python src/project.py --model tfidf --min-cluster-size 20
 python src/label.py --model tfidf --offline
-python src/render.py --model tfidf          # open web/map_tfidf.html
+python src/evaluate.py
+python src/export.py --out site             # cd site && python -m http.server
 ```
 
-The stub has 8 invented genres; a working pipeline recovers them as 8 clusters.
+The stub has 8 invented genres that partly overlap, and each publisher stamps boilerplate on its descriptions; the evaluation report should flag that publisher confound.
 
 ## Real run (once BGG approves the app)
 
