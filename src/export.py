@@ -101,6 +101,7 @@ def model_payload(df: pd.DataFrame, nbrs: np.ndarray, sims: np.ndarray) -> dict:
     return {
         "x": np.round(xy[:, 0], 3).tolist(),
         "y": np.round(xy[:, 1], 3).tolist(),
+        **({f"{c}3": np.round(df[f"{c}3"].to_numpy(dtype=float), 3).tolist() for c in "xyz"} if "z3" in df else {}),
         "cluster": df["cluster"].astype(int).tolist(),
         "coarse": df["cluster_coarse"].astype(int).tolist(),
         "labels": label_positions(xy, df["cluster"].to_numpy(), df["cluster_label"]),

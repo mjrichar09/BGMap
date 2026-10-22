@@ -85,6 +85,7 @@ def main() -> None:
     print(f"{len(vecs):,} games, dim {vecs.shape[1]}")
 
     xy = umap(vecs, 2, args.n_neighbors, args.min_dist, args.seed)
+    xyz = umap(vecs, 3, args.n_neighbors, args.min_dist, args.seed)  # for the page's 3D view
     high = umap(vecs, args.cluster_dims, args.n_neighbors, 0.0, args.seed)
     fine = cluster(high, args.min_cluster_size)
     coarse = cluster(high, args.coarse_cluster_size)
@@ -93,6 +94,7 @@ def main() -> None:
 
     out = games[[c for c in OVERLAY_COLS if c in games]].copy()
     out["x"], out["y"] = xy[:, 0], xy[:, 1]
+    out["x3"], out["y3"], out["z3"] = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     out["cluster"], out["cluster_coarse"] = fine, coarse
     out.to_parquet(map_path(args.model), index=False)
     np.save(neighbors_path(args.model), nearest_neighbors(vecs))
