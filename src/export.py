@@ -3,7 +3,9 @@
 Writes into <out>/data/:
   manifest.json   title, models, tag vocabularies
   games.json      per-game fields shared by every model (columnar arrays)
-  <model>.json    x/y, cluster ids and labels, label positions, 10 neighbors
+  <model>.json    x/y, cluster ids and labels, label positions, and each game's
+                  15 nearest neighbors with similarities (the page's neighbor
+                  list and the graph its routes are found on)
 
     python src/export.py --models qwen3 bge --out site
     cd site && python -m http.server    # then open http://localhost:8000
@@ -19,7 +21,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from common import EMBED_DIR, ROOT, WEB_DIR, map_path, neighbors_path
+from common import EMBED_DIR, ROOT, WEB_DIR, embedding_paths, map_path
+from project import nearest_neighbors
+
+ROUTE_K = 15
 
 THUMB_PREFIX = "https://cf.geekdo-images.com/"
 MODEL_LABELS = {"qwen3": "Qwen3 0.6B", "nomic": "Nomic v1.5", "bge": "BGE base (512 tok)", "tfidf": "TF-IDF baseline"}
@@ -50,12 +55,14 @@ def vocab_indices(series: pd.Series) -> tuple[list[str], list[list[int]]]:
 def games_payload(df: pd.DataFrame) -> tuple[dict, dict]:
     mech_vocab, mech = vocab_indices(df["mechanics"])
     cat_vocab, cat = vocab_indices(df["categories"])
+    des_vocab, des = vocab_indices(df["designers"].map(lambda d: [x for x in d if x != "(Uncredited)"]))
     games = {
         "id": _clean(df["id"]),
         "name": df["name"].fillna("").tolist(),
         "year": _clean(df["year"].astype("Float64")),
         "weight": _clean(df["weight"]),
         "rating": _clean(df["bayes_average"]),
+        "avg": _clean(df["average"]),
         "users": _clean(df["users_rated"].astype("Float64")),
         "rank": _clean(df["rank"].astype("Float64")),
         "minp": _clean(df["min_players"].astype("Float64")),
@@ -67,8 +74,9 @@ def games_payload(df: pd.DataFrame) -> tuple[dict, dict]:
         "short": df["short_desc"].astype(bool).tolist(),
         "mech": mech,
         "cat": cat,
+        "des": des,
     }
-    return games, {"mechanics": mech_vocab, "categories": cat_vocab}
+    return games, {"mechanics": mech_vocab, "categories": cat_vocab, "designers": des_vocab}
 
 
 def label_positions(xy: np.ndarray, clusters: np.ndarray, labels: pd.Series) -> list[dict]:
@@ -80,7 +88,15 @@ def label_positions(xy: np.ndarray, clusters: np.ndarray, labels: pd.Series) -> 
     return out
 
 
-def model_payload(df: pd.DataFrame, nbrs: np.ndarray) -> dict:
+def neighbors_with_similarity(model: str, k: int = ROUTE_K) -> tuple[np.ndarray, np.ndarray]:
+    vecs = np.load(embedding_paths(model)[0]).astype(np.float32)
+    vecs /= np.maximum(np.linalg.norm(vecs, axis=1, keepdims=True), 1e-12)
+    nbrs = nearest_neighbors(vecs, k)
+    sims = np.einsum("ij,ikj->ik", vecs, vecs[nbrs])
+    return nbrs, sims
+
+
+def model_payload(df: pd.DataFrame, nbrs: np.ndarray, sims: np.ndarray) -> dict:
     xy = df[["x", "y"]].to_numpy(dtype=float)
     return {
         "x": np.round(xy[:, 0], 3).tolist(),
@@ -90,6 +106,7 @@ def model_payload(df: pd.DataFrame, nbrs: np.ndarray) -> dict:
         "labels": label_positions(xy, df["cluster"].to_numpy(), df["cluster_label"]),
         "coarseLabels": label_positions(xy, df["cluster_coarse"].to_numpy(), df["cluster_coarse_label"]),
         "neighbors": nbrs.astype(int).ravel().tolist(),
+        "sims": np.clip(np.round(sims * 100), 0, 100).astype(int).ravel().tolist(),  # cosine x 100
         "k": int(nbrs.shape[1]),
     }
 
@@ -129,7 +146,8 @@ def main() -> None:
     games, vocab = games_payload(base)
     (data_dir / "games.json").write_text(json.dumps(games, separators=(",", ":")))
     for m, df in frames.items():
-        (data_dir / f"{m}.json").write_text(json.dumps(model_payload(df, np.load(neighbors_path(m))), separators=(",", ":")))
+        payload = model_payload(df, *neighbors_with_similarity(m))
+        (data_dir / f"{m}.json").write_text(json.dumps(payload, separators=(",", ":")))
     manifest = {"title": args.title, "note": args.note, "count": len(base), "thumbPrefix": THUMB_PREFIX,
                 "models": [{"key": m, "label": MODEL_LABELS.get(m, m)} for m in models], **vocab}
     (data_dir / "manifest.json").write_text(json.dumps(manifest, indent=1))

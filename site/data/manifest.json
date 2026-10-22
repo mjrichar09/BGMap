@@ -57,5 +57,12 @@
   "Novel-based",
   "Fantasy",
   "Fighting"
+ ],
+ "designers": [
+  "E. Author",
+  "B. Maker",
+  "D. Creator",
+  "C. Inventor",
+  "A. Designer"
  ]
 }

@@ -26,7 +26,9 @@ def test_export_writes_page_and_consistent_data(tmp_path):
     model = json.loads((site / "data" / "tfidf.json").read_text())
     n = len(games["id"])
     assert n == manifest["count"] == len(model["x"]) == len(model["cluster"])
-    assert len(model["neighbors"]) == n * model["k"]
+    assert len(model["neighbors"]) == len(model["sims"]) == n * model["k"]
+    assert all(0 <= s <= 100 for s in model["sims"])
+    assert len(games["des"]) == n and len(games["avg"]) == n
     assert all(0 <= j < n for j in model["neighbors"])
     assert all(0 <= t < len(manifest["mechanics"]) for tags in games["mech"] for t in tags)
     assert model["labels"] and all(isinstance(d["label"], str) for d in model["labels"])
