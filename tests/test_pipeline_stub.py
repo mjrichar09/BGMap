@@ -85,3 +85,20 @@ def test_label_uses_llm_and_caches(tmp_path, monkeypatch):
     assert calls[0]["fallbacks"] == "default"
     label.label_level(df, vecs, "cluster", cache, Client())
     assert len(calls) == 2  # second pass served from cache
+
+
+def test_components_report(tmp_path):
+    import os
+
+    env = {**os.environ, "BGMAP_DATA": str(tmp_path)}
+    run("make_stub.py", "--out", str(tmp_path), "--per-genre", "30", env=env)
+    run("parse.py", env=env)
+    run("embed.py", "--model", "tfidf", env=env)
+    run("components.py", "--model", "tfidf", "--components", "3", env=env)
+
+    import json
+    result = json.loads((tmp_path / "eval" / "components_tfidf.json").read_text())
+    assert len(result["components"]) == 3
+    first = result["components"][0]
+    assert 0 < first["variance"] < 1 and first["high"]["games"] and first["low"]["games"]
+    assert set(first["correlations"]) >= {"weight", "year", "description length (log)"}

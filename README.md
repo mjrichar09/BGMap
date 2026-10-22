@@ -19,6 +19,7 @@ Each stage reads the previous stage's file and writes its own. Only stage 2 touc
 | 5 | `src/project.py` | embeddings | `data/map_<model>.parquet`, `data/neighbors_<model>.npy` |
 | 6 | `src/label.py` | map + embeddings | cluster labels in the map file, `data/labels_<model>.json` cache |
 | — | `src/evaluate.py` | maps + neighbors | `data/eval/report.md`, `metrics.json` |
+| — | `src/components.py` | embeddings | `data/eval/components_<model>.md` (PCA axes: what varies most, and why) |
 | — | `src/export.py` | labeled maps | `site/` (interactive page + JSON data) |
 | — | `src/render.py` | labeled map | `data/map_<model>.png`, `web/map_<model>.html` (datamapplot version) |
 
@@ -48,6 +49,8 @@ python src/project.py --model bge && python src/label.py --model bge     # same 
 python src/evaluate.py --stability                                       # -> data/dryrun/eval/report.md
 python src/export.py --out data/dryrun/site                              # serve with python -m http.server
 ```
+
+`python src/components.py --model <model>` runs PCA on the embeddings as an analysis tool: for each of the first 8 components it lists the best-known games at each end, the mechanics and categories over-represented there, and how strongly the axis tracks weight, year, rating, play time and description length (a strong link to description length or year is a confound). UMAP draws the map; PCA helps explain it.
 
 Spot-check games default to a list of 20 in `src/evaluate.py`; put your own, one per line, in `$BGMAP_DATA/spot_check.txt`.
 

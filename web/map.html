@@ -376,6 +376,7 @@ a { color: var(--link); }
     highlight: null, route: null, routeStop: null, routeMode: "influence", routeFrom: null, routeTo: null,
     likes: [], gnSeeds: [], timeYear: null, gapBins: null, view3d: false, spin: false, latestYear: 9999,
   };
+  let sphere = null;
   let deckgl = null, colors = null, radii = null, icons = null, passes = null, mechSets = null, adjacency = null, bins = null, board = null, atlas = null, T = null;
 
   // ---------- theme ----------
@@ -756,13 +757,13 @@ a { color: var(--link); }
     const ps = bins.map((b) => [b.x, b.y]), pad = 45 * size;  // wide enough to fill the screen when zoomed out
     const bx0 = Math.min(...ps.map((p) => p[0])) - pad, bx1 = Math.max(...ps.map((p) => p[0])) + pad;
     const by0 = Math.min(...ps.map((p) => p[1])) - pad, by1 = Math.max(...ps.map((p) => p[1])) + pad;
-    const patch = (q, r) => { const h = Math.sin(Math.floor(q / 3) * 127.1 + Math.floor(r / 3) * 311.7) * 43758.5453; return h - Math.floor(h); };
+    const tileRandom = (q, r) => { const h = Math.sin(q * 127.1 + r * 311.7) * 43758.5453; return h - Math.floor(h); };
     board = [];
     for (let r = Math.floor(by0 / (1.5 * size)); r <= Math.ceil(by1 / (1.5 * size)); r++) {
       const qStart = Math.floor(bx0 / (SQ3 * size) - r / 2), qEnd = Math.ceil(bx1 / (SQ3 * size) - r / 2);
       for (let q = qStart; q <= qEnd; q++) {
         const [x, y] = hexCenter(q, r, size);
-        board.push({ x, y, c: TERRAIN[Math.floor(patch(q + Math.floor(r / 2), r) * TERRAIN.length)] });
+        board.push({ x, y, c: TERRAIN[Math.floor(tileRandom(q, r) * TERRAIN.length)] });
       }
     }
     // Sparse, loved areas: thinly populated cells (2–8 games, at least two with 10+ ratings) whose games average 7.0+,
@@ -796,6 +797,12 @@ a { color: var(--link); }
           updateTriggers: { getColor: [state.model, T.dark] },
         }));
       }
+    }
+    if (state.showTiles && state.view3d && !T.dark && sphere) {
+      out.push(new deck.SolidPolygonLayer({
+        id: "sphere", data: sphere, getPolygon: (d) => d.poly, getFillColor: (d) => d.c, _full3d: true, material: false,
+        parameters: { cullMode: "none" }, updateTriggers: { getPolygon: [state.model] },
+      }));
     }
     if (gapsOn() && state.gapBins && !state.view3d) {
       out.push(new deck.IconLayer({
@@ -1391,7 +1398,37 @@ a { color: var(--link); }
       ? { target, zoom, minZoom: zoom - 1.5, maxZoom: 14, rotationX: 20, rotationOrbit: -30 }
       : { target, zoom, minZoom: zoom - 1.5, maxZoom: 14 };
   }
-  const makeView = () => (state.view3d ? new deck.OrbitView({ orbitAxis: "Y" }) : new deck.OrthographicView({ flipY: false }));
+  const makeView = () => (state.view3d ? new deck.OrbitView({ orbitAxis: "Y", far: 5000 }) : new deck.OrthographicView({ flipY: false }));
+
+  // Punchboard in 3D: the map floats inside a hollow sphere whose inner wall is tiled with
+  // randomly coloured hex tiles. Tiles sit on Fibonacci-sphere points, each a flat hexagon
+  // in the tangent plane, sized so neighbours almost touch and leave a thin board-like gap.
+  function buildSphere() {
+    const m = state.models[state.model];
+    if (!m.z3) { sphere = null; return; }
+    const pct = (arr, q) => { const v = Float64Array.from(arr).sort(); return v[Math.floor(q * (v.length - 1))]; };
+    const c = ["x3", "y3", "z3"].map((k) => (pct(m[k], 0.02) + pct(m[k], 0.98)) / 2);
+    const span = Math.max(...["x3", "y3", "z3"].map((k) => pct(m[k], 0.98) - pct(m[k], 0.02)));
+    const R = span * 6, N = 2200, tile = R * Math.sqrt((4 * Math.PI) / N) * 0.52;
+    const TERRAIN = ["#f1d27a", "#9cc59a", "#e7a785", "#b9c1c9", "#c7df92", "#ead7af", "#a8d1e3", "#d6b3d9"].map(rgb);
+    let seed = 11;
+    const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    const golden = Math.PI * (3 - Math.sqrt(5));
+    const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+    const norm = (a) => { const l = Math.hypot(...a); return a.map((v) => v / l); };
+    sphere = [];
+    for (let k = 0; k < N; k++) {
+      const yy = 1 - (2 * (k + 0.5)) / N, rr = Math.sqrt(1 - yy * yy), th = golden * k;
+      const u = [Math.cos(th) * rr, yy, Math.sin(th) * rr];
+      const e1 = norm(cross(u, Math.abs(u[1]) > 0.9 ? [1, 0, 0] : [0, 1, 0])), e2 = cross(u, e1);
+      const poly = [];
+      for (let a = 0; a < 6; a++) {
+        const ang = (Math.PI / 3) * a + Math.PI / 6;
+        poly.push([0, 1, 2].map((j) => c[j] + R * u[j] + tile * (Math.cos(ang) * e1[j] + Math.sin(ang) * e2[j])));
+      }
+      sphere.push({ poly, c: TERRAIN[Math.floor(rnd() * TERRAIN.length)].concat(185) });
+    }
+  }
   function setView3d(on) {
     state.view3d = on && has3d();
     $("view3d").checked = state.view3d; $("spin").disabled = !state.view3d;
@@ -1418,7 +1455,7 @@ a { color: var(--link); }
   function switchModel(key) {
     state.model = key;
     if (state.view3d && !has3d()) setView3d(false);
-    buildAdjacency(); buildBins(); labelCache.key = null;
+    buildAdjacency(); buildBins(); buildSphere(); labelCache.key = null;
     if (state.routeFrom != null && state.routeTo != null) computeRoute();
     if (state.likes.length) renderLikes();
     recolor(); renderDetail(); redraw();
@@ -1452,11 +1489,11 @@ a { color: var(--link); }
     const designerSource = { names: man.designers, lower: man.designers.map((s) => s.toLowerCase()), counts: desCounts };
 
     const m = await loadModel(state.model);
-    state.view3d = !!m.z3 && isDark();   // Holo Table opens in 3D; Punchboard is a flat board
+    state.view3d = !!m.z3;   // both themes open in 3D; the 2D layout is one click away
     $("viewRow").hidden = !m.z3;
     state.viewState = fitView(m);
     setTheme();
-    buildAdjacency(); buildBins();
+    buildAdjacency(); buildBins(); buildSphere();
     applyFilters(); resize(); assignIcons(); recolor();
     deckgl = new deck.Deck({
       parent: $("map"), views: makeView(),
