@@ -7,5 +7,4 @@ __pycache__/
 # Pipeline outputs: large and regenerable. Raw BGG responses must never be committed.
 data/*
 !data/.gitkeep
-web/*.html
-!web/index.html
+web/map_*.html

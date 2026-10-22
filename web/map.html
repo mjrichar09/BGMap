@@ -1,0 +1,574 @@
+<title>BGMap</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: full-bleed map, a control card floating top-left, a game card on the right
+   (bottom sheet on phones). Palette: baize green on a cool slate table. */
+:root {
+  --bg: #e9eeec;
+  --panel: #fbfcfc;
+  --fg: #172321;
+  --muted: #5b6b68;
+  --line: #d3dcd9;
+  --accent: #0d6b5f;
+  --accent-soft: #d5ebe6;
+  --label: #1d2b29;
+  --label-halo: rgba(233, 238, 236, 0.85);
+  --noise: #9aa7a4;
+  --shadow: 0 6px 24px rgba(23, 35, 33, 0.12);
+  --font-display: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
+  --font-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1514; --panel: #18201f; --fg: #e3ebe8; --muted: #93a39f; --line: #2a3533;
+    --accent: #4fc9b6; --accent-soft: #1d3a35; --label: #e8f0ed; --label-halo: rgba(15, 21, 20, 0.85);
+    --noise: #4a5654; --shadow: 0 6px 24px rgba(0, 0, 0, 0.45); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1514; --panel: #18201f; --fg: #e3ebe8; --muted: #93a39f; --line: #2a3533;
+  --accent: #4fc9b6; --accent-soft: #1d3a35; --label: #e8f0ed; --label-halo: rgba(15, 21, 20, 0.85);
+  --noise: #4a5654; --shadow: 0 6px 24px rgba(0, 0, 0, 0.45); color-scheme: dark;
+}
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 var(--font-body); overflow: hidden; }
+#map { position: fixed; inset: 0; }
+.card {
+  position: fixed; z-index: 2; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 10px; box-shadow: var(--shadow);
+}
+#controls {
+  top: calc(12px + env(safe-area-inset-top, 0px)); left: max(12px, env(safe-area-inset-left, 0px));
+  width: min(320px, calc(100vw - 24px)); max-height: calc(100% - 24px - env(safe-area-inset-top, 0px));
+  overflow: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px;
+}
+h1 { margin: 0; font: 600 22px/1.1 var(--font-display); letter-spacing: -0.01em; text-wrap: balance; }
+.note { margin: 2px 0 0; color: var(--muted); font-size: 12.5px; }
+label, .lbl { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+input, select, button { font: inherit; color: var(--fg); }
+input[type="search"], input[type="number"], select {
+  width: 100%; box-sizing: border-box; background: var(--bg); border: 1px solid var(--line);
+  border-radius: 6px; padding: 6px 8px;
+}
+input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-visible, .nb:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 1px;
+}
+.row { display: flex; gap: 8px; align-items: center; }
+.row > * { flex: 1; min-width: 0; }
+.search { position: relative; }
+#results { position: absolute; left: 0; right: 0; top: 100%; margin: 4px 0 0; padding: 4px; list-style: none;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); z-index: 3; }
+#results li { padding: 5px 8px; border-radius: 5px; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+#results li[aria-selected="true"], #results li:hover { background: var(--accent-soft); }
+#results .yr { color: var(--muted); font: 12px var(--font-data); }
+details summary { cursor: pointer; font-weight: 600; font-size: 13px; }
+details[open] summary { margin-bottom: 10px; }
+.stack { display: flex; flex-direction: column; gap: 10px; }
+.check { display: flex; align-items: center; gap: 6px; text-transform: none; letter-spacing: 0; font-weight: 500; font-size: 13px; color: var(--fg); margin: 0; }
+#legend { font: 12px var(--font-data); color: var(--muted); }
+#legend .bar { height: 8px; border-radius: 4px; margin: 4px 0 2px; }
+#legend .ends { display: flex; justify-content: space-between; }
+#legend .swatches { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+#legend .sw { display: inline-flex; align-items: center; gap: 4px; }
+#legend .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+#count { font: 12px var(--font-data); color: var(--muted); }
+#detail {
+  top: calc(12px + env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px));
+  width: min(340px, calc(100vw - 24px)); max-height: calc(100% - 24px - env(safe-area-inset-top, 0px));
+  overflow: auto; padding: 14px 16px;
+}
+#detail .head { display: flex; gap: 12px; }
+#detail img { width: 72px; height: 72px; object-fit: cover; border-radius: 6px; background: var(--bg); flex: none; }
+#detail h2 { margin: 0; font: 600 18px/1.2 var(--font-display); text-wrap: balance; }
+#detail .meta { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0; }
+.stat { background: var(--bg); border-radius: 6px; padding: 6px; text-align: center; }
+.stat b { display: block; font: 500 15px var(--font-data); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 12px; }
+.tag { font-size: 11.5px; background: var(--accent-soft); color: var(--fg); border-radius: 999px; padding: 2px 8px; }
+.cluster-pill { display: inline-block; margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--accent); }
+ol.nbs { margin: 4px 0 8px; padding: 0; list-style: none; counter-reset: nb; }
+.nb { display: flex; gap: 8px; width: 100%; text-align: left; background: none; border: 0; padding: 5px 4px; border-radius: 5px; cursor: pointer; }
+.nb:hover { background: var(--accent-soft); }
+.nb::before { counter-increment: nb; content: counter(nb); font: 12px var(--font-data); color: var(--muted); width: 1.4em; flex: none; }
+.nb .nm { flex: 1; min-width: 0; }
+.nb .yr { color: var(--muted); font: 12px var(--font-data); }
+.links { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
+a { color: var(--accent); }
+.close { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 13px; padding: 2px 4px; }
+#tooltip {
+  position: fixed; z-index: 4; pointer-events: none; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 8px; box-shadow: var(--shadow); padding: 8px 10px; max-width: 260px; display: flex; gap: 8px;
+}
+#tooltip img { width: 44px; height: 44px; object-fit: cover; border-radius: 4px; flex: none; }
+#tooltip b { display: block; font-weight: 600; }
+#tooltip .meta { color: var(--muted); font: 12px var(--font-data); }
+#status { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); z-index: 1; }
+@media (max-width: 720px) {
+  #detail { top: auto; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); max-height: 46%; }
+  #controls { max-height: 45%; }
+  /* While a game card is open, the controls shrink to the search box. */
+  body.has-detail #controls > :not(.search) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div id="map" aria-label="Map of board games"></div>
+<div id="status">Loading map…</div>
+
+<section id="controls" class="card" aria-label="Map controls">
+  <div>
+    <h1 id="title">BGMap</h1>
+    <p class="note" id="note"></p>
+  </div>
+  <div class="search">
+    <label for="q">Find a game</label>
+    <input id="q" type="search" placeholder="e.g. Brass: Birmingham" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="results">
+    <ul id="results" role="listbox" hidden></ul>
+  </div>
+  <div class="row">
+    <div>
+      <label for="colorBy">Color by</label>
+      <select id="colorBy">
+        <option value="cluster">Cluster</option>
+        <option value="weight">Weight (complexity)</option>
+        <option value="year">Year published</option>
+        <option value="rating">Geek rating</option>
+        <option value="bestp">Best player count</option>
+        <option value="mechanic">A mechanic…</option>
+      </select>
+    </div>
+    <div id="modelWrap">
+      <label for="model">Embedding</label>
+      <select id="model"></select>
+    </div>
+  </div>
+  <div id="mechWrap" hidden>
+    <label for="mechanic">Mechanic</label>
+    <select id="mechanic"></select>
+  </div>
+  <div id="legend" aria-live="polite"></div>
+  <details>
+    <summary>Filters &amp; display</summary>
+    <div class="stack">
+      <div>
+        <span class="lbl">Year</span>
+        <div class="row">
+          <input id="yearMin" type="number" placeholder="from" aria-label="Year from">
+          <input id="yearMax" type="number" placeholder="to" aria-label="Year to">
+        </div>
+      </div>
+      <div>
+        <span class="lbl">Weight (1–5)</span>
+        <div class="row">
+          <input id="wMin" type="number" min="1" max="5" step="0.1" placeholder="min" aria-label="Weight minimum">
+          <input id="wMax" type="number" min="1" max="5" step="0.1" placeholder="max" aria-label="Weight maximum">
+        </div>
+      </div>
+      <div>
+        <label for="players">Plays with</label>
+        <select id="players">
+          <option value="">Any player count</option>
+          <option value="1">1 player</option><option value="2">2 players</option><option value="3">3 players</option>
+          <option value="4">4 players</option><option value="5">5 players</option><option value="6">6 players</option>
+          <option value="7">7 players</option><option value="8">8+ players</option>
+        </select>
+      </div>
+      <label class="check"><input id="sizePop" type="checkbox" checked> Size points by number of ratings</label>
+      <label class="check"><input id="showLabels" type="checkbox" checked> Show cluster labels</label>
+      <button id="reset" type="button">Reset filters</button>
+    </div>
+  </details>
+  <div id="count"></div>
+</section>
+
+<aside id="detail" class="card" hidden aria-live="polite"></aside>
+<div id="tooltip" hidden></div>
+
+<script src="https://unpkg.com/deck.gl@9.1.0/dist.min.js"></script>
+<script>
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const state = {
+    manifest: null, games: null, models: {}, model: null, n: 0,
+    colorBy: "cluster", mechanic: 0, sizePop: true, showLabels: true,
+    filters: { yearMin: null, yearMax: null, wMin: null, wMax: null, players: null },
+    selected: null, hover: null, viewState: null,
+  };
+  let deckgl = null, colors = null, radii = null, passes = null, mechSets = null;
+
+  // ---------- color ----------
+  const VIRIDIS = [[68, 1, 84], [59, 82, 139], [33, 145, 140], [94, 201, 98], [253, 231, 37]];
+  function ramp(t) {
+    t = Math.min(1, Math.max(0, t)) * (VIRIDIS.length - 1);
+    const i = Math.min(Math.floor(t), VIRIDIS.length - 2), f = t - i, a = VIRIDIS[i], b = VIRIDIS[i + 1];
+    return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
+  }
+  function hsl(h, s, l) {
+    s /= 100; l /= 100;
+    const k = (n) => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+    const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+    return [255 * f(0), 255 * f(8), 255 * f(4)];
+  }
+  const isDark = () => getComputedStyle(document.documentElement).colorScheme.includes("dark");
+  const clusterColor = (c) => hsl((c * 137.508) % 360, 62, isDark() ? 62 : 46);
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  function hexToRgb(hex) {
+    const m = hex.replace("#", "");
+    return [parseInt(m.slice(0, 2), 16), parseInt(m.slice(2, 4), 16), parseInt(m.slice(4, 6), 16)];
+  }
+  const PLAYER_COLORS = [[230, 159, 0], [86, 180, 233], [0, 158, 115], [240, 228, 66], [0, 114, 178], [213, 94, 0], [204, 121, 167]];
+
+  function quantiles(arr) {
+    const v = arr.filter((x) => x != null).sort((a, b) => a - b);
+    return [v[Math.floor(v.length * 0.02)], v[Math.floor(v.length * 0.98)]];
+  }
+
+  function recolor() {
+    const g = state.games, m = state.models[state.model], n = state.n;
+    const noise = hexToRgb(css("--noise"));
+    colors = new Uint8ClampedArray(n * 4);
+    let range = null;
+    if (["weight", "year", "rating"].includes(state.colorBy)) range = quantiles(g[state.colorBy]);
+    for (let i = 0; i < n; i++) {
+      let c = noise, a = 200;
+      if (state.colorBy === "cluster") {
+        const cl = m.cluster[i];
+        if (cl >= 0) c = clusterColor(cl); else a = 110;
+      } else if (range) {
+        const v = g[state.colorBy][i];
+        if (v != null) c = ramp((v - range[0]) / (range[1] - range[0] || 1)); else a = 90;
+      } else if (state.colorBy === "bestp") {
+        const v = g.bestp[i];
+        if (v != null) c = PLAYER_COLORS[Math.min(v, 7) - 1] || noise; else a = 90;
+      } else if (state.colorBy === "mechanic") {
+        if (mechSets[i].has(state.mechanic)) c = hexToRgb(css("--accent")); else a = 70;
+      }
+      if (!passes[i]) { c = noise; a = 28; }
+      colors.set([c[0], c[1], c[2], a], i * 4);
+    }
+    renderLegend(range);
+  }
+
+  function resize() {
+    const users = state.games.users;
+    radii = new Float32Array(state.n);
+    for (let i = 0; i < state.n; i++) {
+      radii[i] = state.sizePop ? 1.6 + Math.log10(1 + (users[i] || 0)) * 1.1 : 2.4;
+    }
+  }
+
+  function applyFilters() {
+    const g = state.games, f = state.filters;
+    passes = new Uint8Array(state.n);
+    let count = 0;
+    for (let i = 0; i < state.n; i++) {
+      const y = g.year[i], w = g.weight[i];
+      let ok = true;
+      if (f.yearMin != null && (y == null || y < f.yearMin)) ok = false;
+      if (f.yearMax != null && (y == null || y > f.yearMax)) ok = false;
+      if (f.wMin != null && (w == null || w < f.wMin)) ok = false;
+      if (f.wMax != null && (w == null || w > f.wMax)) ok = false;
+      if (f.players != null) {
+        const lo = g.minp[i], hi = g.maxp[i];
+        if (lo == null || hi == null) ok = false;
+        else if (f.players >= 8 ? hi < 8 : (f.players < lo || f.players > hi)) ok = false;
+      }
+      passes[i] = ok ? 1 : 0;
+      count += ok;
+    }
+    $("count").textContent = `${count.toLocaleString()} of ${state.n.toLocaleString()} games shown`;
+  }
+
+  function renderLegend(range) {
+    const el = $("legend");
+    if (range) {
+      const stops = [0, 0.25, 0.5, 0.75, 1].map((t) => `rgb(${ramp(t).map(Math.round).join(",")})`).join(",");
+      const fmt = (v) => (state.colorBy === "year" ? Math.round(v) : v.toFixed(1));
+      el.innerHTML = `<div class="bar" style="background:linear-gradient(90deg,${stops})"></div>
+        <div class="ends"><span>${fmt(range[0])}</span><span>${fmt(range[1])}</span></div>`;
+    } else if (state.colorBy === "bestp") {
+      el.innerHTML = `<div class="swatches">${PLAYER_COLORS.map((c, i) =>
+        `<span class="sw"><i class="dot" style="background:rgb(${c.join(",")})"></i>${i === 6 ? "7+" : i + 1}</span>`).join("")}</div>`;
+    } else if (state.colorBy === "mechanic") {
+      el.innerHTML = `<span class="sw"><i class="dot" style="background:var(--accent)"></i>has ${escapeHtml(state.manifest.mechanics[state.mechanic])}</span>`;
+    } else {
+      const m = state.models[state.model];
+      el.textContent = `${m.labels.length} clusters · grey points are unclustered`;
+    }
+  }
+
+  // ---------- layers ----------
+  const indexData = () => ({ length: state.n });
+
+  function layers() {
+    const m = state.models[state.model], zoom = state.viewState ? state.viewState.zoom : 0;
+    const out = [
+      new deck.ScatterplotLayer({
+        id: "points", data: indexData(), pickable: true, radiusUnits: "pixels",
+        getPosition: (_, { index }) => [m.x[index], m.y[index]],
+        getRadius: (_, { index }) => radii[index],
+        getFillColor: (_, { index }) => colors.subarray(index * 4, index * 4 + 4),
+        updateTriggers: { getPosition: state.model, getRadius: [state.sizePop], getFillColor: [colors] },
+        onHover: onHover, onClick: (info) => info.index >= 0 && select(info.index, false),
+      }),
+    ];
+    if (state.selected != null) {
+      const s = state.selected, nb = neighbors(s);
+      out.push(new deck.ScatterplotLayer({
+        id: "highlight", data: [s, ...nb], radiusUnits: "pixels", stroked: true, filled: false,
+        getPosition: (i) => [m.x[i], m.y[i]], getRadius: (i) => (i === s ? 9 : 6),
+        getLineColor: () => hexToRgb(css("--accent")).concat(255), lineWidthUnits: "pixels",
+        getLineWidth: (i) => (i === s ? 3 : 1.5),
+        updateTriggers: { getPosition: [state.model, s] },
+      }));
+    }
+    if (state.showLabels) {
+      out.push(new deck.TextLayer({
+        id: "labels", data: visibleLabels(), characterSet: "auto",
+        getPosition: (d) => [d.x, d.y], getText: (d) => d.text, getSize: (d) => d.px, sizeUnits: "pixels",
+        fontFamily: "Public Sans, system-ui, sans-serif", fontWeight: 600, lineHeight: 1.1,
+        getColor: hexToRgb(css("--label")).concat(255),
+        outlineWidth: 4, outlineColor: hexToRgb(css("--bg")).concat(220), fontSettings: { sdf: true },
+        updateTriggers: { getColor: [isDark()] },
+      }));
+    }
+    return out;
+  }
+
+  // Coarse region labels when zoomed out, fine cluster labels when zoomed in; biggest
+  // clusters first, skipping any label whose on-screen box would overlap one already placed.
+  let labelCache = { key: null, items: [] };
+  function visibleLabels() {
+    const m = state.models[state.model], zoom = state.viewState.zoom;
+    const fine = zoom > state.labelSwitchZoom || !m.coarseLabels.length;
+    const key = `${state.model}|${fine}|${zoom.toFixed(1)}`;
+    if (labelCache.key === key) return labelCache.items;
+    const scale = Math.pow(2, zoom), placed = [];
+    const source = (fine ? m.labels : m.coarseLabels).slice().sort((a, b) => b.size - a.size);
+    for (const d of source) {
+      const text = wrap(d.label), lines = text.split("\n");
+      const px = (fine ? 12 : 14) + Math.min(4, Math.log10(d.size));
+      const w = Math.max(...lines.map((l) => l.length)) * px * 0.58 + 8, h = lines.length * px * 1.15 + 6;
+      const box = { x0: d.x * scale - w / 2, x1: d.x * scale + w / 2, y0: d.y * scale - h / 2, y1: d.y * scale + h / 2 };
+      if (placed.some((b) => box.x0 < b.x1 && box.x1 > b.x0 && box.y0 < b.y1 && box.y1 > b.y0)) continue;
+      placed.push({ ...box, x: d.x, y: d.y, text, px });
+    }
+    labelCache = { key, items: placed };
+    return placed;
+  }
+
+  function wrap(text) {
+    const words = text.split(" "), lines = [];
+    let line = "";
+    for (const w of words) {
+      if ((line + " " + w).trim().length > 18 && line) { lines.push(line); line = w; } else line = (line + " " + w).trim();
+    }
+    lines.push(line);
+    return lines.join("\n");
+  }
+
+  function redraw() { if (deckgl) deckgl.setProps({ layers: layers() }); }
+
+  // ---------- interaction ----------
+  const neighbors = (i) => {
+    const m = state.models[state.model];
+    return m.neighbors.slice(i * m.k, i * m.k + m.k);
+  };
+  const thumb = (i) => (state.games.thumb[i] ? state.manifest.thumbPrefix + state.games.thumb[i] : "");
+  const players = (i) => {
+    const lo = state.games.minp[i], hi = state.games.maxp[i];
+    return lo == null ? "?" : hi == null || hi === lo ? `${lo}` : `${lo}–${hi}`;
+  };
+  const fmt = (v, d = 0) => (v == null ? "–" : d ? v.toFixed(d) : Math.round(v).toLocaleString());
+
+  function onHover(info) {
+    const tip = $("tooltip");
+    if (info.index == null || info.index < 0) { tip.hidden = true; return; }
+    const i = info.index, g = state.games;
+    tip.innerHTML = `${thumb(i) ? `<img src="${thumb(i)}" alt="">` : ""}<div><b>${escapeHtml(g.name[i])}</b>
+      <div class="meta">${g.year[i] ?? "?"} · wt ${fmt(g.weight[i], 1)} · ${players(i)}p · ${fmt(g.time[i])} min</div></div>`;
+    tip.hidden = false;
+    const x = Math.min(info.x + 14, window.innerWidth - tip.offsetWidth - 8);
+    const y = Math.min(info.y + 14, window.innerHeight - tip.offsetHeight - 8);
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  }
+
+  function select(i, fly) {
+    state.selected = i;
+    renderDetail();
+    redraw();
+    if (fly) flyTo(i);
+  }
+
+  function flyTo(i) {
+    const m = state.models[state.model];
+    const zoom = Math.max(state.viewState.zoom, state.labelSwitchZoom + 1.5);
+    deckgl.setProps({
+      initialViewState: { target: [m.x[i], m.y[i], 0], zoom, minZoom: state.minZoom, maxZoom: 14,
+        transitionDuration: matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 900,
+        transitionInterpolator: new deck.LinearInterpolator(["target", "zoom"]) },
+    });
+  }
+
+  function renderDetail() {
+    const el = $("detail"), i = state.selected;
+    document.body.classList.toggle("has-detail", i != null);
+    if (i == null) { el.hidden = true; return; }
+    const g = state.games, m = state.models[state.model], man = state.manifest;
+    const cl = m.cluster[i], label = cl >= 0 ? (m.labels.find((d) => d.id === cl) || {}).label : "Unclustered";
+    const mechs = g.mech[i].slice(0, 8).map((t) => `<span class="tag">${escapeHtml(man.mechanics[t])}</span>`).join("");
+    const nbs = neighbors(i).map((j) =>
+      `<li><button class="nb" data-i="${j}"><span class="nm">${escapeHtml(g.name[j])}</span><span class="yr">${g.year[j] ?? ""}</span></button></li>`).join("");
+    el.innerHTML = `
+      <div class="head">${thumb(i) ? `<img src="${thumb(i)}" alt="">` : ""}
+        <div><h2>${escapeHtml(g.name[i])}</h2>
+          <div class="meta">${g.year[i] ?? "Year unknown"} · rank ${fmt(g.rank[i])}${g.short[i] ? " · short description" : ""}</div>
+          <span class="cluster-pill">${escapeHtml(label || "")}</span></div></div>
+      <div class="stats">
+        <div class="stat"><b>${fmt(g.weight[i], 1)}</b><span>Weight</span></div>
+        <div class="stat"><b>${players(i)}</b><span>Players</span></div>
+        <div class="stat"><b>${fmt(g.time[i])}</b><span>Minutes</span></div>
+        <div class="stat"><b>${fmt(g.rating[i], 1)}</b><span>Rating</span></div>
+      </div>
+      <div class="tags">${mechs}</div>
+      <span class="lbl">Nearest neighbors (${escapeHtml(modelLabel())})</span>
+      <ol class="nbs">${nbs}</ol>
+      <div class="links"><a href="https://boardgamegeek.com/boardgame/${g.id[i]}" target="_blank" rel="noopener">Open on BoardGameGeek</a>
+        <button class="close" type="button" id="closeDetail">Close</button></div>`;
+    el.hidden = false;
+    el.querySelectorAll(".nb").forEach((b) => b.addEventListener("click", () => select(+b.dataset.i, true)));
+    $("closeDetail").addEventListener("click", () => { state.selected = null; renderDetail(); redraw(); });
+  }
+
+  const modelLabel = () => (state.manifest.models.find((m) => m.key === state.model) || {}).label || state.model;
+  const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  // ---------- search ----------
+  let lowerNames = null, matches = [], active = 0;
+  function search(text) {
+    const q = text.trim().toLowerCase(), list = $("results");
+    if (q.length < 2) { list.hidden = true; $("q").setAttribute("aria-expanded", "false"); return; }
+    const starts = [], contains = [];
+    for (let i = 0; i < state.n; i++) {
+      const p = lowerNames[i].indexOf(q);
+      if (p === 0) starts.push(i); else if (p > 0) contains.push(i);
+    }
+    const byRank = (a, b) => (state.games.rank[a] ?? 1e9) - (state.games.rank[b] ?? 1e9);
+    matches = starts.sort(byRank).concat(contains.sort(byRank)).slice(0, 8);
+    active = 0;
+    list.innerHTML = matches.length ? matches.map((i, k) =>
+      `<li role="option" id="opt${k}" data-i="${i}" aria-selected="${k === 0}"><span>${escapeHtml(state.games.name[i])}</span><span class="yr">${state.games.year[i] ?? ""}</span></li>`).join("")
+      : `<li role="option" aria-disabled="true">No game matches “${escapeHtml(text.trim())}”</li>`;
+    list.hidden = false;
+    $("q").setAttribute("aria-expanded", "true");
+    list.querySelectorAll("li[data-i]").forEach((li) => li.addEventListener("mousedown", (e) => { e.preventDefault(); pick(+li.dataset.i); }));
+  }
+  function pick(i) {
+    $("results").hidden = true; $("q").setAttribute("aria-expanded", "false");
+    $("q").value = state.games.name[i];
+    select(i, true);
+  }
+  function moveActive(d) {
+    if (!matches.length) return;
+    active = (active + d + matches.length) % matches.length;
+    $("results").querySelectorAll("li").forEach((li, k) => li.setAttribute("aria-selected", String(k === active)));
+  }
+
+  // ---------- setup ----------
+  async function loadModel(key) {
+    if (!state.models[key]) state.models[key] = await (await fetch(`data/${key}.json`)).json();
+    return state.models[key];
+  }
+
+  function fitView(m) {
+    const pct = (arr, q) => { const v = Float64Array.from(arr).sort(); return v[Math.floor(q * (v.length - 1))]; };
+    const x0 = pct(m.x, 0.01), x1 = pct(m.x, 0.99), y0 = pct(m.y, 0.01), y1 = pct(m.y, 0.99);
+    const w = window.innerWidth, h = window.innerHeight;
+    const zoom = Math.log2(Math.min(w / (x1 - x0), h / (y1 - y0)) * 0.8);
+    state.minZoom = zoom - 1.5;
+    state.labelSwitchZoom = zoom + 1.2;
+    return { target: [(x0 + x1) / 2, (y0 + y1) / 2, 0], zoom, minZoom: zoom - 1.5, maxZoom: 14 };
+  }
+
+  function refreshAll() { applyFilters(); recolor(); redraw(); }
+
+  async function init() {
+    try {
+      const [manifest, games] = await Promise.all([
+        fetch("data/manifest.json").then((r) => r.json()),
+        fetch("data/games.json").then((r) => r.json()),
+      ]);
+      Object.assign(state, { manifest, games, n: games.id.length, model: manifest.models[0].key });
+    } catch (err) {
+      $("status").textContent = "The map data didn't load. Run src/export.py, then serve this folder over HTTP.";
+      return;
+    }
+    const man = state.manifest;
+    $("title").textContent = man.title;
+    document.title = man.title;
+    $("note").textContent = `${state.n.toLocaleString()} ranked games placed by description${man.note ? " · " + man.note : ""}`;
+    $("model").innerHTML = man.models.map((m) => `<option value="${m.key}">${escapeHtml(m.label)}</option>`).join("");
+    $("modelWrap").hidden = man.models.length < 2;
+    $("mechanic").innerHTML = man.mechanics.slice(0, 80).map((t, i) => `<option value="${i}">${escapeHtml(t)}</option>`).join("");
+    lowerNames = state.games.name.map((s) => s.toLowerCase());
+    mechSets = state.games.mech.map((a) => new Set(a));
+
+    const m = await loadModel(state.model);
+    state.viewState = fitView(m);
+    applyFilters(); resize(); recolor();
+    deckgl = new deck.Deck({
+      parent: $("map"), views: new deck.OrthographicView({ flipY: false }),
+      initialViewState: state.viewState, controller: true, layers: layers(),
+      onViewStateChange: ({ viewState }) => {
+        const relabel = viewState.zoom.toFixed(1) !== state.viewState.zoom.toFixed(1);
+        state.viewState = viewState;
+        if (relabel) redraw();
+      },
+      getCursor: ({ isHovering, isDragging }) => (isDragging ? "grabbing" : isHovering ? "pointer" : "grab"),
+    });
+    $("status").hidden = true;
+
+    $("colorBy").addEventListener("change", (e) => {
+      state.colorBy = e.target.value; $("mechWrap").hidden = state.colorBy !== "mechanic"; recolor(); redraw();
+    });
+    $("mechanic").addEventListener("change", (e) => { state.mechanic = +e.target.value; recolor(); redraw(); });
+    $("model").addEventListener("change", async (e) => {
+      $("status").hidden = false; $("status").textContent = "Loading layout…";
+      await loadModel(e.target.value);
+      state.model = e.target.value; $("status").hidden = true;
+      recolor(); renderDetail(); redraw();
+      if (state.selected != null) flyTo(state.selected);
+    });
+    const num = (id) => { const v = $(id).value; return v === "" ? null : +v; };
+    ["yearMin", "yearMax", "wMin", "wMax"].forEach((id) => $(id).addEventListener("input", () => { state.filters[id] = num(id); refreshAll(); }));
+    $("players").addEventListener("change", () => { state.filters.players = num("players"); refreshAll(); });
+    $("sizePop").addEventListener("change", (e) => { state.sizePop = e.target.checked; resize(); redraw(); });
+    $("showLabels").addEventListener("change", (e) => { state.showLabels = e.target.checked; redraw(); });
+    $("reset").addEventListener("click", () => {
+      ["yearMin", "yearMax", "wMin", "wMax", "players"].forEach((id) => { $(id).value = ""; });
+      Object.keys(state.filters).forEach((k) => { state.filters[k] = null; });
+      refreshAll();
+    });
+    $("q").addEventListener("input", (e) => search(e.target.value));
+    $("q").addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown") { moveActive(1); e.preventDefault(); }
+      else if (e.key === "ArrowUp") { moveActive(-1); e.preventDefault(); }
+      else if (e.key === "Enter" && matches.length) pick(matches[active]);
+      else if (e.key === "Escape") $("results").hidden = true;
+    });
+    $("q").addEventListener("blur", () => setTimeout(() => { $("results").hidden = true; }, 150));
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { recolor(); redraw(); });
+    new MutationObserver(() => { recolor(); redraw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  }
+
+  init();
+})();
+</script>
