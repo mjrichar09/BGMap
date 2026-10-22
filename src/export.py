@@ -94,9 +94,12 @@ def model_payload(df: pd.DataFrame, nbrs: np.ndarray) -> dict:
     }
 
 
-def write_page(out: Path) -> None:
+def write_page(out: Path, title: str, fragment_only: bool = False) -> None:
     """web/map.html is a body fragment (the Artifact viewer adds its own shell); wrap it for static hosting."""
-    fragment = (WEB_DIR / "map.html").read_text()
+    fragment = (WEB_DIR / "map.html").read_text().replace("<title>BGMap</title>", f"<title>{title}</title>", 1)
+    if fragment_only:
+        (out / "index.html").write_text(fragment)
+        return
     shell = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
              '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
              "</head>\n<body>\n")
@@ -108,6 +111,7 @@ def main() -> None:
     ap.add_argument("--models", nargs="*", help="default: every model with a labeled map")
     ap.add_argument("--out", type=Path, default=ROOT / "site")
     ap.add_argument("--title", default="BGMap")
+    ap.add_argument("--fragment", action="store_true", help="write the page without its HTML shell (for an Artifact)")
     ap.add_argument("--note", default="", help="one line shown under the title, e.g. the data source")
     args = ap.parse_args()
 
@@ -129,7 +133,7 @@ def main() -> None:
     manifest = {"title": args.title, "note": args.note, "count": len(base), "thumbPrefix": THUMB_PREFIX,
                 "models": [{"key": m, "label": MODEL_LABELS.get(m, m)} for m in models], **vocab}
     (data_dir / "manifest.json").write_text(json.dumps(manifest, indent=1))
-    write_page(args.out)
+    write_page(args.out, args.title, args.fragment)
     sizes = ", ".join(f"{p.name} {p.stat().st_size / 1e6:.1f} MB" for p in sorted(data_dir.glob("*.json")))
     print(f"{len(base):,} games, models {models} -> {data_dir} ({sizes})")
 
