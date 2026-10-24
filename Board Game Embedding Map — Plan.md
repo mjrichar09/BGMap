@@ -15,7 +15,9 @@ Build an interactive 2D map of every ranked BoardGameGeek (BGG) game, placed by 
 - The map has labeled clusters, and 20 games picked by hand have neighbors that make sense
 - We have a written call on whether LLM profiles are worth adding (see Later)
 
-**Out of scope for v1:** LLM-rewritten profiles, user reviews, other domains, public hosting.
+**Second domain: movies.** The same pipeline also maps movies from TMDB. Each domain gets its own map, built with the same embedding model, so the cross-media twist stays cheap later. Movies don't wait on an API approval, so they can run end to end first and shake out stages 4–6 before BGG access arrives. See Movies (TMDB).
+
+**Out of scope for v1:** LLM-rewritten profiles, user reviews, domains beyond board games and movies, a combined cross-media map, public hosting.
 
 ## Data source
 
@@ -39,6 +41,35 @@ Use the official BGG XML API2 with a registered application. Register on day one
 
 Keeping tags out of the embedded text matters: it lets us check whether description meaning alone recovers mechanics and categories.
 
+## Movies (TMDB)
+
+Movies run through stages 1–3 of their own and then share stages 4–6 with board games. Code lives in `src/movies/`.
+
+- **Access.** Free TMDB API key, read from `TMDB_API_KEY` (env var or a gitignored `.env`). Both the v4 read token and the v3 key work.
+- **The list.** TMDB has no ranked list, so a minimum vote count stands in for "ranked". `/discover/movie` is queried one release year at a time (it caps at 10,000 results per query), excluding adult and video titles. Default: 100 votes or more (`--min-votes`). The movie map stands on its own, so the threshold doesn't need to match the board game set's size. Lower it as far as overview quality holds up, since obscure films more often have thin or missing overviews. Scale the UMAP and HDBSCAN settings to whatever size results.
+- **Details.** `/movie/{id}?append_to_response=keywords,credits,external_ids,translations,release_dates`, one movie per request, at about 20 requests a second (TMDB allows about 50). Before caching, credits are trimmed to the top 10 cast plus directors, writers, composer and cinematographer, translations to the film's original-language overview, and release dates to US ratings. Untrimmed, a single film can run to 300 KB; trimmed, it's about 3–5 KB.
+- **Wikipedia plots (stage 2b, `wiki.py`).** The Wikidata ID from TMDB leads to the English Wikipedia article, and the plot section is cut out. Plots are usually 400–700 words, against 25–55 for TMDB overviews. Requests are serial with a descriptive User-Agent, per Wikimedia etiquette. Misses are cached too, so reruns only fetch new films.
+- **IMDb ratings (stage 2c, `imdb.py`).** IMDb's official `title.ratings.tsv.gz` (about 9 MB, refreshed daily) is joined on the IMDb ID in parse. It adds `imdb_rating` and `imdb_votes` for 99.8% of films. Median IMDb votes are about 5,400 against TMDB's 147, so IMDb is the better popularity signal for point size. It's free for personal, non-commercial use, and the file is gitignored because redistribution isn't allowed. Rotten Tomatoes has no public API. Critic scores are possible later through OMDb (Tomatometer and Metacritic by IMDb ID) for a critics-vs-audience overlay.
+- **Attribution.** A public page must show the TMDB logo and the line "This product uses the TMDB API but is not endorsed or certified by TMDB." It must also credit IMDb ("Information courtesy of IMDb") and Wikipedia (CC BY-SA) if plots are shown.
+
+**Fields to pull per movie**
+
+| Group | Fields | Used for |
+| --- | --- | --- |
+| Identity | id, title, year, poster URL, original title and language, IMDb and Wikidata ids, US rating | Labels, hover card, filters |
+| Text | overview (`text`), with the original-language overview as a fallback; Wikipedia plot (`text_plot`), falling back to `text` | The embedding: two variants to compare |
+| Tags | genres, keywords, collection | Overlays and evaluation (keywords play the role of mechanics), not embedded |
+| People | directors, writers, top cast, production companies, countries | Overlays, confound scan |
+| Stats | runtime, TMDB vote average and count, IMDb rating and votes, popularity, budget, revenue | Color and size, filters |
+
+**How movies differ from board games**
+
+- **Overviews are short,** often 25–55 words against BGG's long descriptions. Truncation isn't the problem; thin text is. The short-text flag for movies is set at 15 words instead of about 30, and Wikipedia plots are pulled as a richer alternative. Embed both `text` and `text_plot`, and compare them with the Evaluation checks. That comparison is the movie version of the profiles question in Later.
+- **Plots describe story, not tone.** A plot summary says what happens, not how a film feels, so `text_plot` may group films by premise rather than genre or mood. Look for this in the cluster review.
+- **The tagline stays out** of the embedded text, since it is marketing copy, the movie version of crowdfunding hype.
+- **Some non-English films have no English overview,** because TMDB doesn't fall back to another language. Parse uses the original-language overview in that case (recorded in `text_lang`), since Qwen3-Embedding is multilingual. Watch whether those films cluster by language rather than content.
+- **Popularity bias.** A vote threshold favors recent and English-language films. Check this in the confound scan by coloring the map by language and decade.
+
 ## Pipeline architecture
 
 A plain Python pipeline of six scripts, each reading the previous stage's file and writing its own. Nothing past stage 2 touches the network, so embedding and mapping can be rerun freely.
@@ -49,9 +80,12 @@ Stage 2 is the slow, rate-limited one; it resumes from its cache if interrupted.
 
 **Repo layout**
 
-- `data/raw/` — cached XML responses, one file per batch (gitignored)
-- `data/` — `ids.csv`, `games.parquet`, `embeddings.npy`, `map.parquet`
-- `src/` — `fetch.py`, `parse.py`, `embed.py`, `project.py`, `label.py`
+- `data/<domain>/raw/` — cached API responses (gitignored); `<domain>` is `boardgames` or `movies`
+- `data/<domain>/` — `ids.csv`, `items.parquet`, `embeddings.npy`, `map.parquet`
+- `src/boardgames/`, `src/movies/` — stages 1–3 for each domain: `ids.py`, `fetch.py`, `parse.py`
+- `src/` — shared stages that take `--domain`: `embed.py`, `project.py`, `label.py`, plus `common.py`
+
+Every domain's `items.parquet` starts with the same core columns (`id, name, year, text, word_count, short_text, thumbnail`), followed by that domain's own overlay columns, so the shared stages don't need to know which domain they're running on.
 - `web/` — the interactive map page
 - `notebooks/` — evaluation and parameter sweeps
 
@@ -127,6 +161,7 @@ Five phases over about four to five weeks of spare time, with BGG app approval a
 
 1. **Register and scaffold (week 1).** Register the BGG application on day one. Set up the repo, and build and test the parse, embed and projection stages on a handful of hand-saved game pages while approval is pending.
    - Exit: stages 3–6 run end to end on stub data.
+   - Movies: run the full TMDB ids, fetch and parse now, and use the real movie data in place of stub data to build stages 4–6.
 2. **Fetch (week 2, once approved).** Download the ranks CSV and run the full fetch with caching and resume.
    - Exit: `games.parquet` holds every ranked base game; failures are logged and retried.
 3. **Baseline map (week 2–3).** Embed with both models, sweep UMAP and HDBSCAN settings, label clusters, render the static map.
@@ -147,7 +182,7 @@ Once the v1 map works, these turn it from a picture into a tool. They're post-v1
 | Time animation | Regions appearing and filling in by publication year, showing when design trends arrived | The year field already fetched; a year slider on the page | Small |
 | "How it plays" layer | A second map from what players say rather than what publishers write | User comments via `thing?comments=1`, embedded per game; a much heavier fetch | Medium |
 | Description vs. audience | Games that sound alike but are rated by different people, and the reverse | A ratings-based embedding (which users rate which games) to set against the description embedding; flag games whose two neighbor lists disagree most | Large |
-| Cross-media space | Board games, video games and books in one space: the novel or Steam game nearest to a given board game | A second domain run through the same pipeline and the same embedding model | Large |
+| Cross-media space | Board games and movies (later video games and books) in one space: the film nearest to a given board game | Movies are already in the pipeline with the same embedding model; what's left is a joint projection and a fix for the text-length gap between overviews and descriptions | Medium |
 
 The description-vs-audience twist is the most novel. The disagreements are where the interesting stories are, and it doubles as a check on how much descriptions actually capture.
 
@@ -170,9 +205,14 @@ If we add it, a cheap hosted model rewrites each game into a fixed schema: theme
 | Rate limiting or blocked token | Slow, cached, resumable fetch; one request every few seconds |
 | Terms limit public sharing | Keep v1 private; review terms and add the BGG logo before sharing |
 | Map is dominated by writing style | That is the trigger for the profiles step above |
+| Movie overviews too thin to place films well | Short-text flag at 15 words; try Wikipedia plots or profiles if the movie failure log shows it |
 
 ## Sources
 
 - [Using the XML API](https://boardgamegeek.com/using_the_xml_api) — registration, tokens, usage guidance, logo requirement
 - [BGG XML API wiki](https://boardgamegeek.com/wiki/page/BGG_XML_API) — ranks CSV download
 - [BGG XML API2 reference](https://videogamegeek.com/wiki/page/BGG_XML_API2) — endpoint parameters
+- [TMDB API docs](https://developer.themoviedb.org/docs) — discover, movie details, rate limits, attribution
+- [Wikimedia API etiquette](https://www.mediawiki.org/wiki/API:Etiquette) — serial requests, User-Agent, maxlag
+- [IMDb non-commercial datasets](https://developer.imdb.com/non-commercial-datasets/) — ratings file and license terms
+- [MovieLens](https://grouplens.org/datasets/movielens/) — ratings with a TMDB id link file, for the description-vs-audience twist
