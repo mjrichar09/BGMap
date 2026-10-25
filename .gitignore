@@ -1,10 +1,6 @@
 .env
 .venv/
 __pycache__/
-data/*/raw/
-data/*/wiki/
-data/*/fetch_errors.csv
-data/*/run.log
-# IMDb's license doesn't allow redistribution; items.parquet is over GitHub's 100 MB limit
-data/movies/imdb_ratings.tsv.gz
-data/*/items.parquet
+# All fetched and derived data stays local: the repo is public, IMDb's license
+# doesn't allow redistribution, and the parquet and embedding files are large.
+data/

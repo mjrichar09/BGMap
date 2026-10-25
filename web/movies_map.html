@@ -1,0 +1,1452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Movie Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Limelight&family=Oswald:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap">
+<style>
+/* Two cinema looks on one layout. Light = "Matinee": cream poster paper and ink with a marquee-red
+   accent; cards are ticket stubs and region names sit on marquee letter boards. Dark = "Late Show":
+   a dark auditorium under a warm projector beam with film grain; cards have film-strip sprockets and
+   labels glow amber. In both, films are dots, tickets and reels, award winners are gold stars, and the
+   selected film is a clapperboard. Toolkit card top-left, film card top-right. */
+:root {
+  --bg: #efe6d2;
+  --panel: #fbf6e9;
+  --panel-2: #ffffff;
+  --fg: #2a1a14;
+  --muted: #6b5a4e;
+  --line: #2a1a14;
+  --soft-line: rgba(42, 26, 20, 0.22);
+  --accent: #c8102e;
+  --accent-ink: #fff8ec;
+  --link: #a30d25;
+  --shadow: 4px 4px 0 #2a1a14;
+  --shadow-sm: 2px 2px 0 #2a1a14;
+  --border-w: 2px;
+  --radius: 8px;
+  --radius-sm: 5px;
+  /* Ticket-stub perforation down each card's left edge. */
+  --perf: 2px dashed rgba(42, 26, 20, 0.35);
+  --sprockets: none;
+  --font-display: "Abril Fatface", Georgia, serif;
+  --font-label: "Oswald", "Work Sans", system-ui, sans-serif;
+  --font-body: "Work Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "Courier Prime", ui-monospace, Menlo, monospace;
+  --title-case: none;
+  --title-track: 0;
+  --field-bg:
+    radial-gradient(ellipse at 50% 40%, transparent 55%, rgba(120, 80, 40, 0.18)),
+    radial-gradient(rgba(42, 26, 20, 0.07) 1px, transparent 1.4px) 0 0 / 14px 14px;
+  --beam: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b0807; --panel: rgba(26, 17, 12, 0.88); --panel-2: rgba(0, 0, 0, 0.35); --fg: #f3e6d0; --muted: #b39c80;
+    --line: rgba(255, 181, 71, 0.38); --soft-line: rgba(255, 181, 71, 0.16); --accent: #ffb547; --accent-ink: #1a0f06;
+    --link: #ffc56b; --shadow: 0 10px 40px rgba(0, 0, 0, 0.55); --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.5); --border-w: 1px;
+    --radius: 6px; --radius-sm: 4px;
+    --perf: none;
+    --sprockets: repeating-linear-gradient(180deg, transparent 0 7px, rgba(255, 181, 71, 0.32) 7px 15px) center / 6px 100% no-repeat;
+    --font-display: "Limelight", Georgia, serif; --title-case: uppercase; --title-track: 0.06em;
+    --field-bg:
+      radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(0, 0, 0, 0.7)),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.09'/%3E%3C/svg%3E");
+    --beam: radial-gradient(ellipse 55% 95% at 50% -12%, rgba(255, 196, 120, 0.17), rgba(255, 170, 80, 0.05) 55%, transparent 75%);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b0807; --panel: rgba(26, 17, 12, 0.88); --panel-2: rgba(0, 0, 0, 0.35); --fg: #f3e6d0; --muted: #b39c80;
+  --line: rgba(255, 181, 71, 0.38); --soft-line: rgba(255, 181, 71, 0.16); --accent: #ffb547; --accent-ink: #1a0f06;
+  --link: #ffc56b; --shadow: 0 10px 40px rgba(0, 0, 0, 0.55); --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.5); --border-w: 1px;
+  --radius: 6px; --radius-sm: 4px;
+  --perf: none;
+  --sprockets: repeating-linear-gradient(180deg, transparent 0 7px, rgba(255, 181, 71, 0.32) 7px 15px) center / 6px 100% no-repeat;
+  --font-display: "Limelight", Georgia, serif; --title-case: uppercase; --title-track: 0.06em;
+  --field-bg:
+    radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(0, 0, 0, 0.7)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.09'/%3E%3C/svg%3E");
+  --beam: radial-gradient(ellipse 55% 95% at 50% -12%, rgba(255, 196, 120, 0.17), rgba(255, 170, 80, 0.05) 55%, transparent 75%);
+  color-scheme: dark;
+}
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 var(--font-body); overflow: hidden; }
+#map { position: fixed; inset: 0; }
+/* Paper grain and vignette (light) or film grain under a projector beam (dark). */
+#field { position: fixed; inset: 0; pointer-events: none; background: var(--field-bg); }
+#field::after { content: ""; position: absolute; inset: 0; background: var(--beam); animation: flicker 7s steps(1) infinite; }
+@keyframes flicker { 0%, 100% { opacity: 1; } 31% { opacity: 0.9; } 33% { opacity: 1; } 64% { opacity: 0.94; } 66% { opacity: 1; } }
+.card {
+  position: fixed; z-index: 2; background: var(--panel); border: var(--border-w) solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow); backdrop-filter: blur(10px);
+}
+.card::before { content: ""; position: absolute; left: 12px; top: 10px; bottom: 10px; width: 6px; border-left: var(--perf); background: var(--sprockets); pointer-events: none; }
+:root[data-theme="dark"] .card::before { left: 6px; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .card::before { left: 6px; } }
+#controls {
+  top: calc(14px + env(safe-area-inset-top, 0px)); left: max(14px, env(safe-area-inset-left, 0px));
+  width: min(344px, calc(100vw - 28px)); max-height: calc(100% - 28px - env(safe-area-inset-top, 0px));
+  overflow: auto; padding: 16px 18px 16px 30px; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+/* A film reel: five spoke holes and a hub cut out of an accent disc. */
+.brand-mark { width: 32px; height: 32px; flex: none; border-radius: 50%; background:
+  radial-gradient(circle at 50% 50%, var(--panel) 2.5px, transparent 3px),
+  radial-gradient(circle at 50% 22%, var(--panel) 4px, transparent 4.5px),
+  radial-gradient(circle at 77% 41%, var(--panel) 4px, transparent 4.5px),
+  radial-gradient(circle at 67% 74%, var(--panel) 4px, transparent 4.5px),
+  radial-gradient(circle at 33% 74%, var(--panel) 4px, transparent 4.5px),
+  radial-gradient(circle at 23% 41%, var(--panel) 4px, transparent 4.5px),
+  var(--accent); }
+h1 { margin: 0; font: 400 25px/1.1 var(--font-display); letter-spacing: var(--title-track); text-transform: var(--title-case); }
+.note { margin: 0; color: var(--muted); font-size: 12.5px; }
+#themeBtn { margin-left: auto; background: none; border: var(--border-w) solid var(--soft-line); border-radius: var(--radius-sm); color: var(--muted); font: 500 11.5px var(--font-label); letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 8px; cursor: pointer; }
+.cap, label.cap { display: block; font: 700 11.5px var(--font-data); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 0 0 5px; }
+input, select, button { font: inherit; color: var(--fg); }
+input[type="search"], input[type="text"], input[type="number"], select {
+  width: 100%; box-sizing: border-box; background: var(--panel-2); border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-sm); padding: 7px 9px;
+}
+input.armed { outline: 2px dashed var(--link); outline-offset: 2px; }
+input:disabled, button:disabled { opacity: 0.55; cursor: not-allowed; }
+:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.row { display: flex; gap: 8px; align-items: center; }
+.row > * { flex: 1; min-width: 0; }
+#suggest { position: fixed; z-index: 8; margin: 0; padding: 4px; list-style: none; max-height: 50vh; overflow: auto; box-sizing: border-box;
+  background: var(--panel); backdrop-filter: blur(14px); border: var(--border-w) solid var(--line); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
+#suggest li { padding: 6px 8px; border-radius: 4px; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+#suggest li[aria-selected="true"], #suggest li:hover { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+#suggest .yr { color: var(--muted); font: 12.5px var(--font-data); flex: none; }
+.tabs { display: flex; gap: 4px; }
+.tab { flex: 1; background: var(--panel-2); border: var(--border-w) solid var(--line); border-bottom-width: 0; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  font: 600 13px var(--font-label); letter-spacing: 0.06em; text-transform: uppercase; padding: 7px 4px; cursor: pointer; color: var(--muted); }
+.tab[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
+.tabpanel { border: var(--border-w) solid var(--line); border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--panel-2); padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips:empty { display: none; }
+.chip { background: var(--panel); border: var(--border-w) solid var(--line); border-radius: var(--radius-sm); padding: 4px 10px; cursor: pointer; font: 600 12.5px var(--font-body); box-shadow: var(--shadow-sm); }
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.tool { border-top: 1px solid var(--soft-line); padding-top: 10px; }
+.tool > summary { cursor: pointer; font: 600 14px var(--font-label); letter-spacing: 0.03em; list-style: none; display: flex; align-items: center; gap: 8px; }
+.tool > summary::-webkit-details-marker { display: none; }
+/* A film frame: an accent rectangle with sprocket dots above and below. */
+.tool > summary::before { content: ""; width: 12px; height: 9px; flex: none; border-radius: 1px;
+  background: radial-gradient(circle, var(--panel-2) 0.8px, transparent 1px) 0 0 / 3px 2px repeat-x, radial-gradient(circle, var(--panel-2) 0.8px, transparent 1px) 0 100% / 3px 2px repeat-x, var(--accent); }
+.tool > summary small { margin-left: auto; font: 500 11px var(--font-data); color: var(--muted); }
+.tool[open] > summary { margin-bottom: 10px; }
+.stack { display: flex; flex-direction: column; gap: 8px; }
+.btn { background: var(--fg); color: var(--bg); border: var(--border-w) solid var(--line); border-radius: var(--radius-sm); padding: 7px 12px; cursor: pointer; font: 600 13.5px var(--font-label); letter-spacing: 0.05em; text-transform: uppercase; }
+:root[data-theme="dark"] .btn { background: var(--accent); color: var(--accent-ink); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn { background: var(--accent); color: var(--accent-ink); } }
+.btn.ghost { background: transparent; color: var(--fg); }
+.seg { display: flex; }
+.seg button { flex: 1; background: var(--panel); border: var(--border-w) solid var(--line); padding: 6px 4px; cursor: pointer; font: 600 12px var(--font-body); }
+.seg button:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+.seg button:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; border-left-width: 0; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.help { margin: 0; font-size: 12.5px; color: var(--muted); }
+.list { margin: 0; padding: 0; list-style: none; }
+.list li button { display: flex; gap: 8px; width: 100%; text-align: left; background: none; border: 0; padding: 5px 2px; border-radius: 4px; cursor: pointer; align-items: baseline; }
+.list li button:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.list .n { font: 500 11.5px var(--font-data); color: var(--muted); width: 1.6em; flex: none; }
+.list .nm { flex: 1; min-width: 0; }
+.list .yr { color: var(--muted); font: 12.5px var(--font-data); text-align: right; }
+.mini { font: 12.5px var(--font-data); color: var(--muted); }
+#legend .bar { height: 8px; border-radius: 4px; margin: 4px 0 2px; }
+#legend .ends { display: flex; justify-content: space-between; font: 12.5px var(--font-data); color: var(--muted); }
+#legend .swatches { display: flex; flex-wrap: wrap; gap: 4px 10px; font: 12.5px var(--font-data); color: var(--muted); }
+#legend .sw { display: inline-flex; align-items: center; gap: 4px; }
+#legend .dot { width: 9px; height: 9px; display: inline-block; border-radius: 50%; }
+#count { font: 12.5px var(--font-data); color: var(--muted); }
+#detail {
+  top: calc(14px + env(safe-area-inset-top, 0px)); right: max(14px, env(safe-area-inset-right, 0px));
+  width: min(340px, calc(100vw - 28px)); max-height: calc(100% - 28px - env(safe-area-inset-top, 0px));
+  overflow: auto; padding: 16px 18px 16px 30px; box-sizing: border-box;
+}
+#detail .head { display: flex; gap: 12px; }
+#detail img { width: 68px; height: 102px; object-fit: cover; border-radius: 3px; border: var(--border-w) solid var(--line); flex: none; }
+#detail h2 { margin: 0; font: 400 21px/1.15 var(--font-display); letter-spacing: var(--title-track); text-wrap: balance; }
+#detail .meta { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.region-pill { display: inline-block; margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--link); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; text-decoration: underline; text-underline-offset: 2px; }
+/* Stats are admit-one stubs: a dashed tear line along the top. */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0; }
+.stat { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 2px 6px; background: var(--panel-2); border: var(--border-w) solid var(--line); border-top-style: dashed; border-radius: var(--radius-sm); }
+.stat b { font: 700 16px var(--font-data); font-variant-numeric: tabular-nums; }
+.stat span { font: 600 10px var(--font-label); color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+#detail .blurb { margin: 0 0 10px; font-size: 13px; }
+#detail .blurb i { display: block; color: var(--muted); margin-bottom: 4px; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 12px; }
+.tag { font-size: 11.5px; background: color-mix(in srgb, var(--accent) 16%, transparent); border-radius: 3px; padding: 2px 7px; }
+.actions { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
+.links { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
+a { color: var(--link); }
+.close { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 13px; padding: 2px 4px; }
+#tooltip { position: fixed; z-index: 6; pointer-events: none; background: var(--panel); border: var(--border-w) solid var(--line); border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm); padding: 8px 10px; max-width: 260px; display: flex; gap: 8px; backdrop-filter: blur(10px); }
+#tooltip img { width: 34px; height: 51px; object-fit: cover; border-radius: 2px; flex: none; }
+#tooltip b { display: block; font-weight: 700; }
+#tooltip .meta { color: var(--muted); font: 12px var(--font-data); }
+#timebar { left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); width: min(620px, calc(100vw - 28px));
+  padding: 10px 14px 10px 30px; display: flex; align-items: center; gap: 12px; box-sizing: border-box; }
+#timebar input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent); }
+#timeYear { font: 400 28px var(--font-display); letter-spacing: var(--title-track); min-width: 3.2em; text-align: center; font-variant-numeric: tabular-nums; }
+#timeKey { display: flex; gap: 10px; font: 11.5px var(--font-data); color: var(--muted); }
+#timeKey i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 3px; vertical-align: -1px; }
+#status { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); z-index: 1; font: 15px var(--font-data); }
+@media (max-width: 720px) {
+  #detail { top: auto; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); max-height: 46%; }
+  #controls { max-height: 48%; }
+  body.has-detail #controls > :not(.brand):not(.searchbox) { display: none; }
+  #timeKey { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } #field::after { animation: none; } }
+</style>
+
+</head>
+<body>
+<div id="field" aria-hidden="true"></div>
+<div id="map" aria-label="Map of movies"></div>
+<div id="status">Loading map…</div>
+
+<section id="controls" class="card" aria-label="Map controls">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true"></div>
+    <h1 id="title">Movie Map</h1>
+    <button id="themeBtn" type="button">Theme</button>
+  </div>
+  <p class="note" id="note"></p>
+  <div class="searchbox">
+    <label class="cap" for="q">Find a film</label>
+    <input id="q" type="search" placeholder="Type a title, or click the map" autocomplete="off">
+  </div>
+
+  <div>
+    <div class="tabs" role="tablist" aria-label="Toolkit">
+      <button class="tab" role="tab" id="tab-map" aria-controls="panel-map" aria-selected="true" type="button">Map</button>
+      <button class="tab" role="tab" id="tab-personal" aria-controls="panel-personal" aria-selected="false" type="button">Personal</button>
+      <button class="tab" role="tab" id="tab-explore" aria-controls="panel-explore" aria-selected="false" type="button">Explore</button>
+    </div>
+
+    <div class="tabpanel" role="tabpanel" id="panel-map" aria-labelledby="tab-map">
+      <div class="row">
+        <div>
+          <label class="cap" for="colorBy">Color by</label>
+          <select id="colorBy">
+            <option value="cluster">Region</option>
+            <option value="year">Year</option>
+            <option value="rating">IMDb rating</option>
+            <option value="runtime">Runtime</option>
+            <option value="cert">US rating</option>
+            <option value="genre">A genre…</option>
+          </select>
+        </div>
+        <div id="modelWrap">
+          <label class="cap" for="model">Layout</label>
+          <select id="model"></select>
+        </div>
+      </div>
+      <div id="genreWrap" hidden>
+        <label class="cap" for="genreSel">Genre</label>
+        <select id="genreSel"></select>
+      </div>
+      <div id="legend" aria-live="polite"></div>
+      <p class="help" id="shapeKey"></p>
+      <div class="row">
+        <div><label class="cap" for="yearMin">Year from</label><input id="yearMin" type="number" placeholder="any"></div>
+        <div><label class="cap" for="yearMax">to</label><input id="yearMax" type="number" placeholder="any"></div>
+      </div>
+      <div class="row">
+        <div><label class="cap" for="rMin">Runtime min</label><input id="rMin" type="number" min="0" step="10" placeholder="any"></div>
+        <div><label class="cap" for="rMax">max</label><input id="rMax" type="number" min="0" step="10" placeholder="any"></div>
+      </div>
+      <div class="row">
+        <div>
+          <label class="cap" for="genreFilter">Genre</label>
+          <select id="genreFilter"><option value="">Any genre</option></select>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 14px">
+          <label class="mini"><input id="sizePop" type="checkbox" checked> Size by IMDb votes</label>
+          <label class="mini"><input id="showTiles" type="checkbox" checked> Region tint</label>
+        </div>
+      </div>
+      <div class="row" id="viewRow">
+        <label class="mini"><input id="view3d" type="checkbox"> 3D view (drag to rotate)</label>
+        <label class="mini"><input id="spin" type="checkbox"> Slow spin</label>
+      </div>
+      <button id="reset" class="btn ghost" type="button">Reset filters</button>
+    </div>
+
+    <div class="tabpanel" role="tabpanel" id="panel-personal" aria-labelledby="tab-personal" hidden>
+      <details class="tool" open>
+        <summary>I like these together</summary>
+        <div class="stack">
+          <label class="cap" for="likeQ">Add a film you love</label>
+          <input id="likeQ" type="search" placeholder="Type a title, or click the map" autocomplete="off">
+          <div class="chips" id="likeChips"></div>
+          <p class="help" id="likeHelp">Add two or three films. Each gets a marker, and the map highlights films close to all of them.</p>
+          <ol class="list" id="likeList"></ol>
+        </div>
+      </details>
+      <details class="tool" id="gnTool">
+        <summary>Movie night</summary>
+        <div class="stack">
+          <div class="row">
+            <div><label class="cap" for="gnTime">Length</label>
+              <select id="gnTime"><option value="90">≤ 90 min</option><option value="120" selected>≤ 2 h</option><option value="150">≤ 2½ h</option><option value="9999">Any</option></select></div>
+            <div><label class="cap" for="gnCert">Rated up to</label>
+              <select id="gnCert"><option value="1">PG</option><option value="2">PG-13</option><option value="3" selected>R</option><option value="any">Any</option></select></div>
+            <div><label class="cap" for="gnRating">IMDb</label>
+              <select id="gnRating"><option value="0">Any</option><option value="6.5">6.5+</option><option value="7" selected>7.0+</option><option value="7.5">7.5+</option></select></div>
+          </div>
+          <label class="cap" for="gnSimilar">Similar to (optional)</label>
+          <input id="gnSimilar" type="search" placeholder="Films the group already likes" autocomplete="off">
+          <div class="chips" id="gnChips"></div>
+          <button id="gnGo" class="btn" type="button">Curate list</button>
+          <p class="help" id="gnHelp"></p>
+          <ol class="list" id="gnList"></ol>
+        </div>
+      </details>
+    </div>
+
+    <div class="tabpanel" role="tabpanel" id="panel-explore" aria-labelledby="tab-explore" hidden>
+      <details class="tool" id="routeTool" open>
+        <summary>Route between films</summary>
+        <div class="stack">
+          <div><label class="cap" for="routeFrom">From</label>
+            <input id="routeFrom" type="search" placeholder="Older film, or click the map" autocomplete="off"></div>
+          <div><label class="cap" for="routeTo">To</label>
+            <input id="routeTo" type="search" placeholder="Newer film, or click the map" autocomplete="off"></div>
+          <div class="seg" role="group" aria-label="Route type">
+            <button id="modeInfluence" type="button" aria-pressed="true">Influence</button>
+            <button id="modeSimilar" type="button" aria-pressed="false">Similarity only</button>
+          </div>
+          <p class="help" id="routeHelp">Influence routes only step to similar films released the same year or later, so the chain reads as possible influence.</p>
+          <ol class="list" id="routeList"></ol>
+          <button id="routeClear" class="btn ghost" type="button" hidden>Clear route</button>
+        </div>
+      </details>
+      <details class="tool" id="regionTool">
+        <summary>Region guide <small>click a label</small></summary>
+        <div class="stack" id="regionBody"><p class="help">Click any region name on the map, or the region link on a film's card.</p></div>
+      </details>
+      <details class="tool" id="timeTool">
+        <summary>Time-lapse</summary>
+        <div class="stack">
+          <p class="help">Scrub through the years. New releases glow in full colour, fade over the next few years, and films not yet released show as outlines.</p>
+          <button id="timeOpen" class="btn" type="button">Open the time slider</button>
+        </div>
+      </details>
+      <details class="tool" id="gemsTool">
+        <summary>Hidden gems &amp; gaps</summary>
+        <div class="stack">
+          <div class="seg" role="group" aria-label="Highlight">
+            <button id="gemsBtn" type="button" aria-pressed="false">Hidden gems</button>
+            <button id="gapsBtn" type="button" aria-pressed="false">Sparse, loved areas</button>
+          </div>
+          <p class="help" id="gemsHelp">Gems: rated 7.5+ on IMDb by 1,000–25,000 people. Sparse, loved areas: small patches of the map with only a few films, all rated highly. They hint at niches with room for more films.</p>
+          <ol class="list" id="gemsList"></ol>
+        </div>
+      </details>
+      <details class="tool">
+        <summary>People lens</summary>
+        <div class="stack">
+          <label class="cap" for="designerQ">Director or actor</label>
+          <input id="designerQ" type="search" placeholder="e.g. Akira Kurosawa" autocomplete="off">
+          <ol class="list" id="designerList"></ol>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div id="count"></div>
+  <button id="clearHL" class="btn ghost" type="button" hidden>Clear highlight</button>
+</section>
+
+<aside id="detail" class="card" hidden aria-live="polite"></aside>
+<section id="timebar" class="card" hidden aria-label="Time slider">
+  <button id="timePlay" class="btn" type="button" aria-label="Play">Play</button>
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+    <input id="timeRange" type="range" min="1950" max="2025" step="1" value="2000" aria-label="Year">
+    <div id="timeKey"><span><i style="background: var(--accent)"></i>new</span><span><i style="background: color-mix(in srgb, var(--accent) 45%, grey)"></i>a few years old</span><span><i style="background: grey"></i>older</span><span><i style="border: 1px solid var(--muted)"></i>not yet released</span></div>
+  </div>
+  <div id="timeYear">2000</div>
+  <button id="timeClose" class="close" type="button" aria-label="Close the time slider">Close</button>
+</section>
+<ul id="suggest" role="listbox" hidden></ul>
+<div id="tooltip" hidden></div>
+
+<script src="https://unpkg.com/deck.gl@9.1.0/dist.min.js"></script>
+<script>
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  // Map pin: the light theme's marker for the selected and liked films.
+  const PIN = "M12 1.5a7.5 7.5 0 0 1 7.5 7.5c0 5.2-6 11.4-7 12.6a.7.7 0 0 1-1 0c-1-1.2-7-7.4-7-12.6A7.5 7.5 0 0 1 12 1.5zm0 4.3a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4z";
+  const state = {
+    manifest: null, films: null, blurbs: null, models: {}, model: null, n: 0,
+    colorBy: "cluster", genre: 0, sizePop: true, showTiles: true,
+    filters: { yearMin: null, yearMax: null, rMin: null, rMax: null, genre: null },
+    selected: null, viewState: null,
+    highlight: null, route: null, routeStop: null, routeMode: "influence", routeFrom: null, routeTo: null,
+    likes: [], gnSeeds: [], timeYear: null, gapBins: null, view3d: false, spin: false, latestYear: 9999,
+  };
+  let deckgl = null, colors = null, radii = null, icons = null, passes = null, genreSets = null, adjacency = null, bins = null, atlas = null, T = null;
+
+  // ---------- theme ----------
+  const isDark = () => getComputedStyle(document.documentElement).colorScheme.includes("dark");
+  const rgb = (hex) => { const m = hex.replace("#", ""); return [0, 2, 4].map((k) => parseInt(m.slice(k, k + 2), 16)); };
+  const INK = [42, 26, 20];
+  function themeColors() {
+    const dark = isDark();
+    return {
+      dark, accent: rgb(dark ? "#ffb547" : "#c8102e"), route: dark ? [255, 181, 71] : INK, alt: dark ? [255, 92, 92] : [214, 150, 20],
+      grey: dark ? [92, 74, 62] : [172, 160, 142], label: dark ? [255, 226, 180] : [251, 246, 233], text: dark ? [255, 226, 180] : INK,
+      // Light labels are cream letters on a dark marquee letter board; dark labels glow without a board.
+      labelBg: dark ? [11, 8, 7, 0] : [34, 24, 19, 238], bg: rgb(dark ? "#0b0807" : "#efe6d2"), dim: dark ? 34 : 55,
+    };
+  }
+
+  // ---------- icon atlas, drawn per theme ----------
+  // The same marks in both themes: plain dots for most films, ticket stubs for well-known ones (10k+ IMDb
+  // votes), film reels for the most watched (150k+), gold award stars for films rated 8+ by 25,000+ people,
+  // and sparkles for this year's and last year's releases. The selected film is a clapperboard; liked films
+  // are tickets. Tinted icons are white with alpha; shading comes from varying the alpha.
+  const CELL = 128;
+  function buildAtlas() {
+    const names = ["tile", "bokeh", "ring", "dot", "ticket", "reel", "award", "premiere", "clapper", "ticketMk"];
+    const c = document.createElement("canvas");
+    c.width = CELL * names.length; c.height = CELL;
+    const x = c.getContext("2d"), mapping = {};
+    // Polygon with rounded corners.
+    const roundPoly = (pts, r) => {
+      x.beginPath();
+      const n = pts.length, mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+      const start = mid(pts[n - 1], pts[0]);
+      x.moveTo(start[0], start[1]);
+      for (let k = 0; k < n; k++) { const p1 = pts[k], p2 = pts[(k + 1) % n]; x.arcTo(p1[0], p1[1], p2[0], p2[1], r); }
+      x.closePath();
+    };
+    const cut = (fn, alpha = 1) => { x.save(); x.globalCompositeOperation = "destination-out"; x.globalAlpha = alpha; fn(); x.restore(); };
+    const disc = (cx, cy, r) => { x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.fill(); };
+    const halo = (cx, cy, r0, r1, a) => { const g = x.createRadialGradient(cx, cy, r0, cx, cy, r1); g.addColorStop(0, `rgba(255,255,255,${a})`); g.addColorStop(1, "rgba(255,255,255,0)"); x.fillStyle = g; x.beginPath(); x.arc(cx, cy, r1, 0, Math.PI * 2); x.fill(); x.fillStyle = "#fff"; };
+    const star = (cx, cy, outer, inner, points) => Array.from({ length: points * 2 }, (_, a) => { const r = a % 2 ? inner : outer, ang = -Math.PI / 2 + (a * Math.PI) / points; return [cx + r * Math.cos(ang), cy + r * Math.sin(ang)]; });
+    // Ticket stub: a rounded rectangle with a half-circle notch in each side and a perforated tear line.
+    const ticket = (cx, cy, w, h, fill) => {
+      x.fillStyle = fill; x.beginPath(); x.roundRect(cx - w / 2, cy - h / 2, w, h, 9); x.fill();
+      cut(() => { disc(cx - w / 2, cy, h * 0.2); disc(cx + w / 2, cy, h * 0.2); });
+      cut(() => { for (let yy = cy - h / 2 + 6; yy < cy + h / 2 - 4; yy += 10) x.fillRect(cx - w / 2 + w * 0.27, yy, 4, 5); });
+    };
+    names.forEach((name, k) => {
+      const ox = k * CELL, cx = ox + 64, cy = 64;
+      let mask = true;
+      x.save(); x.beginPath(); x.rect(ox, 0, CELL, CELL); x.clip();
+      x.fillStyle = "#fff"; x.strokeStyle = "#fff";
+      switch (name) {
+        case "tile": disc(cx, cy, 62); break;
+        case "bokeh": halo(cx, cy, 8, 63, 1); break;
+        case "ring": x.lineWidth = 9; x.beginPath(); x.arc(cx, cy, 52, 0, Math.PI * 2); x.stroke(); break;
+        case "dot": disc(cx, cy, 42); break;
+        case "ticket": ticket(cx, cy, 118, 74, "#fff"); break;
+        case "reel":
+          disc(cx, cy, 60);
+          cut(() => { for (let a = 0; a < 5; a++) { const ang = -Math.PI / 2 + (a * 2 * Math.PI) / 5; disc(cx + 31 * Math.cos(ang), cy + 31 * Math.sin(ang), 14); } disc(cx, cy, 7); });
+          break;
+        case "award": roundPoly(star(cx, cy + 4, 62, 27, 5), 5); x.fill(); break;
+        case "premiere":
+          halo(cx, cy, 6, 60, T.dark ? 0.6 : 0.35);
+          roundPoly(star(cx, cy, 60, 13, 4), 3); x.fill();
+          break;
+        case "clapper": {
+          // Clapperboard: a slate with a striped clapstick hinged open above it.
+          mask = false;
+          const body = T.dark ? "#1a0f06" : "#2a1a14", stripe = T.dark ? "#ffb547" : "#fbf6e9", edge = T.dark ? "#ffb547" : "#c8102e";
+          if (T.dark) { x.shadowColor = "#ffb547"; x.shadowBlur = 14; }
+          x.fillStyle = body; x.beginPath(); x.roundRect(ox + 14, 50, 100, 66, 8); x.fill();
+          x.shadowBlur = 0;
+          x.lineWidth = 5; x.strokeStyle = edge; x.beginPath(); x.roundRect(ox + 14, 50, 100, 66, 8); x.stroke();
+          x.fillStyle = stripe; x.fillRect(ox + 26, 72, 76, 5); x.fillRect(ox + 26, 88, 52, 5); x.fillRect(ox + 26, 102, 64, 5);
+          x.save(); x.translate(ox + 16, 44); x.rotate(-0.32);
+          x.fillStyle = body; x.beginPath(); x.roundRect(0, -18, 100, 20, 4); x.fill();
+          x.fillStyle = stripe; for (let s = 0; s < 4; s++) { x.beginPath(); x.moveTo(10 + s * 24, -18); x.lineTo(22 + s * 24, -18); x.lineTo(14 + s * 24, 2); x.lineTo(2 + s * 24, 2); x.closePath(); x.fill(); }
+          x.lineWidth = 4; x.strokeStyle = edge; x.beginPath(); x.roundRect(0, -18, 100, 20, 4); x.stroke();
+          x.restore();
+          break;
+        }
+        case "ticketMk":
+          mask = false;
+          if (T.dark) { x.shadowColor = "#ff5c5c"; x.shadowBlur = 12; }
+          x.translate(cx, cy); x.rotate(-0.25); x.translate(-cx, -cy);
+          ticket(cx, cy, 116, 66, T.dark ? "#ff5c5c" : "#d6961a");
+          x.shadowBlur = 0;
+          x.fillStyle = T.dark ? "#1a0f06" : "#2a1a14"; x.font = "700 21px Oswald, sans-serif"; x.textAlign = "center"; x.textBaseline = "middle";
+          x.fillText("ADMIT", cx + 14, cy - 9); x.fillText("ONE", cx + 14, cy + 13);
+          break;
+      }
+      x.restore();
+      mapping[name] = { x: ox, y: 0, width: CELL, height: CELL, mask, anchorY: 64 };
+    });
+    return { url: c.toDataURL(), mapping };
+  }
+
+  function setTheme(next) {
+    if (next) document.documentElement.dataset.theme = next;
+    T = themeColors();
+    atlas = buildAtlas();
+    $("themeBtn").textContent = T.dark ? "Matinee" : "Late show";
+    $("themeBtn").setAttribute("aria-label", T.dark ? "Switch to the light Matinee theme" : "Switch to the dark Late Show theme");
+    $("shapeKey").textContent = "Reels are the most-watched films (150k+ IMDb votes), tickets the well-known ones (10k+), dots the rest. "
+      + "Gold stars are rated 8+ by 25,000+ people; sparkles are the newest releases. The selected film is a clapperboard, your liked films are tickets.";
+    if (state.films && colors) { assignIcons(); resize(); recolor(); labelCache.key = null; redraw(); }
+  }
+
+  // ---------- colour ----------
+  const VIRIDIS = [[68, 1, 84], [59, 82, 139], [33, 145, 140], [94, 201, 98], [253, 231, 37]];
+  function ramp(t) {
+    t = Math.min(1, Math.max(0, t)) * (VIRIDIS.length - 1);
+    const i = Math.min(Math.floor(t), VIRIDIS.length - 2), f = t - i, a = VIRIDIS[i], b = VIRIDIS[i + 1];
+    return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
+  }
+  function hsl(h, s, l) {
+    s /= 100; l /= 100;
+    const k = (n) => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+    const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+    return [255 * f(0), 255 * f(8), 255 * f(4)];
+  }
+  const clusterColor = (c) => hsl((c * 137.508) % 360, T.dark ? 80 : 66, T.dark ? 66 : 54);
+  // US ratings G … NC-17 then NR, in the Okabe-Ito colour-blind-safe set.
+  const CERT_COLORS = [[0, 158, 115], [86, 180, 233], [240, 228, 66], [230, 159, 0], [213, 94, 0], [150, 150, 150]];
+  const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  function quantiles(arr) {
+    const v = arr.filter((x) => x != null).sort((a, b) => a - b);
+    return [v[Math.floor(v.length * 0.02)], v[Math.floor(v.length * 0.98)]];
+  }
+
+  // Films standing under a marker (clapperboard / ticket) are hidden so the marker replaces them.
+  function markedGames() {
+    const s = new Set(state.likes);
+    if (state.selected != null) s.add(state.selected);
+    if (state.route && state.routeStop != null) s.add(state.route[state.routeStop]);
+    return s;
+  }
+
+  function recolor() {
+    const g = state.films, m = state.models[state.model], n = state.n, hl = state.highlight, ty = state.timeYear, marked = markedGames();
+    colors = new Uint8ClampedArray(n * 4);
+    let range = null;
+    if (["runtime", "year", "rating"].includes(state.colorBy)) range = quantiles(g[state.colorBy]);
+    for (let i = 0; i < n; i++) {
+      let c = T.grey, a = 230;
+      if (state.colorBy === "cluster") {
+        const cl = m.cluster[i];
+        if (cl >= 0) c = clusterColor(cl); else a = 150;
+      } else if (range) {
+        const v = g[state.colorBy][i];
+        if (v != null) c = ramp((v - range[0]) / (range[1] - range[0] || 1)); else a = 110;
+      } else if (state.colorBy === "cert") {
+        const v = g.cert[i];
+        if (v != null) c = CERT_COLORS[v]; else a = 110;
+      } else if (state.colorBy === "genre") {
+        if (genreSets[i].has(state.genre)) c = T.accent; else a = 70;
+      }
+      if (ty != null) {
+        const y = g.year[i];
+        if (y == null || y > ty) { c = T.grey; a = 2; }   // a = 2 marks "not yet published": drawn as an outline
+        else {
+          const f = Math.min(1, (ty - y) / 6);              // fully grey six years after release
+          c = mix(c, T.grey, f * 0.9); a = Math.round(255 - f * 180);
+        }
+      }
+      if (!passes[i] || (hl && !hl.has(i))) { c = T.grey; a = a === 2 ? 2 : Math.min(a, T.dim); }
+      if (marked.has(i)) a = 0;
+      colors.set([c[0], c[1], c[2], a], i * 4);
+    }
+    renderLegend(range);
+  }
+
+  function assignIcons() {
+    const g = state.films, n = state.n, latest = state.latestYear;
+    icons = new Array(n);
+    for (let i = 0; i < n; i++) {
+      const u = g.votes[i] || 0;
+      icons[i] = g.year[i] != null && g.year[i] >= latest - 1 ? "premiere"
+        : g.rating[i] >= 8 && u >= 25000 ? "award"
+        : u >= 150000 ? "reel"
+        : u >= 10000 ? "ticket"
+        : "dot";
+    }
+  }
+
+  function resize() {
+    const votes = state.films.votes;
+    radii = new Float32Array(state.n);
+    for (let i = 0; i < state.n; i++) {
+      const pop = Math.max(0, Math.log10(1 + (votes[i] || 0)) - 2);  // 100 votes → 0, 3M → 4.5
+      radii[i] = state.sizePop ? (T.dark ? 3 + pop * 1.9 : 3.2 + pop * 1.5) : (T.dark ? 6 : 5);
+    }
+  }
+
+  function applyFilters() {
+    const g = state.films, f = state.filters;
+    passes = new Uint8Array(state.n);
+    let count = 0;
+    for (let i = 0; i < state.n; i++) {
+      const y = g.year[i], r = g.runtime[i];
+      let ok = true;
+      if (f.yearMin != null && (y == null || y < f.yearMin)) ok = false;
+      if (f.yearMax != null && (y == null || y > f.yearMax)) ok = false;
+      if (f.rMin != null && (r == null || r < f.rMin)) ok = false;
+      if (f.rMax != null && (r == null || r > f.rMax)) ok = false;
+      if (f.genre != null && !genreSets[i].has(f.genre)) ok = false;
+      passes[i] = ok ? 1 : 0;
+      count += ok;
+    }
+    $("count").textContent = `${count.toLocaleString()} of ${state.n.toLocaleString()} films shown`;
+  }
+
+  function renderLegend(range) {
+    const el = $("legend");
+    if (range) {
+      const stops = [0, 0.25, 0.5, 0.75, 1].map((t) => `rgb(${ramp(t).map(Math.round).join(",")})`).join(",");
+      const fmtv = (v) => (state.colorBy === "year" ? Math.round(v) : v.toFixed(1));
+      el.innerHTML = `<div class="bar" style="background:linear-gradient(90deg,${stops})"></div><div class="ends"><span>${fmtv(range[0])}</span><span>${fmtv(range[1])}</span></div>`;
+    } else if (state.colorBy === "cert") {
+      el.innerHTML = `<div class="swatches">${CERT_COLORS.map((c, i) => `<span class="sw"><i class="dot" style="background:rgb(${c.join(",")})"></i>${esc(state.manifest.certs[i])}</span>`).join("")}</div>`;
+    } else if (state.colorBy === "genre") {
+      el.innerHTML = `<span class="mini">Lit: ${esc(state.manifest.genres[state.genre])}</span>`;
+    } else {
+      el.innerHTML = `<span class="mini">${state.models[state.model].labels.length} clusters in ${state.models[state.model].coarseLabels.length} regions</span>`;
+    }
+  }
+
+  // ---------- hex grid: region bins, drawn as soft region tints ----------
+  const SQ3 = Math.sqrt(3);
+  const hexCenter = (q, r, s) => [s * SQ3 * (q + r / 2), s * 1.5 * r];
+  function buildBins() {
+    const m = state.models[state.model], g = state.films;
+    const xs = Float64Array.from(m.x).sort(), ys = Float64Array.from(m.y).sort();
+    const lo = (v) => v[Math.floor(v.length * 0.01)], hi = (v) => v[Math.floor(v.length * 0.99)];
+    const size = Math.max(hi(xs) - lo(xs), hi(ys) - lo(ys)) / 70, map = new Map();
+    for (let i = 0; i < state.n; i++) {
+      const q = (SQ3 / 3 * m.x[i] - m.y[i] / 3) / size, r = (2 / 3 * m.y[i]) / size;
+      let rx = Math.round(q), rz = Math.round(r);
+      const ry = Math.round(-q - r);
+      const dx = Math.abs(rx - q), dz = Math.abs(rz - r), dy = Math.abs(ry + q + r);
+      if (dx > dy && dx > dz) rx = -ry - rz; else if (dz >= dy) rz = -rx - ry;
+      const key = rx + "," + rz;
+      let b = map.get(key);
+      if (!b) { b = { q: rx, r: rz, members: [], votes: new Map() }; map.set(key, b); }
+      b.members.push(i);
+      if (m.cluster[i] >= 0) b.votes.set(m.cluster[i], (b.votes.get(m.cluster[i]) || 0) + 1);
+    }
+    bins = [...map.values()].map((b) => {
+      let top = -1, best = 0;
+      b.votes.forEach((v, k) => { if (v > best) { best = v; top = k; } });
+      const rated = b.members.filter((i) => g.rating[i] != null && (g.votes[i] || 0) >= 1000);
+      const [x, y] = hexCenter(b.q, b.r, size);
+      return { q: b.q, r: b.r, x, y, count: b.members.length, cluster: top, purity: best / b.members.length, members: b.members,
+        rating: rated.length ? rated.reduce((s, i) => s + g.rating[i], 0) / rated.length : null, rated: rated.length };
+    });
+    bins.size = size;
+    // Sparse, loved areas: thinly populated cells (2–8 films, at least two with 1,000+ IMDb votes) whose films
+    // average 7.3+ (about the top fifth of IMDb ratings here), best loved first.
+    state.gapBins = bins.filter((b) => b.count >= 2 && b.count <= 8 && b.rated >= 2 && b.rating >= 7.3).sort((a, b) => b.rating - a.rating).slice(0, 40);
+  }
+
+  // ---------- layers ----------
+  const indexData = () => ({ length: state.n });
+  const pos = (i) => { const m = state.models[state.model]; return state.view3d ? [m.x3[i], m.y3[i], m.z3[i]] : [m.x[i], m.y[i], 0]; };
+  const has3d = () => !!state.models[state.model].z3;
+  // Sprites are drawn in order, not depth-tested, so their transparent edges never cut holes in each other.
+  const FLAT = { depthWriteEnabled: false, depthCompare: "always" };
+  const pointSize = (i) => { const a = colors[i * 4 + 3]; return a <= 60 && a > 2 ? Math.min(radii[i], 3) * 1.6 : radii[i] * 2; };
+  const iconAt = (i) => (colors[i * 4 + 3] === 2 ? "ring" : icons[i]);
+  const gapsOn = () => $("gapsBtn").getAttribute("aria-pressed") === "true";
+
+  function layers() {
+    const out = [], atlasProps = { iconAtlas: atlas.url, iconMapping: atlas.mapping };
+    // Region tint: overlapping soft blobs of each bin's main cluster colour, like stage light pooling on the floor.
+    if (state.showTiles && bins && !state.view3d) {
+      out.push(new deck.IconLayer({
+        id: "glow", data: bins, ...atlasProps, getIcon: () => "bokeh", sizeUnits: "common", getSize: bins.size * 2 * 1.9,
+        getPosition: (b) => [b.x, b.y],
+        getColor: (b) => (b.cluster >= 0 ? clusterColor(b.cluster) : T.grey).concat(Math.round(Math.min(1, 0.2 + b.count / 14) * (b.cluster >= 0 ? 0.3 + 0.7 * b.purity : 0.4) * (T.dark ? 40 : 60))),
+        updateTriggers: { getColor: [state.model, T.dark] },
+      }));
+    }
+    if (gapsOn() && state.gapBins && !state.view3d) {
+      out.push(new deck.IconLayer({
+        id: "gaps", data: state.gapBins, ...atlasProps, getIcon: () => "ring", sizeUnits: "common", getSize: bins.size * 2 * 1.1,
+        getPosition: (b) => [b.x, b.y], getColor: T.alt.concat(255),
+      }));
+    }
+    const common = { data: indexData(), ...atlasProps, sizeUnits: "pixels", parameters: FLAT, getPosition: (_, { index }) => pos(index), getIcon: (_, { index }) => iconAt(index) };
+    const triggers = { getPosition: [state.model, state.view3d], getSize: [state.sizePop, colors, T.dark], getColor: [colors], getIcon: [colors, T.dark] };
+    if (!T.dark) {
+      out.push(new deck.IconLayer({
+        ...common, id: "points-ink", getSize: (_, { index }) => pointSize(index) + 3,
+        getColor: (_, { index }) => { const a = colors[index * 4 + 3]; return [28, 34, 38, a === 2 ? 0 : a >= 200 ? 255 : a * 0.5]; },
+        updateTriggers: triggers,
+      }));
+    }
+    out.push(new deck.IconLayer({
+      ...common, id: "points", pickable: true,
+      getSize: (_, { index }) => pointSize(index),
+      getColor: (_, { index }) => { const a = colors[index * 4 + 3]; return a === 2 ? T.grey.concat(T.dark ? 60 : 95) : colors.subarray(index * 4, index * 4 + 4); },
+      updateTriggers: triggers, onHover,
+    }));
+    if (state.selected != null && !state.route) {
+      const s = state.selected, nb = neighbors(s).slice(0, 10);
+      out.push(new deck.LineLayer({
+        id: "nb-lines", data: nb, getSourcePosition: () => pos(s), getTargetPosition: (j) => pos(j),
+        getColor: T.route.concat(T.dark ? 150 : 140), getWidth: T.dark ? 1.2 : 1.6, widthUnits: "pixels",
+        updateTriggers: { getSourcePosition: [s, state.model, state.view3d], getTargetPosition: [state.model, state.view3d] },
+      }));
+      out.push(new deck.IconLayer({
+        id: "nb-rings", data: nb, ...atlasProps, getIcon: () => "ring", sizeUnits: "pixels", getSize: 16,
+        getPosition: (j) => pos(j), getColor: T.route.concat(255), updateTriggers: { getPosition: [state.model, s, state.view3d] },
+      }));
+    }
+    if (state.route) {
+      out.push(new deck.PathLayer({
+        id: "route", data: [{ path: state.route.map(pos) }], getPath: (d) => d.path, widthUnits: "pixels",
+        getWidth: T.dark ? 3 : 4, getColor: (state.routeMode === "influence" ? T.route : T.alt).concat(235), jointRounded: true, capRounded: true,
+        updateTriggers: { getColor: [state.routeMode, T.dark] },
+      }));
+      const stops = state.route.map((i, k) => ({ i, k })).filter((d) => d.k !== state.routeStop);
+      out.push(new deck.IconLayer({
+        id: "route-stops", data: stops, ...atlasProps, getIcon: () => "tile", sizeUnits: "pixels", getSize: 26,
+        getPosition: (d) => pos(d.i), getColor: (T.dark ? [8, 20, 38] : [255, 255, 255]).concat(255), updateTriggers: { getPosition: [state.model, state.view3d] },
+      }));
+      out.push(new deck.IconLayer({
+        id: "route-rings", data: stops, ...atlasProps, getIcon: () => "ring", sizeUnits: "pixels", getSize: 27,
+        getPosition: (d) => pos(d.i), getColor: T.route.concat(255), updateTriggers: { getPosition: [state.model, state.view3d] },
+      }));
+      out.push(new deck.TextLayer({
+        id: "route-nums", data: stops, getPosition: (d) => pos(d.i), getText: (d) => String(d.k + 1), getSize: 11, sizeUnits: "pixels",
+        fontFamily: "Courier Prime, monospace", fontWeight: 700, getColor: T.text.concat(255),
+        updateTriggers: { getPosition: [state.model, state.view3d] },
+      }));
+      out.push(new deck.TextLayer({
+        id: "route-years", data: state.route.map((i, k) => ({ i, k })), getPosition: (d) => pos(d.i),
+        getText: (d) => `${state.films.year[d.i] ?? "?"} · ${trim(state.films.name[d.i], 28)}`, getSize: 12, sizeUnits: "pixels",
+        getTextAnchor: (d) => (d.k % 2 ? "end" : "start"), getPixelOffset: (d) => [d.k % 2 ? -20 : 20, 0],
+        fontFamily: "Courier Prime, monospace", fontWeight: 700, characterSet: "auto",
+        getColor: T.text.concat(255), outlineWidth: 4, outlineColor: T.bg.concat(230), fontSettings: { sdf: true },
+        updateTriggers: { getPosition: [state.model, state.view3d], getColor: [T.dark] },
+      }));
+    }
+    if (state.likes.length > 1) {
+      const xs = state.likes.map(pos);
+      const taste = [0, 1, 2].map((k) => xs.reduce((s, p) => s + p[k], 0) / xs.length);
+      out.push(new deck.IconLayer({ id: "taste", data: [taste], ...atlasProps, getIcon: () => "ring", sizeUnits: "pixels", getSize: 30, getPosition: (d) => d, getColor: T.alt.concat(230) }));
+      out.push(new deck.TextLayer({
+        id: "taste-label", data: [taste], getPosition: (d) => d, getText: () => "your taste", getSize: 11, sizeUnits: "pixels", getPixelOffset: [0, 24],
+        fontFamily: "Courier Prime, monospace", fontWeight: 700, getColor: T.text.concat(255), outlineWidth: 4,
+        outlineColor: T.bg.concat(230), fontSettings: { sdf: true },
+      }));
+    }
+    out.push(new deck.TextLayer({
+      id: "labels", data: visibleLabels(), characterSet: "auto", pickable: true,
+      getPosition: (d) => [d.x, d.y, d.z], getText: (d) => d.text, getSize: (d) => d.px, sizeUnits: "pixels", parameters: FLAT,
+      fontFamily: "Oswald, Work Sans, sans-serif",
+      fontWeight: 600, lineHeight: 1.15, getColor: T.label.concat(255),
+      background: !T.dark, getBackgroundColor: T.labelBg, backgroundPadding: [9, 5, 9, 5],
+      outlineWidth: T.dark ? 4 : 0, outlineColor: T.bg.concat(230), fontSettings: { sdf: true },
+      updateTriggers: { getColor: [T.dark], getText: [state.model, T.dark], getPosition: [state.view3d, labelCache.key] },
+    }));
+    // Markers replace the films they stand on: liked films get tickets; the selected film (or current route stop) gets the main marker.
+    const markers = state.likes.map((i) => ({ i, icon: "ticketMk" }));
+    const main = state.route && state.routeStop != null ? state.route[state.routeStop] : state.selected;
+    if (main != null) markers.push({ i: main, icon: "clapper" });
+    if (markers.length) {
+      out.push(new deck.IconLayer({
+        id: "markers", data: markers, ...atlasProps, getIcon: (d) => d.icon, sizeUnits: "pixels", pickable: true, parameters: FLAT,
+        getSize: (d) => (d.icon === "clapper" ? 46 : 40), getPosition: (d) => pos(d.i),
+        updateTriggers: { getPosition: [state.model, state.view3d] },
+      }));
+    }
+    return out;
+  }
+
+  const trim = (s, n) => (s.length > n ? s.slice(0, n - 1) + "…" : s);
+
+  // Region labels: broad regions zoomed out, fine ones zoomed in; biggest first, no overlaps on screen.
+  let labelCache = { key: null, items: [] };
+  const viewKey = (v) => (state.view3d
+    ? `${v.zoom.toFixed(1)}|${Math.round((v.rotationOrbit || 0) / 6)}|${Math.round((v.rotationX || 0) / 6)}`
+    : v.zoom.toFixed(1));
+  function labelAnchors(m, fine) {
+    if (!state.view3d) return fine ? m.labels : m.coarseLabels;
+    // 3D label anchors: the mean 3D position of each region's films.
+    const key = fine ? "_labels3" : "_coarse3";
+    if (!m[key]) {
+      const field = fine ? m.cluster : m.coarse, sums = new Map();
+      for (let i = 0; i < field.length; i++) {
+        if (field[i] < 0) continue;
+        const e = sums.get(field[i]) || [0, 0, 0, 0];
+        e[0] += m.x3[i]; e[1] += m.y3[i]; e[2] += m.z3[i]; e[3]++;
+        sums.set(field[i], e);
+      }
+      m[key] = (fine ? m.labels : m.coarseLabels).map((d) => { const e = sums.get(d.id); return { ...d, x: e[0] / e[3], y: e[1] / e[3], z: e[2] / e[3] }; });
+    }
+    return m[key];
+  }
+  function visibleLabels() {
+    const m = state.models[state.model], v = state.viewState;
+    const fine = v.zoom > state.labelSwitchZoom || !m.coarseLabels.length;
+    const key = `${state.model}|${fine}|${viewKey(v)}|${T.dark}|${state.view3d}`;
+    if (labelCache.key === key) return labelCache.items;
+    const vp = deckgl && deckgl.getViewports()[0];
+    const scale = Math.pow(2, v.zoom), placed = [];
+    const source = labelAnchors(m, fine).slice().sort((a, b) => b.size - a.size);
+    for (const d of source) {
+      const raw = d.label.toUpperCase();  // marquee letters are capitals
+      const text = wrap(raw), lines = text.split("\n");
+      const px = (fine ? 11.5 : 13) + Math.min(3, Math.log10(d.size));
+      const w = Math.max(...lines.map((l) => l.length)) * px * 0.6 + (T.dark ? 18 : 30), h = lines.length * px * 1.2 + (T.dark ? 12 : 20);
+      const [sx, sy] = vp ? vp.project([d.x, d.y, d.z || 0]) : [d.x * scale, -d.y * scale];
+      const box = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - h / 2, y1: sy + h / 2 };
+      if (placed.some((b) => box.x0 < b.x1 && box.x1 > b.x0 && box.y0 < b.y1 && box.y1 > b.y0)) continue;
+      placed.push({ ...box, x: d.x, y: d.y, z: d.z || 0, text, px, id: d.id, kind: fine ? "fine" : "coarse" });
+    }
+    labelCache = { key, items: placed };
+    return placed;
+  }
+  function wrap(text) {
+    const words = text.split(" "), lines = [];
+    let line = "";
+    for (const w of words) { if ((line + " " + w).trim().length > 18 && line) { lines.push(line); line = w; } else line = (line + " " + w).trim(); }
+    lines.push(line);
+    return lines.join("\n");
+  }
+  function redraw() { if (deckgl) deckgl.setProps({ layers: layers() }); }
+
+  // ---------- helpers ----------
+  const neighbors = (i) => { const m = state.models[state.model]; return m.neighbors.slice(i * m.k, i * m.k + m.k); };
+  const thumb = (i) => (state.films.thumb[i] ? state.manifest.posterPrefix + state.films.thumb[i] : "");
+  const fmt = (v, d = 0) => (v == null ? "–" : d ? v.toFixed(d) : Math.round(v).toLocaleString());
+  const compact = (v) => (v == null ? "–" : v >= 1e6 ? (v / 1e6).toFixed(1) + "M" : v >= 1e4 ? Math.round(v / 1e3) + "k" : v >= 1e3 ? (v / 1e3).toFixed(1) + "k" : String(v));
+  const certName = (i) => (state.films.cert[i] != null ? state.manifest.certs[state.films.cert[i]] : "");
+  // Vote-weighted rating (as IMDb's Top 250 does): pulls films with few votes toward 6.5, so a 9.1 from
+  // 2,000 concert fans doesn't outrank an 8.6 from a million people.
+  const score = (i) => { const v = state.films.votes[i] || 0, r = state.films.rating[i] ?? 6.5; return (v * r + 25000 * 6.5) / (v + 25000); };
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const regionName = (kind, id) => {
+    const m = state.models[state.model];
+    if (id == null || id < 0) return "Between regions";
+    return ((kind === "coarse" ? m.coarseLabels : m.labels).find((d) => d.id === id) || {}).label || "Region";
+  };
+  const median = (arr) => { const v = arr.filter((x) => x != null).sort((a, b) => a - b); return v.length ? v[Math.floor(v.length / 2)] : null; };
+  function listHtml(items, extra) {
+    return items.map((i, k) => `<li><button type="button" data-i="${i}"><span class="n">${k + 1}</span><span class="nm">${esc(state.films.name[i])}</span><span class="yr">${extra ? extra(i) : state.films.year[i] ?? ""}</span></button></li>`).join("");
+  }
+  function bindList(el) { el.querySelectorAll("button[data-i]").forEach((b) => b.addEventListener("click", () => select(+b.dataset.i, true))); }
+  function setHighlight(set) {
+    state.highlight = set && set.size ? set : null;
+    $("clearHL").hidden = !state.highlight;
+    recolor(); redraw();
+  }
+
+  // ---------- interaction ----------
+  function onHover(info) {
+    const tip = $("tooltip");
+    if (info.index == null || info.index < 0) { tip.hidden = true; return; }
+    const i = info.index, g = state.films;
+    tip.innerHTML = `${thumb(i) ? `<img src="${thumb(i)}" alt="">` : ""}<div><b>${esc(g.name[i])}</b>
+      <div class="meta">${g.year[i] ?? "?"} · ${fmt(g.runtime[i])} min · IMDb ${fmt(g.rating[i], 1)}</div></div>`;
+    tip.hidden = false;
+    tip.style.left = Math.min(info.x + 14, window.innerWidth - tip.offsetWidth - 8) + "px";
+    tip.style.top = Math.min(info.y + 14, window.innerHeight - tip.offsetHeight - 8) + "px";
+  }
+
+  // Clicks are detected here rather than with deck.gl's tap gesture, which waits out a possible double
+  // click and can miss taps on slow devices. A press that barely moves is a click on whatever is under it.
+  function initClicks() {
+    let down = null;
+    const el = $("map");
+    el.addEventListener("pointerdown", (e) => { down = e.button === 0 ? { x: e.clientX, y: e.clientY, t: performance.now() } : null; });
+    el.addEventListener("pointerup", (e) => {
+      const d = down; down = null;
+      if (!d || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 6 || performance.now() - d.t > 800) return;
+      const r = el.getBoundingClientRect();
+      const info = deckgl.pickObject({ x: e.clientX - r.left, y: e.clientY - r.top, radius: 4, layerIds: ["markers", "labels", "points"] });
+      if (!info || !info.layer) return;
+      if (info.layer.id === "labels") showRegion(info.object.kind, info.object.id);
+      else if (info.layer.id === "markers") mapClick(info.object.i);
+      else if (info.index >= 0) mapClick(info.index);
+    });
+  }
+
+  // A click on the map fills whichever film box is waiting for one; otherwise it selects the film.
+  function mapClick(i) {
+    if (armed) { const a = armed; disarm(); a.pick(i, a.input); return; }
+    select(i, false);
+  }
+
+  function select(i, fly) {
+    state.selected = i;
+    if (state.route) { const k = state.route.indexOf(i); if (k >= 0) { state.routeStop = k; renderRouteList(); } }
+    renderDetail(); recolor(); redraw();
+    if (fly) flyTo(pos(i));
+  }
+
+  function flyTo(target, zoom) {
+    const z = zoom ?? Math.max(state.viewState.zoom, state.labelSwitchZoom + 1.5);
+    const v = state.viewState;
+    deckgl.setProps({
+      initialViewState: { ...v, target: [target[0], target[1], target[2] || 0], zoom: z, minZoom: state.minZoom, maxZoom: 14,
+        transitionDuration: matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 900,
+        transitionInterpolator: new deck.LinearInterpolator(["target", "zoom"]) },
+    });
+  }
+  function fitTo(indices) {
+    if (!indices.length) return;
+    const ps = indices.map(pos), ext = (k) => [Math.min(...ps.map((p) => p[k])), Math.max(...ps.map((p) => p[k]))];
+    const [x0, x1] = ext(0), [y0, y1] = ext(1), [z0, z1] = ext(2);
+    const span = Math.max(x1 - x0, y1 - y0, z1 - z0, 1e-3);
+    const z = Math.log2(Math.min(window.innerWidth, window.innerHeight) / span * 0.45);
+    flyTo([(x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2], Math.min(z, 12));
+  }
+
+  function renderDetail() {
+    const el = $("detail"), i = state.selected;
+    document.body.classList.toggle("has-detail", i != null);
+    if (i == null) { el.hidden = true; return; }
+    const g = state.films, m = state.models[state.model], man = state.manifest, cl = m.cluster[i], b = state.blurbs;
+    const tags = g.genre[i].map((t) => `<span class="tag"><b>${esc(man.genres[t])}</b></span>`)
+      .concat(g.kw[i].slice(0, 6).map((t) => `<span class="tag">${esc(man.keywords[t])}</span>`)).join("");
+    const people = (ids) => ids.map((p) => esc(man.people[p])).join(", ");
+    const blurb = b ? `${b.tagline[i] ? `<i>${esc(b.tagline[i])}</i>` : ""}${esc(b.overview[i])}` : "";
+    const wiki = b && b.wiki[i] ? ` · <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(b.wiki[i].replace(/ /g, "_"))}" target="_blank" rel="noopener">Wikipedia</a>` : "";
+    el.innerHTML = `
+      <div class="head">${thumb(i) ? `<img src="${thumb(i)}" alt="">` : ""}
+        <div><h2>${esc(g.name[i])}</h2>
+          <div class="meta">${g.year[i] ?? "Year unknown"}${g.dir[i].length ? ` · ${people(g.dir[i])}` : ""}</div>
+          ${g.cast[i].length ? `<div class="meta">${people(g.cast[i].slice(0, 3))}</div>` : ""}
+          <button class="region-pill" type="button" id="dCoarse">${esc(regionName("coarse", m.coarse[i]))}</button> ›
+          <button class="region-pill" type="button" id="dRegion">${esc(regionName("fine", cl))}</button></div></div>
+      <div class="stats">
+        <div class="stat"><b>${fmt(g.rating[i], 1)}</b><span>IMDb</span></div>
+        <div class="stat"><b>${compact(g.votes[i])}</b><span>Votes</span></div>
+        <div class="stat"><b>${fmt(g.runtime[i])}</b><span>Min</span></div>
+        <div class="stat"><b>${esc(certName(i) || "–")}</b><span>Rated</span></div>
+      </div>
+      ${blurb ? `<p class="blurb">${blurb}</p>` : ""}
+      <div class="tags">${tags}</div>
+      <div class="actions">
+        <button class="chip" type="button" id="dFrom">Route from here</button>
+        <button class="chip" type="button" id="dTo">Route to here</button>
+        <button class="chip" type="button" id="dLike">I like this</button>
+      </div>
+      <span class="cap">Nearest neighbors</span>
+      <ol class="list" id="dNbs">${listHtml(neighbors(i).slice(0, 10))}</ol>
+      <div class="links"><span>${g.imdb[i] ? `<a href="https://www.imdb.com/title/tt${g.imdb[i]}/" target="_blank" rel="noopener">IMDb</a> · ` : ""}<a href="https://www.themoviedb.org/movie/${g.id[i]}" target="_blank" rel="noopener">TMDB</a>${wiki}</span>
+        <button class="close" type="button" id="closeDetail">Close</button></div>`;
+    el.hidden = false;
+    bindList($("dNbs"));
+    $("dRegion").addEventListener("click", () => showRegion("fine", cl));
+    $("dCoarse").addEventListener("click", () => showRegion("coarse", m.coarse[i]));
+    $("dFrom").addEventListener("click", () => { setRouteEnd("from", i); openTool("explore", "routeTool"); });
+    $("dTo").addEventListener("click", () => { setRouteEnd("to", i); openTool("explore", "routeTool"); });
+    $("dLike").addEventListener("click", () => { addLike(i); openTool("personal"); });
+    $("closeDetail").addEventListener("click", () => { state.selected = null; renderDetail(); recolor(); redraw(); });
+  }
+
+  function openTool(tab, toolId) { selectTab(tab); if (toolId) $(toolId).open = true; }
+  function selectTab(name) {
+    ["map", "personal", "explore"].forEach((t) => { $("tab-" + t).setAttribute("aria-selected", String(t === name)); $("panel-" + t).hidden = t !== name; });
+  }
+
+  // ---------- search: one floating suggestion list for every film box ----------
+  // While a box has focus it is "armed": clicking a film on the map fills it.
+  let lowerNames = null, armed = null, suggestFor = null;
+  const suggest = () => $("suggest");
+  function disarm() { if (armed) armed.input.classList.remove("armed"); armed = null; }
+  function hideSuggest() { suggest().hidden = true; if (suggestFor) suggestFor.input.setAttribute("aria-expanded", "false"); suggestFor = null; }
+  function attachSearch(input, pick, source) {
+    const entry = { input, pick, matches: [], active: 0 };
+    const names = () => (source ? source.lower : lowerNames);
+    const label = (i) => (source ? source.names[i] : state.films.name[i]);
+    const sub = (i) => (source ? `${source.counts[i]} films` : state.films.year[i] ?? "");
+    // Exact title first, then the most-voted films, so "Alien" finds the 1979 film before its namesakes.
+    const rankOf = (i) => (source ? -source.counts[i] : -(state.films.votes[i] || 0));
+    input.setAttribute("role", "combobox"); input.setAttribute("aria-expanded", "false"); input.setAttribute("aria-controls", "suggest");
+    function show() {
+      const q = input.value.trim().toLowerCase(), list = suggest(), nm = names();
+      if (q.length < 2) { hideSuggest(); return; }
+      const starts = [], contains = [];
+      for (let i = 0; i < nm.length; i++) { const p = nm[i].indexOf(q); if (p === 0) starts.push(i); else if (p > 0) contains.push(i); }
+      const byRank = (a, b) => (nm[b] === q) - (nm[a] === q) || rankOf(a) - rankOf(b);
+      entry.matches = starts.sort(byRank).concat(contains.sort(byRank)).slice(0, 8);
+      entry.active = 0;
+      list.innerHTML = entry.matches.length
+        ? entry.matches.map((i, k) => `<li role="option" data-i="${i}" aria-selected="${k === 0}"><span>${esc(label(i))}</span><span class="yr">${sub(i)}</span></li>`).join("")
+        : `<li role="option" aria-disabled="true">No match for “${esc(input.value.trim())}”</li>`;
+      const r = input.getBoundingClientRect();
+      list.style.left = r.left + "px"; list.style.width = Math.max(r.width, 240) + "px";
+      const below = window.innerHeight - r.bottom;
+      if (below < 240 && r.top > below) { list.style.top = "auto"; list.style.bottom = window.innerHeight - r.top + 4 + "px"; }
+      else { list.style.bottom = "auto"; list.style.top = r.bottom + 4 + "px"; }
+      list.hidden = false; suggestFor = entry; input.setAttribute("aria-expanded", "true");
+    }
+    entry.choose = (i) => { hideSuggest(); disarm(); pick(i, input); };
+    input.addEventListener("input", show);
+    input.addEventListener("focus", () => { disarm(); armed = entry; input.classList.add("armed"); });
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        if (!entry.matches.length || suggest().hidden) return;
+        entry.active = (entry.active + (e.key === "ArrowDown" ? 1 : -1) + entry.matches.length) % entry.matches.length;
+        suggest().querySelectorAll("li").forEach((li, k) => li.setAttribute("aria-selected", String(k === entry.active)));
+        e.preventDefault();
+      } else if (e.key === "Enter" && entry.matches.length && !suggest().hidden) entry.choose(entry.matches[entry.active]);
+      else if (e.key === "Escape") { hideSuggest(); disarm(); input.blur(); }
+    });
+  }
+  function initSearchUi() {
+    // The shared list keeps the input focused, so choosing works by mouse, pen and touch.
+    suggest().addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      const li = e.target.closest("li[data-i]");
+      if (li && suggestFor) suggestFor.choose(+li.dataset.i);
+    });
+    // Clicking anywhere except the map or the armed box disarms it.
+    document.addEventListener("pointerdown", (e) => {
+      if (e.target.closest("#suggest")) return;
+      if (suggestFor && e.target !== suggestFor.input) hideSuggest();
+      if (armed && e.target !== armed.input && !e.target.closest("#map")) disarm();
+    }, true);
+    $("controls").addEventListener("scroll", hideSuggest);
+  }
+
+  // ---------- similarity graph, routes, closeness ----------
+  function buildAdjacency() {
+    const m = state.models[state.model], n = state.n, k = m.k, adj = Array.from({ length: n }, () => []);
+    for (let i = 0; i < n; i++) for (let t = 0; t < k; t++) { const j = m.neighbors[i * k + t], s = m.sims[i * k + t] / 100; adj[i].push(j, s); adj[j].push(i, s); }
+    adjacency = adj;
+  }
+  function heap() {
+    const h = [];
+    return {
+      size: () => h.length,
+      push(x) { h.push(x); let c = h.length - 1; while (c > 0) { const p = (c - 1) >> 1; if (h[p][0] <= h[c][0]) break; [h[p], h[c]] = [h[c], h[p]]; c = p; } },
+      pop() {
+        const top = h[0], last = h.pop();
+        if (h.length) {
+          h[0] = last; let c = 0;
+          for (;;) { const l = 2 * c + 1, r = l + 1; let s = c; if (l < h.length && h[l][0] < h[s][0]) s = l; if (r < h.length && h[r][0] < h[s][0]) s = r; if (s === c) break; [h[s], h[c]] = [h[c], h[s]]; c = s; }
+        }
+        return top;
+      },
+    };
+  }
+  // Dijkstra: cost per hop = (1 - similarity) + 0.02. Influence mode only steps forward in time.
+  function findRoute(a, b, influence) {
+    const year = state.films.year, n = state.n, ya = year[a] ?? -1e9, yb = year[b] ?? 1e9;
+    const dist = new Float64Array(n).fill(Infinity), prev = new Int32Array(n).fill(-1), q = heap();
+    dist[a] = 0; q.push([0, a]);
+    while (q.size()) {
+      const [d, u] = q.pop();
+      if (u === b) break;
+      if (d > dist[u]) continue;
+      const yu = year[u] ?? ya, edges = adjacency[u];
+      for (let e = 0; e < edges.length; e += 2) {
+        const v = edges[e];
+        if (influence) { const yv = year[v]; if (yv == null || yv < yu || yv > yb || yv < ya) continue; }
+        const nd = d + (1 - edges[e + 1]) + 0.02;
+        if (nd < dist[v]) { dist[v] = nd; prev[v] = u; q.push([nd, v]); }
+      }
+    }
+    if (prev[b] < 0 && a !== b) return null;
+    const path = [b];
+    while (path[path.length - 1] !== a) path.push(prev[path[path.length - 1]]);
+    return path.reverse();
+  }
+  // Films ordered by graph distance from any of the seeds, closest first.
+  function closest(seeds, limit) {
+    const dist = new Map(), q = heap(), order = [];
+    seeds.forEach((s) => { dist.set(s, 0); q.push([0, s]); });
+    while (q.size() && order.length < limit) {
+      const [d, u] = q.pop();
+      if (d > dist.get(u)) continue;
+      order.push(u);
+      const edges = adjacency[u];
+      for (let e = 0; e < edges.length; e += 2) {
+        const v = edges[e], nd = d + (1 - edges[e + 1]) + 0.02;
+        if (nd < (dist.get(v) ?? Infinity)) { dist.set(v, nd); q.push([nd, v]); }
+      }
+    }
+    return order;
+  }
+  function setRouteEnd(which, i) {
+    if (which === "from") { state.routeFrom = i; $("routeFrom").value = state.films.name[i]; }
+    else { state.routeTo = i; $("routeTo").value = state.films.name[i]; }
+    computeRoute();
+  }
+  function computeRoute() {
+    const a = state.routeFrom, b = state.routeTo, help = $("routeHelp"), g = state.films;
+    $("routeClear").hidden = a == null && b == null;
+    if (a == null || b == null) {
+      state.route = null;
+      help.textContent = a == null && b == null
+        ? "Influence routes only step to similar films released the same year or later, so the chain reads as possible influence."
+        : `Now pick the ${a == null ? "starting" : "destination"} film: type it, or click it on the map.`;
+      renderRouteList(); recolor(); redraw(); return;
+    }
+    let from = a, to = b, swapped = false;
+    if (state.routeMode === "influence" && (g.year[a] ?? 0) > (g.year[b] ?? 0)) { from = b; to = a; swapped = true; }
+    const path = findRoute(from, to, state.routeMode === "influence");
+    if (!path) {
+      state.route = null;
+      help.textContent = state.routeMode === "influence"
+        ? "No chain of similar films runs forward in time between these two. Try Similarity only, or a closer pair."
+        : "These two films aren't connected through their nearest neighbors.";
+    } else {
+      state.route = path; state.routeStop = 0;
+      const backwards = path.some((p, k) => k && (g.year[p] ?? 0) < (g.year[path[k - 1]] ?? 0));
+      help.textContent = state.routeMode === "influence"
+        ? `${path.length} stops, ${g.year[path[0]] ?? "?"} → ${g.year[path[path.length - 1]] ?? "?"}. Each step is a similar film from the same year or later${swapped ? " (reversed so it runs oldest first)" : ""}.`
+        : `${path.length} stops by similarity alone.${backwards ? " This route goes back in time, so it can't be read as influence." : " It happens to run forward in time."}`;
+      fitTo(path);
+    }
+    renderRouteList(); recolor(); redraw();
+  }
+  function renderRouteList() {
+    const el = $("routeList");
+    if (!state.route) { el.innerHTML = ""; return; }
+    const g = state.films, m = state.models[state.model];
+    const simTo = (i, j) => { const k = m.k; for (let t = 0; t < k; t++) { if (m.neighbors[i * k + t] === j) return m.sims[i * k + t]; if (m.neighbors[j * k + t] === i) return m.sims[j * k + t]; } return null; };
+    el.innerHTML = state.route.map((i, k) => {
+      const s = k ? simTo(state.route[k - 1], i) : null;
+      return `<li><button type="button" data-i="${i}"${k === state.routeStop ? ' style="font-weight:700"' : ""}><span class="n">${k + 1}</span><span class="nm">${esc(g.name[i])}</span><span class="yr">${g.year[i] ?? "?"}${s != null ? ` · ${(s / 100).toFixed(2)}` : ""}</span></button></li>`;
+    }).join("");
+    bindList(el);
+  }
+
+  // ---------- region guide ----------
+  function showRegion(kind, id) {
+    if (id == null || id < 0) return;
+    const m = state.models[state.model], g = state.films, field = kind === "coarse" ? m.coarse : m.cluster, members = [];
+    for (let i = 0; i < state.n; i++) if (field[i] === id) members.push(i);
+    if (!members.length) return;
+    const byRating = members.slice().sort((a, b) => score(b) - score(a));
+    const byVotes = members.slice().sort((a, b) => (g.votes[b] || 0) - (g.votes[a] || 0));
+    const starter = byVotes[0];
+    const top = (field, vocab, n) => {
+      const count = new Map();
+      members.forEach((i) => g[field][i].forEach((t) => count.set(t, (count.get(t) || 0) + 1)));
+      return [...count.entries()].sort((a, b) => b[1] - a[1]).slice(0, n).map(([t]) => vocab[t]);
+    };
+    $("regionBody").innerHTML = `
+      <h3 style="margin:0;font:700 16px var(--font-display)">${esc(regionName(kind, id))}</h3>
+      <p class="mini" style="margin:0">${kind === "coarse" ? "Broad region · " : ""}${members.length.toLocaleString()} films · median year ${median(members.map((i) => g.year[i])) ?? "?"} · ${fmt(median(members.map((i) => g.runtime[i])))} min · IMDb ${fmt(median(members.map((i) => g.rating[i])), 1)}</p>
+      <p class="help">Genres: ${top("genre", state.manifest.genres, 4).map(esc).join(", ")}<br>Keywords: ${top("kw", state.manifest.keywords, 6).map(esc).join(", ")}</p>
+      ${starter != null ? `<p class="help">Start here: <button class="region-pill" type="button" data-i="${starter}">${esc(g.name[starter])}</button>, its most-watched film.</p>` : ""}
+      <span class="cap">Top rated</span>
+      <ol class="list" id="regionList">${listHtml(byRating.slice(0, 6), (i) => `${g.year[i] ?? ""} · ${fmt(g.rating[i], 1)}`)}</ol>
+      <button class="btn ghost" type="button" id="regionHL">Highlight this region</button>`;
+    bindList($("regionList"));
+    $("regionBody").querySelectorAll(".region-pill[data-i]").forEach((b) => b.addEventListener("click", () => select(+b.dataset.i, true)));
+    $("regionHL").addEventListener("click", () => { setHighlight(new Set(members)); fitTo(members); });
+    openTool("explore", "regionTool");
+    $("regionTool").scrollIntoView({ block: "nearest" });
+  }
+
+  // ---------- personal ----------
+  function addLike(i) { if (!state.likes.includes(i)) state.likes.push(i); renderLikes(); }
+  function renderLikes() {
+    const g = state.films, chips = $("likeChips");
+    chips.innerHTML = state.likes.map((i) => `<button class="chip" type="button" aria-pressed="true" data-i="${i}" aria-label="Remove ${esc(g.name[i])}">${esc(trim(g.name[i], 26))} ×</button>`).join("");
+    chips.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => { state.likes = state.likes.filter((x) => x !== +b.dataset.i); renderLikes(); }));
+    if (!state.likes.length) {
+      $("likeList").innerHTML = "";
+      $("likeHelp").textContent = "Add two or three films. Each gets a marker, and the map highlights films close to all of them.";
+      setHighlight(null); return;
+    }
+    // Score candidates by closeness to each liked film; films near every pick rank first.
+    const need = state.likes.length, score = new Map();
+    state.likes.forEach((a) => {
+      closest([a], 400).forEach((j, rank) => { const e = score.get(j) || { hits: 0, sum: 0 }; e.hits++; e.sum += 1 / (1 + rank); score.set(j, e); });
+    });
+    const entries = [...score.entries()].filter(([j]) => !state.likes.includes(j)).sort((a, b) => b[1].hits - a[1].hits || b[1].sum - a[1].sum).slice(0, 12);
+    const ranked = entries.map(([j]) => j), nearAll = entries.filter(([, e]) => e.hits === need).length;
+    $("likeHelp").textContent = need === 1 ? "Films close to this pick:"
+      : nearAll ? `${nearAll} film${nearAll > 1 ? "s" : ""} close to all ${need} picks first:`
+      : "Nothing sits close to all of these at once, so these are close to at least one:";
+    $("likeList").innerHTML = listHtml(ranked);
+    bindList($("likeList"));
+    setHighlight(new Set([...ranked, ...state.likes]));
+    fitTo([...ranked, ...state.likes]);
+  }
+  function renderGnChips() {
+    const g = state.films;
+    $("gnChips").innerHTML = state.gnSeeds.map((i) => `<button class="chip" type="button" aria-pressed="true" data-i="${i}" aria-label="Remove ${esc(g.name[i])}">${esc(trim(g.name[i], 26))} ×</button>`).join("");
+    $("gnChips").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => { state.gnSeeds = state.gnSeeds.filter((x) => x !== +b.dataset.i); renderGnChips(); }));
+  }
+  function curate() {
+    const g = state.films, t = +$("gnTime").value, c = $("gnCert").value, r = +$("gnRating").value;
+    // Up to a rating means G … that rating; unrated (NR) films only pass with "Any".
+    const fits = (i) => !(g.runtime[i] == null || g.runtime[i] > t || (g.rating[i] ?? 0) < r || (g.votes[i] || 0) < 1000
+      || (c !== "any" && (g.cert[i] == null || g.cert[i] > +c)));
+    let hits;
+    if (state.gnSeeds.length) {
+      hits = closest(state.gnSeeds, 6000).filter((i) => !state.gnSeeds.includes(i) && fits(i));
+      $("gnHelp").textContent = hits.length ? `${hits.length.toLocaleString()} films fit, most similar to your picks first:` : "Nothing similar fits those settings. Loosen the length or rating.";
+    } else {
+      hits = [];
+      for (let i = 0; i < state.n; i++) if (fits(i)) hits.push(i);
+      hits.sort((a, b) => score(b) - score(a));
+      $("gnHelp").textContent = `${hits.length.toLocaleString()} films fit. Best rated first, weighted by votes:`;
+    }
+    $("gnList").innerHTML = listHtml(hits.slice(0, 12), (i) => `${fmt(g.runtime[i])}′ · ${fmt(g.rating[i], 1)}`);
+    bindList($("gnList"));
+    setHighlight(new Set(hits.slice(0, 400)));
+    if (hits.length) fitTo(hits.slice(0, 12));
+  }
+
+  // ---------- time slider ----------
+  let timer = null;
+  function setYear(y) {
+    state.timeYear = y; $("timeRange").value = y; $("timeYear").textContent = y;
+    let shown = 0;
+    for (let i = 0; i < state.n; i++) if (state.films.year[i] != null && state.films.year[i] <= y) shown++;
+    $("count").textContent = `${shown.toLocaleString()} films released by ${y}`;
+    recolor(); redraw();
+  }
+  function openTime() { $("timebar").hidden = false; setYear(state.timeYear ?? 2000); }
+  function closeTime() { pause(); $("timebar").hidden = true; state.timeYear = null; applyFilters(); recolor(); redraw(); }
+  function play() {
+    if (timer) { pause(); return; }
+    let y = +$("timeRange").value;
+    if (y >= +$("timeRange").max) y = +$("timeRange").min;
+    $("timePlay").textContent = "Pause"; $("timePlay").setAttribute("aria-label", "Pause");
+    timer = setInterval(() => { setYear(y); if (++y > +$("timeRange").max) pause(); }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 600 : 280);
+  }
+  function pause() { if (timer) clearInterval(timer); timer = null; $("timePlay").textContent = "Play"; $("timePlay").setAttribute("aria-label", "Play"); }
+
+  // ---------- explore: gems, gaps, people ----------
+  function toggleGems() {
+    const on = $("gemsBtn").getAttribute("aria-pressed") !== "true";
+    $("gemsBtn").setAttribute("aria-pressed", String(on)); $("gapsBtn").setAttribute("aria-pressed", "false");
+    if (!on) { $("gemsList").innerHTML = ""; setHighlight(null); return; }
+    const g = state.films, gems = [];
+    for (let i = 0; i < state.n; i++) if (g.rating[i] >= 7.5 && g.votes[i] >= 1000 && g.votes[i] <= 25000) gems.push(i);
+    gems.sort((a, b) => g.rating[b] - g.rating[a] || g.votes[b] - g.votes[a]);
+    $("gemsList").innerHTML = `<p class="mini" style="margin:0 0 4px">${gems.length.toLocaleString()} hidden gems. Highest rated:</p>` + listHtml(gems.slice(0, 10), (i) => `${g.rating[i].toFixed(1)} · ${compact(g.votes[i])}`);
+    bindList($("gemsList"));
+    setHighlight(new Set(gems));
+  }
+  function toggleGaps() {
+    const on = $("gapsBtn").getAttribute("aria-pressed") !== "true";
+    $("gapsBtn").setAttribute("aria-pressed", String(on)); $("gemsBtn").setAttribute("aria-pressed", "false");
+    if (!on) { $("gemsList").innerHTML = ""; setHighlight(null); return; }
+    const g = state.films, gaps = state.gapBins;
+    if (!gaps.length) { $("gemsList").innerHTML = `<p class="help">No sparse, highly rated patches on this layout.</p>`; setHighlight(null); return; }
+    $("gemsList").innerHTML = `<p class="mini" style="margin:0 0 4px">${gaps.length} patches circled on the map. Best loved:</p>` + gaps.slice(0, 10).map((b, k) => {
+      const best = b.members.slice().sort((x, y) => (g.rating[y] ?? 0) - (g.rating[x] ?? 0))[0];
+      return `<li><button type="button" data-gap="${k}"><span class="n">${k + 1}</span><span class="nm">${esc(g.name[best])}<span class="mini"> + ${b.count - 1} · ${esc(regionName("fine", b.cluster))}</span></span><span class="yr">${b.rating.toFixed(1)}</span></button></li>`;
+    }).join("");
+    $("gemsList").querySelectorAll("button[data-gap]").forEach((btn) => btn.addEventListener("click", () => {
+      const b = gaps[+btn.dataset.gap];
+      setHighlight(new Set(b.members)); fitTo(b.members);
+    }));
+    setHighlight(new Set(gaps.flatMap((b) => b.members)));
+  }
+  function personPicked(d, input) {
+    input.value = state.manifest.people[d];
+    const g = state.films, hits = [];
+    for (let i = 0; i < state.n; i++) if (g.dir[i].includes(d) || g.cast[i].includes(d)) hits.push(i);
+    hits.sort((a, b) => (g.year[a] ?? 0) - (g.year[b] ?? 0));
+    $("designerList").innerHTML = listHtml(hits);
+    bindList($("designerList"));
+    setHighlight(new Set(hits));
+    fitTo(hits);
+  }
+
+  // ---------- setup ----------
+  async function loadModel(key) {
+    if (!state.models[key]) state.models[key] = await (await fetch(`data/${key}.json`)).json();
+    return state.models[key];
+  }
+  function fitView(m) {
+    const pct = (arr, q) => { const v = Float64Array.from(arr).sort(); return v[Math.floor(q * (v.length - 1))]; };
+    const keys = state.view3d ? ["x3", "y3", "z3"] : ["x", "y"];
+    const lo = keys.map((k) => pct(m[k], 0.01)), hi = keys.map((k) => pct(m[k], 0.99));
+    const span = state.view3d ? Math.max(...hi.map((h, k) => h - lo[k])) : null;
+    const zoom = state.view3d
+      ? Math.log2(Math.min(window.innerWidth, window.innerHeight) / span * 0.75)
+      : Math.log2(Math.min(window.innerWidth / (hi[0] - lo[0]), window.innerHeight / (hi[1] - lo[1])) * 0.8);
+    state.minZoom = zoom - 1.5; state.labelSwitchZoom = zoom + 1.2;
+    const target = [(lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2, state.view3d ? (lo[2] + hi[2]) / 2 : 0];
+    return state.view3d
+      ? { target, zoom, minZoom: zoom - 1.5, maxZoom: 14, rotationX: 20, rotationOrbit: -30 }
+      : { target, zoom, minZoom: zoom - 1.5, maxZoom: 14 };
+  }
+  const makeView = () => (state.view3d ? new deck.OrbitView({ orbitAxis: "Y", far: 5000 }) : new deck.OrthographicView({ flipY: false }));
+
+  function setView3d(on) {
+    state.view3d = on && has3d();
+    $("view3d").checked = state.view3d; $("spin").disabled = !state.view3d;
+    if (!state.view3d) setSpin(false);
+    state.viewState = fitView(state.models[state.model]);
+    labelCache.key = null;
+    if (deckgl) { deckgl.setProps({ views: makeView(), initialViewState: state.viewState }); redraw(); }
+  }
+  let spinTimer = null;
+  function setSpin(on) {
+    state.spin = on && state.view3d; $("spin").checked = state.spin;
+    if (spinTimer) cancelAnimationFrame(spinTimer);
+    spinTimer = null;
+    const step = () => {
+      if (!state.spin) return;
+      state.viewState = { ...state.viewState, rotationOrbit: (state.viewState.rotationOrbit || 0) + 0.12 };
+      deckgl.setProps({ initialViewState: state.viewState });
+      spinTimer = requestAnimationFrame(step);
+    };
+    if (state.spin) spinTimer = requestAnimationFrame(step);
+  }
+
+  function refreshAll() { applyFilters(); recolor(); redraw(); }
+  function switchModel(key) {
+    state.model = key;
+    if (state.view3d && !has3d()) setView3d(false);
+    buildAdjacency(); buildBins(); labelCache.key = null;
+    if (state.routeFrom != null && state.routeTo != null) computeRoute();
+    if (state.likes.length) renderLikes();
+    recolor(); renderDetail(); redraw();
+  }
+
+  async function init() {
+    T = themeColors();
+    let manifest, films;
+    try {
+      [manifest, films] = await Promise.all([fetch("data/manifest.json").then((r) => r.json()), fetch("data/films.json").then((r) => r.json())]);
+    } catch (err) {
+      $("status").textContent = "The map data didn't load. Run src/export.py, then serve this folder over HTTP.";
+      return;
+    }
+    Object.assign(state, { manifest, films, n: films.id.length, model: manifest.models[0].key });
+    const man = state.manifest;
+    $("title").textContent = man.title;
+    document.title = man.title;
+    $("note").textContent = `${state.n.toLocaleString()} films placed by what their plots say · data from TMDB, IMDb and Wikipedia`;
+    $("model").innerHTML = man.models.map((m) => `<option value="${m.key}">${esc(m.label)}</option>`).join("");
+    $("modelWrap").hidden = man.models.length < 2;
+    const genreOptions = man.genres.map((t, i) => `<option value="${i}">${esc(t)}</option>`).join("");
+    $("genreSel").innerHTML = genreOptions;
+    $("genreFilter").innerHTML += genreOptions;
+    lowerNames = films.name.map((s) => s.toLowerCase());
+    genreSets = films.genre.map((a) => new Set(a));
+    const years = films.year.filter((y) => y != null).sort((a, b) => a - b);
+    $("timeRange").min = Math.max(1900, years[Math.floor(years.length * 0.01)]);
+    $("timeRange").max = years[years.length - 1];
+    state.latestYear = years[years.length - 1];
+    const personCounts = new Array(man.people.length).fill(0);
+    films.dir.forEach((ds, i) => new Set(ds.concat(films.cast[i])).forEach((d) => { personCounts[d]++; }));
+    const peopleSource = { names: man.people, lower: man.people.map((s) => s.toLowerCase()), counts: personCounts };
+    // Overviews are the biggest file and only the film card needs them, so they arrive after the map.
+    fetch("data/blurbs.json").then((r) => r.json()).then((b) => { state.blurbs = b; if (state.selected != null) renderDetail(); }).catch(() => {});
+
+    const m = await loadModel(state.model);
+    state.view3d = !!m.z3;   // both themes open in 3D; the 2D layout is one click away
+    $("viewRow").hidden = !m.z3;
+    state.viewState = fitView(m);
+    // deck.gl draws label text into a font atlas once, so wait (briefly) for the web fonts first.
+    await Promise.race([
+      Promise.all(["600 16px Oswald", '700 16px "Courier Prime"'].map((f) => document.fonts.load(f))),
+      new Promise((r) => setTimeout(r, 2500)),
+    ]).catch(() => {});
+    setTheme();
+    buildAdjacency(); buildBins();
+    applyFilters(); resize(); assignIcons(); recolor();
+    deckgl = new deck.Deck({
+      parent: $("map"), views: makeView(),
+      initialViewState: state.viewState, controller: true, layers: layers(),
+      // The first label pass runs before a viewport exists; redo it with the real projection.
+      onLoad: () => { labelCache.key = null; redraw(); },
+      onViewStateChange: ({ viewState, interactionState }) => {
+        const relabel = viewKey(viewState) !== viewKey(state.viewState);
+        if (interactionState && (interactionState.isDragging || interactionState.isZooming) && state.spin) setSpin(false);
+        state.viewState = viewState; hideSuggest();
+        if (relabel) redraw();
+      },
+      getCursor: ({ isHovering, isDragging }) => (isDragging ? "grabbing" : isHovering ? "pointer" : armed ? "crosshair" : "grab"),
+    });
+    $("status").hidden = true;
+    initClicks();
+
+    // Map tab
+    $("colorBy").addEventListener("change", (e) => { state.colorBy = e.target.value; $("genreWrap").hidden = state.colorBy !== "genre"; recolor(); redraw(); });
+    $("genreSel").addEventListener("change", (e) => { state.genre = +e.target.value; recolor(); redraw(); });
+    $("model").addEventListener("change", async (e) => {
+      $("status").hidden = false; $("status").textContent = "Loading layout…";
+      await loadModel(e.target.value);
+      $("status").hidden = true;
+      switchModel(e.target.value);
+      if (state.selected != null) flyTo(pos(state.selected));
+    });
+    const num = (id) => { const v = $(id).value; return v === "" ? null : +v; };
+    ["yearMin", "yearMax", "rMin", "rMax"].forEach((id) => $(id).addEventListener("input", () => { state.filters[id] = num(id); refreshAll(); }));
+    $("genreFilter").addEventListener("change", () => { state.filters.genre = num("genreFilter"); refreshAll(); });
+    $("sizePop").addEventListener("change", (e) => { state.sizePop = e.target.checked; resize(); redraw(); });
+    $("showTiles").addEventListener("change", (e) => { state.showTiles = e.target.checked; redraw(); });
+    $("view3d").checked = state.view3d; $("spin").disabled = !state.view3d;
+    $("view3d").addEventListener("change", (e) => setView3d(e.target.checked));
+    $("spin").addEventListener("change", (e) => setSpin(e.target.checked));
+    $("reset").addEventListener("click", () => {
+      ["yearMin", "yearMax", "rMin", "rMax", "genreFilter"].forEach((id) => { $(id).value = ""; });
+      Object.keys(state.filters).forEach((k) => { state.filters[k] = null; });
+      refreshAll();
+    });
+    ["map", "personal", "explore"].forEach((t) => $("tab-" + t).addEventListener("click", () => selectTab(t)));
+    $("themeBtn").addEventListener("click", () => setTheme(isDark() ? "light" : "dark"));
+    $("clearHL").addEventListener("click", () => {
+      setHighlight(null);
+      ["gemsBtn", "gapsBtn"].forEach((id) => $(id).setAttribute("aria-pressed", "false")); $("gemsList").innerHTML = "";
+      redraw();
+    });
+
+    // Film boxes: type a title, or click the map while the box is focused
+    initSearchUi();
+    attachSearch($("q"), (i, input) => { input.value = state.films.name[i]; select(i, true); });
+    attachSearch($("likeQ"), (i, input) => { input.value = ""; addLike(i); });
+    attachSearch($("gnSimilar"), (i, input) => { input.value = ""; if (!state.gnSeeds.includes(i)) state.gnSeeds.push(i); renderGnChips(); });
+    attachSearch($("routeFrom"), (i) => setRouteEnd("from", i));
+    attachSearch($("routeTo"), (i) => setRouteEnd("to", i));
+    attachSearch($("designerQ"), personPicked, peopleSource);
+
+    // Explore + personal
+    const setMode = (mode) => {
+      state.routeMode = mode;
+      $("modeInfluence").setAttribute("aria-pressed", String(mode === "influence")); $("modeSimilar").setAttribute("aria-pressed", String(mode === "similar"));
+      computeRoute();
+    };
+    $("modeInfluence").addEventListener("click", () => setMode("influence"));
+    $("modeSimilar").addEventListener("click", () => setMode("similar"));
+    $("routeClear").addEventListener("click", () => { state.routeFrom = state.routeTo = null; $("routeFrom").value = $("routeTo").value = ""; computeRoute(); });
+    $("timeOpen").addEventListener("click", openTime);
+    $("timePlay").addEventListener("click", play);
+    $("timeClose").addEventListener("click", closeTime);
+    $("timeRange").addEventListener("input", (e) => { pause(); setYear(+e.target.value); });
+    $("timebar").addEventListener("wheel", (e) => {
+      e.preventDefault(); pause();
+      const r = $("timeRange");
+      setYear(Math.min(+r.max, Math.max(+r.min, +r.value + (e.deltaY > 0 ? 1 : -1))));
+    }, { passive: false });
+    $("gemsBtn").addEventListener("click", toggleGems);
+    $("gapsBtn").addEventListener("click", toggleGaps);
+    $("gnGo").addEventListener("click", curate);
+    window.addEventListener("resize", hideSuggest);
+
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => setTheme());
+    new MutationObserver(() => { if (isDark() !== T.dark) setTheme(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>

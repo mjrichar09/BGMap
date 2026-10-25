@@ -70,6 +70,37 @@ Movies run through stages 1–3 of their own and then share stages 4–6 with bo
 - **Some non-English films have no English overview,** because TMDB doesn't fall back to another language. Parse uses the original-language overview in that case (recorded in `text_lang`), since Qwen3-Embedding is multilingual. Watch whether those films cluster by language rather than content.
 - **Popularity bias.** A vote threshold favors recent and English-language films. Check this in the confound scan by coloring the map by language and decade.
 
+**First movie map (Oct 24).** All 36,841 films, embedded five ways. Tag agreement is the share of each film's 10 nearest neighbors that share at least one genre or keyword. The last column is, for films using a non-English overview, the share of their neighbors that also use one.
+
+| Embedding | Genre | Keyword | Language clumping |
+| --- | --- | --- | --- |
+| Random baseline | 0.435 | 0.034 | 0.01 |
+| bge, overview | 0.775 | 0.272 | |
+| bge, plot (52% cut off at 512 tokens) | 0.803 | 0.295 | 0.53 |
+| Qwen3, overview | 0.756 | 0.264 | |
+| Qwen3, plot | 0.787 | 0.273 | 0.06 |
+| **Qwen3, plot, with instruction** | **0.864** | **0.331** | **0.06** |
+
+- **Qwen3 needs a task instruction.** Without one, it scores below the much smaller bge. With `Instruct: Given a movie's plot summary, represent its genre, themes, setting and tone for grouping similar films`, it leads by a wide margin. Use an instruction for board games too.
+- **Plots beat overviews** with every model, by 3–5 points on genre for films that have one.
+- **English-only models clump non-English text.** bge put the Italian-overview films in their own island. Qwen3 doesn't.
+- **Spot check:** most neighbors are right (Heat → L.A. Takedown; Groundhog Day → time-loop films; Spirited Away → Ghibli and anime). Failure log so far:
+  - The title in the embedded text pulls same-named films together (Parasite 2019 → Parasite 1982).
+  - Plots capture premise, not tone (Get Out → body-swap horror; Grand Budapest Hotel → old European hotel films).
+- **Indian cinema forms its own island** (962 films, 89% made in India). It includes Western films set in India, so it's driven by setting, not language. Still, worth a look in the confound scan.
+- **Time:** about 11 minutes for Qwen3 on the plots (19M tokens) on the RTX 3080.
+- **The title stays in the text.** Removing it (`--no-title`) cut unrelated same-title neighbors only from 3.5% to 2.9% for the 4,517 films that share a title, lowered genre agreement slightly (0.864 → 0.857), and loosened franchises (Fury Road lost most of the Mad Max films). It did fix Parasite.
+- **UMAP sweep** (Qwen3, plot, with instruction). The table shows the share of each film's 10 nearest neighbors in the full embedding that are still among its 10 nearest in 2D.
+
+  | n_neighbors | min_dist 0.05 | 0.1 | 0.2 |
+  | --- | --- | --- | --- |
+  | 15 | 13.0% | 12.0% | 9.9% |
+  | 30 | 11.0% | 10.0% | 8.2% |
+  | 50 | 9.7% | 8.9% | 7.3% |
+
+  The chosen default is **30 / 0.05**: nearly the best local detail, without the fragmenting at 15. Regions agree only moderately across n_neighbors settings (adjusted Rand index 0.52–0.68), so treat them as cuts through a continuous space, not natural kinds.
+- **Interim labels hold up.** Regions are named by unique tag triples. Fine clusters are named by keywords scored against their parent region (gangster/mafia, buddy cop, serial killer, zombie apocalypse, samurai/jidaigeki, South Korean thrillers), or by their two best-known titles when no keyword stands out (5 of 126). Hover cards show the region › cluster path and three example films. LLM labels are deferred. Options: Claude writing them in-session, or a local 8B model on the 3080.
+
 ## Pipeline architecture
 
 A plain Python pipeline of six scripts, each reading the previous stage's file and writing its own. Nothing past stage 2 touches the network, so embedding and mapping can be rerun freely.
@@ -83,13 +114,13 @@ Stage 2 is the slow, rate-limited one; it resumes from its cache if interrupted.
 - `data/<domain>/raw/` — cached API responses (gitignored); `<domain>` is `boardgames` or `movies`
 - `data/<domain>/` — `ids.csv`, `items.parquet`, `embeddings.npy`, `map.parquet`
 - `src/boardgames/`, `src/movies/` — stages 1–3 for each domain: `ids.py`, `fetch.py`, `parse.py`
-- `src/` — shared stages that take `--domain`: `embed.py`, `project.py`, `label.py`, plus `common.py`
+- `src/` — shared stages that take `--domain`: `embed.py`, `project.py`, `label.py`, `render.py` (datamapplot previews), `export.py` (JSON for the interactive page, written to `data/<domain>/site/`), plus `common.py`
+- `web/` — the interactive map pages. `movies_map.html` is a port of the board game page (`web/map.html` on the `claude/nifty-brahmagupta-b9b2yu` branch): the same search, film card, routes, region guide, time-lapse, gems and both themes, with runtime, IMDb rating, US rating, genres and a people lens instead of weight, players, mechanics and designers. The two should become one template once the board game branch is merged.
 
 Every domain's `items.parquet` starts with the same core columns (`id, name, year, text, word_count, short_text, thumbnail`), followed by that domain's own overlay columns, so the shared stages don't need to know which domain they're running on.
-- `web/` — the interactive map page
 - `notebooks/` — evaluation and parameter sweeps
 
-**Stack:** Python 3.12, `requests`, `lxml`, `pandas`/`pyarrow`, `sentence-transformers`, `umap-learn`, `hdbscan`, `datamapplot`.
+**Stack:** Python 3.14 (CUDA PyTorch, numba and UMAP all support it now), `requests`, `lxml`, `pandas`/`pyarrow`, `sentence-transformers`, `umap-learn`, `scikit-learn` (its built-in HDBSCAN replaces the `hdbscan` package), `datamapplot`.
 
 ## Embedding
 
@@ -117,9 +148,9 @@ Project to 2D with UMAP for the picture, but cluster in a higher-dimensional UMA
 
 1. **UMAP to 2D** for display: cosine metric, `n_neighbors` 15–50, `min_dist` 0.05–0.2, fixed `random_state`. Sweep a small grid and save each layout.
 2. **UMAP to \~10D** for clustering, same neighbors setting.
-3. **HDBSCAN** on the 10D output. Start with `min_cluster_size` around 30 and sweep it; expect a share of points labeled noise, which is fine.
+3. **HDBSCAN** on the 10D output. Start with `min_cluster_size` around 30 and sweep it. *Movies showed that HDBSCAN alone isn't enough.* The space is one continuous mass around dense pockets, so HDBSCAN marked about 60% of films as noise at any setting, and at large sizes it found only 2 clusters. Now HDBSCAN (min size 40) finds the dense fine clusters, and every other point joins the cluster most common among its 15 nearest clustered neighbors. A `core` flag keeps track of which points HDBSCAN placed itself.
 4. **Label clusters.** For each cluster, send the 20 most central game names plus their top mechanics and categories to an LLM and ask for a 2–5 word label. Tags are allowed here because they only name clusters, they don't place games. This is a few hundred cheap API calls.
-5. **Hierarchy (optional).** `datamapplot` supports multi-level labels; run HDBSCAN at two cluster sizes to get broad regions and fine sub-clusters.
+5. **Hierarchy.** Broad regions (default 20) are Ward merges of the fine cluster centers, so the two levels nest. `datamapplot` shows the regions zoomed out and the fine clusters when zoomed in. Until the LLM labeling step is wired up, `label.py` names clusters by their most distinctive genres and keywords (share in the cluster weighted by lift).
 
 Output: `map.parquet` with id, x, y, cluster id, cluster label and every overlay field, ready for the web page.
 
