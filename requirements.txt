@@ -1,3 +1,10 @@
 requests
 pandas
 pyarrow
+# Install CUDA PyTorch first so pip doesn't pull the CPU build:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu130
+torch
+sentence-transformers
+umap-learn
+scikit-learn
+datamapplot
