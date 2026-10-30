@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://massive-movie-map.mjrfx.com/sitemap.xml
