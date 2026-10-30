@@ -1,0 +1,41 @@
+{
+  "provider": "kokoro",
+  "speed": "1.1",
+  "lines": [
+    {
+      "id": "01",
+      "text": "Some filmmakers never make the same movie twice. Others make it again and again."
+    },
+    {
+      "id": "02",
+      "text": "Fold thirty-six thousand plots onto their two biggest differences: romance to action, and crime to animation."
+    },
+    {
+      "id": "03",
+      "text": "Ridley Scott's thirty-one films land all over the map. Alien. Gladiator. Black Hawk Down. The Martian. Plot similarity: zero point four eight."
+    },
+    {
+      "id": "04",
+      "text": "Jason Staythum's forty-three films? Most of them crowd one corner. Crank. The Transporter. The Expendables. Plot similarity: zero point six nine."
+    },
+    {
+      "id": "05",
+      "text": "Among the biggest stars, Benedict Cumberbatch has the widest range. Jason Staythum, the narrowest."
+    },
+    {
+      "id": "06",
+      "text": "Also near the top: Paul Walker, Michelle Rodriguez and Vin Diesel. One franchise can typecast a whole cast."
+    },
+    {
+      "id": "07",
+      "text": "Look up your favorite director. Massive Movie Map."
+    }
+  ],
+  "bgm": {
+    "mode": "retrieve",
+    "query": "same bed family as video 1 (take 11 part A + sustained takes, G minor / D minor)",
+    "blob": "The model can tell which filmmakers and stars keep making the same movie: Ridley Scott never repeats, Jason Statham always does.",
+    "arc": "Hook → Mechanism (PCA) → Proof A (range) → Proof B (typecast) → Ranking chart → Franchise twist → CTA"
+  },
+  "voice": "af_heart"
+}

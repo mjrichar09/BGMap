@@ -1,0 +1,30 @@
+# Video projects: commit the sources (brief, storyboard, script, compositions, chart data, helper
+# scripts), not the media. Clips, audio, posters, fonts and renders are large or not ours to
+# redistribute (posters are TMDB images); they regenerate from the scripts here and in src/.
+*/assets/clips/
+*/assets/voice/
+*/assets/bgm/
+*/assets/sfx/
+*/assets/posters/
+*/assets/fonts/
+*/assets/*.jpg
+*/assets/*.svg
+*/capture/
+*/renders/
+*/snapshots/
+*/storyboard-stills/
+*/voice-samples/
+*/music-preview/
+*/*.mp3
+*/.media/
+*/node_modules/
+*/.hyperframes/*.wav
+*/.hyperframes/check.json
+*/.hyperframes/frame-packets/
+
+# Chart data and marker tracks are small and needed to rebuild the frames (the root .gitignore excludes data/ dirs).
+!*/assets/data/
+
+# Poster first frames: the HTML and script are the source; the captured PNGs and background stills regenerate.
+posters/*.png
+posters/*.jpg

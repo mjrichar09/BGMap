@@ -1,0 +1,169 @@
+<template id="01-count-template">
+<div id="root" data-composition-id="01-count" data-width="1080" data-height="1080" data-duration="4.88">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face{
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-u-4k0q2lgwslOqpF_6gQ8kELY7pMT-7fq9PrNX2-Ag.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-u-4k0q2lgwslOqpF_6gQ8kELY7pMT-Dfq9PrNX0.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlYHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+#root {
+  position: relative;
+  width: 1080px;
+  height: 1080px;
+  overflow: hidden;
+  container-type: size;
+  /* transparent: the approved spin.mp4 is mounted underneath by the assembler */
+}
+.\30 1-count-layer { position: absolute; inset: 0; pointer-events: none; }
+
+/* overall dim on the footage, settles at 50% for the handoff to frame 2 */
+#\30 1-count-dim { background: #0B0807; opacity: 0; }
+
+/* soft radial dim behind the counter for legibility (sketch: ellipse 55% 30% at 50% 47%) */
+#\30 1-count-radial {
+  background: radial-gradient(ellipse 72% 40% at 50% 45%, rgba(11,8,7,.94), rgba(11,8,7,.7) 55%, rgba(11,8,7,.25) 100%);
+  opacity: 0;
+}
+
+/* faint projector beam from the top */
+#\30 1-count-beam {
+  background: radial-gradient(ellipse 60% 95% at 50% -12%, rgba(255,196,120,.18), transparent 70%);
+  opacity: 0;
+}
+
+/* counter block: top 34cqw, centered */
+#\30 1-count-stack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 34cqw;
+  text-align: center;
+}
+#\30 1-count-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  width: 100%;
+}
+#\30 1-count-number {
+  display: inline-block;
+  width: 6.6ch;               /* fixed width: no layout shift as digit count grows */
+  font-family: "Courier Prime", monospace;
+  font-weight: 700;
+  font-size: 19cqw;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #FFB547;
+  text-shadow: 0 0 6cqw rgba(255,181,71,.35);
+  transform-origin: center center;
+  white-space: nowrap;
+}
+#\30 1-count-label {
+  margin-top: 2cqw;
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  font-size: 4.2cqw;          /* ~45px, above the 26px label floor */
+  line-height: 1;
+  letter-spacing: .2em;
+  padding-left: .2em;         /* optically recentre the tracked word */
+  text-transform: uppercase;
+  color: #F3E6D0;
+}
+
+/* cold-open black, fades away over 0-1.0s */
+#\30 1-count-black { background: #000; }
+</style>
+
+<!-- Approved map footage, hoisted to the host root by the assembler; continues into frame 2 -->
+<!-- approved frame video hoisted by assemble-index -->
+
+<div id="01-count-dim" class="clip 01-count-layer" data-start="0" data-duration="4.88" data-track-index="2"></div>
+<div id="01-count-radial" class="clip 01-count-layer" data-start="0" data-duration="4.88" data-track-index="3"></div>
+<div id="01-count-beam" class="clip 01-count-layer" data-start="0" data-duration="4.88" data-track-index="4"></div>
+
+<div id="01-count-stack" class="clip" data-start="0" data-duration="4.88" data-track-index="5">
+  <div id="01-count-wrap"><span id="01-count-number">0</span></div>
+  <div id="01-count-label">Films</div>
+</div>
+
+<div id="01-count-black" class="clip 01-count-layer" data-start="0" data-duration="4.88" data-track-index="6"></div>
+
+<script>
+(function () {
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+
+  function q(id) { return document.getElementById(id); }
+  var numEl = q("01-count-number");
+  var TARGET = 36841;
+  var COUNT_AT = 1.00;              // "Thirty-six"
+  var LAND_AT = 2.72;               // "forty-one"
+  var COUNT_DUR = LAND_AT - COUNT_AT;
+  var FILMS_AT = 3.30;              // "films."
+  var START_SCALE = 0.6;            // value-scaled counter: grows 60% -> 100%
+
+  function fmt(n) {
+    // deterministic comma grouping (no locale dependence)
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  // Scene 1 (0-1.0s): cold open, the cloud fades up from black; beam comes up with it
+  tl.fromTo(q("01-count-black"), { opacity: 1 }, { opacity: 0, duration: 1.0, ease: "power2.inOut" }, 0);
+  tl.fromTo(q("01-count-beam"), { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "power2.out" }, 0.2);
+
+  // Scene 2 (1.0-3.3s): dim settles behind the counter; counter rolls 0 -> 36,841, landing on "forty-one"
+  tl.fromTo(q("01-count-dim"), { opacity: 0 }, { opacity: 0.6, duration: 0.8, ease: "power3.out" }, COUNT_AT - 0.1);
+  tl.fromTo(q("01-count-radial"), { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power3.out" }, COUNT_AT - 0.1);
+
+  var state = { value: 0 };
+  tl.fromTo(state, { value: 0 }, {
+    value: TARGET,
+    duration: COUNT_DUR,
+    ease: "power2.out",
+    onUpdate: function () {
+      numEl.textContent = fmt(Math.round(state.value));
+    }
+  }, COUNT_AT);
+  tl.fromTo(numEl, { scale: START_SCALE }, { scale: 1, duration: COUNT_DUR, ease: "power2.out" }, COUNT_AT);
+  tl.fromTo(numEl, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, COUNT_AT);
+
+  // Scene 3 (3.3-4.38s): FILMS rises in under the number on "films.", then hold still
+  tl.fromTo(q("01-count-label"), { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, FILMS_AT);
+
+  // pad the timeline to the full frame duration (hold)
+  tl.set({}, {}, 4.38);
+
+  window.__timelines["01-count"] = tl;
+})();
+</script>
+</div>
+</template>

@@ -1,0 +1,45 @@
+{
+  "provider": "kokoro",
+  "speed": "1.1",
+  "lines": [
+    {
+      "id": "01",
+      "text": "Color the movie map by originality: how unlike its closest neighbors each plot is."
+    },
+    {
+      "id": "02",
+      "text": "Audiences rate original moovees higher. From the most crowded fifth to the most original, ratings climb at every step."
+    },
+    {
+      "id": "03",
+      "text": "But the crowded ones earn twice as much: a median box office of thirty-three million dollars, against sixteen."
+    },
+    {
+      "id": "04",
+      "text": "And the most original hits are based on true stories: The King's Speech. The Social Network. The Big Short. Hidden Figures."
+    },
+    {
+      "id": "05",
+      "text": "Follow the money, and superheroes lead: a median of two hundred sixty-eight million dollars a film."
+    },
+    {
+      "id": "06",
+      "text": "But per dollar spent, James Bond returns five point seven times his budget. Slashers, four times. Political dramas barely break even."
+    },
+    {
+      "id": "07",
+      "text": "And over seventy years, westerns fell from one film in ten... to one in a hundred, while thrillers more than doubled."
+    },
+    {
+      "id": "08",
+      "text": "Color the map your way. Massive Movie Map."
+    }
+  ],
+  "bgm": {
+    "mode": "retrieve",
+    "query": "same bed family as video 1 (take 11 part A + sustained takes, G minor / D minor)",
+    "blob": "Audiences rate original movies higher, but Hollywood's money follows the crowded, familiar ones.",
+    "arc": "Hook → Finding (rating) → Twist (money) → Surprise (true stories) → Money map → Per-dollar ranking → Trend over time → CTA"
+  },
+  "voice": "af_heart"
+}

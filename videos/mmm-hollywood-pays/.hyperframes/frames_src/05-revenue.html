@@ -1,0 +1,448 @@
+<template id="05-revenue-template">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face{
+  font-family: 'Abril Fatface';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-zOL64pLDlL1D99S8g8PtiKchq-lmjcDidBeT5g.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Abril Fatface';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-zOL64pLDlL1D99S8g8PtiKchq-dmjcDidBc.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-u-450q2lgwslOqpF_6gQ8kELaw9pWs39pvnRPA.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-u-450q2lgwslOqpF_6gQ8kELawFpWs39pvk.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-u-4k0q2lgwslOqpF_6gQ8kELY7pMT-7fq9PrNX2-Ag.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-u-4k0q2lgwslOqpF_6gQ8kELY7pMT-Dfq9PrNX0.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Limelight';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-XLYkIZL7aopJVbZJHDuoNOlHjHUmTUFt.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Limelight';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-XLYkIZL7aopJVbZJHDuoOulHjHUmTQ.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlbHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlSHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlZHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlYHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlbHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlSHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlZHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlYHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlbHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlSHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlZHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlYHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+#root {
+  position: relative;
+  width: 1080px;
+  height: 1080px;
+  overflow: hidden;
+  /* transparent: the approved map clip is mounted underneath this frame */
+  color: #F3E6D0;
+  font-family: "Work Sans", sans-serif;
+}
+#root * { box-sizing: border-box; }
+
+/* soft dims only where the type sits */
+#rev05-dim-title {
+  position: absolute; left: 0; top: 0; width: 1080px; height: 1080px;
+  background: radial-gradient(ellipse 660px 460px at 0% 0%, rgba(11,8,7,.72), rgba(11,8,7,0) 72%);
+  pointer-events: none;
+}
+#rev05-dim-panel {
+  position: absolute; left: 0; top: 0; width: 1080px; height: 1080px;
+  background: radial-gradient(ellipse 760px 420px at 66% 58%, rgba(11,8,7,.5), rgba(11,8,7,0) 75%);
+  pointer-events: none;
+}
+
+/* title block, top-left */
+#rev05-title-block {
+  position: absolute; left: 56px; top: 52px; width: 720px;
+}
+#rev05-eyebrow {
+  font: 600 26px/1 "Oswald", sans-serif; letter-spacing: 3px; text-transform: uppercase;
+  color: #FFB547;
+}
+#rev05-title {
+  margin-top: 14px;
+  font: 400 84px/0.95 "Limelight", serif; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #F3E6D0; white-space: nowrap;
+}
+#rev05-legend {
+  margin-top: 22px; width: 340px;
+}
+#rev05-legend-bar {
+  width: 340px; height: 14px;
+  background: linear-gradient(90deg, #440154 0%, #3b528b 25%, #21918c 50%, #5ec962 75%, #fde725 100%);
+  transform-origin: left center;
+}
+#rev05-legend-labels {
+  margin-top: 8px; width: 340px;
+  display: flex; justify-content: space-between;
+  font: 700 26px/1 "Courier Prime", monospace; color: #B39C80;
+}
+
+/* superhero panel, center-right */
+#rev05-panel {
+  position: absolute; left: 318px; top: 392px; width: 710px; height: 412px;
+  background: rgba(11,8,7,.9);
+  border: 1.5px solid rgba(255,181,71,.7);
+  padding: 30px 32px;
+}
+#rev05-poster {
+  position: absolute; left: 32px; top: 30px; width: 170px; height: 255px;
+  object-fit: cover; display: block;
+  border: 1px solid rgba(243,230,208,.25);
+}
+#rev05-col {
+  position: absolute; left: 234px; top: 30px; width: 444px; height: 255px;
+}
+#rev05-cluster {
+  font: 400 46px/1 "Limelight", serif; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #F3E6D0; white-space: nowrap;
+}
+#rev05-label {
+  margin-top: 26px;
+  font: 600 26px/1.2 "Oswald", sans-serif; letter-spacing: 2px; text-transform: uppercase;
+  color: #B39C80;
+}
+#rev05-num-wrap {
+  position: absolute; left: 0; top: 146px; width: 444px; height: 112px;
+}
+#rev05-num {
+  display: inline-block;
+  font: 700 112px/1 "Courier Prime", monospace; color: #FFB547;
+  white-space: nowrap; font-variant-numeric: tabular-nums;
+  transform-origin: left bottom;
+}
+#rev05-source {
+  position: absolute; left: 32px; top: 312px; width: 646px;
+  font: 400 22px/1.35 "Work Sans", sans-serif; color: #B39C80;
+}
+#rev05-rule {
+  position: absolute; left: 32px; top: 298px; width: 646px; height: 1.5px;
+  background: rgba(255,181,71,.45); transform-origin: left center;
+}
+</style>
+
+<div id="root" data-composition-id="05-revenue" data-start="0" data-duration="6.153" data-width="1080" data-height="1080">
+
+  <video id="rev05-video" data-frame-video="approved" src="assets/clips/revenue.mp4" muted playsinline
+    data-start="0" data-duration="6.153" data-track-index="1"
+    data-frame-video-x="0" data-frame-video-y="0" data-frame-video-width="1080" data-frame-video-height="1080"
+    data-frame-video-fit="cover"></video>
+
+  <div id="rev05-dim-title" class="clip" data-start="0" data-duration="6.153" data-track-index="2"></div>
+  <div id="rev05-dim-panel" class="clip" data-start="0" data-duration="6.153" data-track-index="3"></div>
+
+  <div id="rev05-title-block" class="clip" data-start="0" data-duration="6.153" data-track-index="4">
+    <div id="rev05-eyebrow">Color by</div>
+    <div id="rev05-title">Box office</div>
+    <div id="rev05-legend">
+      <div id="rev05-legend-bar"></div>
+      <div id="rev05-legend-labels"><span>$</span><span>$$$</span></div>
+    </div>
+  </div>
+
+  <div id="rev05-panel" class="clip" data-start="0" data-duration="6.153" data-track-index="5">
+    <img id="rev05-poster" src="assets/posters/avengers-endgame-2019.jpg" alt="">
+    <div id="rev05-col">
+      <div id="rev05-cluster">Superheroes</div>
+      <div id="rev05-label">Median box office<br>per superhero film</div>
+      <div id="rev05-num-wrap"><span id="rev05-num">$0M</span></div>
+    </div>
+    <div id="rev05-rule"></div>
+    <div id="rev05-source">TMDB box office, not adjusted for inflation; superhero cluster, films with known box office</div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    window.__timelines = window.__timelines || {};
+    var DURATION = 6.153;
+    var MEDIAN_M = 268; // stats.json: superheroes_median_box_office_m
+    var tl = gsap.timeline({ paused: true });
+
+    // ---- Scene 1 "Follow"@0.00: COLOR BY / BOX OFFICE + viridis legend ----
+    tl.fromTo("#rev05-dim-title", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 0);
+    tl.fromTo("#rev05-eyebrow", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0);
+    tl.fromTo("#rev05-title", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 0.08);
+    tl.fromTo("#rev05-legend-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power3.out" }, 0.44);
+    tl.fromTo("#rev05-legend-labels", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 0.7);
+
+    // ---- Scene 2 "superheroes"@1.26: dark panel lands center-right with the poster ----
+    tl.fromTo("#rev05-dim-panel", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, 1.2);
+    tl.fromTo("#rev05-panel", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 1.26);
+    tl.fromTo("#rev05-poster", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 1.4);
+    tl.fromTo("#rev05-cluster", { opacity: 0, x: 24 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 1.5);
+    tl.fromTo("#rev05-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out" }, 1.7);
+    tl.fromTo("#rev05-source", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 1.9);
+
+    // ---- Scene 3 "median"@2.88: label, then $0M -> $268M count-up with scale growth ----
+    tl.fromTo("#rev05-label", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 2.88);
+    var num = document.getElementById("rev05-num");
+    var state = { v: 0 };
+    var COUNT_AT = 3.0, COUNT_END = 5.4, COUNT_DUR = COUNT_END - COUNT_AT;
+    tl.fromTo(num, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 2.95);
+    tl.fromTo(state, { v: 0 }, {
+      v: MEDIAN_M, duration: COUNT_DUR, ease: "power2.out",
+      onUpdate: function () { num.textContent = "$" + Math.round(state.v) + "M"; }
+    }, COUNT_AT);
+    tl.fromTo(num, { scale: 0.62 }, { scale: 1, duration: COUNT_DUR, ease: "power2.out" }, COUNT_AT);
+
+    // ---- Scene 4: hold ----
+    tl.to({}, { duration: DURATION }, 0);
+    window.__timelines["05-revenue"] = tl;
+  })();
+</script>
+</template>

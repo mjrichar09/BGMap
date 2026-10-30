@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Massive Movie Map — storyboard v2</title>
+<style>
+/*FONTFACES*/
+:root { --bg: #0b0807; --ink: #f3e6d0; --muted: #b39c80; --amber: #ffb547; --red: #c8102e; --cream: #efe6d2; --dark: #2a1a14; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #141010; color: var(--ink); font: 15px/1.5 "Work Sans", system-ui, sans-serif; padding: 32px; }
+header { max-width: 1500px; margin: 0 auto 26px; display: flex; align-items: end; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+header h1 { margin: 0; font: 400 40px/1 "Limelight", serif; text-transform: uppercase; letter-spacing: .05em; color: var(--amber); }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 70ch; }
+.tag { font: 600 13px "Oswald", sans-serif; letter-spacing: .14em; text-transform: uppercase; border: 1px solid rgba(255,181,71,.45); color: var(--amber); padding: 6px 10px; }
+.grid { max-width: 1500px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px 26px; }
+@media (max-width: 1000px) { .grid { grid-template-columns: 1fr; } }
+figure { margin: 0; }
+.cell { position: relative; aspect-ratio: 1 / 1; container-type: inline-size; overflow: hidden; background: var(--bg); border: 1px solid #2c2420; }
+.cell .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cell .dim { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(11,8,7,.15), rgba(11,8,7,.75)); }
+.cell .beam { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 95% at 50% -12%, rgba(255,196,120,.18), transparent 70%); }
+/* Caption keep-out band: the burned-in captions live in the bottom 17%. */
+.cap { position: absolute; left: 6cqw; right: 6cqw; bottom: 4.5cqw; height: 9cqw; display: grid; place-items: center; text-align: center;
+  font: 600 4.1cqw/1.15 "Work Sans", sans-serif; color: var(--ink); background: rgba(11,8,7,.72); outline: 1px dashed rgba(255,181,71,.35); padding: 0 3cqw; }
+.eyebrow { font: 600 3cqw/1 "Oswald", sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--amber); }
+.lime { font-family: "Limelight", serif; text-transform: uppercase; letter-spacing: .05em; font-weight: 400; }
+.mono { font-family: "Courier Prime", monospace; }
+figcaption { padding-top: 10px; }
+.row { display: flex; justify-content: space-between; font: 600 13px "Oswald", sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+.row span:last-child { color: var(--muted); }
+.note { margin: 6px 0 8px; color: #d9c8ae; font-size: 14px; }
+.chip { display: inline-block; font: 600 11px "Oswald", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--bg); background: var(--amber); padding: 3px 8px; }
+.ticket { position: absolute; background: var(--cream); color: var(--dark); border-radius: 1.4cqw; }
+.ticket::before, .ticket::after { content: ""; position: absolute; top: 50%; width: 5cqw; height: 5cqw; margin-top: -2.5cqw; border-radius: 50%; background: var(--bg); }
+.ticket::before { left: -2.5cqw; } .ticket::after { right: -2.5cqw; }
+.poster { display: block; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border: .6cqw solid var(--dark); }
+.panel { position: absolute; background: rgba(26,17,12,.9); border: 1px solid rgba(255,181,71,.38); }
+.block { border: 1px dashed rgba(255,181,71,.5); color: var(--muted); display: grid; place-items: center; text-align: center; font: 600 2.6cqw "Oswald", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.seams { display: flex; flex-direction: column; justify-content: center; gap: 2.2cqw; padding: 6cqw; }
+.seam { display: grid; grid-template-columns: 20cqw 1fr; align-items: center; font: 600 4.6cqw "Oswald", sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.seam b { color: var(--amber); font-family: "Courier Prime", monospace; font-size: 4.6cqw; }
+.tokens { padding: 6cqw; display: flex; flex-direction: column; gap: 1.6cqw; }
+.sw { display: flex; gap: 2cqw; } .sw div { width: 16cqw; height: 16cqw; border: 1px solid #3a302a; font: 3.2cqw "Courier Prime"; display: flex; align-items: end; padding: 1cqw; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Massive Movie Map · storyboard v2</h1>
+    <p>A 45-second X post. An AI read 36,841 movie plots and drew a map of cinema, and it found things nobody told it. Real map footage from the live site, Late Show theme, burned-in captions (dashed band).</p>
+  </div>
+  <span class="tag">1080×1080 · ~52s · 9 frames</span>
+</header>
+
+<main class="grid">
+
+<!-- 01 -->
+<figure>
+  <div class="cell" id="frame-01">
+    <img class="bg" src="storyboard-stills/spin-3.jpg" alt="" style="filter:saturate(.75) brightness(.6)">
+    <div class="dim" style="background:radial-gradient(ellipse 55% 30% at 50% 47%, rgba(11,8,7,.85), rgba(11,8,7,.25) 100%)"></div><div class="beam"></div>
+    <div style="position:absolute;left:0;right:0;top:34cqw;text-align:center">
+      <div class="mono" style="font-size:19cqw;line-height:1;color:var(--amber);font-weight:700;text-shadow:0 0 6cqw rgba(255,181,71,.35)">36,841</div>
+      <div class="eyebrow" style="margin-top:2cqw;font-size:4.2cqw;color:var(--ink)">films</div>
+    </div>
+    <div class="cap">Thirty-six thousand, eight hundred forty-one films.</div>
+  </div>
+  <figcaption>
+    <div class="row"><span>01 · 36,841 films</span><span>hook · 0–3s</span></div>
+    <p class="note"><b>The cloud fades up out of black and turns slowly;</b> the Courier counter rolls up from 0 and lands as the voice says the number.</p>
+    <span class="chip">in: cut from black</span>
+  </figcaption>
+</figure>
+
+<!-- 02 -->
+<figure>
+  <div class="cell" id="frame-02">
+    <img class="bg" src="storyboard-stills/spin-7.jpg" alt="" style="filter:saturate(.6) brightness(.45)">
+    <div class="dim" style="background:radial-gradient(ellipse 70% 40% at 50% 42%, rgba(11,8,7,.8), rgba(11,8,7,.3))"></div><div class="beam"></div>
+    <div style="position:absolute;left:8cqw;right:8cqw;top:24cqw;text-align:center">
+      <div class="eyebrow">an AI read every plot</div>
+      <div class="lime" style="margin-top:4cqw;font-size:13cqw;line-height:.95;color:var(--amber)">Massive<br>Movie Map</div>
+      <div style="margin-top:4cqw;font-size:4.6cqw;color:var(--ink)">placed by what their plots say</div>
+    </div>
+    <div class="cap">An AI read every plot, and put similar stories side by side.</div>
+  </div>
+  <figcaption>
+    <div class="row"><span>02 · The idea</span><span>product intro · 3–7s</span></div>
+    <p class="note"><b>Same spin continues underneath, dimmed;</b> eyebrow first, then the title rises in, then the subline. Title holds while the cloud keeps turning.</p>
+    <span class="chip">in: crossfade</span>
+  </figcaption>
+</figure>
+
+<!-- 03 -->
+<figure>
+  <div class="cell" id="frame-03">
+    <img class="bg" src="storyboard-stills/goodfellas-7.jpg" alt="">
+    <div class="dim" style="background:linear-gradient(90deg,rgba(11,8,7,.1),rgba(11,8,7,.1) 45%,rgba(11,8,7,.7))"></div>
+    <div class="panel" style="left:5cqw;top:5cqw;right:40cqw;height:9cqw;display:flex;align-items:center;gap:2cqw;padding:0 2.5cqw">
+      <span style="font-size:4cqw;color:var(--amber)">⌕</span>
+      <span style="font-size:4.4cqw">GoodFellas<span style="color:var(--amber)">|</span></span>
+    </div>
+    <div class="panel" style="right:5cqw;top:22cqw;width:46cqw;padding:3cqw">
+      <div class="eyebrow" style="font-size:2.6cqw">closest neighbors</div>
+      <div style="margin-top:2.4cqw;display:grid;gap:2.2cqw;font-size:3.8cqw">
+        <div style="display:flex;justify-content:space-between"><span>American Gangster</span><b class="mono" style="color:var(--amber)">0.85</b></div>
+        <div style="display:flex;justify-content:space-between"><span>Carlito's Way</span><b class="mono" style="color:var(--amber)">0.85</b></div>
+        <div style="display:flex;justify-content:space-between"><span>The Irishman</span><b class="mono" style="color:var(--amber)">0.84</b></div>
+      </div>
+    </div>
+    <img src="capture/assets/posters/goodfellas-1990.jpg" alt="" style="position:absolute;left:5cqw;top:18cqw;width:15cqw;border:.5cqw solid var(--amber)">
+    <div class="cap">Nobody told it these were gangster films.</div>
+  </div>
+  <figcaption>
+    <div class="row"><span>03 · Search GoodFellas</span><span>demo · 7–16s</span></div>
+    <p class="note"><b>The search types itself, then the camera dives</b> from the whole cloud to GoodFellas' marker as amber lines fan out; each neighbor row slides in from the right as the voice names it.</p>
+    <span class="chip">in: cut</span>
+  </figcaption>
+</figure>
+
+<!-- 04 -->
+<figure>
+  <div class="cell" id="frame-04">
+    <div class="beam"></div>
+    <div style="position:absolute;left:6cqw;right:6cqw;top:8cqw;text-align:center">
+      <div class="eyebrow">how it works</div>
+    </div>
+    <div style="position:absolute;left:5cqw;right:5cqw;top:20cqw;display:grid;grid-template-columns:1fr 6cqw 1fr 6cqw 1fr;align-items:center">
+      <div style="height:44cqw;background:var(--cream);color:var(--dark);padding:2.4cqw;font-size:2.4cqw;line-height:1.35;overflow:hidden">
+        <div class="eyebrow" style="color:var(--red);font-size:2.2cqw;margin-bottom:1.5cqw">plot</div>
+        A kid from Brooklyn grows up idolizing the local wiseguys, joins the crew, and rises through decades of heists and murder until it all falls apart…
+      </div>
+      <div style="text-align:center;color:var(--amber);font-size:6cqw">→</div>
+      <div class="mono" style="height:44cqw;border:1px solid rgba(255,181,71,.45);padding:2cqw;font-size:2.5cqw;line-height:1.35;color:var(--amber);overflow:hidden">
+        <div class="eyebrow" style="font-size:2.2cqw;margin-bottom:1.5cqw">1,024 numbers</div>
+        0.031<br>-0.112<br>0.087<br>0.004<br>-0.046<br>0.129<br>-0.071<br>0.018<br>…
+      </div>
+      <div style="text-align:center;color:var(--amber);font-size:6cqw">→</div>
+      <div style="height:44cqw;position:relative;overflow:hidden;border:1px solid rgba(255,181,71,.45)">
+        <img src="storyboard-stills/spin-3.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8">
+        <div class="eyebrow" style="position:absolute;left:2cqw;top:2cqw;font-size:2.2cqw">map</div>
+        <div style="position:absolute;left:50%;top:50%;width:4cqw;height:4cqw;margin:-2cqw;border-radius:50%;background:var(--amber);box-shadow:0 0 4cqw var(--amber)"></div>
+      </div>
+    </div>
+    <div class="cap">Each plot becomes a thousand numbers. Those numbers become a map.</div>
+  </div>
+  <figcaption>
+    <div class="row"><span>04 · Plot → numbers → map</span><span>mechanism · 16–20s</span></div>
+    <p class="note"><b>Three stations reveal left to right on the voice:</b> the plot card, the numbers ticking in the strip, then one glowing dot drops into the cloud.</p>
+    <span class="chip">in: film-strip wipe</span>
+  </figcaption>
+</figure>
+
+<!-- 05 -->
+<figure>
+  <div class="cell" id="frame-05">
+    <div class="beam"></div>
+    <img src="capture/assets/posters/pile/ff-2001-the-fast-and-the-furious.jpg" alt="" style="position:absolute;width:19cqw;left:4cqw;top:40cqw;transform:rotate(-14deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/ff-2006-the-fast-and-the-furious-tokyo-drift.jpg" alt="" style="position:absolute;width:19cqw;left:17cqw;top:47cqw;transform:rotate(9deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/ff-2011-fast-five.jpg" alt="" style="position:absolute;width:19cqw;left:30cqw;top:54cqw;transform:rotate(-6deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/ff-2015-furious-7.jpg" alt="" style="position:absolute;width:19cqw;left:43cqw;top:61cqw;transform:rotate(12deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/ff-2019-fast-furious-presents-hobbs-shaw.jpg" alt="" style="position:absolute;width:19cqw;left:56cqw;top:46cqw;transform:rotate(-10deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/ff-2023-fast-x.jpg" alt="" style="position:absolute;width:19cqw;left:69cqw;top:53cqw;transform:rotate(5deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/mcu-2008-iron-man.jpg" alt="" style="position:absolute;width:19cqw;left:6cqw;top:60cqw;transform:rotate(-3deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/mcu-2011-thor.jpg" alt="" style="position:absolute;width:19cqw;left:19cqw;top:45cqw;transform:rotate(15deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/mcu-2013-thor-the-dark-world.jpg" alt="" style="position:absolute;width:19cqw;left:32cqw;top:52cqw;transform:rotate(-12deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/mcu-2015-ant-man.jpg" alt="" style="position:absolute;width:19cqw;left:45cqw;top:59cqw;transform:rotate(7deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/mcu-2016-doctor-strange.jpg" alt="" style="position:absolute;width:19cqw;left:58cqw;top:44cqw;transform:rotate(-8deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/mcu-2018-ant-man-and-the-wasp.jpg" alt="" style="position:absolute;width:19cqw;left:71cqw;top:51cqw;transform:rotate(4deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/mcu-2019-avengers-endgame.jpg" alt="" style="position:absolute;width:19cqw;left:8cqw;top:58cqw;transform:rotate(-15deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/mcu-2022-thor-love-and-thunder.jpg" alt="" style="position:absolute;width:19cqw;left:21cqw;top:43cqw;transform:rotate(10deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <img src="capture/assets/posters/pile/mcu-2025-captain-america-brave-new-world.jpg" alt="" style="position:absolute;width:19cqw;left:34cqw;top:50cqw;transform:rotate(-14deg);border:.4cqw solid #f3e6d0;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6)">
+    <div style="position:absolute;left:5cqw;right:5cqw;top:5cqw;display:grid;gap:2cqw">
+      <div style="background:var(--cream);color:var(--dark);padding:1.8cqw 2.4cqw;transform:rotate(-1.5deg);box-shadow:0 1cqw 3cqw rgba(0,0,0,.5)"><div style="font:400 3.9cqw/1.15 'Abril Fatface'">Here's Why Hollywood Is Addicted to Sequels</div><div class="eyebrow" style="color:var(--red);font-size:2.2cqw;margin-top:.8cqw">The Fiscal Times · Apr 2017</div></div>
+      <div style="background:var(--cream);color:var(--dark);padding:1.8cqw 2.4cqw;margin-left:8cqw;transform:rotate(1.2deg);box-shadow:0 1cqw 3cqw rgba(0,0,0,.5)"><div style="font:400 3.9cqw/1.15 'Abril Fatface'">'The Marvels' struggles at box office amid superhero fatigue</div><div class="eyebrow" style="color:var(--red);font-size:2.2cqw;margin-top:.8cqw">Fortune / AP · Nov 2023</div></div>
+    </div>
+    <div style="position:absolute;right:5cqw;top:40cqw;text-align:right;background:rgba(11,8,7,.88);padding:2cqw 3cqw;border:1px solid rgba(255,181,71,.45)">
+      <b class="mono" style="font-size:15cqw;line-height:1;color:var(--amber)">93%</b>
+      <div style="font-size:3.2cqw;max-width:34cqw">of each year's top 10 hits in the 2010s were franchise films</div>
+    </div>
+    <div class="cap">Hollywood loves a sequel.</div>
+  </div>
+  <figcaption>
+    <div class="row"><span>05 · Sequel after sequel</span><span>context · 20–27s</span></div>
+    <p class="note"><b>Real headlines slam in one by one</b> (four in the build, verbatim, outlet and date) while Fast &amp; Furious and Marvel posters drop and pile up behind; on "ninety-three percent" the counter lands over the pile.</p>
+    <span class="chip">in: film-strip wipe</span>
+  </figcaption>
+</figure>
+
+<!-- 06 -->
+<figure>
+  <div class="cell" id="frame-06">
+    <div class="beam"></div>
+    <div class="ticket" style="left:9cqw;right:9cqw;top:6cqw;height:64cqw;overflow:hidden">
+      <div style="background:var(--red);color:var(--cream);padding:2.6cqw 0;text-align:center" class="eyebrow">found on its own</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5cqw;padding:3cqw 12cqw 0">
+        <div><img class="poster" src="capture/assets/posters/olympus-has-fallen-2013.jpg" alt=""><div style="font:400 3cqw/1.15 'Abril Fatface';margin-top:1.4cqw">Olympus Has Fallen</div><div class="mono" style="font-size:2.6cqw">Mar 2013</div></div>
+        <div><img class="poster" src="capture/assets/posters/white-house-down-2013.jpg" alt=""><div style="font:400 3cqw/1.15 'Abril Fatface';margin-top:1.4cqw">White House Down</div><div class="mono" style="font-size:2.6cqw">Jun 2013</div></div>
+      </div>
+    </div>
+    <div style="position:absolute;left:16cqw;right:16cqw;top:73cqw">
+      <div style="display:flex;justify-content:space-between" class="eyebrow"><span style="font-size:2.6cqw">plot similarity</span><b class="mono" style="font-size:4cqw">0.92</b></div>
+      <div style="height:2cqw;margin-top:1.2cqw;background:rgba(255,181,71,.15)"><div style="width:92%;height:100%;background:var(--amber)"></div></div>
+    </div>
+    <div class="cap">Even when it's not a sequel, it's the same idea.</div>
+  </div>
+  <figcaption>
+    <div class="row"><span>06 · The same movie, twice</span><span>proof · 20–27s</span></div>
+    <p class="note"><b>The Matinee ticket slides up from below;</b> posters land left then right as each title is spoken, then the similarity bar fills and the score counts to 0.92.</p>
+    <span class="chip">in: cut</span>
+  </figcaption>
+</figure>
+
+<!-- 07 -->
+<figure>
+  <div class="cell" id="frame-07">
+    <img class="bg" src="storyboard-stills/dracula-5.jpg" alt="">
+    <div class="dim" style="background:linear-gradient(90deg,rgba(11,8,7,.85),rgba(11,8,7,.35) 60%,rgba(11,8,7,.2))"></div>
+    <div style="position:absolute;left:6cqw;top:7cqw" class="eyebrow">least original story on the map</div>
+    <img src="capture/assets/posters/dracula-1931.jpg" alt="" style="position:absolute;left:6cqw;top:15cqw;width:24cqw;border:.6cqw solid var(--amber)">
+    <div style="position:absolute;left:6cqw;top:54cqw">
+      <div class="lime" style="font-size:9cqw;color:var(--ink)">Dracula</div>
+      <div style="margin-top:1cqw;display:flex;align-items:baseline;gap:2.4cqw"><b class="mono" style="font-size:13cqw;color:var(--amber);line-height:1">32</b><span style="font-size:3.8cqw;max-width:40cqw">films tell almost the same plot</span></div>
+    </div>
+    <div class="cap">The least original story on the map? Dracula.</div>
+  </div>
+  <figcaption>
+    <div class="row"><span>07 · Least original</span><span>proof · 27–33s</span></div>
+    <p class="note"><b>The question lands over the map first;</b> on "Dracula" the poster and title snap in, then 32 counts up while the camera orbits Dracula's tight cluster on the right.</p>
+    <span class="chip">in: cut</span>
+  </figcaption>
+</figure>
+
+<!-- 08 -->
+<figure>
+  <div class="cell" id="frame-08">
+    <img class="bg" src="storyboard-stills/unmade-5.jpg" alt="">
+    <div class="dim" style="background:linear-gradient(180deg,rgba(11,8,7,.97),rgba(11,8,7,.9) 26%,rgba(11,8,7,.1) 42%,rgba(11,8,7,.1))"></div>
+    <div style="position:absolute;left:6cqw;right:6cqw;top:6cqw">
+      <div class="eyebrow" style="color:#ff5a6e">unmade movie</div>
+      <div class="lime" style="margin-top:1.6cqw;font-size:8.6cqw;line-height:1;color:var(--ink)">The Last Province</div>
+      <div style="margin-top:1.6cqw;font-size:3.6cqw;color:var(--muted)">ancient Rome <span style="color:var(--amber)">×</span> refugee journeys</div>
+    </div>
+    <div class="cap">A Roman legionary and a Syrian refugee, crossing the same border.</div>
+  </div>
+  <figcaption>
+    <div class="row"><span>08 · Movies nobody has made</span><span>proof · 33–42s</span></div>
+    <p class="note"><b>The red "?" pulses between two lit clusters</b> as the red lines draw to each; the title types in at the top on "nobody has made yet", the pairing line follows.</p>
+    <span class="chip">in: crossfade</span>
+  </figcaption>
+</figure>
+
+<!-- 09 -->
+<figure>
+  <div class="cell" id="frame-09">
+    <img class="bg" src="storyboard-stills/end-4.jpg" alt="" style="filter:saturate(.6) brightness(.45)">
+    <div class="dim" style="background:radial-gradient(ellipse 70% 40% at 50% 42%, rgba(11,8,7,.8), rgba(11,8,7,.3))"></div><div class="beam"></div>
+    <div style="position:absolute;left:6cqw;right:6cqw;top:22cqw;text-align:center">
+      <div class="lime" style="font-size:13cqw;line-height:.95;color:var(--amber)">Go get<br>lost.</div>
+      <div class="mono" style="margin-top:5cqw;font-size:5cqw;color:var(--ink);font-weight:700">massive-movie-map.vercel.app</div>
+    </div>
+    <div style="position:absolute;left:6cqw;right:6cqw;bottom:5cqw;display:flex;align-items:center;gap:3cqw;font-size:2.3cqw;line-height:1.35;color:var(--muted)">
+      <img src="capture/assets/tmdb-logo.svg" alt="TMDB" style="width:16cqw;flex:none">
+      <span>This product uses the TMDB API but is not endorsed or certified by TMDB. Plots: Wikipedia, CC BY-SA.</span>
+    </div>
+  </div>
+  <figcaption>
+    <div class="row"><span>09 · Go get lost</span><span>cta · 42–46s</span></div>
+    <p class="note"><b>Wide spin returns, dimmed;</b> "Go get lost." rises in, then the URL types on; the credits line sits where captions were (no caption on this frame, the URL is the text). Holds 2s+.</p>
+    <span class="chip">in: crossfade</span>
+  </figcaption>
+</figure>
+
+<!-- seam map -->
+<figure>
+  <div class="cell seams">
+    <div class="eyebrow" style="margin-bottom:1cqw;font-size:4.4cqw">seam map</div>
+    <div class="seam"><b>→01</b><span>cut from black</span></div>
+    <div class="seam"><b>01→02</b><span>crossfade, same spin</span></div>
+    <div class="seam"><b>02→03</b><span>cut, dive begins</span></div>
+    <div class="seam"><b>03→04</b><span>wipe</span></div>
+    <div class="seam"><b>04→05</b><span>film-strip wipe</span></div>
+    <div class="seam"><b>05→06</b><span>cut, ticket up</span></div>
+    <div class="seam"><b>06→07</b><span>cut</span></div>
+    <div class="seam"><b>07→08</b><span>crossfade</span></div>
+    <div class="seam"><b>08→09</b><span>crossfade to wide spin</span></div>
+  </div>
+  <figcaption><div class="row"><span>Seam map</span><span>every handoff</span></div></figcaption>
+</figure>
+
+<!-- tokens -->
+<figure>
+  <div class="cell tokens">
+    <div class="eyebrow" style="font-size:4.4cqw">tokens</div>
+    <div class="sw">
+      <div style="background:#0b0807;color:#b39c80">ground</div>
+      <div style="background:#f3e6d0;color:#2a1a14">ink</div>
+      <div style="background:#ffb547;color:#1a0f06">amber</div>
+      <div style="background:#c8102e;color:#efe6d2">red</div>
+      <div style="background:#efe6d2;color:#2a1a14">card</div>
+    </div>
+    <div class="lime" style="font-size:9cqw;color:var(--amber)">Limelight titles</div>
+    <div style="font:400 7cqw 'Abril Fatface'">Abril Fatface cards</div>
+    <div class="eyebrow" style="color:var(--ink);font-size:6cqw">Oswald labels</div>
+    <div class="mono" style="font-size:6cqw;color:var(--amber)">Courier 0.92 · 36,841</div>
+    <div style="font-size:5.4cqw">Work Sans captions</div>
+    <div style="font-size:4.4cqw;color:var(--muted)">No tilt, no bounce, no IMDb numbers, nothing under 26px.</div>
+  </div>
+  <figcaption><div class="row"><span>Tokens</span><span>frame.md · Late Show</span></div></figcaption>
+</figure>
+
+</main>
+</body>
+</html>

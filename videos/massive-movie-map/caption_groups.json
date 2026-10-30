@@ -1,0 +1,1423 @@
+{
+  "total_duration_s": 60.432,
+  "width": 1080,
+  "height": 1080,
+  "groups": [
+    {
+      "id": "caption-group-0",
+      "frame": 1,
+      "start": 1,
+      "end": 2.06,
+      "text": "Thirty-six thousand,",
+      "words": [
+        {
+          "id": "caption-word-0-0",
+          "text": "Thirty-six",
+          "start": 1,
+          "end": 1.56
+        },
+        {
+          "id": "caption-word-0-1",
+          "text": "thousand,",
+          "start": 1.56,
+          "end": 1.94
+        }
+      ]
+    },
+    {
+      "id": "caption-group-1",
+      "frame": 1,
+      "start": 2.44,
+      "end": 2.72,
+      "text": "eight hundred",
+      "words": [
+        {
+          "id": "caption-word-1-0",
+          "text": "eight",
+          "start": 2.44,
+          "end": 2.48
+        },
+        {
+          "id": "caption-word-1-1",
+          "text": "hundred",
+          "start": 2.48,
+          "end": 2.72
+        }
+      ]
+    },
+    {
+      "id": "caption-group-2",
+      "frame": 1,
+      "start": 2.72,
+      "end": 3.8,
+      "text": "forty-one films.",
+      "words": [
+        {
+          "id": "caption-word-2-0",
+          "text": "forty-one",
+          "start": 2.72,
+          "end": 3.3
+        },
+        {
+          "id": "caption-word-2-1",
+          "text": "films.",
+          "start": 3.3,
+          "end": 3.68
+        }
+      ]
+    },
+    {
+      "id": "caption-group-3",
+      "frame": 2,
+      "start": 4.38,
+      "end": 4.96,
+      "text": "An AI",
+      "words": [
+        {
+          "id": "caption-word-3-0",
+          "text": "An",
+          "start": 4.38,
+          "end": 4.66
+        },
+        {
+          "id": "caption-word-3-1",
+          "text": "AI",
+          "start": 4.66,
+          "end": 4.96
+        }
+      ]
+    },
+    {
+      "id": "caption-group-4",
+      "frame": 2,
+      "start": 4.96,
+      "end": 6.08,
+      "text": "read every plot,",
+      "words": [
+        {
+          "id": "caption-word-4-0",
+          "text": "read",
+          "start": 4.96,
+          "end": 5.34
+        },
+        {
+          "id": "caption-word-4-1",
+          "text": "every",
+          "start": 5.34,
+          "end": 5.62
+        },
+        {
+          "id": "caption-word-4-2",
+          "text": "plot,",
+          "start": 5.62,
+          "end": 5.98
+        }
+      ]
+    },
+    {
+      "id": "caption-group-5",
+      "frame": 2,
+      "start": 6.08,
+      "end": 6.52,
+      "text": "and put",
+      "words": [
+        {
+          "id": "caption-word-5-0",
+          "text": "and",
+          "start": 6.08,
+          "end": 6.38
+        },
+        {
+          "id": "caption-word-5-1",
+          "text": "put",
+          "start": 6.38,
+          "end": 6.52
+        }
+      ]
+    },
+    {
+      "id": "caption-group-6",
+      "frame": 2,
+      "start": 6.52,
+      "end": 7.58,
+      "text": "similar stories side",
+      "words": [
+        {
+          "id": "caption-word-6-0",
+          "text": "similar",
+          "start": 6.52,
+          "end": 6.78
+        },
+        {
+          "id": "caption-word-6-1",
+          "text": "stories",
+          "start": 6.78,
+          "end": 7.24
+        },
+        {
+          "id": "caption-word-6-2",
+          "text": "side",
+          "start": 7.24,
+          "end": 7.58
+        }
+      ]
+    },
+    {
+      "id": "caption-group-7",
+      "frame": 2,
+      "start": 7.58,
+      "end": 8.26,
+      "text": "by side.",
+      "words": [
+        {
+          "id": "caption-word-7-0",
+          "text": "by",
+          "start": 7.58,
+          "end": 7.76
+        },
+        {
+          "id": "caption-word-7-1",
+          "text": "side.",
+          "start": 7.76,
+          "end": 8.14
+        }
+      ]
+    },
+    {
+      "id": "caption-group-8",
+      "frame": 3,
+      "start": 8.656,
+      "end": 9.896,
+      "text": "Search GoodFellas.",
+      "words": [
+        {
+          "id": "caption-word-8-0",
+          "text": "Search",
+          "start": 8.656,
+          "end": 9.096
+        },
+        {
+          "id": "caption-word-8-1",
+          "text": "GoodFellas.",
+          "start": 9.096,
+          "end": 9.796
+        }
+      ]
+    },
+    {
+      "id": "caption-group-9",
+      "frame": 3,
+      "start": 9.896,
+      "end": 11.236,
+      "text": "Its closest neighbors:",
+      "words": [
+        {
+          "id": "caption-word-9-0",
+          "text": "Its",
+          "start": 9.896,
+          "end": 10.276
+        },
+        {
+          "id": "caption-word-9-1",
+          "text": "closest",
+          "start": 10.276,
+          "end": 10.676
+        },
+        {
+          "id": "caption-word-9-2",
+          "text": "neighbors:",
+          "start": 10.676,
+          "end": 11.116
+        }
+      ]
+    },
+    {
+      "id": "caption-group-10",
+      "frame": 3,
+      "start": 11.576,
+      "end": 12.716,
+      "text": "American Gangster.",
+      "words": [
+        {
+          "id": "caption-word-10-0",
+          "text": "American",
+          "start": 11.576,
+          "end": 12.036
+        },
+        {
+          "id": "caption-word-10-1",
+          "text": "Gangster.",
+          "start": 12.036,
+          "end": 12.596
+        }
+      ]
+    },
+    {
+      "id": "caption-group-11",
+      "frame": 3,
+      "start": 12.836,
+      "end": 13.876,
+      "text": "Carlito's Way.",
+      "words": [
+        {
+          "id": "caption-word-11-0",
+          "text": "Carlito's",
+          "start": 12.836,
+          "end": 13.536
+        },
+        {
+          "id": "caption-word-11-1",
+          "text": "Way.",
+          "start": 13.536,
+          "end": 13.756
+        }
+      ]
+    },
+    {
+      "id": "caption-group-12",
+      "frame": 3,
+      "start": 14.136,
+      "end": 14.976,
+      "text": "The Irishman.",
+      "words": [
+        {
+          "id": "caption-word-12-0",
+          "text": "The",
+          "start": 14.136,
+          "end": 14.276
+        },
+        {
+          "id": "caption-word-12-1",
+          "text": "Irishman.",
+          "start": 14.276,
+          "end": 14.856
+        }
+      ]
+    },
+    {
+      "id": "caption-group-13",
+      "frame": 3,
+      "start": 15.116,
+      "end": 16.416,
+      "text": "No genre information",
+      "words": [
+        {
+          "id": "caption-word-13-0",
+          "text": "No",
+          "start": 15.116,
+          "end": 15.616
+        },
+        {
+          "id": "caption-word-13-1",
+          "text": "genre",
+          "start": 15.616,
+          "end": 15.916
+        },
+        {
+          "id": "caption-word-13-2",
+          "text": "information",
+          "start": 15.916,
+          "end": 16.416
+        }
+      ]
+    },
+    {
+      "id": "caption-group-14",
+      "frame": 3,
+      "start": 16.416,
+      "end": 16.956,
+      "text": "was given",
+      "words": [
+        {
+          "id": "caption-word-14-0",
+          "text": "was",
+          "start": 16.416,
+          "end": 16.736
+        },
+        {
+          "id": "caption-word-14-1",
+          "text": "given",
+          "start": 16.736,
+          "end": 16.956
+        }
+      ]
+    },
+    {
+      "id": "caption-group-15",
+      "frame": 3,
+      "start": 16.956,
+      "end": 17.356,
+      "text": "to group",
+      "words": [
+        {
+          "id": "caption-word-15-0",
+          "text": "to",
+          "start": 16.956,
+          "end": 17.116
+        },
+        {
+          "id": "caption-word-15-1",
+          "text": "group",
+          "start": 17.116,
+          "end": 17.356
+        }
+      ]
+    },
+    {
+      "id": "caption-group-16",
+      "frame": 3,
+      "start": 17.356,
+      "end": 17.876,
+      "text": "these as",
+      "words": [
+        {
+          "id": "caption-word-16-0",
+          "text": "these",
+          "start": 17.356,
+          "end": 17.636
+        },
+        {
+          "id": "caption-word-16-1",
+          "text": "as",
+          "start": 17.636,
+          "end": 17.876
+        }
+      ]
+    },
+    {
+      "id": "caption-group-17",
+      "frame": 3,
+      "start": 17.876,
+      "end": 18.696,
+      "text": "mafia movies.",
+      "words": [
+        {
+          "id": "caption-word-17-0",
+          "text": "mafia",
+          "start": 17.876,
+          "end": 18.176
+        },
+        {
+          "id": "caption-word-17-1",
+          "text": "movies.",
+          "start": 18.176,
+          "end": 18.576
+        }
+      ]
+    },
+    {
+      "id": "caption-group-18",
+      "frame": 4,
+      "start": 19.204,
+      "end": 19.844,
+      "text": "Each plot",
+      "words": [
+        {
+          "id": "caption-word-18-0",
+          "text": "Each",
+          "start": 19.204,
+          "end": 19.564
+        },
+        {
+          "id": "caption-word-18-1",
+          "text": "plot",
+          "start": 19.564,
+          "end": 19.844
+        }
+      ]
+    },
+    {
+      "id": "caption-group-19",
+      "frame": 4,
+      "start": 19.844,
+      "end": 20.344,
+      "text": "becomes a",
+      "words": [
+        {
+          "id": "caption-word-19-0",
+          "text": "becomes",
+          "start": 19.844,
+          "end": 20.184
+        },
+        {
+          "id": "caption-word-19-1",
+          "text": "a",
+          "start": 20.184,
+          "end": 20.344
+        }
+      ]
+    },
+    {
+      "id": "caption-group-20",
+      "frame": 4,
+      "start": 20.344,
+      "end": 21.184,
+      "text": "thousand numbers.",
+      "words": [
+        {
+          "id": "caption-word-20-0",
+          "text": "thousand",
+          "start": 20.344,
+          "end": 20.644
+        },
+        {
+          "id": "caption-word-20-1",
+          "text": "numbers.",
+          "start": 20.644,
+          "end": 21.064
+        }
+      ]
+    },
+    {
+      "id": "caption-group-21",
+      "frame": 4,
+      "start": 21.324,
+      "end": 22.324,
+      "text": "Those numbers become",
+      "words": [
+        {
+          "id": "caption-word-21-0",
+          "text": "Those",
+          "start": 21.324,
+          "end": 21.724
+        },
+        {
+          "id": "caption-word-21-1",
+          "text": "numbers",
+          "start": 21.724,
+          "end": 22.024
+        },
+        {
+          "id": "caption-word-21-2",
+          "text": "become",
+          "start": 22.024,
+          "end": 22.324
+        }
+      ]
+    },
+    {
+      "id": "caption-group-22",
+      "frame": 4,
+      "start": 22.324,
+      "end": 22.844,
+      "text": "a map.",
+      "words": [
+        {
+          "id": "caption-word-22-0",
+          "text": "a",
+          "start": 22.324,
+          "end": 22.484
+        },
+        {
+          "id": "caption-word-22-1",
+          "text": "map.",
+          "start": 22.484,
+          "end": 22.724
+        }
+      ]
+    },
+    {
+      "id": "caption-group-23",
+      "frame": 5,
+      "start": 23.224,
+      "end": 23.604,
+      "text": "What can",
+      "words": [
+        {
+          "id": "caption-word-23-0",
+          "text": "What",
+          "start": 23.224,
+          "end": 23.484
+        },
+        {
+          "id": "caption-word-23-1",
+          "text": "can",
+          "start": 23.484,
+          "end": 23.604
+        }
+      ]
+    },
+    {
+      "id": "caption-group-24",
+      "frame": 5,
+      "start": 23.604,
+      "end": 24.204,
+      "text": "we learn?",
+      "words": [
+        {
+          "id": "caption-word-24-0",
+          "text": "we",
+          "start": 23.604,
+          "end": 23.724
+        },
+        {
+          "id": "caption-word-24-1",
+          "text": "learn?",
+          "start": 23.724,
+          "end": 24.084
+        }
+      ]
+    },
+    {
+      "id": "caption-group-25",
+      "frame": 5,
+      "start": 24.504,
+      "end": 26.044,
+      "text": "Hollywood loves a sequel.",
+      "words": [
+        {
+          "id": "caption-word-25-0",
+          "text": "Hollywood",
+          "start": 24.504,
+          "end": 25.104
+        },
+        {
+          "id": "caption-word-25-1",
+          "text": "loves",
+          "start": 25.104,
+          "end": 25.524
+        },
+        {
+          "id": "caption-word-25-2",
+          "text": "a",
+          "start": 25.524,
+          "end": 25.664
+        },
+        {
+          "id": "caption-word-25-3",
+          "text": "sequel.",
+          "start": 25.664,
+          "end": 25.924
+        }
+      ]
+    },
+    {
+      "id": "caption-group-26",
+      "frame": 5,
+      "start": 26.224,
+      "end": 27.474,
+      "text": "In the 2010s,",
+      "words": [
+        {
+          "id": "caption-word-26-0",
+          "text": "In",
+          "start": 26.224,
+          "end": 26.684
+        },
+        {
+          "id": "caption-word-26-1",
+          "text": "the",
+          "start": 26.684,
+          "end": 26.764
+        },
+        {
+          "id": "caption-word-26-2",
+          "text": "2010s,",
+          "start": 26.764,
+          "end": 27.474
+        }
+      ]
+    },
+    {
+      "id": "caption-group-27",
+      "frame": 5,
+      "start": 27.474,
+      "end": 28.864,
+      "text": "ninety-three percent of each",
+      "words": [
+        {
+          "id": "caption-word-27-0",
+          "text": "ninety-three",
+          "start": 27.474,
+          "end": 28.184
+        },
+        {
+          "id": "caption-word-27-1",
+          "text": "percent",
+          "start": 28.184,
+          "end": 28.484
+        },
+        {
+          "id": "caption-word-27-2",
+          "text": "of",
+          "start": 28.484,
+          "end": 28.684
+        },
+        {
+          "id": "caption-word-27-3",
+          "text": "each",
+          "start": 28.684,
+          "end": 28.864
+        }
+      ]
+    },
+    {
+      "id": "caption-group-28",
+      "frame": 5,
+      "start": 28.864,
+      "end": 29.904,
+      "text": "year's ten biggest",
+      "words": [
+        {
+          "id": "caption-word-28-0",
+          "text": "year's",
+          "start": 28.864,
+          "end": 29.284
+        },
+        {
+          "id": "caption-word-28-1",
+          "text": "ten",
+          "start": 29.284,
+          "end": 29.584
+        },
+        {
+          "id": "caption-word-28-2",
+          "text": "biggest",
+          "start": 29.584,
+          "end": 29.904
+        }
+      ]
+    },
+    {
+      "id": "caption-group-29",
+      "frame": 5,
+      "start": 29.904,
+      "end": 30.404,
+      "text": "hits were",
+      "words": [
+        {
+          "id": "caption-word-29-0",
+          "text": "hits",
+          "start": 29.904,
+          "end": 30.224
+        },
+        {
+          "id": "caption-word-29-1",
+          "text": "were",
+          "start": 30.224,
+          "end": 30.404
+        }
+      ]
+    },
+    {
+      "id": "caption-group-30",
+      "frame": 5,
+      "start": 30.404,
+      "end": 31.344,
+      "text": "franchise films.",
+      "words": [
+        {
+          "id": "caption-word-30-0",
+          "text": "franchise",
+          "start": 30.404,
+          "end": 30.744
+        },
+        {
+          "id": "caption-word-30-1",
+          "text": "films.",
+          "start": 30.744,
+          "end": 31.224
+        }
+      ]
+    },
+    {
+      "id": "caption-group-31",
+      "frame": 6,
+      "start": 31.791,
+      "end": 32.271,
+      "text": "And even",
+      "words": [
+        {
+          "id": "caption-word-31-0",
+          "text": "And",
+          "start": 31.791,
+          "end": 32.071
+        },
+        {
+          "id": "caption-word-31-1",
+          "text": "even",
+          "start": 32.071,
+          "end": 32.271
+        }
+      ]
+    },
+    {
+      "id": "caption-group-32",
+      "frame": 6,
+      "start": 32.271,
+      "end": 32.551,
+      "text": "when it's",
+      "words": [
+        {
+          "id": "caption-word-32-0",
+          "text": "when",
+          "start": 32.271,
+          "end": 32.411
+        },
+        {
+          "id": "caption-word-32-1",
+          "text": "it's",
+          "start": 32.411,
+          "end": 32.551
+        }
+      ]
+    },
+    {
+      "id": "caption-group-33",
+      "frame": 6,
+      "start": 32.551,
+      "end": 32.831,
+      "text": "not a",
+      "words": [
+        {
+          "id": "caption-word-33-0",
+          "text": "not",
+          "start": 32.551,
+          "end": 32.691
+        },
+        {
+          "id": "caption-word-33-1",
+          "text": "a",
+          "start": 32.691,
+          "end": 32.831
+        }
+      ]
+    },
+    {
+      "id": "caption-group-34",
+      "frame": 6,
+      "start": 32.831,
+      "end": 33.271,
+      "text": "sequel,",
+      "words": [
+        {
+          "id": "caption-word-34-0",
+          "text": "sequel,",
+          "start": 32.831,
+          "end": 33.151
+        }
+      ]
+    },
+    {
+      "id": "caption-group-35",
+      "frame": 6,
+      "start": 33.391,
+      "end": 33.611,
+      "text": "it's the",
+      "words": [
+        {
+          "id": "caption-word-35-0",
+          "text": "it's",
+          "start": 33.391,
+          "end": 33.491
+        },
+        {
+          "id": "caption-word-35-1",
+          "text": "the",
+          "start": 33.491,
+          "end": 33.611
+        }
+      ]
+    },
+    {
+      "id": "caption-group-36",
+      "frame": 6,
+      "start": 33.611,
+      "end": 34.391,
+      "text": "same idea.",
+      "words": [
+        {
+          "id": "caption-word-36-0",
+          "text": "same",
+          "start": 33.611,
+          "end": 33.851
+        },
+        {
+          "id": "caption-word-36-1",
+          "text": "idea.",
+          "start": 33.851,
+          "end": 34.271
+        }
+      ]
+    },
+    {
+      "id": "caption-group-37",
+      "frame": 6,
+      "start": 34.771,
+      "end": 35.931,
+      "text": "Olympus Has Fallen.",
+      "words": [
+        {
+          "id": "caption-word-37-0",
+          "text": "Olympus",
+          "start": 34.771,
+          "end": 35.251
+        },
+        {
+          "id": "caption-word-37-1",
+          "text": "Has",
+          "start": 35.251,
+          "end": 35.431
+        },
+        {
+          "id": "caption-word-37-2",
+          "text": "Fallen.",
+          "start": 35.431,
+          "end": 35.811
+        }
+      ]
+    },
+    {
+      "id": "caption-group-38",
+      "frame": 6,
+      "start": 35.951,
+      "end": 37.031,
+      "text": "White House Down.",
+      "words": [
+        {
+          "id": "caption-word-38-0",
+          "text": "White",
+          "start": 35.951,
+          "end": 36.311
+        },
+        {
+          "id": "caption-word-38-1",
+          "text": "House",
+          "start": 36.311,
+          "end": 36.591
+        },
+        {
+          "id": "caption-word-38-2",
+          "text": "Down.",
+          "start": 36.591,
+          "end": 36.911
+        }
+      ]
+    },
+    {
+      "id": "caption-group-39",
+      "frame": 6,
+      "start": 37.151,
+      "end": 37.831,
+      "text": "Same year.",
+      "words": [
+        {
+          "id": "caption-word-39-0",
+          "text": "Same",
+          "start": 37.151,
+          "end": 37.471
+        },
+        {
+          "id": "caption-word-39-1",
+          "text": "year.",
+          "start": 37.471,
+          "end": 37.711
+        }
+      ]
+    },
+    {
+      "id": "caption-group-40",
+      "frame": 6,
+      "start": 37.911,
+      "end": 38.651,
+      "text": "Same plot.",
+      "words": [
+        {
+          "id": "caption-word-40-0",
+          "text": "Same",
+          "start": 37.911,
+          "end": 38.231
+        },
+        {
+          "id": "caption-word-40-1",
+          "text": "plot.",
+          "start": 38.231,
+          "end": 38.531
+        }
+      ]
+    },
+    {
+      "id": "caption-group-41",
+      "frame": 7,
+      "start": 39.075,
+      "end": 39.535,
+      "text": "The least",
+      "words": [
+        {
+          "id": "caption-word-41-0",
+          "text": "The",
+          "start": 39.075,
+          "end": 39.315
+        },
+        {
+          "id": "caption-word-41-1",
+          "text": "least",
+          "start": 39.315,
+          "end": 39.535
+        }
+      ]
+    },
+    {
+      "id": "caption-group-42",
+      "frame": 7,
+      "start": 39.535,
+      "end": 40.535,
+      "text": "original story on",
+      "words": [
+        {
+          "id": "caption-word-42-0",
+          "text": "original",
+          "start": 39.535,
+          "end": 39.915
+        },
+        {
+          "id": "caption-word-42-1",
+          "text": "story",
+          "start": 39.915,
+          "end": 40.355
+        },
+        {
+          "id": "caption-word-42-2",
+          "text": "on",
+          "start": 40.355,
+          "end": 40.535
+        }
+      ]
+    },
+    {
+      "id": "caption-group-43",
+      "frame": 7,
+      "start": 40.535,
+      "end": 41.055,
+      "text": "the map?",
+      "words": [
+        {
+          "id": "caption-word-43-0",
+          "text": "the",
+          "start": 40.535,
+          "end": 40.635
+        },
+        {
+          "id": "caption-word-43-1",
+          "text": "map?",
+          "start": 40.635,
+          "end": 40.935
+        }
+      ]
+    },
+    {
+      "id": "caption-group-44",
+      "frame": 7,
+      "start": 41.095,
+      "end": 41.535,
+      "text": "Dracula.",
+      "words": [
+        {
+          "id": "caption-word-44-0",
+          "text": "Dracula.",
+          "start": 41.095,
+          "end": 41.535
+        }
+      ]
+    },
+    {
+      "id": "caption-group-45",
+      "frame": 7,
+      "start": 41.535,
+      "end": 43.575,
+      "text": "Thirty-two films tell almost",
+      "words": [
+        {
+          "id": "caption-word-45-0",
+          "text": "Thirty-two",
+          "start": 41.535,
+          "end": 42.635
+        },
+        {
+          "id": "caption-word-45-1",
+          "text": "films",
+          "start": 42.635,
+          "end": 42.975
+        },
+        {
+          "id": "caption-word-45-2",
+          "text": "tell",
+          "start": 42.975,
+          "end": 43.215
+        },
+        {
+          "id": "caption-word-45-3",
+          "text": "almost",
+          "start": 43.215,
+          "end": 43.575
+        }
+      ]
+    },
+    {
+      "id": "caption-group-46",
+      "frame": 7,
+      "start": 43.575,
+      "end": 44.435,
+      "text": "the same plot.",
+      "words": [
+        {
+          "id": "caption-word-46-0",
+          "text": "the",
+          "start": 43.575,
+          "end": 43.735
+        },
+        {
+          "id": "caption-word-46-1",
+          "text": "same",
+          "start": 43.735,
+          "end": 43.975
+        },
+        {
+          "id": "caption-word-46-2",
+          "text": "plot.",
+          "start": 43.975,
+          "end": 44.315
+        }
+      ]
+    },
+    {
+      "id": "caption-group-47",
+      "frame": 8,
+      "start": 44.844,
+      "end": 46.164,
+      "text": "Want something original?",
+      "words": [
+        {
+          "id": "caption-word-47-0",
+          "text": "Want",
+          "start": 44.844,
+          "end": 45.204
+        },
+        {
+          "id": "caption-word-47-1",
+          "text": "something",
+          "start": 45.204,
+          "end": 45.544
+        },
+        {
+          "id": "caption-word-47-2",
+          "text": "original?",
+          "start": 45.544,
+          "end": 46.044
+        }
+      ]
+    },
+    {
+      "id": "caption-group-48",
+      "frame": 8,
+      "start": 46.304,
+      "end": 46.884,
+      "text": "Find the",
+      "words": [
+        {
+          "id": "caption-word-48-0",
+          "text": "Find",
+          "start": 46.304,
+          "end": 46.784
+        },
+        {
+          "id": "caption-word-48-1",
+          "text": "the",
+          "start": 46.784,
+          "end": 46.884
+        }
+      ]
+    },
+    {
+      "id": "caption-group-49",
+      "frame": 8,
+      "start": 46.884,
+      "end": 47.904,
+      "text": "spaces where nobody",
+      "words": [
+        {
+          "id": "caption-word-49-0",
+          "text": "spaces",
+          "start": 46.884,
+          "end": 47.244
+        },
+        {
+          "id": "caption-word-49-1",
+          "text": "where",
+          "start": 47.244,
+          "end": 47.544
+        },
+        {
+          "id": "caption-word-49-2",
+          "text": "nobody",
+          "start": 47.544,
+          "end": 47.904
+        }
+      ]
+    },
+    {
+      "id": "caption-group-50",
+      "frame": 8,
+      "start": 47.904,
+      "end": 48.364,
+      "text": "has made",
+      "words": [
+        {
+          "id": "caption-word-50-0",
+          "text": "has",
+          "start": 47.904,
+          "end": 48.184
+        },
+        {
+          "id": "caption-word-50-1",
+          "text": "made",
+          "start": 48.184,
+          "end": 48.364
+        }
+      ]
+    },
+    {
+      "id": "caption-group-51",
+      "frame": 8,
+      "start": 48.364,
+      "end": 48.784,
+      "text": "a movie",
+      "words": [
+        {
+          "id": "caption-word-51-0",
+          "text": "a",
+          "start": 48.364,
+          "end": 48.484
+        },
+        {
+          "id": "caption-word-51-1",
+          "text": "movie",
+          "start": 48.484,
+          "end": 48.784
+        }
+      ]
+    },
+    {
+      "id": "caption-group-52",
+      "frame": 8,
+      "start": 48.784,
+      "end": 49.244,
+      "text": "yet.",
+      "words": [
+        {
+          "id": "caption-word-52-0",
+          "text": "yet.",
+          "start": 48.784,
+          "end": 49.124
+        }
+      ]
+    },
+    {
+      "id": "caption-group-53",
+      "frame": 8,
+      "start": 49.344,
+      "end": 50.864,
+      "text": "A Roman legionary",
+      "words": [
+        {
+          "id": "caption-word-53-0",
+          "text": "A",
+          "start": 49.344,
+          "end": 49.864
+        },
+        {
+          "id": "caption-word-53-1",
+          "text": "Roman",
+          "start": 49.864,
+          "end": 50.184
+        },
+        {
+          "id": "caption-word-53-2",
+          "text": "legionary",
+          "start": 50.184,
+          "end": 50.864
+        }
+      ]
+    },
+    {
+      "id": "caption-group-54",
+      "frame": 8,
+      "start": 50.864,
+      "end": 51.204,
+      "text": "and a",
+      "words": [
+        {
+          "id": "caption-word-54-0",
+          "text": "and",
+          "start": 50.864,
+          "end": 51.084
+        },
+        {
+          "id": "caption-word-54-1",
+          "text": "a",
+          "start": 51.084,
+          "end": 51.204
+        }
+      ]
+    },
+    {
+      "id": "caption-group-55",
+      "frame": 8,
+      "start": 51.204,
+      "end": 52.264,
+      "text": "Syrian refugee,",
+      "words": [
+        {
+          "id": "caption-word-55-0",
+          "text": "Syrian",
+          "start": 51.204,
+          "end": 51.524
+        },
+        {
+          "id": "caption-word-55-1",
+          "text": "refugee,",
+          "start": 51.524,
+          "end": 52.144
+        }
+      ]
+    },
+    {
+      "id": "caption-group-56",
+      "frame": 8,
+      "start": 52.384,
+      "end": 53.024,
+      "text": "crossing the",
+      "words": [
+        {
+          "id": "caption-word-56-0",
+          "text": "crossing",
+          "start": 52.384,
+          "end": 52.844
+        },
+        {
+          "id": "caption-word-56-1",
+          "text": "the",
+          "start": 52.844,
+          "end": 53.024
+        }
+      ]
+    },
+    {
+      "id": "caption-group-57",
+      "frame": 8,
+      "start": 53.024,
+      "end": 53.704,
+      "text": "same border,",
+      "words": [
+        {
+          "id": "caption-word-57-0",
+          "text": "same",
+          "start": 53.024,
+          "end": 53.244
+        },
+        {
+          "id": "caption-word-57-1",
+          "text": "border,",
+          "start": 53.244,
+          "end": 53.584
+        }
+      ]
+    },
+    {
+      "id": "caption-group-58",
+      "frame": 8,
+      "start": 53.824,
+      "end": 54.464,
+      "text": "nineteen hundred",
+      "words": [
+        {
+          "id": "caption-word-58-0",
+          "text": "nineteen",
+          "start": 53.824,
+          "end": 54.144
+        },
+        {
+          "id": "caption-word-58-1",
+          "text": "hundred",
+          "start": 54.144,
+          "end": 54.464
+        }
+      ]
+    },
+    {
+      "id": "caption-group-59",
+      "frame": 8,
+      "start": 54.464,
+      "end": 55.164,
+      "text": "years apart.",
+      "words": [
+        {
+          "id": "caption-word-59-0",
+          "text": "years",
+          "start": 54.464,
+          "end": 54.724
+        },
+        {
+          "id": "caption-word-59-1",
+          "text": "apart.",
+          "start": 54.724,
+          "end": 55.044
+        }
+      ]
+    },
+    {
+      "id": "caption-group-60",
+      "frame": 9,
+      "start": 55.584,
+      "end": 56.584,
+      "text": "Go get lost.",
+      "words": [
+        {
+          "id": "caption-word-60-0",
+          "text": "Go",
+          "start": 55.584,
+          "end": 55.904
+        },
+        {
+          "id": "caption-word-60-1",
+          "text": "get",
+          "start": 55.904,
+          "end": 56.084
+        },
+        {
+          "id": "caption-word-60-2",
+          "text": "lost.",
+          "start": 56.084,
+          "end": 56.464
+        }
+      ]
+    },
+    {
+      "id": "caption-group-61",
+      "frame": 9,
+      "start": 56.664,
+      "end": 57.784,
+      "text": "Massive Movie Map.",
+      "words": [
+        {
+          "id": "caption-word-61-0",
+          "text": "Massive",
+          "start": 56.664,
+          "end": 57.144
+        },
+        {
+          "id": "caption-word-61-1",
+          "text": "Movie",
+          "start": 57.144,
+          "end": 57.364
+        },
+        {
+          "id": "caption-word-61-2",
+          "text": "Map.",
+          "start": 57.364,
+          "end": 57.664
+        }
+      ]
+    }
+  ]
+}

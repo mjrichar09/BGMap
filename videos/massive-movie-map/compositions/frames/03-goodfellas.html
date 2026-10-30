@@ -1,0 +1,193 @@
+<template id="03-goodfellas-template">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Courier Prime';font-style:normal;font-weight:400;font-display:swap;src:url("assets/fonts/captured-u-450q2lgwslOqpF_6gQ8kELawFpWs39pvk.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Courier Prime';font-style:normal;font-weight:700;font-display:swap;src:url("assets/fonts/captured-u-4k0q2lgwslOqpF_6gQ8kELY7pMT-Dfq9PrNX0.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Oswald';font-style:normal;font-weight:600;font-display:swap;src:url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Work Sans';font-style:normal;font-weight:400;font-display:swap;src:url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Work Sans';font-style:normal;font-weight:500;font-display:swap;src:url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+#root {
+  position: relative;
+  width: 1080px;
+  height: 1080px;
+  overflow: hidden;
+  /* transparent: the approved map clip is mounted underneath this frame */
+  color: #F3E6D0;
+  font-family: "Work Sans", sans-serif;
+}
+#root * { box-sizing: border-box; }
+
+/* soft dims only where the type sits */
+#gf03-dim-left {
+  position: absolute; left: 0; top: 0; width: 1080px; height: 1080px;
+  background: radial-gradient(ellipse 620px 520px at 0% 0%, rgba(11,8,7,.55), rgba(11,8,7,0) 70%);
+  pointer-events: none;
+}
+#gf03-dim-right {
+  position: absolute; left: 0; top: 0; width: 1080px; height: 1080px;
+  background: linear-gradient(90deg, rgba(11,8,7,0) 45%, rgba(11,8,7,.62) 100%);
+  pointer-events: none;
+}
+
+.gf03-panel {
+  position: absolute;
+  background: rgba(26,17,12,.9);
+  border: 1px solid rgba(255,181,71,.38);
+}
+
+/* search box — top-left, 70/30 asymmetric */
+#gf03-search {
+  left: 54px; top: 54px; width: 594px; height: 97px;
+  display: flex; align-items: center; gap: 22px; padding: 0 27px;
+}
+#gf03-search-icon { width: 40px; height: 40px; flex: 0 0 40px; }
+#gf03-search-field {
+  position: relative; height: 56px; flex: 1 1 auto;
+  font: 500 47px/56px "Work Sans", sans-serif; white-space: nowrap;
+}
+#gf03-placeholder {
+  position: absolute; left: 0; top: 0;
+  color: rgba(243,230,208,.38); font-weight: 400;
+}
+#gf03-typed { position: absolute; left: 0; top: 0; display: flex; align-items: center; }
+.gf03-ch { display: inline-block; white-space: pre; }
+#gf03-caret {
+  display: inline-block; width: 4px; height: 46px; margin-left: 4px;
+  background: #FFB547;
+}
+
+/* poster thumbnail under the search box */
+#gf03-poster {
+  position: absolute; left: 54px; top: 180px; width: 150px; height: 225px;
+  object-fit: cover; border: 5px solid #FFB547; display: block;
+}
+
+/* neighbor panel — right third */
+#gf03-neighbors {
+  right: 46px; top: 238px; width: 520px; padding: 28px 30px 32px; box-sizing: border-box;
+}
+.gf03-eyebrow {
+  font: 600 28px/1 "Oswald", sans-serif; letter-spacing: .2em;
+  text-transform: uppercase; color: #FFB547;
+}
+#gf03-rule {
+  height: 2px; margin-top: 18px; background: rgba(255,181,71,.38);
+  transform-origin: 0 50%;
+}
+#gf03-rows { margin-top: 22px; display: flex; flex-direction: column; gap: 22px; }
+.gf03-row {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  font: 400 34px/1.15 "Work Sans", sans-serif; white-space: nowrap;
+}
+.gf03-score {
+  font: 700 34px/1.15 "Courier Prime", monospace; color: #FFB547;
+}
+
+/* underline under the clip's GANGSTER, MAFIA region label */
+#gf03-underline {
+  position: absolute; left: 0; top: 0; width: 1080px; height: 1080px;
+  pointer-events: none;
+}
+#gf03-underline-path {
+  fill: none; stroke: #FFB547; stroke-width: 3; stroke-linecap: round; opacity: .85;
+}
+</style>
+
+<div id="root" data-composition-id="03-goodfellas" data-start="0" data-duration="11.148" data-width="1080" data-height="1080">
+
+  <!-- approved frame video hoisted by assemble-index -->
+
+  <div id="gf03-dim-left" class="clip" data-start="0" data-duration="11.148" data-track-index="2"></div>
+  <div id="gf03-dim-right" class="clip" data-start="0" data-duration="11.148" data-track-index="3"></div>
+
+  <div id="gf03-search" class="gf03-panel clip" data-start="0" data-duration="11.148" data-track-index="4">
+    <svg id="gf03-search-icon" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="11" fill="none" stroke="#FFB547" stroke-width="3.5"/>
+      <line x1="24.5" y1="24.5" x2="36" y2="36" stroke="#FFB547" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <div id="gf03-search-field">
+      <span id="gf03-placeholder">Search</span>
+      <span id="gf03-typed"><span class="gf03-ch">G</span><span class="gf03-ch">o</span><span class="gf03-ch">o</span><span class="gf03-ch">d</span><span class="gf03-ch">F</span><span class="gf03-ch">e</span><span class="gf03-ch">l</span><span class="gf03-ch">l</span><span class="gf03-ch">a</span><span class="gf03-ch">s</span><span id="gf03-caret"></span></span>
+    </div>
+  </div>
+
+  <img id="gf03-poster" class="clip" src="assets/posters/goodfellas-1990.jpg" alt=""
+    data-start="0" data-duration="11.148" data-track-index="5">
+
+  <div id="gf03-neighbors" class="gf03-panel clip" data-start="0" data-duration="11.148" data-track-index="6">
+    <div class="gf03-eyebrow">Closest neighbors</div>
+    <div id="gf03-rule"></div>
+    <div id="gf03-rows">
+      <div class="gf03-row" id="gf03-row-1"><span>American Gangster</span><span class="gf03-score" id="gf03-score-1"><span class="gf03-ch">0</span><span class="gf03-ch">.</span><span class="gf03-ch">8</span><span class="gf03-ch">5</span></span></div>
+      <div class="gf03-row" id="gf03-row-2"><span>Carlito's Way</span><span class="gf03-score" id="gf03-score-2"><span class="gf03-ch">0</span><span class="gf03-ch">.</span><span class="gf03-ch">8</span><span class="gf03-ch">5</span></span></div>
+      <div class="gf03-row" id="gf03-row-3"><span>The Irishman</span><span class="gf03-score" id="gf03-score-3"><span class="gf03-ch">0</span><span class="gf03-ch">.</span><span class="gf03-ch">8</span><span class="gf03-ch">4</span></span></div>
+    </div>
+  </div>
+
+  <svg id="gf03-underline" class="clip" data-start="0" data-duration="11.148" data-track-index="7"
+    viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+    <path id="gf03-underline-path" d="M 380 610 L 590 610"/>
+  </svg>
+</div>
+
+<script>
+  (function () {
+    window.__timelines = window.__timelines || {};
+    var DURATION = 10.548;
+    var tl = gsap.timeline({ paused: true });
+
+    // ---- Scene 1 (0.00–1.24): search box, "GoodFellas" types on, poster drops in ----
+    tl.fromTo("#gf03-dim-left", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 0);
+    tl.fromTo("#gf03-search", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, 0);
+
+    var typed = document.querySelectorAll("#gf03-typed .gf03-ch");
+    var TYPE_START = 0.12, TYPE_END = 0.94;
+    tl.set(typed, { opacity: 0 }, 0);
+    tl.set("#gf03-placeholder", { opacity: 1 }, 0);
+    tl.set("#gf03-placeholder", { opacity: 0 }, TYPE_START);
+    var step = (TYPE_END - TYPE_START) / typed.length;
+    for (var i = 0; i < typed.length; i++) {
+      tl.set(typed[i], { opacity: 1 }, TYPE_START + i * step);
+    }
+    // caret: solid while typing, then a deterministic blink (explicit sets, no repeat)
+    tl.set("#gf03-caret", { opacity: 1 }, 0);
+    for (var b = TYPE_END + 0.5, on = false; b < DURATION; b += 0.5, on = !on) {
+      tl.set("#gf03-caret", { opacity: on ? 1 : 0 }, b);
+    }
+
+    tl.fromTo("#gf03-poster", { opacity: 0, y: -28 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 0.8);
+
+    // ---- Scene 2 (1.62): CLOSEST NEIGHBORS panel slides in from the right edge ----
+    tl.fromTo("#gf03-dim-right", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, 1.62);
+    tl.fromTo("#gf03-neighbors", { x: 560, opacity: 1 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 1.62);
+    tl.fromTo("#gf03-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, 2.05);
+
+    // ---- Scene 3: each row lands on its name, Courier score types on ----
+    var rows = [
+      { row: "#gf03-row-1", score: "#gf03-score-1", at: 2.92 },
+      { row: "#gf03-row-2", score: "#gf03-score-2", at: 4.18 },
+      { row: "#gf03-row-3", score: "#gf03-score-3", at: 5.48 }
+    ];
+    rows.forEach(function (r) {
+      tl.fromTo(r.row, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, r.at);
+      var chars = document.querySelectorAll(r.score + " .gf03-ch");
+      tl.set(chars, { opacity: 0 }, 0);
+      for (var c = 0; c < chars.length; c++) {
+        tl.set(chars[c], { opacity: 1 }, r.at + 0.28 + c * 0.09);
+      }
+    });
+
+    // ---- Scene 4: panel holds on "No genre information"; underline draws on "mafia" (9.22) ----
+    var path = document.getElementById("gf03-underline-path");
+    var len = path.getTotalLength ? path.getTotalLength() : 210;
+    if (!len) len = 210;
+    path.style.strokeDasharray = String(len);
+    tl.fromTo(path, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: 0.6, ease: "power2.out" }, 9.22);
+
+    // full-span anchor
+    tl.to({}, { duration: DURATION }, 0);
+    window.__timelines["03-goodfellas"] = tl;
+  })();
+</script>
+</template>

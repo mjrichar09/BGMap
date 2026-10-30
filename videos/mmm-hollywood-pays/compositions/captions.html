@@ -1,0 +1,328 @@
+<template id="captions-template" data-composition-id="captions" data-width="1080" data-height="1080">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+
+<style data-brand-tokens>
+      :root {
+      --bg: #0B0807;
+      --dark: #F3E6D0;
+      --red: #FFB547;
+      --light: #C8102E;
+      --cap-ink: #0B0807;
+      --cap-canvas: #0B0807;
+      --cap-accent: #FFB547;
+      --cap-accent-2: #C8102E;
+      --font-display: "Work Sans", system-ui, serif;
+      --font-body: "Work Sans", system-ui, sans-serif;
+      --cap-band-top: 900px;
+      --cap-band-height: 180px;
+      }
+    </style>
+
+<style>
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+  #captions-root {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .caption-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    pointer-events: none;
+  }
+  /* the keep-out band, from captionBand(H) — frame content stays above it */
+  .caption-stage {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--cap-band-top, 900px);
+    height: var(--cap-band-height, 180px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .caption-group {
+    /* every group is absolutely stacked over the SAME band — exactly one shown at a
+       time via opacity. Must be absolute: in-flow groups would lay out side-by-side. */
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+  }
+
+  /* THE paper card — heavy 1.5px brown-black ink rule + a 4px tomato-red leftbar
+     (bold poster's cantilevered red-leftbar-card signature), square corners, NO
+     drop shadow (the only shadow in the system is the stacked text-shadow on red) */
+  .caption-pill {
+    max-width: 78%;
+    padding: 20px 44px 24px;
+    background: var(--cap-canvas, #ffffff);
+    border: 1.5px solid var(--cap-ink, #1c1410);
+    border-left: 4px solid var(--cap-accent, #d8000f);
+    border-radius: 0;
+  }
+  .caption-line {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.1em 0.34em;
+    font-family: "Work Sans", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(40px, 4.4vw, 58px);
+    line-height: 1.16;
+    letter-spacing: -0.01em;
+  }
+
+  /* upcoming — faint brown-black ink, no panel */
+  .caption-word {
+    display: inline-block;
+    padding: 0 0.06em;
+    color: color-mix(in srgb, var(--cap-ink, #1c1410) 42%, var(--cap-canvas, #ffffff));
+  }
+  /* current word — THE tomato-red panel (box-shadow spread = a hard square block
+     w/o layout shift; no blur), paper-white reading on top carrying the stacked
+     text-shadow — bold poster's surface-inversion + only-shadow signatures */
+  .caption-word.is-active {
+    color: var(--cap-canvas, #ffffff);
+    background: var(--cap-accent, #d8000f);
+    box-shadow: 0 0 0 0.06em var(--cap-accent, #d8000f);
+    text-shadow:
+      0.03em 0.03em 0 rgba(28, 20, 16, 0.25),
+      0.06em 0.06em 0 rgba(28, 20, 16, 0.2),
+      0.09em 0.09em 0 rgba(28, 20, 16, 0.15);
+  }
+  /* already spoken — solid brown-black ink, panel cleared */
+  .caption-word.is-spoken {
+    color: var(--cap-ink, #1c1410);
+    background: transparent;
+    box-shadow: none;
+    text-shadow: none;
+  }
+
+  /* optional per-word accents (dormant until a word-classer tags them) */
+  /* brand / key term — Shrikhand display, bold poster's display face inflection */
+  .caption-word.cap-brand {
+    font-family: "Work Sans", Georgia, serif;
+  }
+  /* numerals / data — the mono chrome voice, slightly recessed */
+  .caption-word.cap-num {
+    font-family: "Work Sans", ui-monospace, monospace;
+    color: color-mix(in srgb, var(--cap-ink, #1c1410) 72%, var(--cap-canvas, #ffffff));
+  }
+  /* emphasis — a tomato-red em-dash-weight underline (the lone accent) */
+  .caption-word.cap-cta {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--cap-accent-2, #f5f2ef);
+    text-underline-offset: 0.1em;
+  }
+
+  @media (max-aspect-ratio: 9/16) {
+    .caption-pill {
+      max-width: 92%;
+    }
+    .caption-line {
+      font-size: clamp(34px, 5.4vw, 48px);
+    }
+  }
+
+  /* Massive Movie Map override (Late Show): the injected tokens map ink and canvas to the same
+     near-black, so the caption colours are fixed here. Dark translucent card, cream words,
+     amber current word with dark text, Work Sans for reading speed. */
+  .caption-pill { background: rgba(11, 8, 7, 0.84); border: 1px solid rgba(255, 181, 71, 0.45); border-left: 4px solid #FFB547; }
+  .caption-line { font-family: "Work Sans", system-ui, sans-serif; font-weight: 600; font-size: 46px; letter-spacing: 0; }
+  .caption-word { color: rgba(243, 230, 208, 0.55); }
+  .caption-word.is-active { color: #1A0F06; background: #FFB547; box-shadow: 0 0 0 0.08em #FFB547; text-shadow: none; }
+  .caption-word.is-spoken { color: #F3E6D0; }
+
+  /* Calm subtitles: every word cream, no highlight; up to two lines per phrase. */
+  .caption-pill { max-width: 88%; padding: 16px 34px 18px; }
+  .caption-line { font-size: 40px; line-height: 1.22; gap: 0 0.28em; }
+  .caption-word, .caption-word.is-active, .caption-word.is-spoken { color: #F3E6D0; background: none; box-shadow: none; text-shadow: none; }
+</style>
+
+<div
+  id="captions-root"
+  data-composition-id="captions"
+  data-timeline-locked
+  data-start="0"
+  data-duration="55.32"
+  data-fps="30"
+  data-width="1080"
+  data-height="1080"
+>
+  <div class="caption-layer" aria-hidden="true">
+    <div id="caption-stage" class="caption-stage"></div>
+  </div>
+</div>
+
+<script>
+  // captions.mjs injects the engine's scene-aware groups + real duration here.
+  var GROUPS = [{"id": "caption-group-0", "frame": 1, "start": 0.0, "end": 2.87, "text": "Color the movie map by originality:", "words": [{"id": "caption-word-0-0", "text": "Color", "start": 0, "end": 0.84}, {"id": "caption-word-0-1", "text": "the", "start": 0.84, "end": 1}, {"id": "caption-word-0-2", "text": "movie", "start": 1, "end": 1.26}, {"id": "caption-word-0-3", "text": "map", "start": 1.26, "end": 1.56}, {"id": "caption-word-0-4", "text": "by", "start": 1.56, "end": 1.78}, {"id": "caption-word-0-5", "text": "originality:", "start": 1.78, "end": 2.54}]}, {"id": "caption-group-1", "frame": 1, "start": 2.87, "end": 6.035, "text": "how unlike its closest neighbors each plot is.", "words": [{"id": "caption-word-1-0", "text": "how", "start": 2.92, "end": 3.2}, {"id": "caption-word-1-1", "text": "unlike", "start": 3.2, "end": 3.56}, {"id": "caption-word-1-2", "text": "its", "start": 3.56, "end": 3.78}, {"id": "caption-word-1-3", "text": "closest", "start": 3.78, "end": 4.14}, {"id": "caption-word-1-4", "text": "neighbors", "start": 4.14, "end": 4.56}, {"id": "caption-word-1-5", "text": "each", "start": 4.56, "end": 4.94}, {"id": "caption-word-1-6", "text": "plot", "start": 4.94, "end": 5.24}, {"id": "caption-word-1-7", "text": "is.", "start": 5.24, "end": 5.52}]}, {"id": "caption-group-2", "frame": 2, "start": 6.035, "end": 8.555, "text": "Audiences rate original movies higher.", "words": [{"id": "caption-word-2-0", "text": "Audiences", "start": 6.085, "end": 6.725}, {"id": "caption-word-2-1", "text": "rate", "start": 6.725, "end": 7.065}, {"id": "caption-word-2-2", "text": "original", "start": 7.065, "end": 7.525}, {"id": "caption-word-2-3", "text": "movies", "start": 7.525, "end": 8.045}, {"id": "caption-word-2-4", "text": "higher.", "start": 8.045, "end": 8.345}]}, {"id": "caption-group-3", "frame": 2, "start": 8.555, "end": 11.375, "text": "From the most crowded fifth to the most original,", "words": [{"id": "caption-word-3-0", "text": "From", "start": 8.605, "end": 9.065}, {"id": "caption-word-3-1", "text": "the", "start": 9.065, "end": 9.165}, {"id": "caption-word-3-2", "text": "most", "start": 9.165, "end": 9.345}, {"id": "caption-word-3-3", "text": "crowded", "start": 9.345, "end": 9.765}, {"id": "caption-word-3-4", "text": "fifth", "start": 9.765, "end": 10.125}, {"id": "caption-word-3-5", "text": "to", "start": 10.125, "end": 10.365}, {"id": "caption-word-3-6", "text": "the", "start": 10.365, "end": 10.465}, {"id": "caption-word-3-7", "text": "most", "start": 10.465, "end": 10.645}, {"id": "caption-word-3-8", "text": "original,", "start": 10.645, "end": 11.105}]}, {"id": "caption-group-4", "frame": 2, "start": 11.375, "end": 13.618, "text": "ratings climb at every step.", "words": [{"id": "caption-word-4-0", "text": "ratings", "start": 11.425, "end": 11.885}, {"id": "caption-word-4-1", "text": "climb", "start": 11.885, "end": 12.325}, {"id": "caption-word-4-2", "text": "at", "start": 12.325, "end": 12.545}, {"id": "caption-word-4-3", "text": "every", "start": 12.545, "end": 12.825}, {"id": "caption-word-4-4", "text": "step.", "start": 12.825, "end": 13.105}]}, {"id": "caption-group-5", "frame": 3, "start": 13.618, "end": 16.018, "text": "But the crowded ones earn twice as much:", "words": [{"id": "caption-word-5-0", "text": "But", "start": 13.668, "end": 13.908}, {"id": "caption-word-5-1", "text": "the", "start": 13.908, "end": 14.028}, {"id": "caption-word-5-2", "text": "crowded", "start": 14.028, "end": 14.328}, {"id": "caption-word-5-3", "text": "ones", "start": 14.328, "end": 14.588}, {"id": "caption-word-5-4", "text": "earn", "start": 14.588, "end": 14.848}, {"id": "caption-word-5-5", "text": "twice", "start": 14.848, "end": 15.168}, {"id": "caption-word-5-6", "text": "as", "start": 15.168, "end": 15.428}, {"id": "caption-word-5-7", "text": "much:", "start": 15.428, "end": 15.728}]}, {"id": "caption-group-6", "frame": 3, "start": 16.018, "end": 20.539, "text": "a median box office of thirty-three million dollars, against sixteen.", "words": [{"id": "caption-word-6-0", "text": "a", "start": 16.068, "end": 16.388}, {"id": "caption-word-6-1", "text": "median", "start": 16.388, "end": 16.708}, {"id": "caption-word-6-2", "text": "box", "start": 16.708, "end": 17.048}, {"id": "caption-word-6-3", "text": "office", "start": 17.048, "end": 17.408}, {"id": "caption-word-6-4", "text": "of", "start": 17.408, "end": 17.628}, {"id": "caption-word-6-5", "text": "thirty-three", "start": 17.628, "end": 18.208}, {"id": "caption-word-6-6", "text": "million", "start": 18.208, "end": 18.528}, {"id": "caption-word-6-7", "text": "dollars,", "start": 18.528, "end": 18.888}, {"id": "caption-word-6-8", "text": "against", "start": 19.248, "end": 19.608}, {"id": "caption-word-6-9", "text": "sixteen.", "start": 19.608, "end": 19.988}]}, {"id": "caption-group-7", "frame": 4, "start": 20.539, "end": 23.359, "text": "And the most original hits are based on true stories:", "words": [{"id": "caption-word-7-0", "text": "And", "start": 20.589, "end": 20.849}, {"id": "caption-word-7-1", "text": "the", "start": 20.849, "end": 20.929}, {"id": "caption-word-7-2", "text": "most", "start": 20.929, "end": 21.109}, {"id": "caption-word-7-3", "text": "original", "start": 21.109, "end": 21.509}, {"id": "caption-word-7-4", "text": "hits", "start": 21.509, "end": 21.829}, {"id": "caption-word-7-5", "text": "are", "start": 21.829, "end": 21.969}, {"id": "caption-word-7-6", "text": "based", "start": 21.969, "end": 22.229}, {"id": "caption-word-7-7", "text": "on", "start": 22.229, "end": 22.409}, {"id": "caption-word-7-8", "text": "true", "start": 22.409, "end": 22.629}, {"id": "caption-word-7-9", "text": "stories:", "start": 22.629, "end": 23.129}]}, {"id": "caption-group-8", "frame": 4, "start": 23.359, "end": 24.519, "text": "The King's Speech.", "words": [{"id": "caption-word-8-0", "text": "The", "start": 23.409, "end": 23.669}, {"id": "caption-word-8-1", "text": "King's", "start": 23.669, "end": 24.029}, {"id": "caption-word-8-2", "text": "Speech.", "start": 24.029, "end": 24.269}]}, {"id": "caption-group-9", "frame": 4, "start": 24.519, "end": 25.799, "text": "The Social Network.", "words": [{"id": "caption-word-9-0", "text": "The", "start": 24.569, "end": 24.889}, {"id": "caption-word-9-1", "text": "Social", "start": 24.889, "end": 25.229}, {"id": "caption-word-9-2", "text": "Network.", "start": 25.229, "end": 25.589}]}, {"id": "caption-group-10", "frame": 4, "start": 25.799, "end": 26.719, "text": "The Big Short.", "words": [{"id": "caption-word-10-0", "text": "The", "start": 25.849, "end": 26.049}, {"id": "caption-word-10-1", "text": "Big", "start": 26.049, "end": 26.189}, {"id": "caption-word-10-2", "text": "Short.", "start": 26.189, "end": 26.549}]}, {"id": "caption-group-11", "frame": 4, "start": 26.719, "end": 28.015, "text": "Hidden Figures.", "words": [{"id": "caption-word-11-0", "text": "Hidden", "start": 26.769, "end": 27.069}, {"id": "caption-word-11-1", "text": "Figures.", "start": 27.069, "end": 27.549}]}, {"id": "caption-group-12", "frame": 5, "start": 28.015, "end": 30.775, "text": "Follow the money, and superheroes lead:", "words": [{"id": "caption-word-12-0", "text": "Follow", "start": 28.065, "end": 28.505}, {"id": "caption-word-12-1", "text": "the", "start": 28.505, "end": 28.665}, {"id": "caption-word-12-2", "text": "money,", "start": 28.665, "end": 28.925}, {"id": "caption-word-12-3", "text": "and", "start": 29.085, "end": 29.325}, {"id": "caption-word-12-4", "text": "superheroes", "start": 29.325, "end": 29.825}, {"id": "caption-word-12-5", "text": "lead:", "start": 29.825, "end": 30.305}]}, {"id": "caption-group-13", "frame": 5, "start": 30.775, "end": 34.168, "text": "a median of two hundred sixty-eight million dollars a film.", "words": [{"id": "caption-word-13-0", "text": "a", "start": 30.825, "end": 30.945}, {"id": "caption-word-13-1", "text": "median", "start": 30.945, "end": 31.285}, {"id": "caption-word-13-2", "text": "of", "start": 31.285, "end": 31.565}, {"id": "caption-word-13-3", "text": "two", "start": 31.565, "end": 31.765}, {"id": "caption-word-13-4", "text": "hundred", "start": 31.765, "end": 31.965}, {"id": "caption-word-13-5", "text": "sixty-eight", "start": 31.965, "end": 32.605}, {"id": "caption-word-13-6", "text": "million", "start": 32.605, "end": 32.945}, {"id": "caption-word-13-7", "text": "dollars", "start": 32.945, "end": 33.305}, {"id": "caption-word-13-8", "text": "a", "start": 33.305, "end": 33.525}, {"id": "caption-word-13-9", "text": "film.", "start": 33.525, "end": 33.705}]}, {"id": "caption-group-14", "frame": 6, "start": 34.168, "end": 39.088, "text": "But per dollar spent, James Bond returns five point seven times his budget.", "words": [{"id": "caption-word-14-0", "text": "But", "start": 34.218, "end": 34.458}, {"id": "caption-word-14-1", "text": "per", "start": 34.458, "end": 34.638}, {"id": "caption-word-14-2", "text": "dollar", "start": 34.638, "end": 34.838}, {"id": "caption-word-14-3", "text": "spent,", "start": 34.838, "end": 35.218}, {"id": "caption-word-14-4", "text": "James", "start": 35.438, "end": 35.778}, {"id": "caption-word-14-5", "text": "Bond", "start": 35.778, "end": 36.178}, {"id": "caption-word-14-6", "text": "returns", "start": 36.178, "end": 36.658}, {"id": "caption-word-14-7", "text": "five", "start": 36.658, "end": 37.078}, {"id": "caption-word-14-8", "text": "point", "start": 37.078, "end": 37.358}, {"id": "caption-word-14-9", "text": "seven", "start": 37.358, "end": 37.658}, {"id": "caption-word-14-10", "text": "times", "start": 37.658, "end": 38.038}, {"id": "caption-word-14-11", "text": "his", "start": 38.038, "end": 38.258}, {"id": "caption-word-14-12", "text": "budget.", "start": 38.258, "end": 38.618}]}, {"id": "caption-group-15", "frame": 6, "start": 39.088, "end": 40.828, "text": "Slashers, four times.", "words": [{"id": "caption-word-15-0", "text": "Slashers,", "start": 39.138, "end": 39.798}, {"id": "caption-word-15-1", "text": "four", "start": 39.898, "end": 40.138}, {"id": "caption-word-15-2", "text": "times.", "start": 40.138, "end": 40.498}]}, {"id": "caption-group-16", "frame": 6, "start": 40.828, "end": 43.308, "text": "Political dramas barely break even.", "words": [{"id": "caption-word-16-0", "text": "Political", "start": 40.878, "end": 41.318}, {"id": "caption-word-16-1", "text": "dramas", "start": 41.318, "end": 41.798}, {"id": "caption-word-16-2", "text": "barely", "start": 41.798, "end": 42.178}, {"id": "caption-word-16-3", "text": "break", "start": 42.178, "end": 42.478}, {"id": "caption-word-16-4", "text": "even.", "start": 42.478, "end": 42.798}]}, {"id": "caption-group-17", "frame": 7, "start": 43.308, "end": 46.768, "text": "And over seventy years, westerns fell from one film in ten,", "words": [{"id": "caption-word-17-0", "text": "And", "start": 43.358, "end": 43.618}, {"id": "caption-word-17-1", "text": "over", "start": 43.618, "end": 43.798}, {"id": "caption-word-17-2", "text": "seventy", "start": 43.798, "end": 44.118}, {"id": "caption-word-17-3", "text": "years,", "start": 44.118, "end": 44.498}, {"id": "caption-word-17-4", "text": "westerns", "start": 44.838, "end": 45.258}, {"id": "caption-word-17-5", "text": "fell", "start": 45.258, "end": 45.438}, {"id": "caption-word-17-6", "text": "from", "start": 45.438, "end": 45.638}, {"id": "caption-word-17-7", "text": "one", "start": 45.638, "end": 45.878}, {"id": "caption-word-17-8", "text": "film", "start": 45.878, "end": 46.138}, {"id": "caption-word-17-9", "text": "in", "start": 46.138, "end": 46.318}, {"id": "caption-word-17-10", "text": "ten,", "start": 46.318, "end": 46.818}]}, {"id": "caption-group-18", "frame": 7, "start": 46.768, "end": 50.123, "text": "to one in a hundred, while thrillers more than doubled.", "words": [{"id": "caption-word-18-0", "text": "to", "start": 46.818, "end": 47.258}, {"id": "caption-word-18-1", "text": "one", "start": 47.258, "end": 47.458}, {"id": "caption-word-18-2", "text": "in", "start": 47.458, "end": 47.578}, {"id": "caption-word-18-3", "text": "a", "start": 47.578, "end": 47.678}, {"id": "caption-word-18-4", "text": "hundred,", "start": 47.678, "end": 47.918}, {"id": "caption-word-18-5", "text": "while", "start": 48.278, "end": 48.438}, {"id": "caption-word-18-6", "text": "thrillers", "start": 48.438, "end": 48.918}, {"id": "caption-word-18-7", "text": "more", "start": 48.918, "end": 49.118}, {"id": "caption-word-18-8", "text": "than", "start": 49.118, "end": 49.278}, {"id": "caption-word-18-9", "text": "doubled.", "start": 49.278, "end": 49.598}]}, {"id": "caption-group-19", "frame": 8, "start": 50.123, "end": 51.523, "text": "Color the map your way.", "words": [{"id": "caption-word-19-0", "text": "Color", "start": 50.173, "end": 50.613}, {"id": "caption-word-19-1", "text": "the", "start": 50.613, "end": 50.773}, {"id": "caption-word-19-2", "text": "map", "start": 50.773, "end": 51.013}, {"id": "caption-word-19-3", "text": "your", "start": 51.013, "end": 51.133}, {"id": "caption-word-19-4", "text": "way.", "start": 51.133, "end": 51.353}]}, {"id": "caption-group-20", "frame": 8, "start": 51.523, "end": 53.133, "text": "Massive Movie Map.", "words": [{"id": "caption-word-20-0", "text": "Massive", "start": 51.573, "end": 52.033}, {"id": "caption-word-20-1", "text": "Movie", "start": 52.033, "end": 52.273}, {"id": "caption-word-20-2", "text": "Map.", "start": 52.273, "end": 52.533}]}];
+  var DURATION = 55.32;
+
+  (function () {
+    var stage = document.getElementById("caption-stage");
+
+    // build DOM: one .caption-group per group, .caption-word per word
+    GROUPS.forEach(function (group, g) {
+      var groupEl = document.createElement("div");
+      groupEl.className = "caption-group";
+      groupEl.id = "caption-group-" + g;
+      var pill = document.createElement("div");
+      pill.className = "caption-pill";
+      var line = document.createElement("div");
+      line.className = "caption-line";
+      (group.words || []).forEach(function (w, i) {
+        var span = document.createElement("span");
+        span.className = "caption-word";
+        span.id = "caption-word-" + g + "-" + i;
+        span.textContent = String(w.text);
+        line.appendChild(span);
+      });
+      pill.appendChild(line);
+      groupEl.appendChild(pill);
+      stage.appendChild(groupEl);
+    });
+
+    window.__timelines = window.__timelines || {};
+    var tl = gsap.timeline({ paused: true });
+
+    GROUPS.forEach(function (group, g) {
+      var groupEl = document.getElementById("caption-group-" + g);
+      var words = group.words || [];
+      var next = GROUPS[g + 1];
+      var isLast = g === GROUPS.length - 1;
+      var start = Math.max(0, Number(group.start));
+      var end = Number(group.end);
+      if (end <= start) end = start + 0.01;
+
+      // whole phrase fades in and out as one block; no per-word states
+      tl.fromTo(groupEl, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, start);
+      tl.to(groupEl, { opacity: 0, duration: 0.12, ease: "power1.in" }, Math.max(start + 0.12, end - 0.12));
+      tl.set(groupEl, { opacity: 0, visibility: "hidden" }, end);
+      tl.set(groupEl, { visibility: "visible" }, start);
+    });
+
+    // full-span anchor so the sub-comp timeline spans the whole video
+    tl.to({}, { duration: DURATION }, 0);
+    window.__timelines["captions"] = tl;
+  })();
+</script>
+
+<style>
+  .caption-line { line-height: 1.1 !important; }
+</style>
+</template>

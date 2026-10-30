@@ -1,0 +1,195 @@
+<template id="07-trends-template">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Courier Prime';font-style:normal;font-weight:400;font-display:swap;src:url("assets/fonts/captured-u-450q2lgwslOqpF_6gQ8kELawFpWs39pvk.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Courier Prime';font-style:normal;font-weight:700;font-display:swap;src:url("assets/fonts/captured-u-4k0q2lgwslOqpF_6gQ8kELY7pMT-Dfq9PrNX0.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Oswald';font-style:normal;font-weight:600;font-display:swap;src:url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Work Sans';font-style:normal;font-weight:400;font-display:swap;src:url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+#root {
+  position: relative; width: 1080px; height: 1080px; overflow: hidden;
+  background: transparent;
+}
+
+/* dims sit only where type/chart sits; map center stays clear */
+#t07-dim-bl {
+  position: absolute; left: 0; top: 0; width: 1080px; height: 1080px; pointer-events: none;
+  background: radial-gradient(ellipse 720px 560px at 0% 100%, rgba(11,8,7,.72) 0%, rgba(11,8,7,.45) 45%, rgba(11,8,7,0) 100%);
+}
+#t07-dim-tr {
+  position: absolute; left: 0; top: 0; width: 1080px; height: 1080px; pointer-events: none;
+  background: radial-gradient(ellipse 560px 320px at 100% 0%, rgba(11,8,7,.75) 0%, rgba(11,8,7,.4) 50%, rgba(11,8,7,0) 100%);
+}
+
+/* year counter */
+#t07-year {
+  position: absolute; right: 54px; top: 44px;
+  font: 700 96px/1 "Courier Prime", monospace; color: #FFB547;
+  letter-spacing: 0; white-space: nowrap;
+}
+
+/* inset chart panel: x 40-630, y 520-880 */
+#t07-panel {
+  position: absolute; left: 40px; top: 520px; width: 590px; height: 360px;
+  background: rgba(11,8,7,.8); border-top: 3px solid #FFB547; box-sizing: border-box;
+}
+#t07-svg { position: absolute; left: 0; top: 0; width: 590px; height: 300px; overflow: visible; }
+.t07-grid { stroke: rgba(243,230,208,.16); stroke-width: 1.5; }
+.t07-base { stroke: rgba(243,230,208,.38); stroke-width: 2; }
+.t07-ytick { font: 400 22px "Courier Prime", monospace; fill: #B39C80; }
+.t07-xtick { font: 400 22px "Courier Prime", monospace; fill: #B39C80; }
+.t07-line { fill: none; stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; }
+#t07-west-line { stroke: #C8102E; }
+#t07-thr-line { stroke: #FFB547; }
+
+.t07-end {
+  position: absolute; left: 414px; white-space: nowrap;
+}
+.t07-end-name {
+  font: 600 26px/1 "Oswald", sans-serif; letter-spacing: .08em; text-transform: uppercase; height: 28px; overflow: visible;
+}
+.t07-end-val {
+  font: 700 24px/1.15 "Courier Prime", monospace; display: flex; align-items: center; gap: 6px; margin-top: 8px;
+}
+.t07-end-val svg { width: 26px; height: 16px; display: block; }
+#t07-west-end { top: 192px; color: #C8102E; }
+#t07-thr-end { top: 22px; color: #FFB547; }
+
+#t07-source {
+  position: absolute; left: 22px; right: 22px; top: 298px;
+  font: 400 21px/1.22 "Work Sans", sans-serif; color: #B39C80;
+}
+</style>
+
+<div id="root" data-composition-id="07-trends" data-start="0" data-duration="7.315" data-width="1080" data-height="1080">
+
+  <!-- approved frame video hoisted by assemble-index -->
+
+  <div id="t07-dim-bl" class="clip" data-start="0" data-duration="7.315" data-track-index="2"></div>
+  <div id="t07-dim-tr" class="clip" data-start="0" data-duration="7.315" data-track-index="3"></div>
+
+  <div id="t07-year" class="clip" data-start="0" data-duration="7.315" data-track-index="4">1950</div>
+
+  <div id="t07-panel" class="clip" data-start="0" data-duration="7.315" data-track-index="5">
+    <svg id="t07-svg" viewBox="0 0 590 300" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <clipPath id="t07-reveal"><rect id="t07-reveal-rect" x="0" y="0" width="70" height="300"/></clipPath>
+      </defs>
+      <g id="t07-axes"></g>
+      <g clip-path="url(#t07-reveal)">
+        <polyline id="t07-west-line" class="t07-line" points=""/>
+        <polyline id="t07-thr-line" class="t07-line" points=""/>
+      </g>
+      <g id="t07-dots"></g>
+    </svg>
+
+    <div id="t07-thr-end" class="t07-end">
+      <div class="t07-end-name">Thrillers</div>
+      <div class="t07-end-val"><span>12%</span><svg viewBox="0 0 26 16"><path d="M1 8 H21 M15 2 L22 8 L15 14" fill="none" stroke="#FFB547" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>26%</span></div>
+    </div>
+    <div id="t07-west-end" class="t07-end">
+      <div class="t07-end-name">Westerns</div>
+      <div class="t07-end-val"><span>10%</span><svg viewBox="0 0 26 16"><path d="M1 8 H21 M15 2 L22 8 L15 14" fill="none" stroke="#C8102E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>1%</span></div>
+    </div>
+
+    <div id="t07-source">share of each decade's films tagged with the genre</div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    window.__timelines = window.__timelines || {};
+    var DURATION = 6.815;
+    var CLIP_LEN = 7.0;               // year = 1950 + 75 * t / 7.0
+    var NS = "http://www.w3.org/2000/svg";
+
+    // chart geometry (panel-local)
+    var X0 = 70, X7 = 400, STEP = (X7 - X0) / 7;
+    var Y0 = 244, PX_PER_SHARE = 733.333;   // 30% -> y 24
+    function yOf(s) { return Y0 - s * PX_PER_SHARE; }
+
+    // data inlined from assets/data/stats.json trends
+    var WEST = [0.099, 0.09, 0.051, 0.011, 0.013, 0.007, 0.007, 0.008];
+    var THR  = [0.121, 0.135, 0.211, 0.182, 0.205, 0.229, 0.219, 0.259];
+    var DECADES = ["50s", "60s", "70s", "80s", "90s", "00s", "10s", "20s"];
+
+    // axes: gridlines + ticks
+    var axes = document.getElementById("t07-axes");
+    [0, 0.1, 0.2, 0.3].forEach(function (s) {
+      var ln = document.createElementNS(NS, "line");
+      ln.setAttribute("x1", X0 - 6); ln.setAttribute("x2", X7 + 6);
+      ln.setAttribute("y1", yOf(s)); ln.setAttribute("y2", yOf(s));
+      ln.setAttribute("class", s === 0 ? "t07-base" : "t07-grid");
+      axes.appendChild(ln);
+      var tx = document.createElementNS(NS, "text");
+      tx.setAttribute("x", X0 - 14); tx.setAttribute("y", yOf(s) + 7);
+      tx.setAttribute("text-anchor", "end"); tx.setAttribute("class", "t07-ytick");
+      tx.textContent = Math.round(s * 100) + "%";
+      axes.appendChild(tx);
+    });
+    DECADES.forEach(function (d, i) {
+      var tx = document.createElementNS(NS, "text");
+      tx.setAttribute("x", X0 + i * STEP); tx.setAttribute("y", Y0 + 32);
+      tx.setAttribute("text-anchor", "middle"); tx.setAttribute("class", "t07-xtick");
+      tx.textContent = d;
+      axes.appendChild(tx);
+    });
+
+    function pts(arr) {
+      return arr.map(function (s, i) { return (X0 + i * STEP).toFixed(1) + "," + yOf(s).toFixed(1); }).join(" ");
+    }
+    document.getElementById("t07-west-line").setAttribute("points", pts(WEST));
+    document.getElementById("t07-thr-line").setAttribute("points", pts(THR));
+
+    // vertex dots
+    var dotsG = document.getElementById("t07-dots");
+    var dots = [];
+    for (var i = 0; i < 8; i++) {
+      [[WEST, "#C8102E"], [THR, "#FFB547"]].forEach(function (pair) {
+        var c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", X0 + i * STEP); c.setAttribute("cy", yOf(pair[0][i]));
+        c.setAttribute("r", i === 7 ? 7 : 5); c.setAttribute("fill", pair[1]);
+        dotsG.appendChild(c);
+        dots.push({ el: c, i: i });
+      });
+    }
+
+    var tl = gsap.timeline({ paused: true });
+    function tOfYear(y) { return (y - 1950) * CLIP_LEN / 75; }
+
+    // ---- Scene: chrome lands immediately (year counter is the hero, panel follows) ----
+    tl.fromTo("#t07-dim-bl", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 0);
+    tl.fromTo("#t07-dim-tr", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 0);
+    tl.fromTo("#t07-year", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0);
+    tl.fromTo("#t07-panel", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.1);
+
+    // ---- year counter: deterministic whole-year steps synced to the clip ----
+    var yearEl = document.getElementById("t07-year");
+    tl.set(yearEl, { textContent: "1950" }, 0);
+    for (var y = 1951; y <= 2025; y++) {
+      var t = tOfYear(y);
+      if (t >= DURATION) break;
+      tl.set(yearEl, { textContent: String(y) }, t);
+    }
+
+    // ---- lines draw left to right: reach decade D when the counter passes D ----
+    var T_END = tOfYear(2020);   // 6.533
+    var rect = document.getElementById("t07-reveal-rect");
+    tl.fromTo(rect, { attr: { width: X0 } }, { attr: { width: X7 }, duration: T_END, ease: "none" }, 0);
+    tl.set(rect, { attr: { width: 590 } }, T_END);
+    dots.forEach(function (d) {
+      tl.fromTo(d.el, { opacity: 0 }, { opacity: 1, duration: 0.15, ease: "power1.out" }, tOfYear(1950 + d.i * 10));
+    });
+
+    // ---- end labels on their words ----
+    tl.fromTo("#t07-west-end", { opacity: 0, x: 16 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 1.48);
+    tl.fromTo("#t07-thr-end", { opacity: 0, x: 16 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 5.08);
+
+    // source line holds (arrives with the panel)
+    tl.fromTo("#t07-source", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 0.4);
+
+    tl.to({}, { duration: DURATION }, 0);
+    window.__timelines["07-trends"] = tl;
+  })();
+</script>
+</template>
