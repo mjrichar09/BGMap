@@ -381,6 +381,7 @@ def main() -> None:
     page = (ROOT / "web" / f"{args.domain}_map.html").read_text(encoding="utf-8")
     (out / "index.html").write_text(page.replace("<title>Massive Movie Map</title>", f"<title>{args.title}</title>", 1), encoding="utf-8")
     shutil.copytree(ROOT / "web" / "assets", out / "assets", dirs_exist_ok=True)
+    shutil.copytree(ROOT / "web" / "root", out, dirs_exist_ok=True)  # robots.txt, sitemap.xml
     sizes = ", ".join(f"{p.name} {p.stat().st_size / 1e6:.1f} MB" for p in sorted(data_dir.glob("*.json")))
     print(f"{len(first):,} items, {len(layouts)} layout(s), {source} ratings -> {out} ({sizes})")
     print(f"rating cutoffs: {json.dumps(scale)}")
