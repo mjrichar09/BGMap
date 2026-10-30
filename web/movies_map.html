@@ -204,12 +204,18 @@ input:disabled, button:disabled { opacity: 0.55; cursor: not-allowed; }
 #detail .meta { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
 .desert-bar { display: block; height: 5px; margin-top: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--accent) var(--w), var(--soft-line) var(--w)); }
 .desert-what { margin: 0; font: 400 17px/1.3 var(--font-display); }
+.desert-pitch { border-left: 3px solid var(--accent); padding: 2px 0 2px 10px; }
+.desert-pitch h4 { margin: 2px 0 4px; font: 400 18px/1.2 var(--font-display); }
+.desert-pitch p { margin: 0 0 6px; font-size: 13px; line-height: 1.45; }
+.desert-pitch .logline { font-style: italic; }
 .region-pill { display: inline-block; margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--link); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; text-decoration: underline; text-underline-offset: 2px; }
 /* Stats are admit-one stubs: a dashed tear line along the top. */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0; }
 .stat { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 2px 6px; background: var(--panel-2); border: var(--border-w) solid var(--line); border-top-style: dashed; border-radius: var(--radius-sm); }
 .stat b { font: 700 16px var(--font-data); font-variant-numeric: tabular-nums; }
 .stat span { font: 600 10px var(--font-label); color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+.stats.three { grid-template-columns: repeat(3, 1fr); margin: 8px 0 4px; }
+.stat small { font: 400 10px var(--font-body); color: var(--muted); margin-top: 2px; text-align: center; }
 #detail .blurb { margin: 0 0 10px; font-size: 13px; }
 #detail .blurb i { display: block; color: var(--muted); margin-bottom: 4px; }
 .tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 12px; }
@@ -244,14 +250,37 @@ a { color: var(--link); }
 #timeKey { display: flex; gap: 10px; font: 11.5px var(--font-data); color: var(--muted); }
 #timeKey i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 3px; vertical-align: -1px; }
 #status { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); z-index: 1; font: 15px var(--font-data); }
+#toolsBtn { display: none; }
+/* Phones: a compact top bar with the search; Tools opens the rest. The film card is a bottom sheet. */
 @media (max-width: 720px) {
-  #detail { top: auto; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); max-height: 46%; }
-  #controls { max-height: 48%; }
-  body.has-detail #controls > :not(.brand):not(.searchbox) { display: none; }
-  body.has-detail #keybar { display: none; }
-  #keybar .keyitems span { display: none; }
-  #keybar .keycolor { display: none; }
+  #controls { left: max(8px, env(safe-area-inset-left, 0px)); right: max(8px, env(safe-area-inset-right, 0px)); width: auto;
+    top: calc(8px + env(safe-area-inset-top, 0px)); padding: 10px 12px 10px 26px; gap: 10px;
+    max-height: calc(64dvh - env(safe-area-inset-top, 0px)); overscroll-behavior: contain; }
+  body:not(.tools-open) #controls > :not(.brand):not(.searchbox) { display: none; }
+  .brand { gap: 8px; }
+  .brand-mark { width: 26px; height: 26px; }
+  h1 { font-size: 19px; }
+  #toolsBtn { display: inline-block; margin-left: auto; background: var(--accent); color: var(--accent-ink); border: var(--border-w) solid var(--accent);
+    border-radius: var(--radius-sm); font: 600 12px var(--font-label); letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 10px; cursor: pointer; }
+  #themeBtn { margin-left: 0; padding: 7px 8px; white-space: nowrap; }
+  .searchbox label { display: none; }
+  /* 16px inputs stop iOS from zooming the page when one is focused. */
+  input[type="search"], input[type="text"], input[type="number"], select { font-size: 16px; padding: 8px 10px; }
+  .tab { font-size: 12px; padding: 9px 4px; }
+  .list li button { padding: 8px 2px; }
+  #detail { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-height: 52dvh; border-radius: var(--radius) var(--radius) 0 0;
+    border-bottom-width: 0; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); overscroll-behavior: contain; }
+  body.has-detail #keybar, body.tools-open #keybar { display: none; }
+  #keybar { left: auto; right: max(8px, env(safe-area-inset-right, 0px)); transform: none; bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    width: auto; max-width: none; padding: 6px; }
+  #keybar::before { display: none; }
+  #keybar .keyitems, #keybar .keycolor { display: none; }
+  #keybar .nav button { width: 40px; height: 40px; }
+  #timebar { bottom: calc(66px + env(safe-area-inset-bottom, 0px)); width: calc(100vw - 16px); padding: 8px 10px 8px 26px; gap: 8px; }
+  #timeYear { font-size: 22px; }
   #timeKey { display: none; }
+  #stubs, #popcorn { display: none; }
+  #tooltip { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } #field::after { animation: none; } }
 </style>
@@ -323,6 +352,7 @@ a { color: var(--link); }
   <div class="brand">
     <div class="brand-mark" aria-hidden="true"></div>
     <h1 id="title">Massive Movie Map</h1>
+    <button id="toolsBtn" type="button" aria-expanded="false" aria-controls="controls">Tools</button>
     <button id="themeBtn" type="button">Theme</button>
   </div>
   <p class="note" id="note"></p>
@@ -477,7 +507,7 @@ a { color: var(--link); }
           <ol class="list" id="unmadeList"></ol>
           <div class="stack" id="unmadeBody"></div>
           <span class="cap" style="margin-top:6px">Film deserts: start from a film</span>
-          <p class="help">Pick a film and see the emptiest places between it and other kinds of film: blends of its plot with a nearby cluster that nothing on the map comes close to. Computed ahead of time in the model's full space (no AI writes these); a few line up with the pitches above.</p>
+          <p class="help">Pick a film and see the emptiest places between it and other kinds of film: blends of its plot with a nearby cluster that nothing on the map comes close to. Computed ahead of time in the model's full space, with no AI running live. Some deserts have a pitch written by AI (marked ✎), checked the same way as the ones above.</p>
           <input id="desertQ" type="search" placeholder="Type a film you like" autocomplete="off">
           <p class="mini" id="desertTry"></p>
           <ol class="list" id="desertList"></ol>
@@ -508,6 +538,7 @@ a { color: var(--link); }
         <div class="stack">
           <label class="cap" for="designerQ">Director or actor</label>
           <input id="designerQ" type="search" placeholder="e.g. Akira Kurosawa" autocomplete="off">
+          <div id="personCard"></div>
           <ol class="list" id="designerList"></ol>
         </div>
       </details>
@@ -1154,6 +1185,7 @@ a { color: var(--link); }
     el.addEventListener("pointerup", (e) => {
       const d = down; down = null;
       if (!d || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 6 || performance.now() - d.t > 800) return;
+      if (document.body.classList.contains("tools-open")) return setTools(false);  // phones: the first tap just uncovers the map
       const r = el.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
       const info = deckgl.pickObject({ x, y, radius: 4, layerIds: ["markers", "labels"] });
       if (info && info.layer && info.layer.id === "labels") return showRegion(info.object.kind, info.object.id);
@@ -1176,7 +1208,16 @@ a { color: var(--link); }
     select(i, false);
   }
 
+  // Phones: the tools panel covers the top of the map, so it opens on demand and closes once there's something to look at.
+  const phone = matchMedia("(max-width: 720px)");
+  function setTools(open) {
+    document.body.classList.toggle("tools-open", open);
+    $("toolsBtn").setAttribute("aria-expanded", String(open));
+    $("toolsBtn").textContent = open ? "Map" : "Tools";
+    if (open) $("controls").scrollTop = 0;
+  }
   function select(i, fly) {
+    if (phone.matches && i != null) setTools(false);
     state.selected = i;
     if (state.route) { const k = state.route.indexOf(i); if (k >= 0) { state.routeStop = k; renderRouteList(); } }
     renderDetail(); recolor(); redraw();
@@ -1589,12 +1630,12 @@ a { color: var(--link); }
       return;
     }
     $("desertList").innerHTML = rows.map((r, k) => {
-      const c = deserts.clusters[r[0]];
-      return `<li><button type="button" data-d="${k}"><span class="n">${k + 1}</span><span class="nm">× ${esc(c.label)}<span class="mini"> · like ${esc(c.examples.split(", ").slice(0, 2).join(", "))}</span>
+      const c = deserts.clusters[r[0]], pitched = deserts.pitches?.[i]?.[r[0]];
+      return `<li><button type="button" data-d="${k}"><span class="n">${k + 1}</span><span class="nm">× ${esc(c.label)}${pitched ? ` <span class="mini" title="has a pitch">✎ pitch</span>` : ""}<span class="mini"> · like ${esc(c.examples.split(", ").slice(0, 2).join(", "))}</span>
         <span class="desert-bar" style="--w:${desertPct(r[1])}%" title="emptier than ${desertPct(r[1])}% of film deserts"></span></span></button></li>`;
     }).join("");
     $("desertList").querySelectorAll("button[data-d]").forEach((b) => b.addEventListener("click", () => showDesert(i, +b.dataset.d)));
-    showDesert(i, 0);
+    showDesert(i, Math.max(0, rows.findIndex((r) => deserts.pitches?.[i]?.[r[0]])));
   }
   function showDesert(seed, k) {
     const g = state.films, man = state.manifest, m = state.models[state.model], [cl, gap, nearest, near, sims] = deserts.seeds[seed][k], c = deserts.clusters[cl];
@@ -1607,9 +1648,12 @@ a { color: var(--link); }
       .sort((a, b) => (lift.get(b) || 0) - (lift.get(a) || 0)).slice(0, 2).map((t) => man.keywords[t]);
     const own = m.cluster[seed], pitch = (man.unmade || []).findIndex((u) => u.parents.includes(own) && u.parents.includes(cl));
     const sim = new Map(near.map((n, j) => [n, sims[j]]));
+    const dp = deserts.pitches?.[seed]?.[cl];
     $("desertBody").innerHTML = `
       <p class="desert-what">What if ${esc(g.name[seed])}${kws.length ? ` (${kws.map(esc).join(", ")})` : ""} met <button class="region-pill" type="button" data-c="${cl}" style="margin:0;font-size:inherit">${esc(c.label)}</button>?</p>
       <p class="mini" style="margin:0">Nothing on the map is made of both. This blend is emptier than ${desertPct(gap)}% of film deserts; its nearest film is ${Math.round(nearest * 100)}% similar. Like ${esc(c.examples)}.</p>
+      ${dp ? `<div class="desert-pitch"><span class="cap">A pitch for this desert</span><h4>${esc(dp.title)}</h4><p class="logline">${esc(dp.logline)}</p><p>${esc(dp.plot)}</p>
+        <p class="mini">Written by AI, then embedded with the map's model: its plot lands closer to this blend than to ${esc(g.name[seed])} or the cluster.</p></div>` : ""}
       ${pitch >= 0 ? `<button class="btn ghost" type="button" id="desertPitch">Read the AI pitch for this gap: ${esc(man.unmade[pitch].title)}</button>` : ""}
       <span class="cap">Closest thing already made</span>
       <ol class="list" id="desertNear">${listHtml(near, (i) => `${g.year[i] ?? ""} · ${Math.round(sim.get(i) * 100)}%`)}</ol>
@@ -1649,7 +1693,15 @@ a { color: var(--link); }
   function initDeserts() {
     attachSearch($("desertQ"), (i) => pickDesertSeed(i));
     const tries = ["GoodFellas", "Toy Story", "The Dark Knight", "Mean Girls"].map((n) => state.films.name.indexOf(n)).filter((i) => i >= 0);
-    $("desertTry").innerHTML = "Try: " + tries.map((i) => `<button class="region-pill" type="button" data-i="${i}" style="margin:0 6px 0 0">${esc(state.films.name[i])}</button>`).join("");
+    const pill = (i) => `<button class="region-pill" type="button" data-i="${i}" style="margin:0 6px 4px 0">${esc(state.films.name[i])}</button>`;
+    $("desertTry").innerHTML = "Try: " + tries.map(pill).join("") + `<span id="desertPitched"></span>`;
+    // Seeds with a written pitch are only known once deserts.json (2 MB) loads, so add four of them when the tool opens.
+    $("unmadeTool").addEventListener("toggle", () => $("unmadeTool").open && !$("desertPitched").innerHTML && loadDeserts().then(() => {
+      const ps = Object.keys(deserts.pitches || {}).map(Number).sort(() => Math.random() - 0.5).slice(0, 4);
+      if (!ps.length) return;
+      $("desertPitched").innerHTML = `<br>With a pitch: ${ps.map(pill).join("")}`;
+      $("desertPitched").querySelectorAll("button[data-i]").forEach((b) => b.addEventListener("click", () => pickDesertSeed(+b.dataset.i)));
+    }));
     $("desertTry").querySelectorAll("button[data-i]").forEach((b) => b.addEventListener("click", () => pickDesertSeed(+b.dataset.i)));
   }
   // A desert's marker: the same ringed question mark, with lines to the seed film and the other cluster's label.
@@ -1713,8 +1765,35 @@ a { color: var(--link); }
         outlineWidth: 4, outlineColor: T.bg.concat(235), fontSettings: { sdf: true }, updateTriggers: { getPosition: [state.view3d], getTextAnchor: [state.view3d], getAlignmentBaseline: [state.view3d], getPixelOffset: [state.view3d] } }),
     ];
   }
+  // Stats for the director or actor in the lens: precomputed by export.py (data/people.json) for everyone with enough
+  // films on the map. Percentiles compare directors with directors and actors with actors.
+  let people = null;
+  async function renderPersonCard(d) {
+    const el = $("personCard");
+    if (!people) { try { people = await (await fetch("data/people.json")).json(); } catch (e) { people = {}; } }
+    const c = people[d], g = state.films;
+    if (!c) { el.innerHTML = `<p class="mini">Too few films on the map for a stats card.</p>`; return; }
+    const pct = (k) => (c.pct && c.pct[k] != null ? c.pct[k] : null);
+    const rank = (k, word) => { const v = pct(k); return v == null ? "" : `<small>${word} than ${v}% of ${c.role}s</small>`; };
+    const stat = (val, label, k, word) => `<div class="stat"><b>${val}</b><span>${label}</span>${rank(k, word)}</div>`;
+    const money = (v) => (v == null ? "–" : v >= 1000 ? `$${(v / 1000).toFixed(1)}B` : v >= 10 ? `$${Math.round(v)}M` : `$${v.toFixed(1)}M`);
+    el.innerHTML = `
+      <p class="mini" style="margin:6px 0 0"><b>${c.role === "director" ? "Director" : "Actor"}</b> · ${c.films} films on the map${c.directed && c.role === "actor" ? ` (${c.directed} directed)` : ""} · ${c.years[0]}–${c.years[1]}</p>
+      <div class="stats three">
+        ${stat(c.rating.toFixed(1), "Avg rating", "rating", "higher")}
+        ${stat(money(c.boxOffice), "Median box office", "boxOffice", "more")}
+        ${stat(c.roi == null ? "–" : `${c.roi.toFixed(1)}×`, "Return / budget", "roi", "better")}
+        ${stat(Math.round(c.orig * 100), "Originality", "orig", "more original")}
+        ${stat(c.range.toFixed(2), "Plot sameness", "range", "wider range")}
+        ${stat(money(c.budget), "Median budget", null, "")}
+      </div>
+      <p class="mini" style="margin:0">Mostly ${c.genres.map(esc).join(", ")}. Best known: <button class="region-pill" type="button" data-i="${c.best}" style="margin:0">${esc(g.name[c.best])}</button>.
+        Plot sameness is how alike their films' plots are (1 = identical); box office and budgets are TMDB's, where known, not inflation-adjusted.</p>`;
+    el.querySelector("button[data-i]").addEventListener("click", () => select(c.best, true));
+  }
   function personPicked(d, input) {
     input.value = state.manifest.people[d];
+    renderPersonCard(d);
     const g = state.films, hits = [];
     for (let i = 0; i < state.n; i++) if (g.dir[i].includes(d) || g.cast[i].includes(d)) hits.push(i);
     hits.sort((a, b) => (g.year[a] ?? 0) - (g.year[b] ?? 0));
@@ -1897,6 +1976,8 @@ a { color: var(--link); }
     });
     ["map", "personal", "explore"].forEach((t) => $("tab-" + t).addEventListener("click", () => selectTab(t)));
     $("themeBtn").addEventListener("click", () => setTheme(isDark() ? "light" : "dark"));
+    $("toolsBtn").addEventListener("click", () => setTools(!document.body.classList.contains("tools-open")));
+    phone.addEventListener("change", () => setTools(false));
     $("clearHL").addEventListener("click", () => {
       setHighlight(null);
       $("gemsBtn").setAttribute("aria-pressed", "false"); $("gemsBtn").textContent = "Show hidden gems"; $("gemsList").innerHTML = "";

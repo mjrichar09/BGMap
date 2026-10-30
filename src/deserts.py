@@ -14,7 +14,13 @@ gaps.py (MIN_SIZE+ films, not documentary/concert-heavy), and never the seed's o
 Writes data/<domain>/gaps/deserts.json for export.py:
     {"seed_votes", "fit", "seeds": {film_id: [[cluster, gap, nearest_sim, [near ids], [near sims]], ...]}}
 
+--check embeds the hand-written pitches for some deserts (content/<domain>_deserts.json: seed as
+"Name (year)", cluster, title, logline, plot) with the map's model and instruction, keeps those that
+land (closer to the blend than to the seed or the cluster; among their 8 nearest films, at least one
+closer to the seed than to the cluster's centroid and one the other way; no existing film COPY+ similar) and writes data/<domain>/gaps/desert_pitches.json.
+
     python -m src.deserts --domain movies
+    python -m src.deserts --domain movies --check
 """
 
 import argparse
@@ -24,7 +30,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from src.common import domain_dir
+from src.common import ROOT, domain_dir
 from src.gaps import MIN_SIZE, NONFICTION, centroids, load
 
 SEED_VOTES = 300
@@ -35,11 +41,47 @@ BATCH = 64        # seeds per GPU batch
 COPY = 0.9        # films this similar to the seed count as its near-copies (sequels, remakes), not neighbours
 
 
+def check(base, domain):
+    from sentence_transformers import SentenceTransformer
+
+    m, v, meta = load(base)
+    c, cent = centroids(m, v)
+    pitches = json.loads((ROOT / "content" / f"{domain}_deserts.json").read_text(encoding="utf-8"))
+    deserts = json.loads((base / "gaps" / "deserts.json").read_text(encoding="utf-8"))["seeds"]
+    row = {f"{n} ({int(y)})": j for j, (n, y) in reversed(list(enumerate(zip(m["name"], m["year"]))))}
+    model = SentenceTransformer(meta["model"], device="cuda", model_kwargs={"torch_dtype": torch.float16})
+    emb = model.encode([f"{p['title']}. {p['plot']}" for p in pitches], normalize_embeddings=True,
+                       prompt=f"Instruct: {meta['instruct']}\nQuery: ").astype(np.float32)
+    kept = []
+    for p, e in zip(pitches, emb):
+        s, k = row[p["seed"]], p["cluster"]
+        sid = str(int(m["id"].iloc[s]))
+        assert any(d[0] == k for d in deserts.get(sid, [])), f"{p['title']}: cluster {k} isn't one of {p['seed']}'s deserts"
+        mid = v[s] + cent[k]
+        mid /= np.linalg.norm(mid)
+        sims = v @ e
+        top = np.argsort(-sims)[:8]
+        nearer_seed = v[top] @ v[s] > v[top] @ cent[k]   # each neighbour counts for the side it's closer to
+        seed_side, cluster_side = int(nearer_seed.sum()), int((~nearer_seed).sum())
+        b, ps, pc, near = float(e @ mid), float(e @ v[s]), float(e @ cent[k]), float(sims[top[0]])
+        lands = b > max(ps, pc) and seed_side >= 1 and cluster_side >= 1 and near < COPY
+        print(f"{'lands' if lands else 'MISSES':6} {p['title']}: blend {b:.3f}, seed {ps:.3f}, cluster {pc:.3f}, nearest {near:.3f} "
+              f"({m['name'].iloc[top[0]]}), sides {seed_side}/{cluster_side}")
+        if lands:
+            kept.append({"seed": int(sid), "cluster": k, "title": p["title"], "logline": p["logline"], "plot": p["plot"]})
+    path = base / "gaps" / "desert_pitches.json"
+    path.write_text(json.dumps(kept, indent=1, ensure_ascii=False), encoding="utf-8")
+    print(f"wrote {path}: {len(kept)} of {len(pitches)} pitches land")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--domain", required=True, choices=["movies"])
+    ap.add_argument("--check", action="store_true", help="embed and check the hand-written desert pitches")
     args = ap.parse_args()
     base = domain_dir(args.domain)
+    if args.check:
+        return check(base, args.domain)
     m, v, _ = load(base)
     c, cent = centroids(m, v)
 

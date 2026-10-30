@@ -24,3 +24,7 @@
 
 # Chart data and marker tracks are small and needed to rebuild the frames (the root .gitignore excludes data/ dirs).
 !*/assets/data/
+
+# Poster first frames: the HTML and script are the source; the captured PNGs and background stills regenerate.
+posters/*.png
+posters/*.jpg

@@ -1,0 +1,93 @@
+<!doctype html>
+<!-- The first frame of each video (X uses it as the thumbnail). Captured to PNG by add_poster.py,
+     which overlays it on the render's opening half second. ?v=1|2|3 picks the video. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face { font-family: 'Limelight'; src: url("../mmm-same-director/assets/fonts/captured-XLYkIZL7aopJVbZJHDuoOulHjHUmTQ.woff2") format('woff2'); }
+@font-face { font-family: 'Oswald'; font-weight: 200 700; src: url("../mmm-same-director/assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2'); }
+@font-face { font-family: 'Work Sans'; src: url("../mmm-same-director/assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2'); }
+@font-face { font-family: 'Courier Prime'; font-weight: 400; src: url("../mmm-same-director/assets/fonts/captured-u-450q2lgwslOqpF_6gQ8kELawFpWs39pvk.woff2") format('woff2'); }
+@font-face { font-family: 'Courier Prime'; font-weight: 700; src: url("../mmm-same-director/assets/fonts/captured-u-4k0q2lgwslOqpF_6gQ8kELY7pMT-Dfq9PrNX0.woff2") format('woff2'); }
+:root { --ground: #0B0807; --ink: #F3E6D0; --muted: #B9A88E; --amber: #FFB547; --red: #FF5A64; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1080px; overflow: hidden; background: var(--ground); }
+#poster { position: relative; width: 1080px; height: 1080px; overflow: hidden; background: var(--ground); color: var(--ink); }
+#bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#dim { position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 55% at 50% 46%, rgba(11,8,7,.05), rgba(11,8,7,.7) 100%),
+              linear-gradient(180deg, rgba(11,8,7,.1), rgba(11,8,7,.3) 55%, rgba(11,8,7,.85)); }
+#beam { position: absolute; left: 50%; top: -120px; width: 900px; height: 700px; transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,181,71,.16), transparent 65%); }
+#frame { position: absolute; inset: 28px; border: 2px solid rgba(255,181,71,.55); }
+#frame::after { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(255,181,71,.22); }
+.stack { position: absolute; left: 0; right: 0; top: 150px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px; padding: 0 80px; }
+.eyebrow { text-shadow: 0 0 14px rgba(0,0,0,.95), 0 0 30px rgba(0,0,0,.8); font: 600 26px/1 'Oswald'; letter-spacing: .32em; text-transform: uppercase; color: var(--amber); }
+.title { font: 400 128px/.98 'Limelight'; text-transform: uppercase; color: var(--amber);
+  text-shadow: 0 0 24px rgba(0,0,0,.95), 0 0 60px rgba(0,0,0,.8), 0 4px 0 rgba(0,0,0,.7); }
+.title.ink { color: var(--ink); text-shadow: 0 0 24px rgba(0,0,0,.95), 0 0 60px rgba(0,0,0,.8), 0 4px 0 rgba(0,0,0,.7); }
+.title.sm { font-size: 92px; }
+.sub { text-shadow: 0 0 14px rgba(0,0,0,.95), 0 0 30px rgba(0,0,0,.8); font: 400 34px/1.3 'Work Sans'; color: var(--ink); max-width: 820px; }
+.cards { position: absolute; left: 80px; right: 80px; bottom: 150px; display: flex; gap: 28px; justify-content: center; }
+.card { flex: 1; max-width: 430px; background: rgba(11,8,7,.82); border: 2px solid rgba(255,181,71,.5); padding: 22px 26px 20px; text-align: left; }
+.card.red { border-color: rgba(255,90,100,.7); }
+.card .k { font: 600 20px/1 'Oswald'; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+.card .who { font: 400 40px/1.1 'Limelight'; text-transform: uppercase; margin-top: 10px; color: var(--ink); }
+.card .num { font: 700 84px/1 'Courier Prime'; color: var(--amber); margin-top: 12px; }
+.card.red .num { color: var(--red); }
+.card .note { font: 400 21px/1.3 'Work Sans'; color: var(--muted); margin-top: 6px; }
+.url { position: absolute; left: 0; right: 0; bottom: 70px; text-align: center; font: 700 30px/1 'Courier Prime'; color: var(--ink); letter-spacing: .02em; }
+.v { display: none; }
+body[data-v="1"] .v1, body[data-v="2"] .v2, body[data-v="3"] .v3 { display: block; }
+</style>
+</head>
+<body>
+<div id="poster">
+  <img id="bg" alt="">
+  <div id="dim"></div>
+  <div id="beam"></div>
+  <div id="frame"></div>
+
+  <div class="v v1">
+    <div class="stack" style="top:300px;text-shadow:0 2px 18px rgba(0,0,0,.9)">
+      <div class="eyebrow">An AI read every plot</div>
+      <div class="title">Massive<br>Movie Map</div>
+      <div class="sub">36,841 films, placed by what their stories say</div>
+    </div>
+  </div>
+
+  <div class="v v2">
+    <div class="stack" style="top:120px">
+      <div class="eyebrow">Some filmmakers…</div>
+      <div class="title sm">Never the same</div>
+      <div class="eyebrow" style="margin-top:6px">…others</div>
+      <div class="title sm ink">Again and again</div>
+    </div>
+    <div class="cards">
+      <div class="card"><div class="k">Director</div><div class="who">Ridley Scott</div><div class="num">0.48</div><div class="note">plot similarity across his films</div></div>
+      <div class="card red"><div class="k">Actor</div><div class="who">Jason Statham</div><div class="num">0.69</div><div class="note">plot similarity across his films</div></div>
+    </div>
+  </div>
+
+  <div class="v v3">
+    <div class="stack" style="top:120px">
+      <div class="eyebrow">Audiences vs. Hollywood</div>
+      <div class="title sm" style="font-size:66px">Original rates higher</div>
+      <div class="title sm ink" style="font-size:66px">Familiar earns more</div>
+    </div>
+    <div class="cards">
+      <div class="card"><div class="k">Avg rating</div><div class="who">Most original</div><div class="num">6.72</div><div class="note">vs 6.47 for the most crowded</div></div>
+      <div class="card red"><div class="k">Median box office</div><div class="who">Most crowded</div><div class="num">$33.5M</div><div class="note">vs $16.0M for the most original</div></div>
+    </div>
+  </div>
+
+  <div class="url">massive-movie-map.mjrfx.com</div>
+</div>
+<script>
+  const v = new URLSearchParams(location.search).get("v") || "1";
+  document.body.dataset.v = v;
+  document.getElementById("bg").src = v === "3" ? "bg-orig.jpg" : "bg-map.jpg";
+</script>
+</body>
+</html>

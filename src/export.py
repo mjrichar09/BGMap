@@ -168,6 +168,70 @@ def label_positions(xy: np.ndarray, clusters: np.ndarray, labels: pd.Series) -> 
     return out
 
 
+PEOPLE_MIN = 5  # films on the map before a director or actor gets a stats card
+
+
+def people_stats(df: pd.DataFrame, vecs: np.ndarray, sims: np.ndarray, people_vocab: list[str], rating_col: str) -> dict:
+    """A stats card for every director or actor with PEOPLE_MIN+ films on the map (directed, or in the top CAST billed).
+
+    Originality is the site's own (1 - mean similarity to a film's ROUTE_K nearest plots, full embedding); range is the
+    mean plot similarity between the person's films (lower = more varied). Money is TMDB's, in $M, not inflation-adjusted,
+    over films with known figures. Percentiles compare directors with directors and actors with actors (a person counts
+    as a director if they directed at least as many of their films as they acted in).
+    """
+    person = {p: i for i, p in enumerate(people_vocab)}
+    films_of: dict[int, set] = {}
+    directed: dict[int, int] = {}
+    for row, (ds, cs) in enumerate(zip(df["directors"], df["cast"])):
+        ds = list(ds) if ds is not None else []
+        cs = list(cs)[:CAST] if cs is not None else []
+        for p in ds:
+            films_of.setdefault(person[p], set()).add(row); directed[person[p]] = directed.get(person[p], 0) + 1
+        for p in cs:
+            films_of.setdefault(person[p], set()).add(row)
+    orig = 1 - sims.mean(axis=1)
+    rating, votes = df[rating_col].to_numpy(float), df["vote_count"].to_numpy(float)
+    rev = df["revenue"].where(df["revenue"] > 1e5).to_numpy(float) / 1e6
+    bud = df["budget"].where(df["budget"] > 1e5).to_numpy(float) / 1e6
+    year, genres = df["year"].to_numpy(float), df["genres"]
+    cards = {}
+    for p, rows in films_of.items():
+        if len(rows) < PEOPLE_MIN:
+            continue
+        ix = np.array(sorted(rows))
+        s = vecs[ix] @ vecs[ix].T
+        r, b = rev[ix], bud[ix]
+        both = ~np.isnan(r) & ~np.isnan(b)
+        top_genres = Counter(g for gs in genres.iloc[ix] if gs is not None for g in gs).most_common(3)
+        cards[p] = {
+            "role": "director" if directed.get(p, 0) >= len(ix) - directed.get(p, 0) else "actor",
+            "films": int(len(ix)), "directed": int(directed.get(p, 0)),
+            "years": [int(np.nanmin(year[ix])), int(np.nanmax(year[ix]))],
+            "rating": round(float(np.nanmean(rating[ix])), 2),
+            "boxOffice": round(float(np.nanmedian(r)), 1) if (~np.isnan(r)).any() else None,
+            "boxOfficeTotal": round(float(np.nansum(r))) if (~np.isnan(r)).any() else None,
+            "budget": round(float(np.nanmedian(b)), 1) if (~np.isnan(b)).any() else None,
+            "roi": round(float(np.median(r[both] / b[both])), 2) if both.sum() >= 3 else None,
+            "orig": round(float(orig[ix].mean()), 4),
+            "range": round(float((s.sum() - len(ix)) / (len(ix) ** 2 - len(ix))), 3),
+            "genres": [g for g, _ in top_genres],
+            "best": int(ix[np.argmax(votes[ix])]),
+        }
+    # Percentiles within role: the share of peers this person beats (for range, a wider range = lower similarity beats).
+    for role in ("director", "actor"):
+        group = [p for p, c in cards.items() if c["role"] == role]
+        for key, higher in (("rating", True), ("boxOffice", True), ("roi", True), ("orig", True), ("range", False)):
+            vals = np.array([cards[p][key] for p in group if cards[p][key] is not None], float)
+            for p in group:
+                v = cards[p][key]
+                if v is not None and len(vals):
+                    beats = (vals < v).mean() if higher else (vals > v).mean()
+                    cards[p].setdefault("pct", {})[key] = int(round(100 * beats))
+        for p in group:
+            cards[p]["peers"] = len(group)
+    return cards
+
+
 def nearest_neighbors(vecs: np.ndarray, k: int, chunk: int = 2048) -> tuple[np.ndarray, np.ndarray]:
     """Exact cosine kNN (vectors are unit length), excluding each item itself."""
     nbrs = np.empty((len(vecs), k), dtype=np.int32)
@@ -266,6 +330,8 @@ def main() -> None:
         vecs = np.load(base / "embeddings" / f"{emb}.npy").astype(np.float32)
         key = f"layout{k}"
         nbrs = nearest_neighbors(vecs, ROUTE_K)
+        if k == 0:
+            first_vecs, first_sims = vecs, nbrs[1]  # for the people stats
         payload = layout_payload(df, *nbrs)
         payload["unmade"] = unmade_positions(df, unmade, ids, None)
         (data_dir / f"{key}.json").write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
@@ -284,6 +350,8 @@ def main() -> None:
 
     source = "IMDb" if args.private else "TMDB"
     films, vocab = films_payload(first, source)
+    people = people_stats(first, first_vecs, first_sims, vocab["people"], RATINGS[source][0])
+    (data_dir / "people.json").write_text(json.dumps({str(k): v for k, v in people.items()}, separators=(",", ":")), encoding="utf-8")
     (data_dir / "films.json").write_text(json.dumps(films, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
     items = pd.read_parquet(base / "items.parquet", columns=["id", "name", "text", "tagline", "wikipedia_title"])
     blurbs = blurbs_payload(first, items)
@@ -296,7 +364,11 @@ def main() -> None:
         used = sorted({r[0] for rows in seeds.values() for r in rows})
         names = first.groupby("cluster_fine")[["label_fine", "examples_fine"]].first()
         clusters = {str(c): {"label": names.loc[c, "label_fine"], "examples": names.loc[c, "examples_fine"]} for c in used}
-        (data_dir / "deserts.json").write_text(json.dumps({"seedVotes": d["seed_votes"], "seeds": seeds, "clusters": clusters},
+        pitches = {}  # hand-written pitches that landed in their desert (src/deserts.py --check): seed row -> cluster -> pitch
+        pitch_path = base / "gaps" / "desert_pitches.json"
+        for p in json.loads(pitch_path.read_text(encoding="utf-8")) if pitch_path.exists() else []:
+            pitches.setdefault(str(ids[p["seed"]]), {})[str(p["cluster"])] = {k: p[k] for k in ("title", "logline", "plot")}
+        (data_dir / "deserts.json").write_text(json.dumps({"seedVotes": d["seed_votes"], "seeds": seeds, "clusters": clusters, "pitches": pitches},
                                                           separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
     scale = IMDB_SCALE if args.private else carry_scale(first)
     for u in unmade:  # film ids -> row indices, which is what the page works in
