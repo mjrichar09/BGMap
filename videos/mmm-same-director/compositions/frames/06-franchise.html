@@ -1,0 +1,166 @@
+<template>
+<style>
+@font-face{font-family:'Courier Prime';font-style:normal;font-weight:700;font-display:swap;src:url("assets/fonts/captured-u-4k0q2lgwslOqpF_6gQ8kELY7pMT-Dfq9PrNX0.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Limelight';font-style:normal;font-weight:400;font-display:swap;src:url("assets/fonts/captured-XLYkIZL7aopJVbZJHDuoOulHjHUmTQ.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Oswald';font-style:normal;font-weight:500;font-display:swap;src:url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Oswald';font-style:normal;font-weight:600;font-display:swap;src:url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Work Sans';font-style:normal;font-weight:400;font-display:swap;src:url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+#root{position:relative;width:1080px;height:1080px;overflow:hidden;}
+#root *{box-sizing:border-box;margin:0;padding:0;}
+
+.f06-ground{position:absolute;left:0;top:0;width:1080px;height:1080px;background:#0B0807;}
+.f06-beam{position:absolute;left:0;top:0;width:1080px;height:1080px;
+  background:radial-gradient(ellipse 620px 760px at 540px -120px, rgba(255,214,150,0.13) 0%, rgba(255,181,71,0.05) 45%, rgba(11,8,7,0) 75%);}
+.f06-grain{position:absolute;left:0;top:0;width:1080px;height:1080px;opacity:0.07;}
+.f06-layer{position:absolute;left:0;top:0;width:1080px;height:1080px;}
+
+.f06-eyebrow{position:absolute;left:60px;top:70px;font-family:'Oswald';font-weight:600;font-size:24px;line-height:28px;letter-spacing:2px;text-transform:uppercase;color:#FFB547;white-space:nowrap;}
+.f06-sub{position:absolute;left:60px;top:106px;font-family:'Work Sans';font-weight:400;font-size:22px;line-height:28px;color:#B39C80;white-space:nowrap;}
+
+.f06-group{position:absolute;left:0;top:0;width:1080px;height:1080px;}
+.f06-head{position:absolute;left:60px;font-family:'Oswald';font-weight:600;font-size:22px;line-height:26px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;}
+.f06-row{position:absolute;left:0;width:1080px;height:30px;}
+.f06-label{position:absolute;left:60px;top:0;width:310px;height:30px;text-align:right;font-family:'Oswald';font-weight:500;font-size:28px;line-height:30px;letter-spacing:1px;text-transform:uppercase;color:#F3E6D0;white-space:nowrap;}
+.f06-bar{position:absolute;left:390px;top:0;height:30px;}
+.f06-val{position:absolute;top:0;height:30px;font-family:'Courier Prime';font-weight:700;font-size:28px;line-height:30px;white-space:nowrap;}
+
+.f06-posters{position:absolute;left:0;top:0;width:1080px;height:1080px;}
+.f06-poster{position:absolute;width:110px;height:165px;object-fit:cover;border:2px solid #EFE6D2;}
+.f06-tag{position:absolute;left:600px;top:350px;width:440px;text-align:right;font-family:'Limelight';font-weight:400;font-size:40px;line-height:44px;letter-spacing:0.06em;text-transform:uppercase;color:#FF5A64;white-space:nowrap;}
+.f06-bracket{position:absolute;left:0;top:0;width:1080px;height:1080px;overflow:visible;}
+</style>
+
+<div id="root" data-composition-id="06-franchise" data-start="0" data-duration="7.464" data-width="1080" data-height="1080">
+
+  <!-- Late Show ground: full-duration background clip -->
+  <div class="clip f06-ground" id="06-franchise-ground" data-start="0" data-duration="7.464" data-track-index="0">
+    <div class="f06-beam"></div>
+    <svg class="f06-grain" width="1080" height="1080" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+      <filter id="06-franchise-noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="6" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+      <rect width="1080" height="1080" filter="url(#06-franchise-noise)"/>
+    </svg>
+  </div>
+
+  <div class="clip f06-layer" id="06-franchise-content" data-start="0" data-duration="7.464" data-track-index="1">
+    <div class="f06-eyebrow">PLOT SIMILARITY BETWEEN A STAR'S FILMS</div>
+    <div class="f06-sub">actors with 25+ films; lower = wider range</div>
+
+    <div class="f06-group" id="06-franchise-wide"></div>
+    <div class="f06-group" id="06-franchise-typecast"></div>
+
+    <svg class="f06-bracket" width="1080" height="1080" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+      <path id="06-franchise-bracket" d="M 862 571 L 882 571 L 882 709 L 862 709 L 882 709 L 882 755 L 862 755" fill="none" stroke="#C8102E" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/>
+    </svg>
+
+    <div class="f06-posters">
+      <img class="f06-poster" id="06-franchise-p1" src="assets/posters/ff-2001-the-fast-and-the-furious.jpg" style="left:796px;top:172px;" alt="">
+      <img class="f06-poster" id="06-franchise-p2" src="assets/posters/ff-2011-fast-five.jpg" style="left:860px;top:160px;" alt="">
+      <img class="f06-poster" id="06-franchise-p3" src="assets/posters/ff-2023-fast-x.jpg" style="left:924px;top:172px;" alt="">
+    </div>
+    <div class="f06-tag" id="06-franchise-tag">ONE FRANCHISE</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function () {
+    var FID = "06-franchise";
+    var X0 = 390, X1 = 960, V0 = 0.40, V1 = 0.72;
+    function xOf(v) { return X0 + (v - V0) / (V1 - V0) * (X1 - X0); }
+
+    var AMBER = "#FFB547", RED = "#FF5A64", MUTED = "#B39C80", INK = "#F3E6D0";
+
+    // from assets/data/stats.json (widest_range / most_typecast), inlined
+    var wide = [
+      { name: "Benedict Cumberbatch", v: 0.454, s: "0.45" },
+      { name: "Cate Blanchett",       v: 0.491, s: "0.49" },
+      { name: "Scarlett Johansson",   v: 0.491, s: "0.49" },
+      { name: "Matt Damon",           v: 0.493, s: "0.49" },
+      { name: "Adam Driver",          v: 0.494, s: "0.49" }
+    ];
+    var typecast = [
+      { name: "Jason Statham",      v: 0.691, s: "0.69", key: "statham" },
+      { name: "Paul Walker",        v: 0.608, s: "0.61", key: "walker" },
+      { name: "Jennifer Aniston",   v: 0.603, s: "0.60", key: "aniston" },
+      { name: "Paul Rudd",          v: 0.595, s: "0.60", key: "rudd" },
+      { name: "Michelle Rodriguez", v: 0.592, s: "0.59", key: "rodriguez" },
+      { name: "Vin Diesel",         v: 0.588, s: "0.59", key: "diesel" }
+    ];
+
+    function el(tag, cls, parent, css, text) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (css) for (var k in css) e.style[k] = css[k];
+      if (text != null) e.textContent = text;
+      parent.appendChild(e);
+      return e;
+    }
+
+    var root = document.querySelector('[data-composition-id="' + FID + '"]');
+    var gWide = root.querySelector("#" + CSS.escape(FID + "-wide"));
+    var gType = root.querySelector("#" + CSS.escape(FID + "-typecast"));
+
+    el("div", "f06-head", gWide, { top: "170px", color: AMBER }, "WIDEST RANGE");
+    wide.forEach(function (d, i) {
+      var row = el("div", "f06-row", gWide, { top: (210 + i * 46) + "px" });
+      el("div", "f06-label", row, null, d.name);
+      var w = xOf(d.v) - X0;
+      el("div", "f06-bar", row, { width: w + "px", background: AMBER, opacity: i === 0 ? "1" : "0.6" });
+      el("div", "f06-val", row, { left: (X0 + w + 10) + "px", color: AMBER }, d.s);
+    });
+
+    el("div", "f06-head", gType, { top: "470px", color: RED }, "MOST TYPECAST");
+    var refs = {};
+    typecast.forEach(function (d, i) {
+      var row = el("div", "f06-row", gType, { top: (510 + i * 46) + "px" });
+      el("div", "f06-label", row, null, d.name);
+      var w = xOf(d.v) - X0;
+      var isS = d.key === "statham";
+      var bar = el("div", "f06-bar", row, { width: w + "px", background: isS ? RED : MUTED, opacity: isS ? "1" : "0.6" });
+      var val = el("div", "f06-val", row, { left: (X0 + w + 10) + "px", color: isS ? RED : MUTED }, d.s);
+      refs[d.key] = { bar: bar, val: val };
+    });
+
+    var $ = function (id) { return root.querySelector("#" + CSS.escape(FID + "-" + id)); };
+    var bracket = $("bracket");
+    var bLen = 264; // continuous path length: 20+138+20+20+46+20
+
+    var tl = gsap.timeline({ paused: true });
+
+    // "Also"@0.00 — widest range group recedes
+    tl.fromTo(gWide, { opacity: 1 }, { opacity: 0.3, duration: 0.6, ease: "power3.out" }, 0.0);
+
+    // "Paul"@1.28 / "Michelle"@2.22 / "Vin"@3.22 — franchise bars light up red
+    [["walker", 1.28], ["rodriguez", 2.22], ["diesel", 3.22]].forEach(function (p) {
+      var r = refs[p[0]];
+      tl.fromTo(r.bar, { backgroundColor: MUTED, opacity: 0.6 }, { backgroundColor: RED, opacity: 1, duration: 0.45, ease: "power3.out" }, p[1]);
+      tl.fromTo(r.val, { color: MUTED }, { color: RED, duration: 0.45, ease: "power3.out" }, p[1]);
+      tl.fromTo(r.bar, { scaleY: 1 }, { scaleY: 1.2, duration: 0.2, ease: "power3.out", transformOrigin: "0% 50%" }, p[1]);
+      tl.fromTo(r.bar, { scaleY: 1.2 }, { scaleY: 1, duration: 0.35, ease: "power3.out", immediateRender: false, transformOrigin: "0% 50%" }, p[1] + 0.2);
+    });
+
+    // "One"@4.06 — three Fast & Furious posters slide in, fanned
+    var posters = [["p1", -7, 0.0], ["p2", 0, 0.1], ["p3", 7, 0.2]];
+    posters.forEach(function (p) {
+      tl.fromTo($(p[0]),
+        { opacity: 0, x: 140, rotation: p[1] * 0.3 },
+        { opacity: 1, x: 0, rotation: p[1], duration: 0.6, ease: "power3.out" },
+        4.06 + p[2]);
+    });
+
+    // "franchise"@4.52 — label lands
+    tl.fromTo($("tag"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 4.52);
+
+    // "typecast"@5.24 — bracket draws on across the three highlighted rows
+    tl.fromTo(bracket, { attr: { "stroke-dasharray": bLen, "stroke-dashoffset": bLen } },
+      { attr: { "stroke-dasharray": bLen, "stroke-dashoffset": 0 }, duration: 0.6, ease: "power3.out" }, 5.24);
+
+    // hold to the end
+    tl.to({}, { duration: 0.01 }, 6.95);
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines[FID] = tl;
+  })();
+  </script>
+</div>
+</template>

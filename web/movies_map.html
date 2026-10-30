@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Movie Map</title>
+<title>Massive Movie Map</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Limelight&family=Oswald:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap">
@@ -49,7 +49,7 @@
     --line: rgba(255, 181, 71, 0.38); --soft-line: rgba(255, 181, 71, 0.16); --accent: #ffb547; --accent-ink: #1a0f06;
     --link: #ffc56b; --shadow: 0 10px 40px rgba(0, 0, 0, 0.55); --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.5); --border-w: 1px;
     --radius: 6px; --radius-sm: 4px;
-    --perf: none;
+    --perf: none; --stubs: none; --popcorn: block;
     --sprockets: repeating-linear-gradient(180deg, transparent 0 7px, rgba(255, 181, 71, 0.32) 7px 15px) center / 6px 100% no-repeat;
     --font-display: "Limelight", Georgia, serif; --title-case: uppercase; --title-track: 0.06em;
     --field-bg:
@@ -64,7 +64,7 @@
   --line: rgba(255, 181, 71, 0.38); --soft-line: rgba(255, 181, 71, 0.16); --accent: #ffb547; --accent-ink: #1a0f06;
   --link: #ffc56b; --shadow: 0 10px 40px rgba(0, 0, 0, 0.55); --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.5); --border-w: 1px;
   --radius: 6px; --radius-sm: 4px;
-  --perf: none;
+  --perf: none; --stubs: none; --popcorn: block;
   --sprockets: repeating-linear-gradient(180deg, transparent 0 7px, rgba(255, 181, 71, 0.32) 7px 15px) center / 6px 100% no-repeat;
   --font-display: "Limelight", Georgia, serif; --title-case: uppercase; --title-track: 0.06em;
   --field-bg:
@@ -79,6 +79,17 @@ body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 var(-
 #map { position: fixed; inset: 0; }
 /* Paper grain and vignette (light) or film grain under a projector beam (dark). */
 #field { position: fixed; inset: 0; pointer-events: none; background: var(--field-bg); }
+#stubs { position: fixed; right: -24px; bottom: -36px; width: min(36vw, 440px); overflow: visible; height: auto; pointer-events: none; display: var(--stubs, block); opacity: 0.92; }
+#stubs use { stroke-width: 2.5px; }
+#stubs line { stroke: rgba(42, 26, 20, 0.45); }
+#stubs text { font-family: var(--font-label); fill: #2a1a14; }
+#stubs text.light { fill: #fbf6e9; }
+/* Late Show corner: a bucket of popcorn, the dark theme's counterpart to the Matinee ticket stubs. */
+#popcorn { position: fixed; right: -6px; bottom: -22px; width: min(24vw, 260px); height: auto; pointer-events: none; display: var(--popcorn, none); opacity: 0.9; }
+#stubs .stub-v { font-size: 17px; font-weight: 600; letter-spacing: 0.12em; text-anchor: middle; dominant-baseline: middle; }
+#stubs .stub-t { font-size: 34px; font-weight: 700; letter-spacing: 0.06em; }
+#stubs .stub-s { font-family: var(--font-data); font-size: 14px; font-weight: 700; letter-spacing: 0.04em; }
+@media (max-width: 720px) { #stubs { width: 62vw; right: -50px; bottom: -60px; } }
 #field::after { content: ""; position: absolute; inset: 0; background: var(--beam); animation: flicker 7s steps(1) infinite; }
 @keyframes flicker { 0%, 100% { opacity: 1; } 31% { opacity: 0.9; } 33% { opacity: 1; } 64% { opacity: 0.94; } 66% { opacity: 1; } }
 .card {
@@ -163,6 +174,14 @@ input:disabled, button:disabled { opacity: 0.55; cursor: not-allowed; }
 #legend .sw { display: inline-flex; align-items: center; gap: 4px; }
 #legend .dot { width: 9px; height: 9px; display: inline-block; border-radius: 50%; }
 #count { font: 12.5px var(--font-data); color: var(--muted); }
+.credits { border-top: 1px solid var(--soft-line); padding-top: 10px; font-size: 11px; line-height: 1.4; color: var(--muted); display: flex; flex-direction: column; gap: 5px; }
+.credits p { margin: 0; }
+.credits img { height: 11px; display: block; }
+/* MJR FX: a dark tab so the light wordmark reads in both themes. */
+.mjrfx-link { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px;
+  background: rgba(7, 7, 10, 0.72); border-radius: 12px; color: #ededf2; font: 700 12px/1.2 var(--font-body); text-decoration: none; }
+.mjrfx-link svg { height: 14px; width: auto; overflow: hidden; display: block; }
+.mjrfx-link:hover, .mjrfx-link:focus-visible { outline: 2px solid #ff5a36; outline-offset: 2px; }
 #detail {
   top: calc(14px + env(safe-area-inset-top, 0px)); right: max(14px, env(safe-area-inset-right, 0px));
   width: min(340px, calc(100vw - 28px)); max-height: calc(100% - 28px - env(safe-area-inset-top, 0px));
@@ -172,6 +191,8 @@ input:disabled, button:disabled { opacity: 0.55; cursor: not-allowed; }
 #detail img { width: 68px; height: 102px; object-fit: cover; border-radius: 3px; border: var(--border-w) solid var(--line); flex: none; }
 #detail h2 { margin: 0; font: 400 21px/1.15 var(--font-display); letter-spacing: var(--title-track); text-wrap: balance; }
 #detail .meta { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.desert-bar { display: block; height: 5px; margin-top: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--accent) var(--w), var(--soft-line) var(--w)); }
+.desert-what { margin: 0; font: 400 17px/1.3 var(--font-display); }
 .region-pill { display: inline-block; margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--link); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; text-decoration: underline; text-underline-offset: 2px; }
 /* Stats are admit-one stubs: a dashed tear line along the top. */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0; }
@@ -186,6 +207,20 @@ input:disabled, button:disabled { opacity: 0.55; cursor: not-allowed; }
 .links { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
 a { color: var(--link); }
 .close { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 13px; padding: 2px 4px; }
+/* Key bar: what every symbol means, the current colour scale, and zoom buttons. Hidden while the time slider is open. */
+#keybar { left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); width: max-content; max-width: min(620px, calc(100vw - 28px));
+  padding: 7px 10px 7px 26px; display: flex; align-items: center; gap: 14px; box-sizing: border-box; font-size: 11.5px; color: var(--muted); }
+#keybar.off { display: none; }
+#keybar .keyitems { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; }
+#keybar .keyitems > div { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+#keybar .keyitems img { width: 20px; height: 20px; flex: none; }
+#keybar .keycolor { display: flex; flex-direction: column; gap: 2px; min-width: 120px; max-width: 200px; font: 11px var(--font-data); }
+#keybar .keycolor .bar { height: 6px; border-radius: 3px; }
+#keybar .keycolor .ends { display: flex; justify-content: space-between; gap: 8px; }
+#keybar .nav { display: flex; gap: 4px; margin-left: auto; }
+#keybar .nav button { width: 30px; height: 30px; border: var(--border-w) solid var(--line); border-radius: var(--radius-sm); background: var(--panel-2); cursor: pointer; font: 600 16px/1 var(--font-body); padding: 0; }
+#keybar .nav button:disabled { opacity: 0.4; cursor: default; }
+#keybar .nav button.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 #tooltip { position: fixed; z-index: 6; pointer-events: none; background: var(--panel); border: var(--border-w) solid var(--line); border-radius: var(--radius-sm);
   box-shadow: var(--shadow-sm); padding: 8px 10px; max-width: 260px; display: flex; gap: 8px; backdrop-filter: blur(10px); }
 #tooltip img { width: 34px; height: 51px; object-fit: cover; border-radius: 2px; flex: none; }
@@ -202,6 +237,9 @@ a { color: var(--link); }
   #detail { top: auto; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); max-height: 46%; }
   #controls { max-height: 48%; }
   body.has-detail #controls > :not(.brand):not(.searchbox) { display: none; }
+  body.has-detail #keybar { display: none; }
+  #keybar .keyitems span { display: none; }
+  #keybar .keycolor { display: none; }
   #timeKey { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } #field::after { animation: none; } }
@@ -210,16 +248,77 @@ a { color: var(--link); }
 </head>
 <body>
 <div id="field" aria-hidden="true"></div>
+<!-- Matinee only: a fan of ticket stubs tucked into the bottom-right corner, behind the map. -->
+<svg id="popcorn" aria-hidden="true" viewBox="0 0 300 330">
+  <defs>
+    <radialGradient id="pcGlow" cx="50%" cy="38%" r="55%"><stop offset="0" stop-color="#ffb547" stop-opacity="0.32"/><stop offset="1" stop-color="#ffb547" stop-opacity="0"/></radialGradient>
+    <linearGradient id="pcShade" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity="0.28"/><stop offset="0.45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.35"/></linearGradient>
+    <clipPath id="pcBucket"><path d="M62 128 L238 128 L212 330 L88 330 Z"/></clipPath>
+    <g id="pcK"><circle r="15"/><circle cx="12" cy="-6" r="12"/><circle cx="-11" cy="-8" r="11"/><circle cx="2" cy="-16" r="10"/></g>
+  </defs>
+  <ellipse cx="150" cy="120" rx="150" ry="120" fill="url(#pcGlow)"/>
+  <!-- popcorn heap -->
+  <g fill="#f6e7c4" stroke="#c9a46a" stroke-width="1.5">
+    <use href="#pcK" x="86" y="116"/><use href="#pcK" x="120" y="96"/><use href="#pcK" x="156" y="88"/><use href="#pcK" x="192" y="98"/>
+    <use href="#pcK" x="222" y="116"/><use href="#pcK" x="104" y="76"/><use href="#pcK" x="142" y="62"/><use href="#pcK" x="178" y="66"/>
+    <use href="#pcK" x="208" y="80"/><use href="#pcK" x="124" y="42"/><use href="#pcK" x="162" y="38"/><use href="#pcK" x="146" y="16"/>
+  </g>
+  <g fill="#ffd27a" opacity="0.85"><circle cx="118" cy="90" r="4"/><circle cx="170" cy="58" r="3.5"/><circle cx="205" cy="96" r="4"/><circle cx="150" cy="30" r="3"/></g>
+  <!-- striped bucket -->
+  <g clip-path="url(#pcBucket)">
+    <rect x="40" y="120" width="220" height="220" fill="#efe6d2"/>
+    <g fill="#c8102e"><path d="M70 120 L100 120 L104 340 L84 340 Z"/><path d="M128 120 L158 120 L156 340 L132 340 Z"/><path d="M186 120 L216 120 L200 340 L180 340 Z"/><path d="M236 120 L260 120 L240 340 L224 340 Z"/></g>
+    <rect x="40" y="120" width="220" height="220" fill="url(#pcShade)"/>
+  </g>
+  <path d="M56 120 H244 L240 138 H60 Z" fill="#c8102e" stroke="#2a1a14" stroke-width="2"/>
+  <ellipse cx="150" cy="202" rx="50" ry="26" fill="#efe6d2" stroke="#2a1a14" stroke-width="2.5"/>
+  <text x="150" y="214" text-anchor="middle" font-family="Limelight, serif" font-size="32" fill="#c8102e" letter-spacing="2">POP</text>
+</svg>
+<svg id="stubs" aria-hidden="true" viewBox="0 0 460 330">
+  <defs>
+    <!-- Ticket outline with a half-circle notch in each short side. -->
+    <mask id="stubCut">
+      <rect x="0" y="0" width="300" height="128" rx="10" fill="#fff"/>
+      <circle cx="0" cy="64" r="15" fill="#000"/><circle cx="300" cy="64" r="15" fill="#000"/>
+    </mask>
+    <g id="stub">
+      <rect x="0" y="0" width="300" height="128" rx="10" mask="url(#stubCut)"/>
+      <line x1="76" y1="10" x2="76" y2="118" stroke-dasharray="5 6" stroke-width="2.5"/>
+    </g>
+  </defs>
+  <g transform="translate(96 168) rotate(-24)">
+    <use href="#stub" fill="#e8b04a" stroke="#2a1a14"/>
+    <text x="38" y="64" class="stub-v" transform="rotate(-90 38 64)">ADMIT ONE</text>
+    <text x="96" y="52" class="stub-t">LATE SHOW</text>
+    <text x="96" y="84" class="stub-s">Nº 1979 · SCREEN 2</text>
+  </g>
+  <g transform="translate(70 104) rotate(-9)">
+    <use href="#stub" fill="#c8102e" stroke="#2a1a14"/>
+    <text x="38" y="64" class="stub-v light" transform="rotate(-90 38 64)">ADMIT ONE</text>
+    <text x="96" y="52" class="stub-t light">MATINEE</text>
+    <text x="96" y="84" class="stub-s light">Nº 036841 · ROW M · SEAT 7</text>
+  </g>
+  <g transform="translate(136 190) rotate(6)">
+    <use href="#stub" fill="#fbf6e9" stroke="#2a1a14"/>
+    <text x="38" y="64" class="stub-v" transform="rotate(-90 38 64)">ADMIT ONE</text>
+    <text x="96" y="52" class="stub-t">FEATURE</text>
+    <text x="96" y="84" class="stub-s">36,841 FILMS · ALL SEATS</text>
+  </g>
+</svg>
 <div id="map" aria-label="Map of movies"></div>
 <div id="status">Loading map…</div>
 
 <section id="controls" class="card" aria-label="Map controls">
   <div class="brand">
     <div class="brand-mark" aria-hidden="true"></div>
-    <h1 id="title">Movie Map</h1>
+    <h1 id="title">Massive Movie Map</h1>
     <button id="themeBtn" type="button">Theme</button>
   </div>
   <p class="note" id="note"></p>
+  <a class="mjrfx-link" href="https://mjrfx.com" target="_blank" rel="noopener">
+      <svg viewBox="0 10 428 80" role="img" aria-label="MJR FX" fill="none" stroke-width="18" stroke-linecap="butt"><g stroke="#ededf2" stroke-linejoin="miter"><path d="M9 92V10L48 62L87 10V92"/><path d="M128 19H152V81H117V62"/><path d="M184 92V19H228L240 31V43L228 55H184"/><path d="M213 55L250 92"/></g><g stroke="#ff5a36"><path d="M295 92V19H340L413 92" stroke-linejoin="bevel"/><path d="M346 92L416 8"/><path d="M295 55H377"/></g></svg>
+      <span>See more projects here</span>
+    </a>
   <div class="searchbox">
     <label class="cap" for="q">Find a film</label>
     <input id="q" type="search" placeholder="Type a title, or click the map" autocomplete="off">
@@ -237,12 +336,24 @@ a { color: var(--link); }
         <div>
           <label class="cap" for="colorBy">Color by</label>
           <select id="colorBy">
-            <option value="cluster">Region</option>
-            <option value="year">Year</option>
-            <option value="rating">IMDb rating</option>
-            <option value="runtime">Runtime</option>
-            <option value="cert">US rating</option>
-            <option value="genre">A genre…</option>
+            <optgroup label="Story">
+              <option value="cluster">Region</option>
+              <option value="orig">Originality</option>
+              <option value="genre">A genre…</option>
+              <option value="lang">Original language</option>
+            </optgroup>
+            <optgroup label="Numbers">
+              <option value="rating" id="colorRating">Rating</option>
+              <option value="votes">Popularity (votes)</option>
+              <option value="revenue">Box office</option>
+              <option value="budget">Budget</option>
+              <option value="roi">Return on budget</option>
+              <option value="year">Year</option>
+              <option value="runtime">Runtime</option>
+            </optgroup>
+            <optgroup label="Other">
+              <option value="cert">US rating</option>
+            </optgroup>
           </select>
         </div>
         <div id="modelWrap">
@@ -255,7 +366,6 @@ a { color: var(--link); }
         <select id="genreSel"></select>
       </div>
       <div id="legend" aria-live="polite"></div>
-      <p class="help" id="shapeKey"></p>
       <div class="row">
         <div><label class="cap" for="yearMin">Year from</label><input id="yearMin" type="number" placeholder="any"></div>
         <div><label class="cap" for="yearMax">to</label><input id="yearMax" type="number" placeholder="any"></div>
@@ -264,18 +374,37 @@ a { color: var(--link); }
         <div><label class="cap" for="rMin">Runtime min</label><input id="rMin" type="number" min="0" step="10" placeholder="any"></div>
         <div><label class="cap" for="rMax">max</label><input id="rMax" type="number" min="0" step="10" placeholder="any"></div>
       </div>
+      <details class="tool" id="moreFilters">
+        <summary>More filters</summary>
+        <div class="stack">
+          <div class="row">
+            <div><label class="cap" for="ratingMin">Rating min</label><input id="ratingMin" type="number" min="0" max="10" step="0.5" placeholder="any"></div>
+            <div><label class="cap" for="votesMin">Votes min</label><input id="votesMin" type="number" min="0" step="100" placeholder="any"></div>
+          </div>
+          <div class="row">
+            <div><label class="cap" for="revMin">Box office min $M</label><input id="revMin" type="number" min="0" step="10" placeholder="any"></div>
+            <div><label class="cap" for="budMax">Budget max $M</label><input id="budMax" type="number" min="0" step="5" placeholder="any"></div>
+          </div>
+          <div class="row">
+            <div><label class="cap" for="roiMin">Return min ×</label><input id="roiMin" type="number" min="0" step="0.5" placeholder="any"></div>
+            <div><label class="cap" for="langFilter">Language</label><select id="langFilter"><option value="">Any</option></select></div>
+          </div>
+          <p class="help">Box office and budget are TMDB's figures, not adjusted for inflation, and known for about a third of films. Setting a money filter hides films without that figure.</p>
+        </div>
+      </details>
       <div class="row">
         <div>
           <label class="cap" for="genreFilter">Genre</label>
           <select id="genreFilter"><option value="">Any genre</option></select>
         </div>
         <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 14px">
-          <label class="mini"><input id="sizePop" type="checkbox" checked> Size by IMDb votes</label>
+          <label class="mini"><input id="sizePop" type="checkbox" checked> Size by <span class="src"></span> votes</label>
           <label class="mini"><input id="showTiles" type="checkbox" checked> Region tint</label>
         </div>
       </div>
+      <p class="help" id="navHelp"></p>
       <div class="row" id="viewRow">
-        <label class="mini"><input id="view3d" type="checkbox"> 3D view (drag to rotate)</label>
+        <label class="mini"><input id="view3d" type="checkbox"> 3D view</label>
         <label class="mini"><input id="spin" type="checkbox"> Slow spin</label>
       </div>
       <button id="reset" class="btn ghost" type="button">Reset filters</button>
@@ -300,8 +429,8 @@ a { color: var(--link); }
               <select id="gnTime"><option value="90">≤ 90 min</option><option value="120" selected>≤ 2 h</option><option value="150">≤ 2½ h</option><option value="9999">Any</option></select></div>
             <div><label class="cap" for="gnCert">Rated up to</label>
               <select id="gnCert"><option value="1">PG</option><option value="2">PG-13</option><option value="3" selected>R</option><option value="any">Any</option></select></div>
-            <div><label class="cap" for="gnRating">IMDb</label>
-              <select id="gnRating"><option value="0">Any</option><option value="6.5">6.5+</option><option value="7" selected>7.0+</option><option value="7.5">7.5+</option></select></div>
+            <div><label class="cap" for="gnRating"><span class="src"></span></label>
+              <select id="gnRating"></select></div>
           </div>
           <label class="cap" for="gnSimilar">Similar to (optional)</label>
           <input id="gnSimilar" type="search" placeholder="Films the group already likes" autocomplete="off">
@@ -330,6 +459,20 @@ a { color: var(--link); }
           <button id="routeClear" class="btn ghost" type="button" hidden>Clear route</button>
         </div>
       </details>
+      <details class="tool" id="unmadeTool">
+        <summary>Unmade movies <small>gaps in the space</small></summary>
+        <div class="stack">
+          <p class="help">Places between two kinds of film where nothing has been made yet. Found by blending every pair of clusters in the model's full space, not on this map, and keeping the blends that are emptiest compared with similar pairs. Each pitch was written by AI and placed by the same model as every film, to check it really lands in the gap.</p>
+          <ol class="list" id="unmadeList"></ol>
+          <div class="stack" id="unmadeBody"></div>
+          <span class="cap" style="margin-top:6px">Film deserts: start from a film</span>
+          <p class="help">Pick a film and see the emptiest places between it and other kinds of film: blends of its plot with a nearby cluster that nothing on the map comes close to. Computed ahead of time in the model's full space (no AI writes these); a few line up with the pitches above.</p>
+          <input id="desertQ" type="search" placeholder="Type a film you like" autocomplete="off">
+          <p class="mini" id="desertTry"></p>
+          <ol class="list" id="desertList"></ol>
+          <div class="stack" id="desertBody"></div>
+        </div>
+      </details>
       <details class="tool" id="regionTool">
         <summary>Region guide <small>click a label</small></summary>
         <div class="stack" id="regionBody"><p class="help">Click any region name on the map, or the region link on a film's card.</p></div>
@@ -342,13 +485,10 @@ a { color: var(--link); }
         </div>
       </details>
       <details class="tool" id="gemsTool">
-        <summary>Hidden gems &amp; gaps</summary>
+        <summary>Hidden gems</summary>
         <div class="stack">
-          <div class="seg" role="group" aria-label="Highlight">
-            <button id="gemsBtn" type="button" aria-pressed="false">Hidden gems</button>
-            <button id="gapsBtn" type="button" aria-pressed="false">Sparse, loved areas</button>
-          </div>
-          <p class="help" id="gemsHelp">Gems: rated 7.5+ on IMDb by 1,000–25,000 people. Sparse, loved areas: small patches of the map with only a few films, all rated highly. They hint at niches with room for more films.</p>
+          <button id="gemsBtn" class="btn ghost" type="button" aria-pressed="false">Show hidden gems</button>
+          <p class="help" id="gemsHelp"><span id="gemsRule"></span></p>
           <ol class="list" id="gemsList"></ol>
         </div>
       </details>
@@ -364,6 +504,14 @@ a { color: var(--link); }
   </div>
   <div id="count"></div>
   <button id="clearHL" class="btn ghost" type="button" hidden>Clear highlight</button>
+  <footer class="credits">
+    <a href="https://www.themoviedb.org/" target="_blank" rel="noopener"><img src="assets/tmdb.svg" alt="TMDB"></a>
+    <p>Film details and posters from <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>.
+      This website uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.</p>
+    <p>Films are placed by their plots, using summaries from <a href="https://en.wikipedia.org/" target="_blank" rel="noopener">Wikipedia</a>
+      (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>) and TMDB.</p>
+    <p id="imdbCredit" hidden>Ratings: information courtesy of IMDb (<a href="https://www.imdb.com/" target="_blank" rel="noopener">imdb.com</a>). Used with permission.</p>
+  </footer>
 </section>
 
 <aside id="detail" class="card" hidden aria-live="polite"></aside>
@@ -378,6 +526,17 @@ a { color: var(--link); }
 </section>
 <ul id="suggest" role="listbox" hidden></ul>
 <div id="tooltip" hidden></div>
+<section id="keybar" class="card" aria-label="Map key and navigation">
+  <div id="symbolKey" class="keyitems"></div>
+  <div id="colorKey" class="keycolor"></div>
+  <div class="nav" role="group" aria-label="Navigate the map">
+    <button type="button" id="navIn" aria-label="Zoom in" title="Zoom in">+</button>
+    <button type="button" id="navOut" aria-label="Zoom out" title="Zoom out">−</button>
+    <button type="button" id="navCenter" aria-label="Center on the selected film" title="Center on the selected film">◎</button>
+    <button type="button" id="navReset" aria-label="Reset the view" title="Reset the view">⟲</button>
+    <button type="button" id="navSpin" aria-label="Slowly rotate the map" title="Slowly rotate the map" aria-pressed="false">↻</button>
+  </div>
+</section>
 
 <script src="https://unpkg.com/deck.gl@9.1.0/dist.min.js"></script>
 <script>
@@ -389,11 +548,12 @@ a { color: var(--link); }
   const state = {
     manifest: null, films: null, blurbs: null, models: {}, model: null, n: 0,
     colorBy: "cluster", genre: 0, sizePop: true, showTiles: true,
-    filters: { yearMin: null, yearMax: null, rMin: null, rMax: null, genre: null },
+    filters: { yearMin: null, yearMax: null, rMin: null, rMax: null, genre: null, ratingMin: null, votesMin: null, revMin: null, budMax: null, roiMin: null, lang: null },
     selected: null, viewState: null,
     highlight: null, route: null, routeStop: null, routeMode: "influence", routeFrom: null, routeTo: null,
-    likes: [], gnSeeds: [], timeYear: null, gapBins: null, view3d: false, spin: false, latestYear: 9999,
+    likes: [], gnSeeds: [], timeYear: null, unmade: null, desert: null, view3d: false, spin: false, latestYear: 9999,
   };
+  let S = null;  // the rating source and its cutoffs (manifest.ratings)
   let deckgl = null, colors = null, radii = null, icons = null, passes = null, genreSets = null, adjacency = null, bins = null, atlas = null, T = null;
 
   // ---------- theme ----------
@@ -411,9 +571,9 @@ a { color: var(--link); }
   }
 
   // ---------- icon atlas, drawn per theme ----------
-  // The same marks in both themes: plain dots for most films, ticket stubs for well-known ones (10k+ IMDb
-  // votes), film reels for the most watched (150k+), gold award stars for films rated 8+ by 25,000+ people,
-  // and sparkles for this year's and last year's releases. The selected film is a clapperboard; liked films
+  // The same marks in both themes: plain dots for most films, ticket stubs for well-known ones, film reels
+  // for the most watched, gold award stars for highly rated films with plenty of votes (cutoffs in S), and
+  // sparkles for this year's and last year's releases. The selected film is a clapperboard; liked films
   // are tickets. Tinted icons are white with alpha; shading comes from varying the alpha.
   const CELL = 128;
   function buildAtlas() {
@@ -489,7 +649,7 @@ a { color: var(--link); }
       x.restore();
       mapping[name] = { x: ox, y: 0, width: CELL, height: CELL, mask, anchorY: 64 };
     });
-    return { url: c.toDataURL(), mapping };
+    return { url: c.toDataURL(), mapping, canvas: c };
   }
 
   function setTheme(next) {
@@ -498,8 +658,7 @@ a { color: var(--link); }
     atlas = buildAtlas();
     $("themeBtn").textContent = T.dark ? "Matinee" : "Late show";
     $("themeBtn").setAttribute("aria-label", T.dark ? "Switch to the light Matinee theme" : "Switch to the dark Late Show theme");
-    $("shapeKey").textContent = "Reels are the most-watched films (150k+ IMDb votes), tickets the well-known ones (10k+), dots the rest. "
-      + "Gold stars are rated 8+ by 25,000+ people; sparkles are the newest releases. The selected film is a clapperboard, your liked films are tickets.";
+    if (S) renderSymbolKey();
     if (state.films && colors) { assignIcons(); resize(); recolor(); labelCache.key = null; redraw(); }
   }
 
@@ -533,24 +692,41 @@ a { color: var(--link); }
     return s;
   }
 
+  // Numeric colourings. Money and vote counts span several orders of magnitude, so they ramp on a log scale.
+  const money = (v) => (v >= 1000 ? `$${(v / 1000).toFixed(1)}B` : v >= 1 ? `$${Math.round(v)}M` : `$${Math.round(v * 1000)}K`);
+  const MEASURES = {
+    year: { fmt: (v) => Math.round(v) },
+    rating: { fmt: (v) => v.toFixed(1) },
+    runtime: { fmt: (v) => `${Math.round(v)} min` },
+    votes: { log: true, fmt: (v) => compact(Math.round(v)) },
+    revenue: { log: true, fmt: money },
+    budget: { log: true, fmt: money },
+    roi: { log: true, fmt: (v) => `${v < 1 ? v.toFixed(2) : v < 10 ? v.toFixed(1) : Math.round(v)}×` },
+    orig: { fmt: (v) => v.toFixed(2), ends: ["typical", "original"] },
+  };
+  const LANG_COLORS = [[86, 180, 233], [230, 159, 0], [0, 158, 115], [204, 121, 167], [213, 94, 0], [240, 228, 66], [0, 114, 178], [160, 110, 230]];
+
   function recolor() {
     const g = state.films, m = state.models[state.model], n = state.n, hl = state.highlight, ty = state.timeYear, marked = markedGames();
     colors = new Uint8ClampedArray(n * 4);
-    let range = null;
-    if (["runtime", "year", "rating"].includes(state.colorBy)) range = quantiles(g[state.colorBy]);
+    const ms = MEASURES[state.colorBy];
+    const val = ms && ((i) => { const v = g[state.colorBy][i]; return v == null || (ms.log && v <= 0) ? null : ms.log ? Math.log10(v) : v; });
+    const range = ms ? quantiles(Array.from({ length: n }, (_, i) => val(i))) : null;
     for (let i = 0; i < n; i++) {
       let c = T.grey, a = 230;
       if (state.colorBy === "cluster") {
         const cl = m.cluster[i];
         if (cl >= 0) c = clusterColor(cl); else a = 150;
       } else if (range) {
-        const v = g[state.colorBy][i];
-        if (v != null) c = ramp((v - range[0]) / (range[1] - range[0] || 1)); else a = 110;
+        const v = val(i);
+        if (v != null) c = ramp((v - range[0]) / (range[1] - range[0] || 1)); else a = 60;
       } else if (state.colorBy === "cert") {
         const v = g.cert[i];
         if (v != null) c = CERT_COLORS[v]; else a = 110;
       } else if (state.colorBy === "genre") {
         if (genreSets[i].has(state.genre)) c = T.accent; else a = 70;
+      } else if (state.colorBy === "lang") {
+        if (g.lang[i] < LANG_COLORS.length) c = LANG_COLORS[g.lang[i]]; else a = 110;
       }
       if (ty != null) {
         const y = g.year[i];
@@ -565,6 +741,7 @@ a { color: var(--link); }
       colors.set([c[0], c[1], c[2], a], i * 4);
     }
     renderLegend(range);
+    renderColorKey(range);
   }
 
   function assignIcons() {
@@ -573,9 +750,9 @@ a { color: var(--link); }
     for (let i = 0; i < n; i++) {
       const u = g.votes[i] || 0;
       icons[i] = g.year[i] != null && g.year[i] >= latest - 1 ? "premiere"
-        : g.rating[i] >= 8 && u >= 25000 ? "award"
-        : u >= 150000 ? "reel"
-        : u >= 10000 ? "ticket"
+        : g.rating[i] >= S.rating.award && u >= S.votes.award ? "award"
+        : u >= S.votes.reel ? "reel"
+        : u >= S.votes.known ? "ticket"
         : "dot";
     }
   }
@@ -584,7 +761,7 @@ a { color: var(--link); }
     const votes = state.films.votes;
     radii = new Float32Array(state.n);
     for (let i = 0; i < state.n; i++) {
-      const pop = Math.max(0, Math.log10(1 + (votes[i] || 0)) - 2);  // 100 votes → 0, 3M → 4.5
+      const pop = Math.max(0, Math.log10((1 + (votes[i] || 0)) / S.votes.base));  // IMDb: 100 votes → 0, 3M → 4.5
       radii[i] = state.sizePop ? (T.dark ? 3 + pop * 1.9 : 3.2 + pop * 1.5) : (T.dark ? 6 : 5);
     }
   }
@@ -601,18 +778,31 @@ a { color: var(--link); }
       if (f.rMin != null && (r == null || r < f.rMin)) ok = false;
       if (f.rMax != null && (r == null || r > f.rMax)) ok = false;
       if (f.genre != null && !genreSets[i].has(f.genre)) ok = false;
+      // A minimum or maximum on a figure hides films without that figure.
+      const atLeast = (v, lo) => lo == null || (v != null && v >= lo), atMost = (v, hi) => hi == null || (v != null && v <= hi);
+      if (!atLeast(g.rating[i], f.ratingMin) || !atLeast(g.votes[i], f.votesMin) || !atLeast(g.revenue[i], f.revMin)
+        || !atMost(g.budget[i], f.budMax) || !atLeast(g.roi[i], f.roiMin)) ok = false;
+      if (f.lang != null && g.lang[i] !== f.lang) ok = false;
       passes[i] = ok ? 1 : 0;
       count += ok;
     }
+    state.passCount = count;
     $("count").textContent = `${count.toLocaleString()} of ${state.n.toLocaleString()} films shown`;
   }
 
   function renderLegend(range) {
     const el = $("legend");
     if (range) {
+      const ms = MEASURES[state.colorBy];
       const stops = [0, 0.25, 0.5, 0.75, 1].map((t) => `rgb(${ramp(t).map(Math.round).join(",")})`).join(",");
-      const fmtv = (v) => (state.colorBy === "year" ? Math.round(v) : v.toFixed(1));
-      el.innerHTML = `<div class="bar" style="background:linear-gradient(90deg,${stops})"></div><div class="ends"><span>${fmtv(range[0])}</span><span>${fmtv(range[1])}</span></div>`;
+      const end = (k) => (ms.ends ? `${ms.ends[k]} ${ms.fmt(range[k])}` : ms.fmt(ms.log ? 10 ** range[k] : range[k]));
+      const known = state.films[state.colorBy].filter((v) => v != null).length;
+      const note = state.colorBy === "orig"
+        ? "How unlike its 15 nearest neighbours a film's plot is, measured in the full embedding, not on this map."
+        : known < state.n * 0.9 ? `Known for ${known.toLocaleString()} films; the rest are faint.${["revenue", "budget", "roi"].includes(state.colorBy) ? " Not adjusted for inflation." : ""}` : "";
+      el.innerHTML = `<div class="bar" style="background:linear-gradient(90deg,${stops})"></div><div class="ends"><span>${end(0)}</span><span>${end(1)}</span></div>${note ? `<span class="mini">${note}</span>` : ""}`;
+    } else if (state.colorBy === "lang") {
+      el.innerHTML = `<div class="swatches">${LANG_COLORS.map((c, i) => `<span class="sw"><i class="dot" style="background:rgb(${c.join(",")})"></i>${esc(state.manifest.languages[i])}</span>`).join("")}<span class="sw">grey: others</span></div>`;
     } else if (state.colorBy === "cert") {
       el.innerHTML = `<div class="swatches">${CERT_COLORS.map((c, i) => `<span class="sw"><i class="dot" style="background:rgb(${c.join(",")})"></i>${esc(state.manifest.certs[i])}</span>`).join("")}</div>`;
     } else if (state.colorBy === "genre") {
@@ -620,6 +810,7 @@ a { color: var(--link); }
     } else {
       el.innerHTML = `<span class="mini">${state.models[state.model].labels.length} clusters in ${state.models[state.model].coarseLabels.length} regions</span>`;
     }
+    if (isAxes()) el.innerHTML += `<p class="mini" style="margin:6px 0 0">Axes view: films placed along the model's main directions (PCA), labelled by the genres at each end. Position along an axis means something; dots side by side aren't necessarily similar. Switch to the plot map for neighbours.</p>`;
   }
 
   // ---------- hex grid: region bins, drawn as soft region tints ----------
@@ -645,15 +836,12 @@ a { color: var(--link); }
     bins = [...map.values()].map((b) => {
       let top = -1, best = 0;
       b.votes.forEach((v, k) => { if (v > best) { best = v; top = k; } });
-      const rated = b.members.filter((i) => g.rating[i] != null && (g.votes[i] || 0) >= 1000);
+      const rated = b.members.filter((i) => g.rating[i] != null && (g.votes[i] || 0) >= S.votes.rated);
       const [x, y] = hexCenter(b.q, b.r, size);
       return { q: b.q, r: b.r, x, y, count: b.members.length, cluster: top, purity: best / b.members.length, members: b.members,
         rating: rated.length ? rated.reduce((s, i) => s + g.rating[i], 0) / rated.length : null, rated: rated.length };
     });
     bins.size = size;
-    // Sparse, loved areas: thinly populated cells (2–8 films, at least two with 1,000+ IMDb votes) whose films
-    // average 7.3+ (about the top fifth of IMDb ratings here), best loved first.
-    state.gapBins = bins.filter((b) => b.count >= 2 && b.count <= 8 && b.rated >= 2 && b.rating >= 7.3).sort((a, b) => b.rating - a.rating).slice(0, 40);
   }
 
   // ---------- layers ----------
@@ -664,7 +852,9 @@ a { color: var(--link); }
   const FLAT = { depthWriteEnabled: false, depthCompare: "always" };
   const pointSize = (i) => { const a = colors[i * 4 + 3]; return a <= 60 && a > 2 ? Math.min(radii[i], 3) * 1.6 : radii[i] * 2; };
   const iconAt = (i) => (colors[i * 4 + 3] === 2 ? "ring" : icons[i]);
-  const gapsOn = () => $("gapsBtn").getAttribute("aria-pressed") === "true";
+  // An unmade movie's spot on the current layout, and an axis-pole's label position.
+  const unmadePos = (k) => { const p = state.models[state.model].unmade[k]; return state.view3d ? [p[2], p[3], p[4]] : [p[0], p[1], 0]; };
+  const isAxes = () => state.models[state.model].kind === "pca";
 
   function layers() {
     const out = [], atlasProps = { iconAtlas: atlas.url, iconMapping: atlas.mapping };
@@ -677,12 +867,7 @@ a { color: var(--link); }
         updateTriggers: { getColor: [state.model, T.dark] },
       }));
     }
-    if (gapsOn() && state.gapBins && !state.view3d) {
-      out.push(new deck.IconLayer({
-        id: "gaps", data: state.gapBins, ...atlasProps, getIcon: () => "ring", sizeUnits: "common", getSize: bins.size * 2 * 1.1,
-        getPosition: (b) => [b.x, b.y], getColor: T.alt.concat(255),
-      }));
-    }
+    if (isAxes()) out.push(...axisLayers());
     const common = { data: indexData(), ...atlasProps, sizeUnits: "pixels", parameters: FLAT, getPosition: (_, { index }) => pos(index), getIcon: (_, { index }) => iconAt(index) };
     const triggers = { getPosition: [state.model, state.view3d], getSize: [state.sizePop, colors, T.dark], getColor: [colors], getIcon: [colors, T.dark] };
     if (!T.dark) {
@@ -758,6 +943,8 @@ a { color: var(--link); }
       outlineWidth: T.dark ? 4 : 0, outlineColor: T.bg.concat(230), fontSettings: { sdf: true },
       updateTriggers: { getColor: [T.dark], getText: [state.model, T.dark], getPosition: [state.view3d, labelCache.key] },
     }));
+    out.push(...unmadeLayers(atlasProps));
+    out.push(...desertLayers(atlasProps));
     // Markers replace the films they stand on: liked films get tickets; the selected film (or current route stop) gets the main marker.
     const markers = state.likes.map((i) => ({ i, icon: "ticketMk" }));
     const main = state.route && state.routeStop != null ? state.route[state.routeStop] : state.selected;
@@ -800,7 +987,9 @@ a { color: var(--link); }
     const fine = v.zoom > state.labelSwitchZoom || !m.coarseLabels.length;
     const key = `${state.model}|${fine}|${viewKey(v)}|${T.dark}|${state.view3d}`;
     if (labelCache.key === key) return labelCache.items;
-    const vp = deckgl && deckgl.getViewports()[0];
+    // Before deck.gl's first frame there's no viewport yet; the onLoad pass redoes the labels.
+    let vp = null;
+    try { vp = deckgl && deckgl.isInitialized ? deckgl.getViewports()[0] : null; } catch (err) { vp = null; }
     const scale = Math.pow(2, v.zoom), placed = [];
     const source = labelAnchors(m, fine).slice().sort((a, b) => b.size - a.size);
     for (const d of source) {
@@ -831,9 +1020,9 @@ a { color: var(--link); }
   const fmt = (v, d = 0) => (v == null ? "–" : d ? v.toFixed(d) : Math.round(v).toLocaleString());
   const compact = (v) => (v == null ? "–" : v >= 1e6 ? (v / 1e6).toFixed(1) + "M" : v >= 1e4 ? Math.round(v / 1e3) + "k" : v >= 1e3 ? (v / 1e3).toFixed(1) + "k" : String(v));
   const certName = (i) => (state.films.cert[i] != null ? state.manifest.certs[state.films.cert[i]] : "");
-  // Vote-weighted rating (as IMDb's Top 250 does): pulls films with few votes toward 6.5, so a 9.1 from
-  // 2,000 concert fans doesn't outrank an 8.6 from a million people.
-  const score = (i) => { const v = state.films.votes[i] || 0, r = state.films.rating[i] ?? 6.5; return (v * r + 25000 * 6.5) / (v + 25000); };
+  // Vote-weighted rating (as IMDb's Top 250 does): pulls films with few votes toward a typical rating, so a
+  // 9.1 from 2,000 concert fans doesn't outrank an 8.6 from a million people.
+  const score = (i) => { const v = state.films.votes[i] || 0, m = S.votes.prior, c = S.rating.prior, r = state.films.rating[i] ?? c; return (v * r + m * c) / (v + m); };
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const regionName = (kind, id) => {
     const m = state.models[state.model];
@@ -851,13 +1040,95 @@ a { color: var(--link); }
     recolor(); redraw();
   }
 
+  // ---------- navigation ----------
+  function closeDetail() { state.selected = null; renderDetail(); recolor(); redraw(); }
+  // In 3D, deck.gl's orbit controller zooms toward the orbit centre, wherever the pointer is. We take over
+  // the scroll wheel there and zoom toward the pointer instead, as maps do: the point under the pointer stays
+  // put, measured on the plane through the orbit centre that faces the screen. 2D zooms that way already.
+  const controllerFor = () => (state.view3d ? { scrollZoom: false, doubleClickZoom: false, dragMode: "rotate" } : { doubleClickZoom: false });
+  function pointAt(x, y) {
+    const vp = deckgl.getViewports()[0], t = state.viewState.target || [0, 0, 0];
+    return vp.unproject([x, y, vp.project(t)[2]]);
+  }
+  function zoomAbout(x, y, dz) {
+    const v = state.viewState, zoom = Math.min(v.maxZoom ?? 14, Math.max(v.minZoom ?? -Infinity, v.zoom + dz));
+    const f = 1 - 2 ** -(zoom - v.zoom), t = v.target || [0, 0, 0], p = pointAt(x, y);
+    const target = [0, 1, 2].map((k) => (t[k] ?? 0) + ((p[k] ?? 0) - (t[k] ?? 0)) * f);
+    state.viewState = { ...v, target, zoom };
+    deckgl.setProps({ initialViewState: { ...state.viewState, transitionDuration: 0 } });
+    if (state.spin) setSpin(false);
+    redraw();
+  }
+  function wheelZoom(e) {
+    if (!state.view3d) return;
+    e.preventDefault();
+    const r = $("map").getBoundingClientRect();
+    const step = e.deltaMode === 1 ? e.deltaY * 0.05 : e.deltaY * 0.0022;  // lines (mouse wheels) vs pixels (trackpads)
+    zoomAbout(e.clientX - r.left, e.clientY - r.top, Math.max(-0.6, Math.min(0.6, -step)));
+  }
+  function initNav() {
+    $("navIn").addEventListener("click", () => flyTo(state.viewState.target, state.viewState.zoom + 0.8));
+    $("navOut").addEventListener("click", () => flyTo(state.viewState.target, state.viewState.zoom - 0.8));
+    $("navReset").addEventListener("click", () => { const v = fitView(state.models[state.model]); flyTo(v.target, v.zoom); });
+    $("navCenter").addEventListener("click", () => { if (state.selected != null) flyTo(pos(state.selected)); });
+    $("navSpin").addEventListener("click", () => { if (!state.view3d) setView3d(true); setSpin(!state.spin); });
+  }
+
+  // ---------- key ----------
+  // Small images of the map's own symbols, cut from the icon atlas and tinted the way the map draws them.
+  function keyIcon(name, tint) {
+    const { canvas, mapping } = atlas, m = mapping[name], c = document.createElement("canvas");
+    c.width = c.height = 40;
+    const x = c.getContext("2d");
+    x.drawImage(canvas, m.x, m.y, m.width, m.height, 0, 0, 40, 40);
+    if (m.mask) { x.globalCompositeOperation = "source-in"; x.fillStyle = tint; x.fillRect(0, 0, 40, 40); }
+    return c.toDataURL();
+  }
+  function renderSymbolKey() {
+    const ink = T.dark ? "#ffb547" : "#2a1a14", alt = `rgb(${T.alt.join(",")})`;
+    const items = [
+      ["dot", ink, "Film"],
+      ["ticket", ink, `Well known (${compact(S.votes.known)}+ votes)`],
+      ["reel", ink, `Most watched (${compact(S.votes.reel)}+)`],
+      ["award", ink, `Rated ${S.rating.award.toFixed(1)}+ by ${compact(S.votes.award)}+`],
+      ["premiere", ink, "Newest releases"],
+      ["clapper", null, "Selected"],
+      ["ticketMk", null, "Liked"],
+      ["ring", alt, "Unmade movie"],
+    ];
+    $("symbolKey").innerHTML = items.map(([name, tint, label]) => `<div title="${esc(label)}"><img class="ic" src="${keyIcon(name, tint)}" alt=""><span>${esc(label)}</span></div>`).join("")
+      + `<div class="mini">Size: votes</div>`;
+  }
+  // The colour scale for the current "Color by", compact, beside the symbols.
+  function renderColorKey(range) {
+    const el = $("colorKey"), label = $("colorBy").selectedOptions[0].textContent;
+    if (range) {
+      const ms = MEASURES[state.colorBy], stops = [0, 0.5, 1].map((t) => `rgb(${ramp(t).map(Math.round).join(",")})`).join(",");
+      const end = (k) => (ms.ends ? ms.ends[k] : ms.fmt(ms.log ? 10 ** range[k] : range[k]));
+      el.innerHTML = `<span>${esc(label)}</span><div class="bar" style="background:linear-gradient(90deg,${stops})"></div><div class="ends"><span>${end(0)}</span><span>${end(1)}</span></div>`;
+    } else {
+      el.innerHTML = `<span>Color: ${esc(state.colorBy === "genre" ? state.manifest.genres[state.genre] : label)}</span>`;
+    }
+  }
+
   // ---------- interaction ----------
+  // Hover and clicks only land on films that are shown: they pass the filters, aren't dimmed by a highlight,
+  // and (during the time-lapse) are already released. When the frontmost film under the pointer is hidden,
+  // look through the stack of films under it for one that's shown.
+  const shown = (i) => passes[i] && (!state.highlight || state.highlight.has(i)) && colors[i * 4 + 3] !== 2;
+  const restricted = () => state.highlight || state.passCount < state.n || state.timeYear != null;
+  function filmAt(x, y, radius = 6) {
+    if (!restricted()) { const h = deckgl.pickObject({ x, y, radius, layerIds: ["points"] }); return h && h.index >= 0 ? h.index : null; }
+    const hit = deckgl.pickMultipleObjects({ x, y, radius, depth: 16, layerIds: ["points"] }).find((h) => h.index >= 0 && shown(h.index));
+    return hit ? hit.index : null;
+  }
   function onHover(info) {
     const tip = $("tooltip");
-    if (info.index == null || info.index < 0) { tip.hidden = true; return; }
-    const i = info.index, g = state.films;
+    const i = info.index >= 0 && shown(info.index) ? info.index : info.x != null && restricted() ? filmAt(info.x, info.y) : null;
+    if (i == null) { tip.hidden = true; return; }
+    const g = state.films;
     tip.innerHTML = `${thumb(i) ? `<img src="${thumb(i)}" alt="">` : ""}<div><b>${esc(g.name[i])}</b>
-      <div class="meta">${g.year[i] ?? "?"} · ${fmt(g.runtime[i])} min · IMDb ${fmt(g.rating[i], 1)}</div></div>`;
+      <div class="meta">${g.year[i] ?? "?"} · ${fmt(g.runtime[i])} min · ${S.source} ${fmt(g.rating[i], 1)}</div></div>`;
     tip.hidden = false;
     tip.style.left = Math.min(info.x + 14, window.innerWidth - tip.offsetWidth - 8) + "px";
     tip.style.top = Math.min(info.y + 14, window.innerHeight - tip.offsetHeight - 8) + "px";
@@ -872,13 +1143,20 @@ a { color: var(--link); }
     el.addEventListener("pointerup", (e) => {
       const d = down; down = null;
       if (!d || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 6 || performance.now() - d.t > 800) return;
-      const r = el.getBoundingClientRect();
-      const info = deckgl.pickObject({ x: e.clientX - r.left, y: e.clientY - r.top, radius: 4, layerIds: ["markers", "labels", "points"] });
-      if (!info || !info.layer) return;
-      if (info.layer.id === "labels") showRegion(info.object.kind, info.object.id);
-      else if (info.layer.id === "markers") mapClick(info.object.i);
-      else if (info.index >= 0) mapClick(info.index);
+      const r = el.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+      const info = deckgl.pickObject({ x, y, radius: 4, layerIds: ["markers", "labels"] });
+      if (info && info.layer && info.layer.id === "labels") return showRegion(info.object.kind, info.object.id);
+      if (info && info.layer && info.layer.id === "markers") return mapClick(info.object.i);
+      const i = filmAt(x, y, 4);
+      if (i != null) mapClick(i);
+      else if (!armed && state.selected != null) closeDetail();  // a click on empty map closes the film card
     });
+    // Double-click recentres the view there, on the film under the pointer if there is one.
+    el.addEventListener("dblclick", (e) => {
+      const r = el.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, i = filmAt(x, y, 6);
+      flyTo(i != null ? pos(i) : pointAt(x, y), state.viewState.zoom + 0.7);
+    });
+    el.addEventListener("wheel", wheelZoom, { passive: false });
   }
 
   // A click on the map fills whichever film box is waiting for one; otherwise it selects the film.
@@ -930,11 +1208,12 @@ a { color: var(--link); }
           <button class="region-pill" type="button" id="dCoarse">${esc(regionName("coarse", m.coarse[i]))}</button> ›
           <button class="region-pill" type="button" id="dRegion">${esc(regionName("fine", cl))}</button></div></div>
       <div class="stats">
-        <div class="stat"><b>${fmt(g.rating[i], 1)}</b><span>IMDb</span></div>
+        <div class="stat"><b>${fmt(g.rating[i], 1)}</b><span>${S.source}</span></div>
         <div class="stat"><b>${compact(g.votes[i])}</b><span>Votes</span></div>
         <div class="stat"><b>${fmt(g.runtime[i])}</b><span>Min</span></div>
         <div class="stat"><b>${esc(certName(i) || "–")}</b><span>Rated</span></div>
       </div>
+      <p class="mini" style="margin:-4px 0 10px">${g.revenue[i] != null ? `Box office ${money(g.revenue[i])}` : "Box office unknown"}${g.budget[i] != null ? ` · budget ${money(g.budget[i])}` : ""}${g.roi[i] != null ? ` · ${MEASURES.roi.fmt(g.roi[i])} return` : ""}<br>Originality ${g.orig[i].toFixed(2)} (more original than ${Math.round(100 * origRank(i))}% of films)</p>
       ${blurb ? `<p class="blurb">${blurb}</p>` : ""}
       <div class="tags">${tags}</div>
       <div class="actions">
@@ -965,6 +1244,8 @@ a { color: var(--link); }
   // While a box has focus it is "armed": clicking a film on the map fills it.
   let lowerNames = null, armed = null, suggestFor = null;
   const suggest = () => $("suggest");
+  // Lowercase without accents, so "pokemon" finds "Pokémon" and "amelie" finds "Amélie".
+  const fold = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
   function disarm() { if (armed) armed.input.classList.remove("armed"); armed = null; }
   function hideSuggest() { suggest().hidden = true; if (suggestFor) suggestFor.input.setAttribute("aria-expanded", "false"); suggestFor = null; }
   function attachSearch(input, pick, source) {
@@ -976,7 +1257,7 @@ a { color: var(--link); }
     const rankOf = (i) => (source ? -source.counts[i] : -(state.films.votes[i] || 0));
     input.setAttribute("role", "combobox"); input.setAttribute("aria-expanded", "false"); input.setAttribute("aria-controls", "suggest");
     function show() {
-      const q = input.value.trim().toLowerCase(), list = suggest(), nm = names();
+      const q = fold(input.value.trim()), list = suggest(), nm = names();
       if (q.length < 2) { hideSuggest(); return; }
       const starts = [], contains = [];
       for (let i = 0; i < nm.length; i++) { const p = nm[i].indexOf(q); if (p === 0) starts.push(i); else if (p > 0) contains.push(i); }
@@ -1142,7 +1423,7 @@ a { color: var(--link); }
     };
     $("regionBody").innerHTML = `
       <h3 style="margin:0;font:700 16px var(--font-display)">${esc(regionName(kind, id))}</h3>
-      <p class="mini" style="margin:0">${kind === "coarse" ? "Broad region · " : ""}${members.length.toLocaleString()} films · median year ${median(members.map((i) => g.year[i])) ?? "?"} · ${fmt(median(members.map((i) => g.runtime[i])))} min · IMDb ${fmt(median(members.map((i) => g.rating[i])), 1)}</p>
+      <p class="mini" style="margin:0">${kind === "coarse" ? "Broad region · " : ""}${members.length.toLocaleString()} films · median year ${median(members.map((i) => g.year[i])) ?? "?"} · ${fmt(median(members.map((i) => g.runtime[i])))} min · ${S.source} ${fmt(median(members.map((i) => g.rating[i])), 1)}</p>
       <p class="help">Genres: ${top("genre", state.manifest.genres, 4).map(esc).join(", ")}<br>Keywords: ${top("kw", state.manifest.keywords, 6).map(esc).join(", ")}</p>
       ${starter != null ? `<p class="help">Start here: <button class="region-pill" type="button" data-i="${starter}">${esc(g.name[starter])}</button>, its most-watched film.</p>` : ""}
       <span class="cap">Top rated</span>
@@ -1189,7 +1470,7 @@ a { color: var(--link); }
   function curate() {
     const g = state.films, t = +$("gnTime").value, c = $("gnCert").value, r = +$("gnRating").value;
     // Up to a rating means G … that rating; unrated (NR) films only pass with "Any".
-    const fits = (i) => !(g.runtime[i] == null || g.runtime[i] > t || (g.rating[i] ?? 0) < r || (g.votes[i] || 0) < 1000
+    const fits = (i) => !(g.runtime[i] == null || g.runtime[i] > t || (g.rating[i] ?? 0) < r || (g.votes[i] || 0) < S.votes.rated
       || (c !== "any" && (g.cert[i] == null || g.cert[i] > +c)));
     let hits;
     if (state.gnSeeds.length) {
@@ -1216,8 +1497,8 @@ a { color: var(--link); }
     $("count").textContent = `${shown.toLocaleString()} films released by ${y}`;
     recolor(); redraw();
   }
-  function openTime() { $("timebar").hidden = false; setYear(state.timeYear ?? 2000); }
-  function closeTime() { pause(); $("timebar").hidden = true; state.timeYear = null; applyFilters(); recolor(); redraw(); }
+  function openTime() { $("timebar").hidden = false; $("keybar").classList.add("off"); setYear(state.timeYear ?? 2000); }
+  function closeTime() { pause(); $("timebar").hidden = true; $("keybar").classList.remove("off"); state.timeYear = null; applyFilters(); recolor(); redraw(); }
   function play() {
     if (timer) { pause(); return; }
     let y = +$("timeRange").value;
@@ -1227,33 +1508,199 @@ a { color: var(--link); }
   }
   function pause() { if (timer) clearInterval(timer); timer = null; $("timePlay").textContent = "Play"; $("timePlay").setAttribute("aria-label", "Play"); }
 
-  // ---------- explore: gems, gaps, people ----------
+  // ---------- explore: gems, unmade movies, people ----------
   function toggleGems() {
     const on = $("gemsBtn").getAttribute("aria-pressed") !== "true";
-    $("gemsBtn").setAttribute("aria-pressed", String(on)); $("gapsBtn").setAttribute("aria-pressed", "false");
+    $("gemsBtn").setAttribute("aria-pressed", String(on)); $("gemsBtn").textContent = on ? "Hide hidden gems" : "Show hidden gems";
     if (!on) { $("gemsList").innerHTML = ""; setHighlight(null); return; }
     const g = state.films, gems = [];
-    for (let i = 0; i < state.n; i++) if (g.rating[i] >= 7.5 && g.votes[i] >= 1000 && g.votes[i] <= 25000) gems.push(i);
+    for (let i = 0; i < state.n; i++) if (g.rating[i] >= S.rating.gem && g.votes[i] >= S.votes.rated && g.votes[i] <= S.votes.gemMax) gems.push(i);
     gems.sort((a, b) => g.rating[b] - g.rating[a] || g.votes[b] - g.votes[a]);
     $("gemsList").innerHTML = `<p class="mini" style="margin:0 0 4px">${gems.length.toLocaleString()} hidden gems. Highest rated:</p>` + listHtml(gems.slice(0, 10), (i) => `${g.rating[i].toFixed(1)} · ${compact(g.votes[i])}`);
     bindList($("gemsList"));
     setHighlight(new Set(gems));
   }
-  function toggleGaps() {
-    const on = $("gapsBtn").getAttribute("aria-pressed") !== "true";
-    $("gapsBtn").setAttribute("aria-pressed", String(on)); $("gemsBtn").setAttribute("aria-pressed", "false");
-    if (!on) { $("gemsList").innerHTML = ""; setHighlight(null); return; }
-    const g = state.films, gaps = state.gapBins;
-    if (!gaps.length) { $("gemsList").innerHTML = `<p class="help">No sparse, highly rated patches on this layout.</p>`; setHighlight(null); return; }
-    $("gemsList").innerHTML = `<p class="mini" style="margin:0 0 4px">${gaps.length} patches circled on the map. Best loved:</p>` + gaps.slice(0, 10).map((b, k) => {
-      const best = b.members.slice().sort((x, y) => (g.rating[y] ?? 0) - (g.rating[x] ?? 0))[0];
-      return `<li><button type="button" data-gap="${k}"><span class="n">${k + 1}</span><span class="nm">${esc(g.name[best])}<span class="mini"> + ${b.count - 1} · ${esc(regionName("fine", b.cluster))}</span></span><span class="yr">${b.rating.toFixed(1)}</span></button></li>`;
+  // Unmade movies: gaps between two kinds of film, found in the full embedding by src/gaps.py, each with an
+  // AI-written pitch that the same model placed back into the space.
+  function renderUnmadeList() {
+    const list = state.manifest.unmade || [];
+    $("unmadeTool").hidden = !list.length;
+    $("unmadeList").innerHTML = list.map((u, k) => `<li><button type="button" data-u="${k}"><span class="n">${k + 1}</span><span class="nm">${esc(u.title)}<span class="mini"> · ${esc(u.labels[0])} × ${esc(u.labels[1])}</span></span></button></li>`).join("");
+    $("unmadeList").querySelectorAll("button[data-u]").forEach((b) => b.addEventListener("click", () => showUnmade(+b.dataset.u)));
+  }
+  function showUnmade(k) {
+    const u = state.manifest.unmade[k], g = state.films, m = state.models[state.model];
+    state.unmade = k; state.desert = null; $("desertBody").innerHTML = "";
+    const films = (arr) => { const sim = new Map(arr.map((c) => [c.i, c.sim])); return listHtml(arr.map((c) => c.i), (i) => `${g.year[i] ?? ""} · ${Math.round(sim.get(i) * 100)}%`); };
+    // A typical film's closest neighbour, for comparison: the median of every film's top similarity.
+    const top1 = Float64Array.from({ length: state.n }, (_, i) => m.sims[i * m.k]).sort()[state.n >> 1];
+    $("unmadeBody").innerHTML = `
+      <h3 style="margin:4px 0 0;font:400 19px/1.2 var(--font-display)">${esc(u.title)}</h3>
+      <p class="help" style="margin:0"><i>${esc(u.logline)}</i></p>
+      <p class="mini" style="margin:0">A blend of <button class="region-pill" type="button" data-c="${u.parents[0]}">${esc(u.labels[0])}</button>
+        (like ${esc(u.examples[0])}) and <button class="region-pill" type="button" data-c="${u.parents[1]}">${esc(u.labels[1])}</button> (like ${esc(u.examples[1])}).</p>
+      <details><summary class="mini" style="cursor:pointer">Read the pitch</summary><p class="help">${esc(u.plot)}</p></details>
+      <span class="cap">Closest thing already made</span>
+      <ol class="list" id="unmadeClosest">${films(u.closest_to_blend.slice(0, 4))}</ol>
+      <span class="cap">If it were made, its nearest films</span>
+      <ol class="list" id="unmadeNbrs">${films(u.pitch_neighbors.slice(0, 4))}</ol>
+      <p class="mini" style="margin:0">The pitch's closest existing film is ${Math.round(u.nearest_film * 100)}% similar; a typical film's closest neighbour is ${Math.round(top1)}%.</p>
+      <button class="btn ghost" type="button" id="unmadeClear">Clear</button>`;
+    bindList($("unmadeClosest")); bindList($("unmadeNbrs"));
+    $("unmadeBody").querySelectorAll(".region-pill[data-c]").forEach((b) => b.addEventListener("click", () => showRegion("fine", +b.dataset.c)));
+    $("unmadeClear").addEventListener("click", () => { state.unmade = null; $("unmadeBody").innerHTML = ""; setHighlight(null); });
+    // Light up the two parent clusters and the films nearest the gap, then frame them.
+    const members = [];
+    for (let i = 0; i < state.n; i++) if (m.cluster[i] === u.parents[0] || m.cluster[i] === u.parents[1]) members.push(i);
+    const near = u.closest_to_blend.map((c) => c.i).concat(u.pitch_neighbors.map((c) => c.i));
+    setHighlight(new Set(members.concat(near)));
+    flyTo(unmadePos(k), Math.max(state.viewState.zoom, state.labelSwitchZoom + 0.5));
+  }
+  // ---------- film deserts ----------
+  // src/deserts.py, precomputed for every film with enough votes: the emptiest blends of that film's plot with
+  // its most related clusters, each with the films nearest the blend. Loaded the first time the tool is used.
+  let deserts = null, desertGaps = null;
+  async function loadDeserts() {
+    if (!deserts) {
+      try { deserts = await (await fetch("data/deserts.json")).json(); } catch (e) { deserts = { seeds: {}, clusters: {} }; }
+      desertGaps = Float64Array.from(Object.values(deserts.seeds).flat().map((r) => r[1])).sort();
+    }
+    return deserts;
+  }
+  // How empty a desert is, as the share of all precomputed deserts it is emptier than.
+  const desertPct = (gap) => { let lo = 0, hi = desertGaps.length; while (lo < hi) { const mid = (lo + hi) >> 1; if (desertGaps[mid] < gap) lo = mid + 1; else hi = mid; } return Math.round((100 * lo) / desertGaps.length); };
+  async function pickDesertSeed(i) {
+    await loadDeserts();
+    const g = state.films, rows = deserts.seeds[i];
+    $("desertQ").value = g.name[i]; $("desertBody").innerHTML = ""; state.desert = null;
+    if (!rows) {
+      $("desertList").innerHTML = `<li class="mini">${esc(g.name[i])} has too few votes for precomputed deserts (it needs ${deserts.seedVotes}+). Try a better-known film.</li>`;
+      return;
+    }
+    $("desertList").innerHTML = rows.map((r, k) => {
+      const c = deserts.clusters[r[0]];
+      return `<li><button type="button" data-d="${k}"><span class="n">${k + 1}</span><span class="nm">× ${esc(c.label)}<span class="mini"> · like ${esc(c.examples.split(", ").slice(0, 2).join(", "))}</span>
+        <span class="desert-bar" style="--w:${desertPct(r[1])}%" title="emptier than ${desertPct(r[1])}% of film deserts"></span></span></button></li>`;
     }).join("");
-    $("gemsList").querySelectorAll("button[data-gap]").forEach((btn) => btn.addEventListener("click", () => {
-      const b = gaps[+btn.dataset.gap];
-      setHighlight(new Set(b.members)); fitTo(b.members);
-    }));
-    setHighlight(new Set(gaps.flatMap((b) => b.members)));
+    $("desertList").querySelectorAll("button[data-d]").forEach((b) => b.addEventListener("click", () => showDesert(i, +b.dataset.d)));
+    showDesert(i, 0);
+  }
+  function showDesert(seed, k) {
+    const g = state.films, man = state.manifest, m = state.models[state.model], [cl, gap, nearest, near, sims] = deserts.seeds[seed][k], c = deserts.clusters[cl];
+    state.desert = { seed, cl, near };
+    state.unmade = null; $("unmadeBody").innerHTML = "";
+    // A "what if" built from both sides' own words: the seed's keywords and the cluster's label. No AI involved.
+    const labelWords = new Set(c.label.toLowerCase().split(/,\s*/));
+    const lift = keywordLift(m.cluster[seed]);
+    const kws = g.kw[seed].filter((t) => !labelWords.has(man.keywords[t].toLowerCase()))
+      .sort((a, b) => (lift.get(b) || 0) - (lift.get(a) || 0)).slice(0, 2).map((t) => man.keywords[t]);
+    const own = m.cluster[seed], pitch = (man.unmade || []).findIndex((u) => u.parents.includes(own) && u.parents.includes(cl));
+    const sim = new Map(near.map((n, j) => [n, sims[j]]));
+    $("desertBody").innerHTML = `
+      <p class="desert-what">What if ${esc(g.name[seed])}${kws.length ? ` (${kws.map(esc).join(", ")})` : ""} met <button class="region-pill" type="button" data-c="${cl}" style="margin:0;font-size:inherit">${esc(c.label)}</button>?</p>
+      <p class="mini" style="margin:0">Nothing on the map is made of both. This blend is emptier than ${desertPct(gap)}% of film deserts; its nearest film is ${Math.round(nearest * 100)}% similar. Like ${esc(c.examples)}.</p>
+      ${pitch >= 0 ? `<button class="btn ghost" type="button" id="desertPitch">Read the AI pitch for this gap: ${esc(man.unmade[pitch].title)}</button>` : ""}
+      <span class="cap">Closest thing already made</span>
+      <ol class="list" id="desertNear">${listHtml(near, (i) => `${g.year[i] ?? ""} · ${Math.round(sim.get(i) * 100)}%`)}</ol>
+      <button class="btn ghost" type="button" id="desertClear">Clear</button>`;
+    bindList($("desertNear"));
+    $("desertBody").querySelector(".region-pill").addEventListener("click", () => showRegion("fine", cl));
+    if (pitch >= 0) $("desertPitch").addEventListener("click", () => { state.desert = null; showUnmade(pitch); });
+    $("desertClear").addEventListener("click", () => { state.desert = null; $("desertBody").innerHTML = ""; $("desertList").innerHTML = ""; $("desertQ").value = ""; setHighlight(null); });
+    // Light up the seed, the other cluster and the films nearest the empty spot, then fly there.
+    const lit = [seed, ...near];
+    for (let i = 0; i < state.n; i++) if (m.cluster[i] === cl) lit.push(i);
+    setHighlight(new Set(lit));
+    flyTo(desertPos(), Math.max(state.viewState.zoom, state.labelSwitchZoom + 0.3));
+  }
+  // How characteristic each keyword is of a cluster: its share of the cluster's films over its share of all films
+  // (keywords on fewer than 3 of the cluster's films score 0). Picks "mafia" over "florida" for GoodFellas.
+  const liftCache = new Map();
+  function keywordLift(cl) {
+    if (!liftCache.has(cl)) {
+      const g = state.films, m = state.models[state.model], all = new Map(), inC = new Map();
+      let n = 0;
+      for (let i = 0; i < state.n; i++) {
+        const mine = m.cluster[i] === cl; if (mine) n++;
+        for (const t of g.kw[i]) { all.set(t, (all.get(t) || 0) + 1); if (mine) inC.set(t, (inC.get(t) || 0) + 1); }
+      }
+      const lift = new Map();
+      for (const [t, c] of inC) if (c >= 3) lift.set(t, (c / n) / (all.get(t) / state.n));
+      liftCache.set(cl, lift);
+    }
+    return liftCache.get(cl);
+  }
+  // The desert's spot on the current layout: the mean position of the films nearest the blend.
+  function desertPos() {
+    const ps = state.desert.near.map(pos);
+    return [0, 1, 2].map((d) => ps.reduce((a, p) => a + (p[d] || 0), 0) / ps.length);
+  }
+  function initDeserts() {
+    attachSearch($("desertQ"), (i) => pickDesertSeed(i));
+    const tries = ["GoodFellas", "Toy Story", "The Dark Knight", "Mean Girls"].map((n) => state.films.name.indexOf(n)).filter((i) => i >= 0);
+    $("desertTry").innerHTML = "Try: " + tries.map((i) => `<button class="region-pill" type="button" data-i="${i}" style="margin:0 6px 0 0">${esc(state.films.name[i])}</button>`).join("");
+    $("desertTry").querySelectorAll("button[data-i]").forEach((b) => b.addEventListener("click", () => pickDesertSeed(+b.dataset.i)));
+  }
+  // A desert's marker: the same ringed question mark, with lines to the seed film and the other cluster's label.
+  function desertLayers(atlasProps) {
+    if (!state.desert) return [];
+    const m = state.models[state.model], at = desertPos(), d = state.desert;
+    const anchor = labelAnchors(m, true).find((a) => a.id === d.cl);
+    const ends = [pos(d.seed)].concat(anchor ? [[anchor.x, anchor.y, anchor.z || 0]] : []);
+    const title = `${state.films.name[d.seed]} × ${deserts.clusters[d.cl].label}`.toUpperCase();
+    return [
+      new deck.LineLayer({ id: "desert-lines", data: ends, getSourcePosition: () => at, getTargetPosition: (e) => e,
+        getColor: T.alt.concat(200), getWidth: 2.5, widthUnits: "pixels", updateTriggers: { getSourcePosition: [d.seed, d.cl, state.model, state.view3d] } }),
+      new deck.IconLayer({ id: "desert-ring", data: [at], ...atlasProps, getIcon: () => "ring", sizeUnits: "pixels", getSize: 46, getPosition: (e) => e, getColor: T.alt.concat(255) }),
+      new deck.TextLayer({ id: "desert-mark", data: [at], getPosition: (e) => e, getText: () => "?", getSize: 22, sizeUnits: "pixels",
+        fontFamily: "Oswald, sans-serif", fontWeight: 700, getColor: T.alt.concat(255), outlineWidth: 4, outlineColor: T.bg.concat(230), fontSettings: { sdf: true } }),
+      new deck.TextLayer({ id: "desert-title", data: [at], getPosition: (e) => e, getText: () => title, getSize: 14, sizeUnits: "pixels",
+        getPixelOffset: [0, 34], fontFamily: "Oswald, sans-serif", fontWeight: 600, getColor: T.text.concat(255), outlineWidth: 4,
+        outlineColor: T.bg.concat(230), fontSettings: { sdf: true }, characterSet: "auto" }),
+    ];
+  }
+
+  // The gap's marker: a ringed question mark, with lines to the two parent clusters' label anchors.
+  function unmadeLayers(atlasProps) {
+    if (state.unmade == null) return [];
+    const k = state.unmade, u = state.manifest.unmade[k], at = unmadePos(k), m = state.models[state.model];
+    const anchors = labelAnchors(m, true).filter((d) => u.parents.includes(d.id)).map((d) => [d.x, d.y, d.z || 0]);
+    return [
+      new deck.LineLayer({ id: "unmade-lines", data: anchors, getSourcePosition: () => at, getTargetPosition: (d) => d,
+        getColor: T.alt.concat(200), getWidth: 2.5, widthUnits: "pixels", updateTriggers: { getSourcePosition: [k, state.model, state.view3d] } }),
+      new deck.IconLayer({ id: "unmade-ring", data: [at], ...atlasProps, getIcon: () => "ring", sizeUnits: "pixels", getSize: 46,
+        getPosition: (d) => d, getColor: T.alt.concat(255) }),
+      new deck.TextLayer({ id: "unmade-mark", data: [at], getPosition: (d) => d, getText: () => "?", getSize: 22, sizeUnits: "pixels",
+        fontFamily: "Oswald, sans-serif", fontWeight: 700, getColor: T.alt.concat(255), outlineWidth: 4, outlineColor: T.bg.concat(230), fontSettings: { sdf: true } }),
+      new deck.TextLayer({ id: "unmade-title", data: [at], getPosition: (d) => d, getText: () => u.title.toUpperCase(), getSize: 14, sizeUnits: "pixels",
+        getPixelOffset: [0, 34], fontFamily: "Oswald, sans-serif", fontWeight: 600, getColor: T.text.concat(255), outlineWidth: 4,
+        outlineColor: T.bg.concat(230), fontSettings: { sdf: true }, characterSet: "auto" }),
+    ];
+  }
+  // Axes (PCA) layout: the three main directions of the embedding, each end named by its dominant genres.
+  function axisLayers() {
+    const m = state.models[state.model], dims = state.view3d ? 3 : 2;
+    const ext = (key) => { const v = Float64Array.from(m[key]).sort(); return [v[Math.floor(v.length * 0.02)], v[Math.floor(v.length * 0.98)]]; };
+    const keys = state.view3d ? ["x3", "y3", "z3"] : ["x", "y"];
+    const lines = [], labels = [];
+    for (let d = 0; d < dims; d++) {
+      const [lo, hi] = ext(keys[d]), a = [0, 0, 0], b = [0, 0, 0];
+      a[d] = lo; b[d] = hi;
+      lines.push({ a, b });
+      const name = (p) => `${p.genres.join(" · ").toUpperCase()}\n${p.examples.slice(0, 2).join(", ")}`;
+      labels.push({ at: a, text: name(m.axes[d].low), axis: d, end: "low" }, { at: b, text: name(m.axes[d].high), axis: d, end: "high" });
+    }
+    return [
+      new deck.LineLayer({ id: "axes-lines", data: lines, getSourcePosition: (d) => d.a, getTargetPosition: (d) => d.b,
+        getColor: T.text.concat(110), getWidth: 1.5, widthUnits: "pixels", updateTriggers: { getSourcePosition: [state.view3d], getTargetPosition: [state.view3d] } }),
+      // In 2D, labels hang inward from their axis end so they stay on screen.
+      new deck.TextLayer({ id: "axes-labels", data: labels, getPosition: (d) => d.at, getText: (d) => d.text, getSize: 12.5, sizeUnits: "pixels",
+        getTextAnchor: (d) => (state.view3d || d.axis === 1 ? "middle" : d.end === "low" ? "start" : "end"),
+        getAlignmentBaseline: (d) => (state.view3d || d.axis === 0 ? "bottom" : d.end === "low" ? "bottom" : "top"),
+        getPixelOffset: (d) => (state.view3d ? [0, 0] : d.axis === 0 ? [0, -6] : [0, d.end === "low" ? -6 : 6]),
+        fontFamily: "Oswald, Work Sans, sans-serif", fontWeight: 600, lineHeight: 1.25, characterSet: "auto", getColor: T.text.concat(255),
+        outlineWidth: 4, outlineColor: T.bg.concat(235), fontSettings: { sdf: true }, updateTriggers: { getPosition: [state.view3d], getTextAnchor: [state.view3d], getAlignmentBaseline: [state.view3d], getPixelOffset: [state.view3d] } }),
+    ];
   }
   function personPicked(d, input) {
     input.value = state.manifest.people[d];
@@ -1293,11 +1740,18 @@ a { color: var(--link); }
     if (!state.view3d) setSpin(false);
     state.viewState = fitView(state.models[state.model]);
     labelCache.key = null;
-    if (deckgl) { deckgl.setProps({ views: makeView(), initialViewState: state.viewState }); redraw(); }
+    if (deckgl) { deckgl.setProps({ views: makeView(), initialViewState: state.viewState, controller: controllerFor() }); redraw(); }
+    updateNavHelp();
+  }
+  function updateNavHelp() {
+    $("navHelp").textContent = state.view3d
+      ? "Drag to rotate · Shift-drag or right-drag to pan · scroll zooms toward the pointer · double-click to recentre."
+      : "Drag to pan · scroll zooms toward the pointer · double-click to recentre.";
   }
   let spinTimer = null;
   function setSpin(on) {
     state.spin = on && state.view3d; $("spin").checked = state.spin;
+    $("navSpin").setAttribute("aria-pressed", String(state.spin)); $("navSpin").classList.toggle("on", state.spin);
     if (spinTimer) cancelAnimationFrame(spinTimer);
     spinTimer = null;
     const step = () => {
@@ -1310,8 +1764,24 @@ a { color: var(--link); }
   }
 
   function refreshAll() { applyFilters(); recolor(); redraw(); }
+  // Originality: one minus the mean cosine similarity to a film's 15 nearest neighbours in the full
+  // embedding (not the map), so a film with no close plot relatives scores high.
+  let origSorted = null;
+  function computeOriginality() {
+    const m = state.models[state.model], k = m.k;
+    state.films.orig = Array.from({ length: state.n }, (_, i) => { let s = 0; for (let t = 0; t < k; t++) s += m.sims[i * k + t]; return 1 - s / k / 100; });
+    origSorted = Float64Array.from(state.films.orig).sort();
+  }
+  // Share of films less original than film i (binary search in the sorted scores).
+  function origRank(i) {
+    const v = state.films.orig[i];
+    let lo = 0, hi = origSorted.length;
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (origSorted[mid] < v) lo = mid + 1; else hi = mid; }
+    return lo / origSorted.length;
+  }
   function switchModel(key) {
     state.model = key;
+    computeOriginality();
     if (state.view3d && !has3d()) setView3d(false);
     buildAdjacency(); buildBins(); labelCache.key = null;
     if (state.routeFrom != null && state.routeTo != null) computeRoute();
@@ -1332,25 +1802,34 @@ a { color: var(--link); }
     const man = state.manifest;
     $("title").textContent = man.title;
     document.title = man.title;
-    $("note").textContent = `${state.n.toLocaleString()} films placed by what their plots say · data from TMDB, IMDb and Wikipedia`;
+    $("note").textContent = `${state.n.toLocaleString()} films placed by what their plots say`;
+    S = man.ratings;
+    document.querySelectorAll(".src").forEach((el) => { el.textContent = S.source; });
+    $("colorRating").textContent = `${S.source} rating`;
+    $("gnRating").innerHTML = `<option value="0">Any</option>` + S.rating.night.map((r, k) => `<option value="${r}"${k === 1 ? " selected" : ""}>${r.toFixed(1)}+</option>`).join("");
+    $("gemsRule").textContent = `Gems: rated ${S.rating.gem.toFixed(1)}+ on ${S.source} by ${S.votes.rated.toLocaleString()}–${S.votes.gemMax.toLocaleString()} people.`;
+    $("imdbCredit").hidden = S.source !== "IMDb";
     $("model").innerHTML = man.models.map((m) => `<option value="${m.key}">${esc(m.label)}</option>`).join("");
     $("modelWrap").hidden = man.models.length < 2;
     const genreOptions = man.genres.map((t, i) => `<option value="${i}">${esc(t)}</option>`).join("");
     $("genreSel").innerHTML = genreOptions;
     $("genreFilter").innerHTML += genreOptions;
-    lowerNames = films.name.map((s) => s.toLowerCase());
+    lowerNames = films.name.map(fold);
     genreSets = films.genre.map((a) => new Set(a));
+    films.roi = films.revenue.map((r, i) => (r != null && films.budget[i] != null ? r / films.budget[i] : null));
+    $("langFilter").innerHTML += man.languages.slice(0, 30).map((t, i) => `<option value="${i}">${esc(t)}</option>`).join("");
     const years = films.year.filter((y) => y != null).sort((a, b) => a - b);
     $("timeRange").min = Math.max(1900, years[Math.floor(years.length * 0.01)]);
     $("timeRange").max = years[years.length - 1];
     state.latestYear = years[years.length - 1];
     const personCounts = new Array(man.people.length).fill(0);
     films.dir.forEach((ds, i) => new Set(ds.concat(films.cast[i])).forEach((d) => { personCounts[d]++; }));
-    const peopleSource = { names: man.people, lower: man.people.map((s) => s.toLowerCase()), counts: personCounts };
+    const peopleSource = { names: man.people, lower: man.people.map(fold), counts: personCounts };
     // Overviews are the biggest file and only the film card needs them, so they arrive after the map.
     fetch("data/blurbs.json").then((r) => r.json()).then((b) => { state.blurbs = b; if (state.selected != null) renderDetail(); }).catch(() => {});
 
     const m = await loadModel(state.model);
+    computeOriginality();
     state.view3d = !!m.z3;   // both themes open in 3D; the 2D layout is one click away
     $("viewRow").hidden = !m.z3;
     state.viewState = fitView(m);
@@ -1364,7 +1843,7 @@ a { color: var(--link); }
     applyFilters(); resize(); assignIcons(); recolor();
     deckgl = new deck.Deck({
       parent: $("map"), views: makeView(),
-      initialViewState: state.viewState, controller: true, layers: layers(),
+      initialViewState: state.viewState, controller: controllerFor(), layers: layers(),
       // The first label pass runs before a viewport exists; redo it with the real projection.
       onLoad: () => { labelCache.key = null; redraw(); },
       onViewStateChange: ({ viewState, interactionState }) => {
@@ -1377,6 +1856,9 @@ a { color: var(--link); }
     });
     $("status").hidden = true;
     initClicks();
+    initNav();
+    updateNavHelp();
+    if (state.view3d && !matchMedia("(prefers-reduced-motion: reduce)").matches) setSpin(true);
 
     // Map tab
     $("colorBy").addEventListener("change", (e) => { state.colorBy = e.target.value; $("genreWrap").hidden = state.colorBy !== "genre"; recolor(); redraw(); });
@@ -1389,15 +1871,16 @@ a { color: var(--link); }
       if (state.selected != null) flyTo(pos(state.selected));
     });
     const num = (id) => { const v = $(id).value; return v === "" ? null : +v; };
-    ["yearMin", "yearMax", "rMin", "rMax"].forEach((id) => $(id).addEventListener("input", () => { state.filters[id] = num(id); refreshAll(); }));
+    ["yearMin", "yearMax", "rMin", "rMax", "ratingMin", "votesMin", "revMin", "budMax", "roiMin"].forEach((id) => $(id).addEventListener("input", () => { state.filters[id] = num(id); refreshAll(); }));
     $("genreFilter").addEventListener("change", () => { state.filters.genre = num("genreFilter"); refreshAll(); });
+    $("langFilter").addEventListener("change", () => { state.filters.lang = num("langFilter"); refreshAll(); });
     $("sizePop").addEventListener("change", (e) => { state.sizePop = e.target.checked; resize(); redraw(); });
     $("showTiles").addEventListener("change", (e) => { state.showTiles = e.target.checked; redraw(); });
     $("view3d").checked = state.view3d; $("spin").disabled = !state.view3d;
     $("view3d").addEventListener("change", (e) => setView3d(e.target.checked));
     $("spin").addEventListener("change", (e) => setSpin(e.target.checked));
     $("reset").addEventListener("click", () => {
-      ["yearMin", "yearMax", "rMin", "rMax", "genreFilter"].forEach((id) => { $(id).value = ""; });
+      ["yearMin", "yearMax", "rMin", "rMax", "genreFilter", "ratingMin", "votesMin", "revMin", "budMax", "roiMin", "langFilter"].forEach((id) => { $(id).value = ""; });
       Object.keys(state.filters).forEach((k) => { state.filters[k] = null; });
       refreshAll();
     });
@@ -1405,7 +1888,8 @@ a { color: var(--link); }
     $("themeBtn").addEventListener("click", () => setTheme(isDark() ? "light" : "dark"));
     $("clearHL").addEventListener("click", () => {
       setHighlight(null);
-      ["gemsBtn", "gapsBtn"].forEach((id) => $(id).setAttribute("aria-pressed", "false")); $("gemsList").innerHTML = "";
+      $("gemsBtn").setAttribute("aria-pressed", "false"); $("gemsBtn").textContent = "Show hidden gems"; $("gemsList").innerHTML = "";
+      state.unmade = null; $("unmadeBody").innerHTML = "";
       redraw();
     });
 
@@ -1437,7 +1921,8 @@ a { color: var(--link); }
       setYear(Math.min(+r.max, Math.max(+r.min, +r.value + (e.deltaY > 0 ? 1 : -1))));
     }, { passive: false });
     $("gemsBtn").addEventListener("click", toggleGems);
-    $("gapsBtn").addEventListener("click", toggleGaps);
+    renderUnmadeList();
+    initDeserts();
     $("gnGo").addEventListener("click", curate);
     window.addEventListener("resize", hideSuggest);
 

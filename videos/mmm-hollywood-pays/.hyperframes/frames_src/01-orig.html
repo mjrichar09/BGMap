@@ -1,0 +1,116 @@
+<template id="01-orig-template">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Limelight';font-style:normal;font-weight:400;font-display:swap;src:url("assets/fonts/captured-XLYkIZL7aopJVbZJHDuoOulHjHUmTQ.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Oswald';font-style:normal;font-weight:600;font-display:swap;src:url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Work Sans';font-style:normal;font-weight:400;font-display:swap;src:url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+#root {
+  position: relative; width: 1080px; height: 1080px; overflow: hidden;
+  background: transparent;
+}
+
+/* top-left dim behind the title (semi-transparent; footage plays underneath) */
+#orig01-dim-top {
+  position: absolute; left: 0; top: 0; width: 1080px; height: 420px;
+  background: radial-gradient(ellipse 900px 380px at 0% 0%, rgba(11,8,7,.88) 0%, rgba(11,8,7,.6) 45%, rgba(11,8,7,0) 100%);
+  pointer-events: none;
+}
+/* lower band dim behind the legend */
+#orig01-dim-legend {
+  position: absolute; left: 0; top: 660px; width: 1080px; height: 420px;
+  background: linear-gradient(to bottom, rgba(11,8,7,0) 0%, rgba(11,8,7,.72) 32%, rgba(11,8,7,.82) 100%);
+  pointer-events: none;
+}
+
+#orig01-title-block { position: absolute; left: 60px; top: 62px; }
+#orig01-eyebrow {
+  font: 600 30px/1 "Oswald", sans-serif; letter-spacing: .22em;
+  text-transform: uppercase; color: #FFB547;
+}
+#orig01-title {
+  margin-top: 18px;
+  font: 400 100px/0.95 "Limelight", serif; letter-spacing: .06em;
+  text-transform: uppercase; color: #F3E6D0; white-space: nowrap;
+}
+
+/* legend */
+#orig01-legend { position: absolute; left: 140px; top: 752px; width: 800px; height: 130px; }
+.orig01-end {
+  position: absolute; top: 0;
+  font: 600 28px/1 "Oswald", sans-serif; letter-spacing: .2em;
+  text-transform: uppercase; color: #F3E6D0;
+}
+#orig01-crowded { left: 0; }
+#orig01-original { right: 0; }
+#orig01-bar {
+  position: absolute; left: 0; top: 44px; width: 800px; height: 24px;
+  background: linear-gradient(to right, #440154 0%, #3b528b 25%, #21918c 50%, #5ec962 75%, #fde725 100%);
+  transform-origin: 0 50%;
+}
+#orig01-note {
+  position: absolute; left: 0; top: 86px; width: 800px; text-align: center;
+  font: 400 26px/1.2 "Work Sans", sans-serif; color: #B39C80; white-space: nowrap;
+}
+
+/* fade-up from black */
+#orig01-black {
+  position: absolute; left: 0; top: 0; width: 1080px; height: 1080px;
+  background: #000; pointer-events: none;
+}
+</style>
+
+<div id="root" data-composition-id="01-orig" data-start="0" data-duration="6.085" data-width="1080" data-height="1080">
+
+  <video id="orig01-video" src="assets/clips/orig.mp4" muted playsinline
+    data-frame-video="approved" data-start="0" data-duration="6.085" data-track-index="1"
+    data-frame-video-x="0" data-frame-video-y="0" data-frame-video-width="1080" data-frame-video-height="1080"
+    data-frame-video-fit="cover"></video>
+
+  <div id="orig01-dim-top" class="clip" data-start="0" data-duration="6.085" data-track-index="2"></div>
+  <div id="orig01-dim-legend" class="clip" data-start="0" data-duration="6.085" data-track-index="3"></div>
+
+  <div id="orig01-title-block" class="clip" data-start="0" data-duration="6.085" data-track-index="4">
+    <div id="orig01-eyebrow">Color by</div>
+    <div id="orig01-title">Originality</div>
+  </div>
+
+  <div id="orig01-legend" class="clip" data-start="0" data-duration="6.085" data-track-index="5">
+    <div class="orig01-end" id="orig01-crowded">Crowded</div>
+    <div class="orig01-end" id="orig01-original">Original</div>
+    <div id="orig01-bar"></div>
+    <div id="orig01-note">how unlike its 15 nearest plot neighbors</div>
+  </div>
+
+  <div id="orig01-black" class="clip" data-start="0" data-duration="6.085" data-track-index="9"></div>
+</div>
+
+<script>
+  (function () {
+    window.__timelines = window.__timelines || {};
+    var DURATION = 6.085;
+    var tl = gsap.timeline({ paused: true });
+
+    // ---- Scene 1 (0.00–0.60): fade up from black; top dim + eyebrow on "Color" ----
+    tl.fromTo("#orig01-black", { opacity: 1 }, { opacity: 0, duration: 0.6, ease: "power1.out" }, 0);
+    tl.fromTo("#orig01-dim-top", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, 0);
+    tl.fromTo("#orig01-eyebrow", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 0.1);
+
+    // ---- Scene 2 (1.78): ORIGINALITY lands on "originality:" ----
+    tl.fromTo("#orig01-title", { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 1.78);
+
+    // ---- Scene 3 (2.92): legend bar draws left-to-right on "how unlike" ----
+    tl.fromTo("#orig01-dim-legend", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, 2.72);
+    tl.fromTo("#orig01-crowded", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 2.92);
+    tl.fromTo("#orig01-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "power3.out" }, 2.92);
+    tl.fromTo("#orig01-original", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 3.5);
+
+    // ---- Scene 4 (4.14): muted note on "neighbors", then hold ----
+    tl.fromTo("#orig01-note", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 4.14);
+
+    // full-span anchor
+    tl.to({}, { duration: DURATION }, 0);
+    window.__timelines["01-orig"] = tl;
+  })();
+</script>
+</template>

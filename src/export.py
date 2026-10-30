@@ -11,24 +11,81 @@ the output folder can be served or deployed as is. Writes into <out>/:
                        item's 15 nearest neighbors with similarities (the
                        neighbor list and the graph routes are found on)
 
+  assets/         logos for the credits
+
+Besides each UMAP map, an "Axes (PCA)" layout places films by the embedding's
+three main directions, with each axis's two ends described by the genres that
+dominate them. PCA keeps almost no local neighbours (the UMAP map does that)
+but its axes have meanings. Unmade movies from src.gaps (if checked) ship with
+a position on every layout.
+
+Ratings: the site is public, so it uses TMDB's own rating and vote count and
+leaves IMDb data out of every file (IMDb ids, which come from TMDB, stay for
+links). IMDb's datasets are for personal, non-commercial use and may not be
+republished; --private builds a personal copy with IMDb's ratings into
+data/<domain>/site-private, which must never be deployed. The page's
+cutoffs (ticket/reel icons, gems, best-rated weighting) are defined on the IMDb
+scale and carried to TMDB's by percentile over the same films.
+
     python -m src.export --domain movies --map qwen3__text_plot__inst__nn30_md0.05
+    python -m src.export --domain movies --map qwen3__text_plot__inst__nn30_md0.05 --private
     cd data/movies/site && python -m http.server    # then open http://localhost:8000
 """
 
 import argparse
 import json
+import shutil
 from collections import Counter
 
 import numpy as np
 import pandas as pd
+from sklearn.decomposition import PCA
 
 from src.common import ROOT, domain_dir
+from src.gaps import blend, centroids
 
 ROUTE_K = 15
 POSTER_PREFIX = "https://image.tmdb.org/t/p/w185/"
 BLURB_CHARS = 320
 CAST = 4  # top-billed actors kept per film for the people lens
 CERTS = ["G", "PG", "PG-13", "R", "NC-17", "NR"]
+# TMDB's original_language codes ("cn" is TMDB's code for Cantonese); others show as the code.
+LANG_NAMES = {
+    "en": "English", "fr": "French", "it": "Italian", "ja": "Japanese", "es": "Spanish", "de": "German",
+    "hi": "Hindi", "ko": "Korean", "zh": "Mandarin", "ru": "Russian", "cn": "Cantonese", "pt": "Portuguese",
+    "sv": "Swedish", "da": "Danish", "ta": "Tamil", "te": "Telugu", "ml": "Malayalam", "tr": "Turkish",
+    "pl": "Polish", "nl": "Dutch", "no": "Norwegian", "fi": "Finnish", "th": "Thai", "id": "Indonesian",
+    "fa": "Persian", "ar": "Arabic", "el": "Greek", "hu": "Hungarian", "cs": "Czech", "tl": "Tagalog",
+}
+# Page cutoffs on IMDb's scale. votes: point size starts at `base`; `rated` is enough votes to trust a
+# rating; tickets from `known`, reels from `reel`; gold stars need `award` votes and an `award` rating;
+# gems are rated `gem`+ by `rated`–`gemMax` people; best-rated lists pull ratings toward rating `prior`
+# with weight `prior` votes; sparse loved areas average `gap`+; movie night offers the `night` minimums.
+IMDB_SCALE = {
+    "votes": {"base": 100, "rated": 1000, "known": 10000, "award": 25000, "gemMax": 25000, "prior": 25000, "reel": 150000},
+    "rating": {"prior": 6.5, "gap": 7.3, "gem": 7.5, "award": 8.0, "night": [6.5, 7.0, 7.5]},
+}
+RATINGS = {  # source name, rating column, votes column
+    "IMDb": ("imdb_rating", "imdb_votes"),
+    "TMDB": ("vote_average", "vote_count"),
+}
+
+
+def round_sig(v: float, digits: int = 2) -> int:
+    return int(float(f"{v:.{digits}g}"))
+
+
+def carry_scale(df: pd.DataFrame) -> dict:
+    """IMDB_SCALE moved to TMDB's scale: each cutoff goes to the TMDB value at the same percentile."""
+    both = df.dropna(subset=["imdb_rating", "imdb_votes"])
+    iv, tv = both["imdb_votes"].astype(float), both["vote_count"].astype(float)
+    ir, tr = both["imdb_rating"].astype(float), both["vote_average"].astype(float)
+    votes = lambda t: max(1, round_sig(tv.quantile((iv < t).mean())))
+    rating = lambda t: round(float(tr.quantile((ir < t).mean())), 1)
+    return {
+        "votes": {k: votes(t) for k, t in IMDB_SCALE["votes"].items()},
+        "rating": {k: [rating(x) for x in t] if isinstance(t, list) else rating(t) for k, t in IMDB_SCALE["rating"].items()},
+    }
 
 
 def _clean(values) -> list:
@@ -54,7 +111,8 @@ def vocab_indices(series: pd.Series, min_count: int = 1) -> tuple[list[str], lis
     return vocab, [[index[t] for t in tags if t in index] for tags in series]
 
 
-def films_payload(df: pd.DataFrame) -> tuple[dict, dict]:
+def films_payload(df: pd.DataFrame, source: str) -> tuple[dict, dict]:
+    rating_col, votes_col = RATINGS[source]
     tags = lambda col: df[col].map(lambda a: list(a) if a is not None else [])
     genre_vocab, genres = vocab_indices(tags("genres"))
     kw_vocab, kws = vocab_indices(tags("keywords").map(lambda a: a[:8]), min_count=2)
@@ -63,14 +121,20 @@ def films_payload(df: pd.DataFrame) -> tuple[dict, dict]:
     people_vocab, _ = vocab_indices(directors + cast)
     person = {p: i for i, p in enumerate(people_vocab)}
     cert = df["certification"].fillna("").str.strip()
+    lang_vocab = df["original_language"].fillna("").value_counts().index.tolist()
+    lang_index = {c: i for i, c in enumerate(lang_vocab)}
     films = {
         "id": _clean(df["id"]),
         "name": df["name"].fillna("").tolist(),
         "year": _clean(df["year"].astype("Float64")),
-        "rating": _clean(df["imdb_rating"]),
-        "votes": _clean(df["imdb_votes"].astype("Float64")),
+        "rating": _clean(df[rating_col]),
+        "votes": _clean(df[votes_col].astype("Float64")),
         "runtime": _clean(df["runtime"].where(df["runtime"] > 0)),
         "cert": [CERTS.index(c) if c in CERTS else None for c in cert],
+        # Money in $M, not inflation-adjusted; TMDB stores unknowns as 0, so tiny values count as unknown.
+        "revenue": _clean((df["revenue"].where(df["revenue"] > 1e5) / 1e6).round(2)),
+        "budget": _clean((df["budget"].where(df["budget"] > 1e5) / 1e6).round(2)),
+        "lang": [lang_index[c] for c in df["original_language"].fillna("")],
         "imdb": df["imdb_id"].fillna("").str.removeprefix("tt").tolist(),
         # The shared CDN prefix is restored by the page.
         "thumb": df["thumbnail"].fillna("").str.removeprefix(POSTER_PREFIX).tolist(),
@@ -79,7 +143,8 @@ def films_payload(df: pd.DataFrame) -> tuple[dict, dict]:
         "dir": [[person[p] for p in a] for a in directors],
         "cast": [[person[p] for p in a] for a in cast],
     }
-    return films, {"genres": genre_vocab, "keywords": kw_vocab, "people": people_vocab, "certs": CERTS}
+    languages = [LANG_NAMES.get(c, c.upper() or "Unknown") for c in lang_vocab]
+    return films, {"genres": genre_vocab, "keywords": kw_vocab, "people": people_vocab, "certs": CERTS, "languages": languages}
 
 
 def blurbs_payload(df: pd.DataFrame, items: pd.DataFrame) -> dict:
@@ -118,6 +183,41 @@ def nearest_neighbors(vecs: np.ndarray, k: int, chunk: int = 2048) -> tuple[np.n
     return nbrs, sims
 
 
+def axis_poles(df: pd.DataFrame, scores: np.ndarray, extreme: int = 1500) -> dict:
+    """Describe each end of an axis by the genres most over-represented there and its best-known films."""
+    base = df["genres"].explode().value_counts(normalize=True)
+    order = np.argsort(scores)
+    def pole(idx):
+        share = df["genres"].iloc[idx].explode().value_counts(normalize=True)
+        lift = (share / base).where(share >= 0.15).dropna().sort_values(ascending=False)
+        known = df.iloc[idx[:300]].sort_values("vote_count", ascending=False)
+        return {"genres": lift.index[:2].tolist(), "examples": known["name"].head(3).tolist()}
+    return {"low": pole(order[:extreme]), "high": pole(order[::-1][:extreme])}
+
+
+def pca_layout(df: pd.DataFrame, vecs: np.ndarray) -> tuple[pd.DataFrame, PCA, float, list[dict]]:
+    """The embedding's three main directions as a layout, scaled to the UMAP map's spread."""
+    pca = PCA(n_components=3, random_state=0).fit(vecs)
+    z = pca.transform(vecs)
+    scale = float(df[["x", "y"]].to_numpy().std() / z[:, :2].std())
+    z *= scale
+    out = df[["cluster_fine", "cluster_coarse", "label_fine", "label_coarse"]].copy()
+    out["x"], out["y"] = z[:, 0], z[:, 1]
+    out["x3"], out["y3"], out["z3"] = z[:, 0], z[:, 1], z[:, 2]
+    axes = [{"variance": round(float(pca.explained_variance_ratio_[k]), 3), **axis_poles(df, z[:, k])} for k in range(3)]
+    return out, pca, scale, axes
+
+
+def unmade_positions(df: pd.DataFrame, unmade: list[dict], ids: dict, place) -> list[list[float]]:
+    """Where each unmade movie sits on a layout: `place(u)` if given, else the mean of the films nearest its blend."""
+    cols = ["x", "y"] + (["x3", "y3", "z3"] if "z3" in df else [])
+    out = []
+    for u in unmade:
+        p = place(u) if place else df.iloc[[ids[c["id"]] for c in u["closest_to_blend"]]][cols].mean().to_numpy()
+        out.append([round(float(t), 3) for t in p])
+    return out
+
+
 def layout_payload(df: pd.DataFrame, nbrs: np.ndarray, sims: np.ndarray) -> dict:
     xy = df[["x", "y"]].to_numpy(dtype=float)
     return {
@@ -139,17 +239,22 @@ def main() -> None:
     ap.add_argument("--domain", required=True, choices=["movies"])
     ap.add_argument("--map", nargs="+", required=True, help="file stems in data/<domain>/maps/; the first opens by default")
     ap.add_argument("--labels", nargs="*", help="display name for each map in the layout picker")
-    ap.add_argument("--out", help="default: data/<domain>/site")
-    ap.add_argument("--title", default="Movie Map")
+    ap.add_argument("--out", help="default: data/<domain>/site, or data/<domain>/site-private with --private")
+    ap.add_argument("--title", default="Massive Movie Map")
+    ap.add_argument("--private", action="store_true", help="IMDb ratings instead of TMDB's, for personal use only (never deploy)")
+    ap.add_argument("--no-pca", action="store_true", help="skip the Axes (PCA) layout")
     args = ap.parse_args()
 
     base = domain_dir(args.domain)
-    out = base / "site" if args.out is None else ROOT / args.out
+    out = base / ("site-private" if args.private else "site") if args.out is None else ROOT / args.out
     data_dir = out / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
 
     frames = {m: pd.read_parquet(base / "maps" / f"{m}.parquet") for m in args.map}
     first = frames[args.map[0]]
+    ids = {i: k for k, i in enumerate(first["id"])}
+    unmade_path = base / "gaps" / "unmade.json"
+    unmade = json.loads(unmade_path.read_text(encoding="utf-8")) if unmade_path.exists() else []
     layouts = []
     for k, (m, df) in enumerate(frames.items()):
         if df["id"].tolist() != first["id"].tolist():
@@ -160,22 +265,53 @@ def main() -> None:
             raise SystemExit(f"{emb}'s rows aren't in {m}'s order.")
         vecs = np.load(base / "embeddings" / f"{emb}.npy").astype(np.float32)
         key = f"layout{k}"
-        payload = layout_payload(df, *nearest_neighbors(vecs, ROUTE_K))
+        nbrs = nearest_neighbors(vecs, ROUTE_K)
+        payload = layout_payload(df, *nbrs)
+        payload["unmade"] = unmade_positions(df, unmade, ids, None)
         (data_dir / f"{key}.json").write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
         layouts.append({"key": key, "label": (args.labels or [])[k] if k < len(args.labels or []) else m, "source": m})
+        if k == 0 and not args.no_pca:
+            pdf, pca, pca_scale, axes = pca_layout(df, vecs)
+            cl, cent = centroids(df, vecs)
+            payload = layout_payload(pdf, *nbrs)
+            payload["kind"], payload["axes"] = "pca", axes
+            payload["unmade"] = unmade_positions(pdf, unmade, ids, lambda u: np.r_[
+                pca.transform(blend(cent, *u["parents"])[None])[0, :2], pca.transform(blend(cent, *u["parents"])[None])[0]] * pca_scale)
+            (data_dir / "axes.json").write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
+            pca_entry = {"key": "axes", "label": "Axes (PCA)", "source": f"PCA of {emb}"}
+    if not args.no_pca:
+        layouts.append(pca_entry)
 
-    films, vocab = films_payload(first)
+    source = "IMDb" if args.private else "TMDB"
+    films, vocab = films_payload(first, source)
     (data_dir / "films.json").write_text(json.dumps(films, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
     items = pd.read_parquet(base / "items.parquet", columns=["id", "name", "text", "tagline", "wikipedia_title"])
     blurbs = blurbs_payload(first, items)
     (data_dir / "blurbs.json").write_text(json.dumps(blurbs, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
-    manifest = {"title": args.title, "count": len(first), "posterPrefix": POSTER_PREFIX, "models": layouts, **vocab}
+    deserts_path = base / "gaps" / "deserts.json"
+    if deserts_path.exists():  # film deserts (src/deserts.py), loaded by the page only when the tool opens
+        d = json.loads(deserts_path.read_text(encoding="utf-8"))
+        seeds = {str(ids[int(fid)]): [[cl, gap, near, [ids[i] for i in nids], sims] for cl, gap, near, nids, sims in rows]
+                 for fid, rows in d["seeds"].items()}
+        used = sorted({r[0] for rows in seeds.values() for r in rows})
+        names = first.groupby("cluster_fine")[["label_fine", "examples_fine"]].first()
+        clusters = {str(c): {"label": names.loc[c, "label_fine"], "examples": names.loc[c, "examples_fine"]} for c in used}
+        (data_dir / "deserts.json").write_text(json.dumps({"seedVotes": d["seed_votes"], "seeds": seeds, "clusters": clusters},
+                                                          separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
+    scale = IMDB_SCALE if args.private else carry_scale(first)
+    for u in unmade:  # film ids -> row indices, which is what the page works in
+        for key in ("closest_to_blend", "pitch_neighbors"):
+            u[key] = [{"i": ids[c["id"]], "sim": c["sim"]} for c in u[key]]
+    manifest = {"title": args.title, "count": len(first), "posterPrefix": POSTER_PREFIX, "models": layouts,
+                "ratings": {"source": source, **scale}, "unmade": [u for u in unmade if u["lands"]], **vocab}
     (data_dir / "manifest.json").write_text(json.dumps(manifest, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
 
     page = (ROOT / "web" / f"{args.domain}_map.html").read_text(encoding="utf-8")
-    (out / "index.html").write_text(page.replace("<title>Movie Map</title>", f"<title>{args.title}</title>", 1), encoding="utf-8")
+    (out / "index.html").write_text(page.replace("<title>Massive Movie Map</title>", f"<title>{args.title}</title>", 1), encoding="utf-8")
+    shutil.copytree(ROOT / "web" / "assets", out / "assets", dirs_exist_ok=True)
     sizes = ", ".join(f"{p.name} {p.stat().st_size / 1e6:.1f} MB" for p in sorted(data_dir.glob("*.json")))
-    print(f"{len(first):,} items, {len(layouts)} layout(s) -> {out} ({sizes})")
+    print(f"{len(first):,} items, {len(layouts)} layout(s), {source} ratings -> {out} ({sizes})")
+    print(f"rating cutoffs: {json.dumps(scale)}")
 
 
 if __name__ == "__main__":

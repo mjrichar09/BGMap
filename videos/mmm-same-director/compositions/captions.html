@@ -1,0 +1,328 @@
+<template id="captions-template" data-composition-id="captions" data-width="1080" data-height="1080">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+
+<style data-brand-tokens>
+      :root {
+      --bg: #0B0807;
+      --dark: #F3E6D0;
+      --red: #FFB547;
+      --light: #C8102E;
+      --cap-ink: #0B0807;
+      --cap-canvas: #0B0807;
+      --cap-accent: #FFB547;
+      --cap-accent-2: #C8102E;
+      --font-display: "Work Sans", system-ui, serif;
+      --font-body: "Work Sans", system-ui, sans-serif;
+      --cap-band-top: 900px;
+      --cap-band-height: 180px;
+      }
+    </style>
+
+<style>
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+  #captions-root {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .caption-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    pointer-events: none;
+  }
+  /* the keep-out band, from captionBand(H) — frame content stays above it */
+  .caption-stage {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--cap-band-top, 900px);
+    height: var(--cap-band-height, 180px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .caption-group {
+    /* every group is absolutely stacked over the SAME band — exactly one shown at a
+       time via opacity. Must be absolute: in-flow groups would lay out side-by-side. */
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+  }
+
+  /* THE paper card — heavy 1.5px brown-black ink rule + a 4px tomato-red leftbar
+     (bold poster's cantilevered red-leftbar-card signature), square corners, NO
+     drop shadow (the only shadow in the system is the stacked text-shadow on red) */
+  .caption-pill {
+    max-width: 78%;
+    padding: 20px 44px 24px;
+    background: var(--cap-canvas, #ffffff);
+    border: 1.5px solid var(--cap-ink, #1c1410);
+    border-left: 4px solid var(--cap-accent, #d8000f);
+    border-radius: 0;
+  }
+  .caption-line {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.1em 0.34em;
+    font-family: "Work Sans", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(40px, 4.4vw, 58px);
+    line-height: 1.16;
+    letter-spacing: -0.01em;
+  }
+
+  /* upcoming — faint brown-black ink, no panel */
+  .caption-word {
+    display: inline-block;
+    padding: 0 0.06em;
+    color: color-mix(in srgb, var(--cap-ink, #1c1410) 42%, var(--cap-canvas, #ffffff));
+  }
+  /* current word — THE tomato-red panel (box-shadow spread = a hard square block
+     w/o layout shift; no blur), paper-white reading on top carrying the stacked
+     text-shadow — bold poster's surface-inversion + only-shadow signatures */
+  .caption-word.is-active {
+    color: var(--cap-canvas, #ffffff);
+    background: var(--cap-accent, #d8000f);
+    box-shadow: 0 0 0 0.06em var(--cap-accent, #d8000f);
+    text-shadow:
+      0.03em 0.03em 0 rgba(28, 20, 16, 0.25),
+      0.06em 0.06em 0 rgba(28, 20, 16, 0.2),
+      0.09em 0.09em 0 rgba(28, 20, 16, 0.15);
+  }
+  /* already spoken — solid brown-black ink, panel cleared */
+  .caption-word.is-spoken {
+    color: var(--cap-ink, #1c1410);
+    background: transparent;
+    box-shadow: none;
+    text-shadow: none;
+  }
+
+  /* optional per-word accents (dormant until a word-classer tags them) */
+  /* brand / key term — Shrikhand display, bold poster's display face inflection */
+  .caption-word.cap-brand {
+    font-family: "Work Sans", Georgia, serif;
+  }
+  /* numerals / data — the mono chrome voice, slightly recessed */
+  .caption-word.cap-num {
+    font-family: "Work Sans", ui-monospace, monospace;
+    color: color-mix(in srgb, var(--cap-ink, #1c1410) 72%, var(--cap-canvas, #ffffff));
+  }
+  /* emphasis — a tomato-red em-dash-weight underline (the lone accent) */
+  .caption-word.cap-cta {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--cap-accent-2, #f5f2ef);
+    text-underline-offset: 0.1em;
+  }
+
+  @media (max-aspect-ratio: 9/16) {
+    .caption-pill {
+      max-width: 92%;
+    }
+    .caption-line {
+      font-size: clamp(34px, 5.4vw, 48px);
+    }
+  }
+
+  /* Massive Movie Map override (Late Show): the injected tokens map ink and canvas to the same
+     near-black, so the caption colours are fixed here. Dark translucent card, cream words,
+     amber current word with dark text, Work Sans for reading speed. */
+  .caption-pill { background: rgba(11, 8, 7, 0.84); border: 1px solid rgba(255, 181, 71, 0.45); border-left: 4px solid #FFB547; }
+  .caption-line { font-family: "Work Sans", system-ui, sans-serif; font-weight: 600; font-size: 46px; letter-spacing: 0; }
+  .caption-word { color: rgba(243, 230, 208, 0.55); }
+  .caption-word.is-active { color: #1A0F06; background: #FFB547; box-shadow: 0 0 0 0.08em #FFB547; text-shadow: none; }
+  .caption-word.is-spoken { color: #F3E6D0; }
+
+  /* Calm subtitles: every word cream, no highlight; up to two lines per phrase. */
+  .caption-pill { max-width: 88%; padding: 16px 34px 18px; }
+  .caption-line { font-size: 40px; line-height: 1.22; gap: 0 0.28em; }
+  .caption-word, .caption-word.is-active, .caption-word.is-spoken { color: #F3E6D0; background: none; box-shadow: none; text-shadow: none; }
+</style>
+
+<div
+  id="captions-root"
+  data-composition-id="captions"
+  data-timeline-locked
+  data-start="0"
+  data-duration="51.278"
+  data-fps="30"
+  data-width="1080"
+  data-height="1080"
+>
+  <div class="caption-layer" aria-hidden="true">
+    <div id="caption-stage" class="caption-stage"></div>
+  </div>
+</div>
+
+<script>
+  // captions.mjs injects the engine's scene-aware groups + real duration here.
+  var GROUPS = [{"id": "caption-group-0", "frame": 1, "start": 0.0, "end": 3.39, "text": "Some filmmakers never make the same movie twice.", "words": [{"id": "caption-word-0-0", "text": "Some", "start": 0, "end": 0.84}, {"id": "caption-word-0-1", "text": "filmmakers", "start": 0.84, "end": 1.3}, {"id": "caption-word-0-2", "text": "never", "start": 1.3, "end": 1.84}, {"id": "caption-word-0-3", "text": "make", "start": 1.84, "end": 2.1}, {"id": "caption-word-0-4", "text": "the", "start": 2.1, "end": 2.22}, {"id": "caption-word-0-5", "text": "same", "start": 2.22, "end": 2.44}, {"id": "caption-word-0-6", "text": "movie", "start": 2.44, "end": 2.78}, {"id": "caption-word-0-7", "text": "twice.", "start": 2.78, "end": 3.14}]}, {"id": "caption-group-1", "frame": 1, "start": 3.39, "end": 5.74, "text": "Others make it again and again.", "words": [{"id": "caption-word-1-0", "text": "Others", "start": 3.44, "end": 3.96}, {"id": "caption-word-1-1", "text": "make", "start": 3.96, "end": 4.22}, {"id": "caption-word-1-2", "text": "it", "start": 4.22, "end": 4.38}, {"id": "caption-word-1-3", "text": "again", "start": 4.38, "end": 4.64}, {"id": "caption-word-1-4", "text": "and", "start": 4.64, "end": 4.88}, {"id": "caption-word-1-5", "text": "again.", "start": 4.88, "end": 5.14}]}, {"id": "caption-group-2", "frame": 2, "start": 5.757, "end": 9.477, "text": "Fold thirty-six thousand plots onto their two biggest differences:", "words": [{"id": "caption-word-2-0", "text": "Fold", "start": 5.807, "end": 6.247}, {"id": "caption-word-2-1", "text": "thirty-six", "start": 6.247, "end": 6.847}, {"id": "caption-word-2-2", "text": "thousand", "start": 6.847, "end": 7.227}, {"id": "caption-word-2-3", "text": "plots", "start": 7.227, "end": 7.627}, {"id": "caption-word-2-4", "text": "onto", "start": 7.627, "end": 7.807}, {"id": "caption-word-2-5", "text": "their", "start": 7.807, "end": 7.967}, {"id": "caption-word-2-6", "text": "two", "start": 7.967, "end": 8.187}, {"id": "caption-word-2-7", "text": "biggest", "start": 8.187, "end": 8.487}, {"id": "caption-word-2-8", "text": "differences:", "start": 8.487, "end": 8.947}]}, {"id": "caption-group-3", "frame": 2, "start": 9.477, "end": 12.721, "text": "romance to action, and crime to animation.", "words": [{"id": "caption-word-3-0", "text": "romance", "start": 9.527, "end": 10.087}, {"id": "caption-word-3-1", "text": "to", "start": 10.087, "end": 10.247}, {"id": "caption-word-3-2", "text": "action,", "start": 10.247, "end": 10.647}, {"id": "caption-word-3-3", "text": "and", "start": 10.847, "end": 11.127}, {"id": "caption-word-3-4", "text": "crime", "start": 11.127, "end": 11.467}, {"id": "caption-word-3-5", "text": "to", "start": 11.467, "end": 11.687}, {"id": "caption-word-3-6", "text": "animation.", "start": 11.687, "end": 12.147}]}, {"id": "caption-group-4", "frame": 3, "start": 12.721, "end": 15.801, "text": "Ridley Scott's thirty-one films land all over the map.", "words": [{"id": "caption-word-4-0", "text": "Ridley", "start": 12.771, "end": 13.191}, {"id": "caption-word-4-1", "text": "Scott's", "start": 13.191, "end": 13.651}, {"id": "caption-word-4-2", "text": "thirty-one", "start": 13.651, "end": 14.131}, {"id": "caption-word-4-3", "text": "films", "start": 14.131, "end": 14.451}, {"id": "caption-word-4-4", "text": "land", "start": 14.451, "end": 14.751}, {"id": "caption-word-4-5", "text": "all", "start": 14.751, "end": 15.011}, {"id": "caption-word-4-6", "text": "over", "start": 15.011, "end": 15.171}, {"id": "caption-word-4-7", "text": "the", "start": 15.171, "end": 15.271}, {"id": "caption-word-4-8", "text": "map.", "start": 15.271, "end": 15.551}]}, {"id": "caption-group-5", "frame": 3, "start": 15.801, "end": 17.541, "text": "Alien. Gladiator.", "words": [{"id": "caption-word-5-0", "text": "Alien.", "start": 15.851, "end": 16.391}, {"id": "caption-word-5-1", "text": "Gladiator.", "start": 16.771, "end": 17.331}]}, {"id": "caption-group-6", "frame": 3, "start": 17.541, "end": 18.601, "text": "Black Hawk Down.", "words": [{"id": "caption-word-6-0", "text": "Black", "start": 17.591, "end": 17.791}, {"id": "caption-word-6-1", "text": "Hawk", "start": 17.791, "end": 18.091}, {"id": "caption-word-6-2", "text": "Down.", "start": 18.091, "end": 18.391}]}, {"id": "caption-group-7", "frame": 3, "start": 18.601, "end": 19.701, "text": "The Martian.", "words": [{"id": "caption-word-7-0", "text": "The", "start": 18.651, "end": 18.771}, {"id": "caption-word-7-1", "text": "Martian.", "start": 18.771, "end": 19.191}]}, {"id": "caption-group-8", "frame": 3, "start": 19.701, "end": 22.48, "text": "Plot similarity: zero point four eight.", "words": [{"id": "caption-word-8-0", "text": "Plot", "start": 19.751, "end": 19.971}, {"id": "caption-word-8-1", "text": "similarity:", "start": 19.971, "end": 20.471}, {"id": "caption-word-8-2", "text": "zero", "start": 20.471, "end": 21.151}, {"id": "caption-word-8-3", "text": "point", "start": 21.151, "end": 21.491}, {"id": "caption-word-8-4", "text": "four", "start": 21.491, "end": 21.751}, {"id": "caption-word-8-5", "text": "eight.", "start": 21.751, "end": 21.951}]}, {"id": "caption-group-9", "frame": 4, "start": 22.48, "end": 24.68, "text": "Jason Statham's forty-three films?", "words": [{"id": "caption-word-9-0", "text": "Jason", "start": 22.53, "end": 23.03}, {"id": "caption-word-9-1", "text": "Statham's", "start": 23.03, "end": 23.59}, {"id": "caption-word-9-2", "text": "forty-three", "start": 23.59, "end": 24.15}, {"id": "caption-word-9-3", "text": "films?", "start": 24.15, "end": 24.57}]}, {"id": "caption-group-10", "frame": 4, "start": 24.68, "end": 26.82, "text": "Most of them crowd one corner.", "words": [{"id": "caption-word-10-0", "text": "Most", "start": 24.73, "end": 25.17}, {"id": "caption-word-10-1", "text": "of", "start": 25.17, "end": 25.27}, {"id": "caption-word-10-2", "text": "them", "start": 25.27, "end": 25.41}, {"id": "caption-word-10-3", "text": "crowd", "start": 25.41, "end": 25.71}, {"id": "caption-word-10-4", "text": "one", "start": 25.71, "end": 25.97}, {"id": "caption-word-10-5", "text": "corner.", "start": 25.97, "end": 26.37}]}, {"id": "caption-group-11", "frame": 4, "start": 26.82, "end": 28.2, "text": "Crank. The Transporter.", "words": [{"id": "caption-word-11-0", "text": "Crank.", "start": 26.87, "end": 27.15}, {"id": "caption-word-11-1", "text": "The", "start": 27.29, "end": 27.49}, {"id": "caption-word-11-2", "text": "Transporter.", "start": 27.49, "end": 28.07}]}, {"id": "caption-group-12", "frame": 4, "start": 28.2, "end": 29.26, "text": "The Expendables.", "words": [{"id": "caption-word-12-0", "text": "The", "start": 28.25, "end": 28.39}, {"id": "caption-word-12-1", "text": "Expendables.", "start": 28.39, "end": 29.01}]}, {"id": "caption-group-13", "frame": 4, "start": 29.26, "end": 32.473, "text": "Plot similarity: zero point six nine.", "words": [{"id": "caption-word-13-0", "text": "Plot", "start": 29.31, "end": 29.87}, {"id": "caption-word-13-1", "text": "similarity:", "start": 29.87, "end": 30.37}, {"id": "caption-word-13-2", "text": "zero", "start": 30.37, "end": 31.03}, {"id": "caption-word-13-3", "text": "point", "start": 31.03, "end": 31.39}, {"id": "caption-word-13-4", "text": "six", "start": 31.39, "end": 31.67}, {"id": "caption-word-13-5", "text": "nine.", "start": 31.67, "end": 31.93}]}, {"id": "caption-group-14", "frame": 5, "start": 32.473, "end": 36.353, "text": "Among the biggest stars, Benedict Cumberbatch has the widest range.", "words": [{"id": "caption-word-14-0", "text": "Among", "start": 32.523, "end": 32.843}, {"id": "caption-word-14-1", "text": "the", "start": 32.843, "end": 33.003}, {"id": "caption-word-14-2", "text": "biggest", "start": 33.003, "end": 33.203}, {"id": "caption-word-14-3", "text": "stars,", "start": 33.203, "end": 33.643}, {"id": "caption-word-14-4", "text": "Benedict", "start": 34.023, "end": 34.183}, {"id": "caption-word-14-5", "text": "Cumberbatch", "start": 34.183, "end": 34.883}, {"id": "caption-word-14-6", "text": "has", "start": 34.883, "end": 35.063}, {"id": "caption-word-14-7", "text": "the", "start": 35.063, "end": 35.203}, {"id": "caption-word-14-8", "text": "widest", "start": 35.203, "end": 35.643}, {"id": "caption-word-14-9", "text": "range.", "start": 35.643, "end": 36.043}]}, {"id": "caption-group-15", "frame": 5, "start": 36.353, "end": 38.776, "text": "Jason Statham, the narrowest.", "words": [{"id": "caption-word-15-0", "text": "Jason", "start": 36.403, "end": 36.923}, {"id": "caption-word-15-1", "text": "Statham,", "start": 36.923, "end": 37.623}, {"id": "caption-word-15-2", "text": "the", "start": 37.623, "end": 37.783}, {"id": "caption-word-15-3", "text": "narrowest.", "start": 37.783, "end": 38.363}]}, {"id": "caption-group-16", "frame": 6, "start": 38.776, "end": 42.836, "text": "Also near the top: Paul Walker, Michelle Rodriguez and Vin Diesel.", "words": [{"id": "caption-word-16-0", "text": "Also", "start": 38.826, "end": 39.266}, {"id": "caption-word-16-1", "text": "near", "start": 39.266, "end": 39.486}, {"id": "caption-word-16-2", "text": "the", "start": 39.486, "end": 39.626}, {"id": "caption-word-16-3", "text": "top:", "start": 39.626, "end": 39.966}, {"id": "caption-word-16-4", "text": "Paul", "start": 40.106, "end": 40.466}, {"id": "caption-word-16-5", "text": "Walker,", "start": 40.466, "end": 40.806}, {"id": "caption-word-16-6", "text": "Michelle", "start": 41.046, "end": 41.326}, {"id": "caption-word-16-7", "text": "Rodriguez", "start": 41.326, "end": 41.766}, {"id": "caption-word-16-8", "text": "and", "start": 41.766, "end": 42.046}, {"id": "caption-word-16-9", "text": "Vin", "start": 42.046, "end": 42.206}, {"id": "caption-word-16-10", "text": "Diesel.", "start": 42.206, "end": 42.566}]}, {"id": "caption-group-17", "frame": 6, "start": 42.836, "end": 45.74, "text": "One franchise can typecast a whole cast.", "words": [{"id": "caption-word-17-0", "text": "One", "start": 42.886, "end": 43.346}, {"id": "caption-word-17-1", "text": "franchise", "start": 43.346, "end": 43.766}, {"id": "caption-word-17-2", "text": "can", "start": 43.766, "end": 44.066}, {"id": "caption-word-17-3", "text": "typecast", "start": 44.066, "end": 44.566}, {"id": "caption-word-17-4", "text": "a", "start": 44.566, "end": 44.706}, {"id": "caption-word-17-5", "text": "whole", "start": 44.706, "end": 44.866}, {"id": "caption-word-17-6", "text": "cast.", "start": 44.866, "end": 45.266}]}, {"id": "caption-group-18", "frame": 7, "start": 45.74, "end": 47.4, "text": "Look up your favorite director.", "words": [{"id": "caption-word-18-0", "text": "Look", "start": 45.79, "end": 46.17}, {"id": "caption-word-18-1", "text": "up", "start": 46.17, "end": 46.27}, {"id": "caption-word-18-2", "text": "your", "start": 46.27, "end": 46.41}, {"id": "caption-word-18-3", "text": "favorite", "start": 46.41, "end": 46.69}, {"id": "caption-word-18-4", "text": "director.", "start": 46.69, "end": 47.19}]}, {"id": "caption-group-19", "frame": 7, "start": 47.4, "end": 49.09, "text": "Massive Movie Map.", "words": [{"id": "caption-word-19-0", "text": "Massive", "start": 47.45, "end": 47.97}, {"id": "caption-word-19-1", "text": "Movie", "start": 47.97, "end": 48.21}, {"id": "caption-word-19-2", "text": "Map.", "start": 48.21, "end": 48.49}]}];
+  var DURATION = 51.278;
+
+  (function () {
+    var stage = document.getElementById("caption-stage");
+
+    // build DOM: one .caption-group per group, .caption-word per word
+    GROUPS.forEach(function (group, g) {
+      var groupEl = document.createElement("div");
+      groupEl.className = "caption-group";
+      groupEl.id = "caption-group-" + g;
+      var pill = document.createElement("div");
+      pill.className = "caption-pill";
+      var line = document.createElement("div");
+      line.className = "caption-line";
+      (group.words || []).forEach(function (w, i) {
+        var span = document.createElement("span");
+        span.className = "caption-word";
+        span.id = "caption-word-" + g + "-" + i;
+        span.textContent = String(w.text);
+        line.appendChild(span);
+      });
+      pill.appendChild(line);
+      groupEl.appendChild(pill);
+      stage.appendChild(groupEl);
+    });
+
+    window.__timelines = window.__timelines || {};
+    var tl = gsap.timeline({ paused: true });
+
+    GROUPS.forEach(function (group, g) {
+      var groupEl = document.getElementById("caption-group-" + g);
+      var words = group.words || [];
+      var next = GROUPS[g + 1];
+      var isLast = g === GROUPS.length - 1;
+      var start = Math.max(0, Number(group.start));
+      var end = Number(group.end);
+      if (end <= start) end = start + 0.01;
+
+      // whole phrase fades in and out as one block; no per-word states
+      tl.fromTo(groupEl, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, start);
+      tl.to(groupEl, { opacity: 0, duration: 0.12, ease: "power1.in" }, Math.max(start + 0.12, end - 0.12));
+      tl.set(groupEl, { opacity: 0, visibility: "hidden" }, end);
+      tl.set(groupEl, { visibility: "visible" }, start);
+    });
+
+    // full-span anchor so the sub-comp timeline spans the whole video
+    tl.to({}, { duration: DURATION }, 0);
+    window.__timelines["captions"] = tl;
+  })();
+</script>
+
+<style>
+  .caption-line { line-height: 1.1 !important; }
+</style>
+</template>

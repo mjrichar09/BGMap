@@ -1,0 +1,1402 @@
+{
+  "total_duration_s": 55.32,
+  "width": 1080,
+  "height": 1080,
+  "groups": [
+    {
+      "id": "caption-group-0",
+      "frame": 1,
+      "start": 0,
+      "end": 1.56,
+      "text": "Color the movie map",
+      "words": [
+        {
+          "id": "caption-word-0-0",
+          "text": "Color",
+          "start": 0,
+          "end": 0.84
+        },
+        {
+          "id": "caption-word-0-1",
+          "text": "the",
+          "start": 0.84,
+          "end": 1
+        },
+        {
+          "id": "caption-word-0-2",
+          "text": "movie",
+          "start": 1,
+          "end": 1.26
+        },
+        {
+          "id": "caption-word-0-3",
+          "text": "map",
+          "start": 1.26,
+          "end": 1.56
+        }
+      ]
+    },
+    {
+      "id": "caption-group-1",
+      "frame": 1,
+      "start": 1.56,
+      "end": 2.66,
+      "text": "by originality:",
+      "words": [
+        {
+          "id": "caption-word-1-0",
+          "text": "by",
+          "start": 1.56,
+          "end": 1.78
+        },
+        {
+          "id": "caption-word-1-1",
+          "text": "originality:",
+          "start": 1.78,
+          "end": 2.54
+        }
+      ]
+    },
+    {
+      "id": "caption-group-2",
+      "frame": 1,
+      "start": 2.92,
+      "end": 3.56,
+      "text": "how unlike",
+      "words": [
+        {
+          "id": "caption-word-2-0",
+          "text": "how",
+          "start": 2.92,
+          "end": 3.2
+        },
+        {
+          "id": "caption-word-2-1",
+          "text": "unlike",
+          "start": 3.2,
+          "end": 3.56
+        }
+      ]
+    },
+    {
+      "id": "caption-group-3",
+      "frame": 1,
+      "start": 3.56,
+      "end": 4.14,
+      "text": "its closest",
+      "words": [
+        {
+          "id": "caption-word-3-0",
+          "text": "its",
+          "start": 3.56,
+          "end": 3.78
+        },
+        {
+          "id": "caption-word-3-1",
+          "text": "closest",
+          "start": 3.78,
+          "end": 4.14
+        }
+      ]
+    },
+    {
+      "id": "caption-group-4",
+      "frame": 1,
+      "start": 4.14,
+      "end": 5.24,
+      "text": "neighbors each plot",
+      "words": [
+        {
+          "id": "caption-word-4-0",
+          "text": "neighbors",
+          "start": 4.14,
+          "end": 4.56
+        },
+        {
+          "id": "caption-word-4-1",
+          "text": "each",
+          "start": 4.56,
+          "end": 4.94
+        },
+        {
+          "id": "caption-word-4-2",
+          "text": "plot",
+          "start": 4.94,
+          "end": 5.24
+        }
+      ]
+    },
+    {
+      "id": "caption-group-5",
+      "frame": 1,
+      "start": 5.24,
+      "end": 5.64,
+      "text": "is.",
+      "words": [
+        {
+          "id": "caption-word-5-0",
+          "text": "is.",
+          "start": 5.24,
+          "end": 5.52
+        }
+      ]
+    },
+    {
+      "id": "caption-group-6",
+      "frame": 2,
+      "start": 6.085,
+      "end": 7.525,
+      "text": "Audiences rate original",
+      "words": [
+        {
+          "id": "caption-word-6-0",
+          "text": "Audiences",
+          "start": 6.085,
+          "end": 6.725
+        },
+        {
+          "id": "caption-word-6-1",
+          "text": "rate",
+          "start": 6.725,
+          "end": 7.065
+        },
+        {
+          "id": "caption-word-6-2",
+          "text": "original",
+          "start": 7.065,
+          "end": 7.525
+        }
+      ]
+    },
+    {
+      "id": "caption-group-7",
+      "frame": 2,
+      "start": 7.525,
+      "end": 8.465,
+      "text": "movies higher.",
+      "words": [
+        {
+          "id": "caption-word-7-0",
+          "text": "movies",
+          "start": 7.525,
+          "end": 8.045
+        },
+        {
+          "id": "caption-word-7-1",
+          "text": "higher.",
+          "start": 8.045,
+          "end": 8.345
+        }
+      ]
+    },
+    {
+      "id": "caption-group-8",
+      "frame": 2,
+      "start": 8.605,
+      "end": 9.165,
+      "text": "From the",
+      "words": [
+        {
+          "id": "caption-word-8-0",
+          "text": "From",
+          "start": 8.605,
+          "end": 9.065
+        },
+        {
+          "id": "caption-word-8-1",
+          "text": "the",
+          "start": 9.065,
+          "end": 9.165
+        }
+      ]
+    },
+    {
+      "id": "caption-group-9",
+      "frame": 2,
+      "start": 9.165,
+      "end": 9.765,
+      "text": "most crowded",
+      "words": [
+        {
+          "id": "caption-word-9-0",
+          "text": "most",
+          "start": 9.165,
+          "end": 9.345
+        },
+        {
+          "id": "caption-word-9-1",
+          "text": "crowded",
+          "start": 9.345,
+          "end": 9.765
+        }
+      ]
+    },
+    {
+      "id": "caption-group-10",
+      "frame": 2,
+      "start": 9.765,
+      "end": 10.365,
+      "text": "fifth to",
+      "words": [
+        {
+          "id": "caption-word-10-0",
+          "text": "fifth",
+          "start": 9.765,
+          "end": 10.125
+        },
+        {
+          "id": "caption-word-10-1",
+          "text": "to",
+          "start": 10.125,
+          "end": 10.365
+        }
+      ]
+    },
+    {
+      "id": "caption-group-11",
+      "frame": 2,
+      "start": 10.365,
+      "end": 11.225,
+      "text": "the most original,",
+      "words": [
+        {
+          "id": "caption-word-11-0",
+          "text": "the",
+          "start": 10.365,
+          "end": 10.465
+        },
+        {
+          "id": "caption-word-11-1",
+          "text": "most",
+          "start": 10.465,
+          "end": 10.645
+        },
+        {
+          "id": "caption-word-11-2",
+          "text": "original,",
+          "start": 10.645,
+          "end": 11.105
+        }
+      ]
+    },
+    {
+      "id": "caption-group-12",
+      "frame": 2,
+      "start": 11.425,
+      "end": 12.545,
+      "text": "ratings climb at",
+      "words": [
+        {
+          "id": "caption-word-12-0",
+          "text": "ratings",
+          "start": 11.425,
+          "end": 11.885
+        },
+        {
+          "id": "caption-word-12-1",
+          "text": "climb",
+          "start": 11.885,
+          "end": 12.325
+        },
+        {
+          "id": "caption-word-12-2",
+          "text": "at",
+          "start": 12.325,
+          "end": 12.545
+        }
+      ]
+    },
+    {
+      "id": "caption-group-13",
+      "frame": 2,
+      "start": 12.545,
+      "end": 13.225,
+      "text": "every step.",
+      "words": [
+        {
+          "id": "caption-word-13-0",
+          "text": "every",
+          "start": 12.545,
+          "end": 12.825
+        },
+        {
+          "id": "caption-word-13-1",
+          "text": "step.",
+          "start": 12.825,
+          "end": 13.105
+        }
+      ]
+    },
+    {
+      "id": "caption-group-14",
+      "frame": 3,
+      "start": 13.668,
+      "end": 14.028,
+      "text": "But the",
+      "words": [
+        {
+          "id": "caption-word-14-0",
+          "text": "But",
+          "start": 13.668,
+          "end": 13.908
+        },
+        {
+          "id": "caption-word-14-1",
+          "text": "the",
+          "start": 13.908,
+          "end": 14.028
+        }
+      ]
+    },
+    {
+      "id": "caption-group-15",
+      "frame": 3,
+      "start": 14.028,
+      "end": 14.588,
+      "text": "crowded ones",
+      "words": [
+        {
+          "id": "caption-word-15-0",
+          "text": "crowded",
+          "start": 14.028,
+          "end": 14.328
+        },
+        {
+          "id": "caption-word-15-1",
+          "text": "ones",
+          "start": 14.328,
+          "end": 14.588
+        }
+      ]
+    },
+    {
+      "id": "caption-group-16",
+      "frame": 3,
+      "start": 14.588,
+      "end": 15.168,
+      "text": "earn twice",
+      "words": [
+        {
+          "id": "caption-word-16-0",
+          "text": "earn",
+          "start": 14.588,
+          "end": 14.848
+        },
+        {
+          "id": "caption-word-16-1",
+          "text": "twice",
+          "start": 14.848,
+          "end": 15.168
+        }
+      ]
+    },
+    {
+      "id": "caption-group-17",
+      "frame": 3,
+      "start": 15.168,
+      "end": 15.848,
+      "text": "as much:",
+      "words": [
+        {
+          "id": "caption-word-17-0",
+          "text": "as",
+          "start": 15.168,
+          "end": 15.428
+        },
+        {
+          "id": "caption-word-17-1",
+          "text": "much:",
+          "start": 15.428,
+          "end": 15.728
+        }
+      ]
+    },
+    {
+      "id": "caption-group-18",
+      "frame": 3,
+      "start": 16.068,
+      "end": 16.708,
+      "text": "a median",
+      "words": [
+        {
+          "id": "caption-word-18-0",
+          "text": "a",
+          "start": 16.068,
+          "end": 16.388
+        },
+        {
+          "id": "caption-word-18-1",
+          "text": "median",
+          "start": 16.388,
+          "end": 16.708
+        }
+      ]
+    },
+    {
+      "id": "caption-group-19",
+      "frame": 3,
+      "start": 16.708,
+      "end": 17.408,
+      "text": "box office",
+      "words": [
+        {
+          "id": "caption-word-19-0",
+          "text": "box",
+          "start": 16.708,
+          "end": 17.048
+        },
+        {
+          "id": "caption-word-19-1",
+          "text": "office",
+          "start": 17.048,
+          "end": 17.408
+        }
+      ]
+    },
+    {
+      "id": "caption-group-20",
+      "frame": 3,
+      "start": 17.408,
+      "end": 18.528,
+      "text": "of thirty-three million",
+      "words": [
+        {
+          "id": "caption-word-20-0",
+          "text": "of",
+          "start": 17.408,
+          "end": 17.628
+        },
+        {
+          "id": "caption-word-20-1",
+          "text": "thirty-three",
+          "start": 17.628,
+          "end": 18.208
+        },
+        {
+          "id": "caption-word-20-2",
+          "text": "million",
+          "start": 18.208,
+          "end": 18.528
+        }
+      ]
+    },
+    {
+      "id": "caption-group-21",
+      "frame": 3,
+      "start": 18.528,
+      "end": 19.008,
+      "text": "dollars,",
+      "words": [
+        {
+          "id": "caption-word-21-0",
+          "text": "dollars,",
+          "start": 18.528,
+          "end": 18.888
+        }
+      ]
+    },
+    {
+      "id": "caption-group-22",
+      "frame": 3,
+      "start": 19.248,
+      "end": 20.108,
+      "text": "against sixteen.",
+      "words": [
+        {
+          "id": "caption-word-22-0",
+          "text": "against",
+          "start": 19.248,
+          "end": 19.608
+        },
+        {
+          "id": "caption-word-22-1",
+          "text": "sixteen.",
+          "start": 19.608,
+          "end": 19.988
+        }
+      ]
+    },
+    {
+      "id": "caption-group-23",
+      "frame": 4,
+      "start": 20.589,
+      "end": 20.929,
+      "text": "And the",
+      "words": [
+        {
+          "id": "caption-word-23-0",
+          "text": "And",
+          "start": 20.589,
+          "end": 20.849
+        },
+        {
+          "id": "caption-word-23-1",
+          "text": "the",
+          "start": 20.849,
+          "end": 20.929
+        }
+      ]
+    },
+    {
+      "id": "caption-group-24",
+      "frame": 4,
+      "start": 20.929,
+      "end": 21.509,
+      "text": "most original",
+      "words": [
+        {
+          "id": "caption-word-24-0",
+          "text": "most",
+          "start": 20.929,
+          "end": 21.109
+        },
+        {
+          "id": "caption-word-24-1",
+          "text": "original",
+          "start": 21.109,
+          "end": 21.509
+        }
+      ]
+    },
+    {
+      "id": "caption-group-25",
+      "frame": 4,
+      "start": 21.509,
+      "end": 21.969,
+      "text": "hits are",
+      "words": [
+        {
+          "id": "caption-word-25-0",
+          "text": "hits",
+          "start": 21.509,
+          "end": 21.829
+        },
+        {
+          "id": "caption-word-25-1",
+          "text": "are",
+          "start": 21.829,
+          "end": 21.969
+        }
+      ]
+    },
+    {
+      "id": "caption-group-26",
+      "frame": 4,
+      "start": 21.969,
+      "end": 22.409,
+      "text": "based on",
+      "words": [
+        {
+          "id": "caption-word-26-0",
+          "text": "based",
+          "start": 21.969,
+          "end": 22.229
+        },
+        {
+          "id": "caption-word-26-1",
+          "text": "on",
+          "start": 22.229,
+          "end": 22.409
+        }
+      ]
+    },
+    {
+      "id": "caption-group-27",
+      "frame": 4,
+      "start": 22.409,
+      "end": 23.249,
+      "text": "true stories:",
+      "words": [
+        {
+          "id": "caption-word-27-0",
+          "text": "true",
+          "start": 22.409,
+          "end": 22.629
+        },
+        {
+          "id": "caption-word-27-1",
+          "text": "stories:",
+          "start": 22.629,
+          "end": 23.129
+        }
+      ]
+    },
+    {
+      "id": "caption-group-28",
+      "frame": 4,
+      "start": 23.409,
+      "end": 24.389,
+      "text": "The King's Speech.",
+      "words": [
+        {
+          "id": "caption-word-28-0",
+          "text": "The",
+          "start": 23.409,
+          "end": 23.669
+        },
+        {
+          "id": "caption-word-28-1",
+          "text": "King's",
+          "start": 23.669,
+          "end": 24.029
+        },
+        {
+          "id": "caption-word-28-2",
+          "text": "Speech.",
+          "start": 24.029,
+          "end": 24.269
+        }
+      ]
+    },
+    {
+      "id": "caption-group-29",
+      "frame": 4,
+      "start": 24.569,
+      "end": 25.709,
+      "text": "The Social Network.",
+      "words": [
+        {
+          "id": "caption-word-29-0",
+          "text": "The",
+          "start": 24.569,
+          "end": 24.889
+        },
+        {
+          "id": "caption-word-29-1",
+          "text": "Social",
+          "start": 24.889,
+          "end": 25.229
+        },
+        {
+          "id": "caption-word-29-2",
+          "text": "Network.",
+          "start": 25.229,
+          "end": 25.589
+        }
+      ]
+    },
+    {
+      "id": "caption-group-30",
+      "frame": 4,
+      "start": 25.849,
+      "end": 26.189,
+      "text": "The Big",
+      "words": [
+        {
+          "id": "caption-word-30-0",
+          "text": "The",
+          "start": 25.849,
+          "end": 26.049
+        },
+        {
+          "id": "caption-word-30-1",
+          "text": "Big",
+          "start": 26.049,
+          "end": 26.189
+        }
+      ]
+    },
+    {
+      "id": "caption-group-31",
+      "frame": 4,
+      "start": 26.189,
+      "end": 26.669,
+      "text": "Short.",
+      "words": [
+        {
+          "id": "caption-word-31-0",
+          "text": "Short.",
+          "start": 26.189,
+          "end": 26.549
+        }
+      ]
+    },
+    {
+      "id": "caption-group-32",
+      "frame": 4,
+      "start": 26.769,
+      "end": 27.669,
+      "text": "Hidden Figures.",
+      "words": [
+        {
+          "id": "caption-word-32-0",
+          "text": "Hidden",
+          "start": 26.769,
+          "end": 27.069
+        },
+        {
+          "id": "caption-word-32-1",
+          "text": "Figures.",
+          "start": 27.069,
+          "end": 27.549
+        }
+      ]
+    },
+    {
+      "id": "caption-group-33",
+      "frame": 5,
+      "start": 28.065,
+      "end": 29.045,
+      "text": "Follow the money,",
+      "words": [
+        {
+          "id": "caption-word-33-0",
+          "text": "Follow",
+          "start": 28.065,
+          "end": 28.505
+        },
+        {
+          "id": "caption-word-33-1",
+          "text": "the",
+          "start": 28.505,
+          "end": 28.665
+        },
+        {
+          "id": "caption-word-33-2",
+          "text": "money,",
+          "start": 28.665,
+          "end": 28.925
+        }
+      ]
+    },
+    {
+      "id": "caption-group-34",
+      "frame": 5,
+      "start": 29.085,
+      "end": 30.425,
+      "text": "and superheroes lead:",
+      "words": [
+        {
+          "id": "caption-word-34-0",
+          "text": "and",
+          "start": 29.085,
+          "end": 29.325
+        },
+        {
+          "id": "caption-word-34-1",
+          "text": "superheroes",
+          "start": 29.325,
+          "end": 29.825
+        },
+        {
+          "id": "caption-word-34-2",
+          "text": "lead:",
+          "start": 29.825,
+          "end": 30.305
+        }
+      ]
+    },
+    {
+      "id": "caption-group-35",
+      "frame": 5,
+      "start": 30.825,
+      "end": 31.285,
+      "text": "a median",
+      "words": [
+        {
+          "id": "caption-word-35-0",
+          "text": "a",
+          "start": 30.825,
+          "end": 30.945
+        },
+        {
+          "id": "caption-word-35-1",
+          "text": "median",
+          "start": 30.945,
+          "end": 31.285
+        }
+      ]
+    },
+    {
+      "id": "caption-group-36",
+      "frame": 5,
+      "start": 31.285,
+      "end": 31.765,
+      "text": "of two",
+      "words": [
+        {
+          "id": "caption-word-36-0",
+          "text": "of",
+          "start": 31.285,
+          "end": 31.565
+        },
+        {
+          "id": "caption-word-36-1",
+          "text": "two",
+          "start": 31.565,
+          "end": 31.765
+        }
+      ]
+    },
+    {
+      "id": "caption-group-37",
+      "frame": 5,
+      "start": 31.765,
+      "end": 32.945,
+      "text": "hundred sixty-eight million",
+      "words": [
+        {
+          "id": "caption-word-37-0",
+          "text": "hundred",
+          "start": 31.765,
+          "end": 31.965
+        },
+        {
+          "id": "caption-word-37-1",
+          "text": "sixty-eight",
+          "start": 31.965,
+          "end": 32.605
+        },
+        {
+          "id": "caption-word-37-2",
+          "text": "million",
+          "start": 32.605,
+          "end": 32.945
+        }
+      ]
+    },
+    {
+      "id": "caption-group-38",
+      "frame": 5,
+      "start": 32.945,
+      "end": 33.825,
+      "text": "dollars a film.",
+      "words": [
+        {
+          "id": "caption-word-38-0",
+          "text": "dollars",
+          "start": 32.945,
+          "end": 33.305
+        },
+        {
+          "id": "caption-word-38-1",
+          "text": "a",
+          "start": 33.305,
+          "end": 33.525
+        },
+        {
+          "id": "caption-word-38-2",
+          "text": "film.",
+          "start": 33.525,
+          "end": 33.705
+        }
+      ]
+    },
+    {
+      "id": "caption-group-39",
+      "frame": 6,
+      "start": 34.218,
+      "end": 34.638,
+      "text": "But per",
+      "words": [
+        {
+          "id": "caption-word-39-0",
+          "text": "But",
+          "start": 34.218,
+          "end": 34.458
+        },
+        {
+          "id": "caption-word-39-1",
+          "text": "per",
+          "start": 34.458,
+          "end": 34.638
+        }
+      ]
+    },
+    {
+      "id": "caption-group-40",
+      "frame": 6,
+      "start": 34.638,
+      "end": 35.338,
+      "text": "dollar spent,",
+      "words": [
+        {
+          "id": "caption-word-40-0",
+          "text": "dollar",
+          "start": 34.638,
+          "end": 34.838
+        },
+        {
+          "id": "caption-word-40-1",
+          "text": "spent,",
+          "start": 34.838,
+          "end": 35.218
+        }
+      ]
+    },
+    {
+      "id": "caption-group-41",
+      "frame": 6,
+      "start": 35.438,
+      "end": 36.658,
+      "text": "James Bond returns",
+      "words": [
+        {
+          "id": "caption-word-41-0",
+          "text": "James",
+          "start": 35.438,
+          "end": 35.778
+        },
+        {
+          "id": "caption-word-41-1",
+          "text": "Bond",
+          "start": 35.778,
+          "end": 36.178
+        },
+        {
+          "id": "caption-word-41-2",
+          "text": "returns",
+          "start": 36.178,
+          "end": 36.658
+        }
+      ]
+    },
+    {
+      "id": "caption-group-42",
+      "frame": 6,
+      "start": 36.658,
+      "end": 37.658,
+      "text": "five point seven",
+      "words": [
+        {
+          "id": "caption-word-42-0",
+          "text": "five",
+          "start": 36.658,
+          "end": 37.078
+        },
+        {
+          "id": "caption-word-42-1",
+          "text": "point",
+          "start": 37.078,
+          "end": 37.358
+        },
+        {
+          "id": "caption-word-42-2",
+          "text": "seven",
+          "start": 37.358,
+          "end": 37.658
+        }
+      ]
+    },
+    {
+      "id": "caption-group-43",
+      "frame": 6,
+      "start": 37.658,
+      "end": 38.738,
+      "text": "times his budget.",
+      "words": [
+        {
+          "id": "caption-word-43-0",
+          "text": "times",
+          "start": 37.658,
+          "end": 38.038
+        },
+        {
+          "id": "caption-word-43-1",
+          "text": "his",
+          "start": 38.038,
+          "end": 38.258
+        },
+        {
+          "id": "caption-word-43-2",
+          "text": "budget.",
+          "start": 38.258,
+          "end": 38.618
+        }
+      ]
+    },
+    {
+      "id": "caption-group-44",
+      "frame": 6,
+      "start": 39.138,
+      "end": 39.898,
+      "text": "Slashers,",
+      "words": [
+        {
+          "id": "caption-word-44-0",
+          "text": "Slashers,",
+          "start": 39.138,
+          "end": 39.798
+        }
+      ]
+    },
+    {
+      "id": "caption-group-45",
+      "frame": 6,
+      "start": 39.898,
+      "end": 40.618,
+      "text": "four times.",
+      "words": [
+        {
+          "id": "caption-word-45-0",
+          "text": "four",
+          "start": 39.898,
+          "end": 40.138
+        },
+        {
+          "id": "caption-word-45-1",
+          "text": "times.",
+          "start": 40.138,
+          "end": 40.498
+        }
+      ]
+    },
+    {
+      "id": "caption-group-46",
+      "frame": 6,
+      "start": 40.878,
+      "end": 42.178,
+      "text": "Political dramas barely",
+      "words": [
+        {
+          "id": "caption-word-46-0",
+          "text": "Political",
+          "start": 40.878,
+          "end": 41.318
+        },
+        {
+          "id": "caption-word-46-1",
+          "text": "dramas",
+          "start": 41.318,
+          "end": 41.798
+        },
+        {
+          "id": "caption-word-46-2",
+          "text": "barely",
+          "start": 41.798,
+          "end": 42.178
+        }
+      ]
+    },
+    {
+      "id": "caption-group-47",
+      "frame": 6,
+      "start": 42.178,
+      "end": 42.918,
+      "text": "break even.",
+      "words": [
+        {
+          "id": "caption-word-47-0",
+          "text": "break",
+          "start": 42.178,
+          "end": 42.478
+        },
+        {
+          "id": "caption-word-47-1",
+          "text": "even.",
+          "start": 42.478,
+          "end": 42.798
+        }
+      ]
+    },
+    {
+      "id": "caption-group-48",
+      "frame": 7,
+      "start": 43.358,
+      "end": 43.798,
+      "text": "And over",
+      "words": [
+        {
+          "id": "caption-word-48-0",
+          "text": "And",
+          "start": 43.358,
+          "end": 43.618
+        },
+        {
+          "id": "caption-word-48-1",
+          "text": "over",
+          "start": 43.618,
+          "end": 43.798
+        }
+      ]
+    },
+    {
+      "id": "caption-group-49",
+      "frame": 7,
+      "start": 43.798,
+      "end": 44.618,
+      "text": "seventy years,",
+      "words": [
+        {
+          "id": "caption-word-49-0",
+          "text": "seventy",
+          "start": 43.798,
+          "end": 44.118
+        },
+        {
+          "id": "caption-word-49-1",
+          "text": "years,",
+          "start": 44.118,
+          "end": 44.498
+        }
+      ]
+    },
+    {
+      "id": "caption-group-50",
+      "frame": 7,
+      "start": 44.838,
+      "end": 45.438,
+      "text": "westerns fell",
+      "words": [
+        {
+          "id": "caption-word-50-0",
+          "text": "westerns",
+          "start": 44.838,
+          "end": 45.258
+        },
+        {
+          "id": "caption-word-50-1",
+          "text": "fell",
+          "start": 45.258,
+          "end": 45.438
+        }
+      ]
+    },
+    {
+      "id": "caption-group-51",
+      "frame": 7,
+      "start": 45.438,
+      "end": 45.878,
+      "text": "from one",
+      "words": [
+        {
+          "id": "caption-word-51-0",
+          "text": "from",
+          "start": 45.438,
+          "end": 45.638
+        },
+        {
+          "id": "caption-word-51-1",
+          "text": "one",
+          "start": 45.638,
+          "end": 45.878
+        }
+      ]
+    },
+    {
+      "id": "caption-group-52",
+      "frame": 7,
+      "start": 45.878,
+      "end": 46.318,
+      "text": "film in",
+      "words": [
+        {
+          "id": "caption-word-52-0",
+          "text": "film",
+          "start": 45.878,
+          "end": 46.138
+        },
+        {
+          "id": "caption-word-52-1",
+          "text": "in",
+          "start": 46.138,
+          "end": 46.318
+        }
+      ]
+    },
+    {
+      "id": "caption-group-53",
+      "frame": 7,
+      "start": 46.318,
+      "end": 46.818,
+      "text": "ten,",
+      "words": [
+        {
+          "id": "caption-word-53-0",
+          "text": "ten,",
+          "start": 46.318,
+          "end": 46.818
+        }
+      ]
+    },
+    {
+      "id": "caption-group-54",
+      "frame": 7,
+      "start": 46.818,
+      "end": 47.458,
+      "text": "to one",
+      "words": [
+        {
+          "id": "caption-word-54-0",
+          "text": "to",
+          "start": 46.818,
+          "end": 47.258
+        },
+        {
+          "id": "caption-word-54-1",
+          "text": "one",
+          "start": 47.258,
+          "end": 47.458
+        }
+      ]
+    },
+    {
+      "id": "caption-group-55",
+      "frame": 7,
+      "start": 47.458,
+      "end": 47.678,
+      "text": "in a",
+      "words": [
+        {
+          "id": "caption-word-55-0",
+          "text": "in",
+          "start": 47.458,
+          "end": 47.578
+        },
+        {
+          "id": "caption-word-55-1",
+          "text": "a",
+          "start": 47.578,
+          "end": 47.678
+        }
+      ]
+    },
+    {
+      "id": "caption-group-56",
+      "frame": 7,
+      "start": 47.678,
+      "end": 48.038,
+      "text": "hundred,",
+      "words": [
+        {
+          "id": "caption-word-56-0",
+          "text": "hundred,",
+          "start": 47.678,
+          "end": 47.918
+        }
+      ]
+    },
+    {
+      "id": "caption-group-57",
+      "frame": 7,
+      "start": 48.278,
+      "end": 48.918,
+      "text": "while thrillers",
+      "words": [
+        {
+          "id": "caption-word-57-0",
+          "text": "while",
+          "start": 48.278,
+          "end": 48.438
+        },
+        {
+          "id": "caption-word-57-1",
+          "text": "thrillers",
+          "start": 48.438,
+          "end": 48.918
+        }
+      ]
+    },
+    {
+      "id": "caption-group-58",
+      "frame": 7,
+      "start": 48.918,
+      "end": 49.718,
+      "text": "more than doubled.",
+      "words": [
+        {
+          "id": "caption-word-58-0",
+          "text": "more",
+          "start": 48.918,
+          "end": 49.118
+        },
+        {
+          "id": "caption-word-58-1",
+          "text": "than",
+          "start": 49.118,
+          "end": 49.278
+        },
+        {
+          "id": "caption-word-58-2",
+          "text": "doubled.",
+          "start": 49.278,
+          "end": 49.598
+        }
+      ]
+    },
+    {
+      "id": "caption-group-59",
+      "frame": 8,
+      "start": 50.173,
+      "end": 50.773,
+      "text": "Color the",
+      "words": [
+        {
+          "id": "caption-word-59-0",
+          "text": "Color",
+          "start": 50.173,
+          "end": 50.613
+        },
+        {
+          "id": "caption-word-59-1",
+          "text": "the",
+          "start": 50.613,
+          "end": 50.773
+        }
+      ]
+    },
+    {
+      "id": "caption-group-60",
+      "frame": 8,
+      "start": 50.773,
+      "end": 51.133,
+      "text": "map your",
+      "words": [
+        {
+          "id": "caption-word-60-0",
+          "text": "map",
+          "start": 50.773,
+          "end": 51.013
+        },
+        {
+          "id": "caption-word-60-1",
+          "text": "your",
+          "start": 51.013,
+          "end": 51.133
+        }
+      ]
+    },
+    {
+      "id": "caption-group-61",
+      "frame": 8,
+      "start": 51.133,
+      "end": 51.473,
+      "text": "way.",
+      "words": [
+        {
+          "id": "caption-word-61-0",
+          "text": "way.",
+          "start": 51.133,
+          "end": 51.353
+        }
+      ]
+    },
+    {
+      "id": "caption-group-62",
+      "frame": 8,
+      "start": 51.573,
+      "end": 52.653,
+      "text": "Massive Movie Map.",
+      "words": [
+        {
+          "id": "caption-word-62-0",
+          "text": "Massive",
+          "start": 51.573,
+          "end": 52.033
+        },
+        {
+          "id": "caption-word-62-1",
+          "text": "Movie",
+          "start": 52.033,
+          "end": 52.273
+        },
+        {
+          "id": "caption-word-62-2",
+          "text": "Map.",
+          "start": 52.273,
+          "end": 52.533
+        }
+      ]
+    }
+  ]
+}

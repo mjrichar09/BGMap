@@ -1,0 +1,538 @@
+<template id="03-boxoffice-template">
+<div id="root" data-composition-id="03-boxoffice" data-start="0" data-duration="7.421" data-width="1080" data-height="1080">
+
+  <!-- Late Show ground: near-black field + soft projector beam (no video on this frame) -->
+  <div id="03-boxoffice-ground" class="clip" data-start="0" data-duration="7.421" data-track-index="1"></div>
+  <div id="03-boxoffice-beam" class="clip" data-start="0" data-duration="7.421" data-track-index="2"></div>
+
+  <!-- Chart stage (same layout as frame 2: chart x 110-970, baseline y 760) -->
+  <div id="03-boxoffice-stage" class="clip" data-start="0" data-duration="7.421" data-track-index="3">
+
+    <div id="03-boxoffice-title">
+      <div id="03-boxoffice-eyebrow">
+        <span id="03-boxoffice-eyebrow-old">AVERAGE TMDB RATING</span>
+        <span id="03-boxoffice-eyebrow-new">MEDIAN BOX OFFICE</span>
+      </div>
+      <div id="03-boxoffice-heading">BY ORIGINALITY</div>
+    </div>
+
+    <div id="03-boxoffice-baseline"></div>
+
+    <div class="03-boxoffice-bar" id="03-boxoffice-bar-0" style="left:140px"></div>
+    <div class="03-boxoffice-bar" id="03-boxoffice-bar-1" style="left:310px"></div>
+    <div class="03-boxoffice-bar" id="03-boxoffice-bar-2" style="left:480px"></div>
+    <div class="03-boxoffice-bar" id="03-boxoffice-bar-3" style="left:650px"></div>
+    <div class="03-boxoffice-bar" id="03-boxoffice-bar-4" style="left:820px"></div>
+
+    <div class="03-boxoffice-val" id="03-boxoffice-val-0" style="left:115px">6.47</div>
+    <div class="03-boxoffice-val" id="03-boxoffice-val-1" style="left:285px">6.52</div>
+    <div class="03-boxoffice-val" id="03-boxoffice-val-2" style="left:455px">6.56</div>
+    <div class="03-boxoffice-val" id="03-boxoffice-val-3" style="left:625px">6.64</div>
+    <div class="03-boxoffice-val" id="03-boxoffice-val-4" style="left:795px">6.72</div>
+
+    <div class="03-boxoffice-cat" style="left:115px">MOST CROWDED</div>
+    <div class="03-boxoffice-cat" style="left:285px">2</div>
+    <div class="03-boxoffice-cat" style="left:455px">3</div>
+    <div class="03-boxoffice-cat" style="left:625px">4</div>
+    <div class="03-boxoffice-cat" style="left:795px">MOST ORIGINAL</div>
+
+    <!-- 2x bracket: level guide from the first bar's top, bracket down to the last bar's top -->
+    <svg id="03-boxoffice-bracket" width="1080" height="1080" viewBox="0 0 1080 1080">
+      <path id="03-boxoffice-guide" d="M262 392 H940" fill="none" stroke="#FFB547" stroke-width="2" stroke-opacity="0.55"/>
+      <path id="03-boxoffice-brace" d="M940 392 H960 V584 H940" fill="none" stroke="#FFB547" stroke-width="3" stroke-linejoin="miter"/>
+    </svg>
+    <div id="03-boxoffice-ratio">2&#215;</div>
+
+    <div id="03-boxoffice-source">median TMDB box office for films with 200+ votes; not adjusted for inflation</div>
+  </div>
+
+<style>
+@font-face{
+  font-family: 'Abril Fatface';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-zOL64pLDlL1D99S8g8PtiKchq-lmjcDidBeT5g.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Abril Fatface';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-zOL64pLDlL1D99S8g8PtiKchq-dmjcDidBc.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-u-450q2lgwslOqpF_6gQ8kELaw9pWs39pvnRPA.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-u-450q2lgwslOqpF_6gQ8kELawFpWs39pvk.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-u-4k0q2lgwslOqpF_6gQ8kELY7pMT-7fq9PrNX2-Ag.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-u-4k0q2lgwslOqpF_6gQ8kELY7pMT-Dfq9PrNX0.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Limelight';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-XLYkIZL7aopJVbZJHDuoNOlHjHUmTUFt.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Limelight';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-XLYkIZL7aopJVbZJHDuoOulHjHUmTQ.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlbHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlSHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlZHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlYHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlbHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlSHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlZHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlYHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlbHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlSHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlZHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlYHYjMdZwlou4.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_c6DptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_cqDptfpA4cD3.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ids/classes start with a digit (frame-id prefix), so they are targeted with attribute selectors */
+#root {
+  position: relative;
+  width: 1080px;
+  height: 1080px;
+  overflow: hidden;
+  container-type: size;
+}
+[id="03-boxoffice-ground"], [id="03-boxoffice-beam"], [id="03-boxoffice-stage"] {
+  position: absolute;
+  left: 0; top: 0;
+  width: 1080px;
+  height: 1080px;
+}
+[id="03-boxoffice-ground"] { background: #0B0807; }
+[id="03-boxoffice-beam"] {
+  pointer-events: none;
+  background: radial-gradient(ellipse 60% 95% at 50% -12%, rgba(255,196,120,0.14), rgba(255,196,120,0) 70%);
+}
+[id="03-boxoffice-stage"] { transform-origin: 540px 560px; }
+
+[id="03-boxoffice-title"] { position: absolute; left: 110px; top: 80px; }
+[id="03-boxoffice-eyebrow"] {
+  position: relative;
+  height: 30px;
+  width: 860px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 30px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #FFB547;
+  white-space: nowrap;
+}
+[id="03-boxoffice-eyebrow-old"], [id="03-boxoffice-eyebrow-new"] {
+  position: absolute; left: 0; top: 0; display: block;
+}
+[id="03-boxoffice-heading"] {
+  margin-top: 16px;
+  font-family: 'Limelight', serif;
+  font-size: 64px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #F3E6D0;
+  white-space: nowrap;
+}
+
+[id="03-boxoffice-baseline"] {
+  position: absolute;
+  left: 110px; top: 759px;
+  width: 860px; height: 2px;
+  background: #B39C80;
+  opacity: 0.6;
+}
+[class~="03-boxoffice-bar"] {
+  position: absolute;
+  top: 320px;
+  width: 120px;
+  height: 440px;
+  background-color: #FFB547;
+  transform-origin: 50% 100%;
+}
+[class~="03-boxoffice-val"] {
+  position: absolute;
+  top: 720px;
+  width: 170px;
+  height: 40px;
+  text-align: center;
+  font-family: 'Courier Prime', monospace;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 40px;
+  color: #FFB547;
+  white-space: nowrap;
+  transform-origin: 50% 100%;
+}
+[class~="03-boxoffice-cat"] {
+  position: absolute;
+  top: 776px;
+  width: 170px;
+  text-align: center;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #B39C80;
+  white-space: nowrap;
+}
+[id="03-boxoffice-bracket"] { position: absolute; left: 0; top: 0; overflow: visible; }
+[id="03-boxoffice-ratio"] {
+  position: absolute;
+  left: 972px; top: 466px;
+  height: 44px;
+  font-family: 'Courier Prime', monospace;
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 44px;
+  color: #FFB547;
+  white-space: nowrap;
+  transform-origin: 0% 50%;
+}
+[id="03-boxoffice-source"] {
+  position: absolute;
+  left: 110px; top: 838px;
+  width: 860px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.3;
+  color: #B39C80;
+  white-space: nowrap;
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  window.__timelines = window.__timelines || {};
+  var root = document.querySelector('[data-composition-id="03-boxoffice"]');
+  var q = function (id) { return root.querySelector('[id="' + id + '"]'); };
+  var DUR = 6.921;
+  var tl = gsap.timeline({ paused: true });
+
+  // data (assets/data/stats.json, fifths) — inlined for a network-free render
+  var RATING = [6.47, 6.52, 6.56, 6.64, 6.72];
+  var BOX = [33.5, 21.3, 18.6, 17.9, 16.0];
+  // frame-2 rating heights (axis 6.30-6.80, 440px) and box office heights (axis $0-40M, 440px)
+  var H0 = [150, 194, 229, 299, 370];
+  var H1 = BOX.map(function (v) { return Math.round(v / 40 * 440); }); // 368,234,205,197,176
+
+  var bars = [], vals = [];
+  for (var i = 0; i < 5; i++) { bars.push(q('03-boxoffice-bar-' + i)); vals.push(q('03-boxoffice-val-' + i)); }
+
+  // ---- Start state = frame 2's end state (rating bars, all amber)
+  bars.forEach(function (b, i) { gsap.set(b, { scaleY: H0[i] / 440, backgroundColor: '#FFB547', opacity: 1 }); });
+  vals.forEach(function (v, i) { gsap.set(v, { y: -(H0[i] + 16), scale: 1, color: '#FFB547' }); });
+
+  // ---- But@0.00: eyebrow swaps in place (text-to-text cut)
+  tl.fromTo(q('03-boxoffice-eyebrow-old'), { opacity: 1, y: 0, filter: 'blur(0px)' },
+    { opacity: 0, y: -12, filter: 'blur(4px)', duration: 0.22, ease: 'power3.in' }, 0);
+  tl.fromTo(q('03-boxoffice-eyebrow-new'), { opacity: 0, y: 12, filter: 'blur(4px)' },
+    { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.36, ease: 'power3.out' }, 0.14);
+
+  // ---- earn@0.92: bars re-scale to box office together; recolor; labels count up
+  var T_MORPH = 0.92, D_MORPH = 0.9, EASE = 'power3.inOut';
+  bars.forEach(function (b, i) {
+    tl.fromTo(b, { scaleY: H0[i] / 440 }, { scaleY: H1[i] / 440, duration: D_MORPH, ease: EASE }, T_MORPH);
+    if (i === 0) {
+      tl.fromTo(b, { backgroundColor: '#FFB547', opacity: 1 }, { backgroundColor: '#FFB547', opacity: 1, duration: D_MORPH, ease: EASE }, T_MORPH);
+    } else {
+      tl.fromTo(b, { backgroundColor: '#FFB547', opacity: 1 }, { backgroundColor: '#B39C80', opacity: 0.7, duration: D_MORPH, ease: EASE }, T_MORPH);
+    }
+  });
+  vals.forEach(function (v, i) {
+    tl.fromTo(v, { y: -(H0[i] + 16) }, { y: -(H1[i] + 16), duration: D_MORPH, ease: EASE }, T_MORPH);
+    if (i > 0) tl.fromTo(v, { color: '#FFB547', opacity: 1 }, { color: '#B39C80', opacity: 0.85, duration: D_MORPH, ease: EASE }, T_MORPH);
+  });
+
+  // count-up text driven from the timeline's own playhead (seek-safe, deterministic)
+  var countEase = gsap.parseEase(EASE);
+  function renderValues() {
+    var t = tl.time();
+    var p = (t - T_MORPH) / D_MORPH;
+    for (var i = 0; i < 5; i++) {
+      var txt;
+      if (p <= 0) txt = RATING[i].toFixed(2);
+      else txt = '$' + (BOX[i] * countEase(Math.min(1, p))).toFixed(1) + 'M';
+      if (vals[i].textContent !== txt) vals[i].textContent = txt;
+    }
+  }
+  tl.eventCallback('onUpdate', renderValues);
+
+  // ---- twice@1.18: bracket draws from the first bar's top across to the last bar's top
+  var guide = q('03-boxoffice-guide'), brace = q('03-boxoffice-brace');
+  var LG = 678, LB = 232;
+  gsap.set(guide, { attr: { 'stroke-dasharray': LG } });
+  gsap.set(brace, { attr: { 'stroke-dasharray': LB } });
+  tl.fromTo(guide, { attr: { 'stroke-dashoffset': LG } }, { attr: { 'stroke-dashoffset': 0 }, duration: 0.6, ease: 'power3.inOut' }, 1.18);
+  tl.fromTo(brace, { attr: { 'stroke-dashoffset': LB } }, { attr: { 'stroke-dashoffset': 0 }, duration: 0.45, ease: 'power3.out' }, 1.72);
+  tl.fromTo(q('03-boxoffice-ratio'), { opacity: 0, x: -10, scale: 0.9 }, { opacity: 1, x: 0, scale: 1, duration: 0.45, ease: 'power3.out' }, 1.95);
+
+  // ---- source line, once the chart has settled
+  tl.fromTo(q('03-boxoffice-source'), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 2.4);
+
+  // ---- thirty-three@3.96: first value pulses brighter
+  tl.fromTo(vals[0], { scale: 1, color: '#FFB547', textShadow: '0 0 0px rgba(255,181,71,0)' },
+    { scale: 1.14, color: '#FFE2AE', textShadow: '0 0 22px rgba(255,181,71,0.6)', duration: 0.25, ease: 'power3.out', immediateRender: false }, 3.96);
+  tl.to(vals[0], { scale: 1, color: '#FFB547', textShadow: '0 0 10px rgba(255,181,71,0.3)', duration: 0.6, ease: 'power3.inOut' }, 4.21);
+
+  // ---- sixteen.@5.94: last value pulses brighter and stays lifted
+  tl.fromTo(vals[4], { scale: 1, color: '#B39C80', opacity: 0.85, textShadow: '0 0 0px rgba(243,230,208,0)' },
+    { scale: 1.14, color: '#F3E6D0', opacity: 1, textShadow: '0 0 20px rgba(243,230,208,0.45)', duration: 0.25, ease: 'power3.out', immediateRender: false }, 5.94);
+  tl.to(vals[4], { scale: 1, textShadow: '0 0 8px rgba(243,230,208,0.2)', duration: 0.6, ease: 'power3.inOut' }, 6.19);
+
+  // ---- slow camera push under the whole shot (starts at 1.0 so the cut from frame 2 is seamless)
+  tl.fromTo(q('03-boxoffice-stage'), { scale: 1 }, { scale: 1.025, duration: DUR, ease: 'none' }, 0);
+
+  tl.to({}, { duration: DUR }, 0);
+  renderValues();
+  window.__timelines['03-boxoffice'] = tl;
+})();
+</script>
+</div>
+</template>

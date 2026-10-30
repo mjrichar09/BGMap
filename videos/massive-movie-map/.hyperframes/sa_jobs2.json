@@ -1,0 +1,20 @@
+[
+ {
+  "out": "assets/bgm/sections/C_11.wav",
+  "seconds": 47,
+  "seed": 11,
+  "prompt": "Cinematic ambient score in G minor, 117 BPM, warm analog synth pads, soft felt piano melody, gentle low strings, sense of wonder and discovery, late-night movie theater, continuous and sustained throughout, steady energy, no fade out, no ending, high quality, stereo"
+ },
+ {
+  "out": "assets/bgm/sections/C_31.wav",
+  "seconds": 47,
+  "seed": 31,
+  "prompt": "Cinematic ambient score in G minor, 117 BPM, warm analog synth pads, soft felt piano melody, gentle low strings, sense of wonder and discovery, late-night movie theater, continuous and sustained throughout, steady energy, no fade out, no ending, high quality, stereo"
+ },
+ {
+  "out": "assets/bgm/sections/C_47.wav",
+  "seconds": 47,
+  "seed": 47,
+  "prompt": "Cinematic ambient score in G minor, 117 BPM, warm analog synth pads, soft felt piano melody, gentle low strings, sense of wonder and discovery, late-night movie theater, continuous and sustained throughout, steady energy, no fade out, no ending, high quality, stereo"
+ }
+]

@@ -1,0 +1,255 @@
+{
+ "originality_rule": "1 - mean plot similarity to a film's 15 nearest neighbours; films with 200+ TMDB votes, split into fifths",
+ "fifths": [
+  {
+   "fifth": 1,
+   "rating": 6.47,
+   "median_box_office_m": 33.5,
+   "films": 3017
+  },
+  {
+   "fifth": 2,
+   "rating": 6.52,
+   "median_box_office_m": 21.3,
+   "films": 3017
+  },
+  {
+   "fifth": 3,
+   "rating": 6.56,
+   "median_box_office_m": 18.6,
+   "films": 3016
+  },
+  {
+   "fifth": 4,
+   "rating": 6.64,
+   "median_box_office_m": 17.9,
+   "films": 3017
+  },
+  {
+   "fifth": 5,
+   "rating": 6.72,
+   "median_box_office_m": 16.0,
+   "films": 3017
+  }
+ ],
+ "most_original_popular": [
+  {
+   "name": "The King's Speech",
+   "year": 2010
+  },
+  {
+   "name": "The Founder",
+   "year": 2016
+  },
+  {
+   "name": "The Big Short",
+   "year": 2015
+  },
+  {
+   "name": "Hidden Figures",
+   "year": 2016
+  },
+  {
+   "name": "The Social Network",
+   "year": 2010
+  },
+  {
+   "name": "The Secret Life of Walter Mitty",
+   "year": 2013
+  }
+ ],
+ "superheroes_median_box_office_m": 268,
+ "roi_rule": "median of box office / budget per fine cluster, clusters with 25+ films with known budget and box office",
+ "roi_top": [
+  {
+   "label": "James Bond",
+   "cluster": "james bond, british secret service",
+   "roi": 5.7,
+   "films": 30
+  },
+  {
+   "label": "Slashers",
+   "cluster": "slasher, serial killer",
+   "roi": 4.1,
+   "films": 58
+  },
+  {
+   "label": "Korean thrillers",
+   "cluster": "south korea, busan, south korea",
+   "roi": 4.0,
+   "films": 35
+  },
+  {
+   "label": "Dance movies",
+   "cluster": "dance, dancing",
+   "roi": 3.6,
+   "films": 41
+  },
+  {
+   "label": "Animal adventures",
+   "cluster": "animals, animal behaviour",
+   "roi": 3.6,
+   "films": 41
+  }
+ ],
+ "roi_bottom": [
+  {
+   "label": "Apartheid dramas",
+   "cluster": "apartheid, 1970s",
+   "roi": 0.7,
+   "films": 46
+  },
+  {
+   "label": "French murder mysteries",
+   "cluster": "murder, paris, france",
+   "roi": 1.1,
+   "films": 50
+  },
+  {
+   "label": "Political dramas",
+   "cluster": "politics, usa president",
+   "roi": 1.1,
+   "films": 49
+  }
+ ],
+ "roi_bottom_note": "the rape-and-revenge cluster (0.9x) is also near the bottom and is left off screen",
+ "trend_rule": "share of each decade's films tagged with the genre (films can carry several genres)",
+ "trends": {
+  "Western": [
+   {
+    "decade": 1950,
+    "share": 0.099
+   },
+   {
+    "decade": 1960,
+    "share": 0.09
+   },
+   {
+    "decade": 1970,
+    "share": 0.051
+   },
+   {
+    "decade": 1980,
+    "share": 0.011
+   },
+   {
+    "decade": 1990,
+    "share": 0.013
+   },
+   {
+    "decade": 2000,
+    "share": 0.007
+   },
+   {
+    "decade": 2010,
+    "share": 0.007
+   },
+   {
+    "decade": 2020,
+    "share": 0.008
+   }
+  ],
+  "Thriller": [
+   {
+    "decade": 1950,
+    "share": 0.121
+   },
+   {
+    "decade": 1960,
+    "share": 0.135
+   },
+   {
+    "decade": 1970,
+    "share": 0.211
+   },
+   {
+    "decade": 1980,
+    "share": 0.182
+   },
+   {
+    "decade": 1990,
+    "share": 0.205
+   },
+   {
+    "decade": 2000,
+    "share": 0.229
+   },
+   {
+    "decade": 2010,
+    "share": 0.219
+   },
+   {
+    "decade": 2020,
+    "share": 0.259
+   }
+  ],
+  "Horror": [
+   {
+    "decade": 1950,
+    "share": 0.103
+   },
+   {
+    "decade": 1960,
+    "share": 0.143
+   },
+   {
+    "decade": 1970,
+    "share": 0.202
+   },
+   {
+    "decade": 1980,
+    "share": 0.209
+   },
+   {
+    "decade": 1990,
+    "share": 0.12
+   },
+   {
+    "decade": 2000,
+    "share": 0.145
+   },
+   {
+    "decade": 2010,
+    "share": 0.144
+   },
+   {
+    "decade": 2020,
+    "share": 0.168
+   }
+  ],
+  "Documentary": [
+   {
+    "decade": 1950,
+    "share": 0.016
+   },
+   {
+    "decade": 1960,
+    "share": 0.018
+   },
+   {
+    "decade": 1970,
+    "share": 0.018
+   },
+   {
+    "decade": 1980,
+    "share": 0.015
+   },
+   {
+    "decade": 1990,
+    "share": 0.018
+   },
+   {
+    "decade": 2000,
+    "share": 0.036
+   },
+   {
+    "decade": 2010,
+    "share": 0.064
+   },
+   {
+    "decade": 2020,
+    "share": 0.06
+   }
+  ]
+ }
+}
