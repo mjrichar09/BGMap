@@ -368,7 +368,8 @@ def main() -> None:
         pitch_path = base / "gaps" / "desert_pitches.json"
         for p in json.loads(pitch_path.read_text(encoding="utf-8")) if pitch_path.exists() else []:
             pitches.setdefault(str(ids[p["seed"]]), {})[str(p["cluster"])] = {k: p[k] for k in ("title", "logline", "plot")}
-        (data_dir / "deserts.json").write_text(json.dumps({"seedVotes": d["seed_votes"], "seeds": seeds, "clusters": clusters, "pitches": pitches},
+        hoods = {str(ids[int(fid)]): [ids[i] for i in h if i in ids] for fid, h in d.get("hoods", {}).items()}  # "films like ..."
+        (data_dir / "deserts.json").write_text(json.dumps({"seedVotes": d["seed_votes"], "seeds": seeds, "clusters": clusters, "pitches": pitches, "hoods": hoods},
                                                           separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
     scale = IMDB_SCALE if args.private else carry_scale(first)
     for u in unmade:  # film ids -> row indices, which is what the page works in

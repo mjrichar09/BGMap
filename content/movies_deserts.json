@@ -1,163 +1,107 @@
 [
  {
-  "seed": "Forrest Gump (1994)",
-  "cluster": 6,
-  "title": "Lane Seven",
-  "logline": "A gentle, slow-talking boy from rural Georgia swims his way through five Olympic Games and forty years of American history.",
-  "plot": "Born with weak legs and a simple, trusting mind, Walter Bell learns to swim in the creek behind his mother's boarding house because it is the only place he can move freely. A high-school coach spots him, and in 1964 he swims for the United States at the Tokyo Olympics without ever quite understanding what the fuss is about. Over the next four decades Walter keeps turning up at the Games, as an athlete, a lifeguard and finally a coach, stumbling into the Munich massacre, the 1980 boycott and the Atlanta bombing. Through it all he writes letters to Ruthie, the girl from the creek, who drifts through protest movements and bad marriages, and who he is sure will one day come to watch him race."
- },
- {
   "seed": "The Social Network (2010)",
-  "cluster": 17,
-  "title": "All In",
-  "logline": "Two Harvard roommates build the world's biggest online poker site, then bet the company against each other in an underground game.",
-  "plot": "In 2003 a socially awkward Harvard sophomore writes a poker program in his dorm room to beat his classmates, and his roommate, a finance student, puts up the money to turn it into a website. Within a year it has millions of players, a Silicon Valley investor with his own plans, and a lawsuit from the twins who say the idea was theirs. As the founder quietly dilutes his friend's shares to nothing, the betrayed roommate challenges him to a private no-limit game in a Macau casino with their stakes in the company on the table. Told through depositions and the hands of the game itself, it asks whether the founder ever cared about anything except winning."
- },
- {
-  "seed": "The Truman Show (1998)",
-  "cluster": 23,
-  "title": "The Sitter",
-  "logline": "A portrait painter in a sunny seaside town realizes every person who has ever posed for him is an actor, and his paintings are a television show.",
-  "plot": "Elias is an insurance clerk in a sunny island town who paints portraits on weekends, cheerful and loved by his neighbors, with no idea that his whole life is a reality television show broadcast live around the world since his birth. His wife, his best friend and his sitters are actors, five thousand hidden cameras watch him, and the show's creator directs the weather from a control room in the moon. When a stage light falls from the sky and his dead father appears among the extras, Elias begins to paint what he is not supposed to see: the cameras, the actors between takes, the painted horizon of the dome. His canvases become a message to the audience, and he must overcome his fear of the water and sail out to find the door in the sky."
- },
- {
-  "seed": "Hidden Figures (2016)",
-  "cluster": 98,
-  "title": "The Calculators of Pretoria",
-  "logline": "In 1976 South Africa, three Black women working as human computers on the state rocket program are caught up in the Soweto uprising.",
-  "plot": "In the 1970s, three brilliant Black women mathematicians work as human computers at South Africa's secret space and rocket program, calculating orbits and launch trajectories by hand in a segregated room on the far side of the base. Thandi is the best of them, but she must walk half a mile to the only bathroom she is allowed to use, and the white engineers will not let her attend the briefings. When the program installs a new IBM computer that nobody can program and a satellite launch depends on her equations, the director tears down the whites-only sign and lets her into the control room, while outside the students of Soweto are rising against apartheid."
- },
- {
-  "seed": "A Beautiful Mind (2001)",
-  "cluster": 23,
-  "title": "The Patron",
-  "logline": "A celebrated painter's secret patron, who has guided his work for twenty years, turns out to exist only in his mind.",
-  "plot": "In 1950s Paris, a socially awkward American painter of genius is recruited by a mysterious government agent to hide coded messages in his abstract canvases to foil a Soviet plot. His wife, a former student, watches him grow paranoid and obsessed, filling his studio with charts and numbers. When she discovers that the agent, his college roommate and the little girl who visits him have never existed, he is diagnosed with paranoid schizophrenia and taken to a psychiatric hospital for insulin shock treatment. Refusing the medication that dulls his talent, he learns over decades to ignore the hallucinations that still follow him, until, an old man, he is honored with a retrospective and thanks his wife for believing in him."
- },
- {
-  "seed": "Despicable Me (2010)",
-  "cluster": 17,
-  "title": "Villain Night",
-  "logline": "A washed-up supervillain and his tiny henchmen enter a deadly televised game show for villains to pay for the orphans he accidentally adopted.",
-  "plot": "Grimsby was once the world's most feared supervillain, but his last heist was stealing the Moon's reflection, and now he is broke. When three orphaned sisters he took in as part of a scheme start calling him Dad, he needs money fast and signs up for Villain Night, an underground tournament where criminals gamble their lairs, their minions and their lives on rigged games of chance. Each round eliminates a contestant through a trapdoor. Helped by his hundred squeaking helpers and a rival with a laser grudge, Grimsby must cheat the house without letting the girls find out what their new father does for a living."
- },
- {
-  "seed": "Barbie (2023)",
-  "cluster": 42,
-  "title": "Take Two",
-  "logline": "The plastic star of a children's toy movie walks off the set and into the chaos of the film production that invented her.",
-  "plot": "In Dollworld every day is perfect for Stereotypical Dolly and the other dolls, the beach-loving boyfriend Kenny included, until Dolly suddenly has thoughts of death, flat feet and cellulite. To fix herself she and Kenny travel to the real world, where they discover she is the star of a toy company's live-action movie whose troubled production in Los Angeles is shaping her doll's life: reshoots change her personality, executives in the boardroom rewrite her ending and Kenny falls for the patriarchy he finds on the studio lot. With the help of a tired screenwriter and her teenage daughter, Dolly must get into the editing room to decide what kind of doll, and woman, she wants to be."
- },
- {
-  "seed": "Indiana Jones and the Last Crusade (1989)",
-  "cluster": 23,
-  "title": "The Ghent Panel",
-  "logline": "An archaeology professor and his estranged art-historian father race Nazis across Europe for a stolen panel of a medieval altarpiece.",
-  "plot": "In 1938 a two-fisted American archaeologist learns that his father, a fussy scholar of Flemish painting, has vanished in Belgium while tracing the lost panel of a famous altarpiece, said to hide a map in its brushwork. Hitler's art looters want it for the Führer's museum. Dodging the Gestapo, father and son bicker their way through Venetian canals, a castle full of seized masterpieces and a zeppelin over the Alps, decoding the painting's symbols by its varnish and pigments. The search ends in a burning monastery where they must choose between the painting, the treasure it points to and each other."
- },
- {
-  "seed": "The Hunger Games: Catching Fire (2013)",
   "cluster": 58,
-  "title": "Ashfall",
-  "logline": "Champions of a televised fight to the death are sent back into the arena just as the island volcano beneath it erupts.",
-  "plot": "In a dystopian nation ruled by a capital that keeps its districts in line with an annual televised death match, last year's victors are forced back into a new arena built on a volcanic island. The games begin on schedule, but the seismologists the capital ignored were right: the volcano erupts on the second day. With ash blotting out the cameras, lava cutting off the arena and a tsunami bearing down on the coast, the tributes who were meant to kill each other must work together to reach the only evacuation boat, while the government decides whether to rescue them or let the disaster finish the show."
+  "title": "Launch Day",
+  "logline": "A startup's earthquake-warning app goes live on the morning of the big one.",
+  "plot": "Three college dropouts in San Francisco have spent two years and every dollar their investors gave them building an app that can warn phones seconds before an earthquake. Their lead investor wants a flashier product, the board is ready to fire the founder, and the launch party is set for a Monday morning. At 9:41 a.m., as the app goes live to a million users, the San Andreas fault ruptures. Buildings fall, the servers in their basement are failing, and their alerts are the only thing reaching people across a city with no power. Trapped in their collapsing office, the founders must keep the system running and decide who gets warned first."
  },
  {
-  "seed": "The Greatest Showman (2017)",
-  "cluster": 66,
-  "title": "The Floating Circus",
-  "logline": "A 19th-century showman's troupe of performers is shipwrecked on a voyage to Europe and must survive on a deserted island, in song.",
-  "plot": "In 1852 an ambitious American impresario charters a clipper ship to take his circus of outcasts, a bearded lady, a giant, trapeze artists and a tiny general, on a grand tour of the courts of Europe. A storm wrecks the ship on a reef, and the troupe is cast ashore on an uninhabited island with the crew, a mutinous first mate and a hold full of costumes. The showman, who has always sold dreams, must keep his people alive with no audience to applaud them, and they put on the greatest show of their lives to signal a passing whaler. A musical about spectacle, survival and the family that forms on a desert island."
+  "seed": "The Theory of Everything (2014)",
+  "cluster": 33,
+  "title": "The Equation",
+  "logline": "In 1962, the first Black physics student at a Mississippi university solves a problem his professors can't, and the state wants him gone.",
+  "plot": "In 1962, a brilliant young physicist from the Mississippi Delta becomes the first Black graduate student at the state university, escorted onto campus by federal marshals through a crowd of rioters. His advisor, a famous cosmologist, refuses to supervise him, and his classmates won't sit near him. Working alone at night in the library, he solves an equation about the birth of the universe that the department has chased for a decade. When his professor tries to publish the work under his own name, and the governor's men threaten the young man's family, he must fight for his discovery and his right to stay, as the civil rights movement marches through the town."
  },
  {
-  "seed": "Star Wars: Episode II - Attack of the Clones (2002)",
-  "cluster": 13,
-  "title": "Clone Moon",
-  "logline": "A young warrior-monk sent to guard a teenage senator discovers an army of clones being grown in secret on a rainy ocean moon.",
-  "plot": "In a galaxy where an order of psychic warrior-monks keeps the peace, the apprentice Ren is assigned to protect Aoi, a young senator from a quiet ocean world, after an assassination attempt. Their forbidden romance grows on her home planet while Ren's master follows the assassin to a stormy water moon and finds cloning towers that have been growing an army of identical soldiers for ten years. Among them is one clone, Kei, who has begun to dream of his own name. As the war begins, the hand-drawn anime follows Ren, Aoi and Kei through giant robot battles and a betrayal at the heart of the republic."
+  "seed": "The Day After Tomorrow (2004)",
+  "cluster": 6,
+  "title": "Category Five",
+  "logline": "Big-wave surfers chase the largest swell ever recorded, straight into a hurricane.",
+  "plot": "A record-breaking hurricane is spinning toward Hawaii, and meteorologists are ordering everyone off the North Shore. For a handful of professional big-wave surfers, it is also the biggest swell in recorded history, and a surf brand has offered a fortune to whoever rides the largest wave. As the storm intensifies beyond any forecast, a retired champion, her estranged son who is chasing the title, and a rookie with nothing to lose paddle out with jet skis and safety teams. When the storm surge floods the island and the rescue helicopters are grounded, the surfers become the only ones who can reach people trapped along the coast."
+ },
+ {
+  "seed": "The Simpsons Movie (2007)",
+  "cluster": 33,
+  "title": "Lunch Counter",
+  "logline": "An animated comedy about a hopeless suburban family in 1963 Alabama, whose youngest daughter joins a sit-in.",
+  "plot": "The Pruitts are a loud, lazy, lovable cartoon family in 1963 Birmingham, Alabama, a segregated city where Black citizens cannot eat at the same lunch counters or attend the same schools as whites. Junie, the too-smart eight-year-old daughter, befriends a Black girl from across town whose family is organizing with Dr. King's movement, and joins the students sitting in at the five-and-dime. Police dogs, fire hoses and the Klan come to town, and her father, a bumbling bottle-plant worker terrified of losing his job, must choose between his racist neighbors and his daughter, in a satirical animated comedy about an ordinary family during the civil rights movement."
+ },
+ {
+  "seed": "Oppenheimer (2023)",
+  "cluster": 23,
+  "title": "Trinity in Color",
+  "logline": "The Army hires a painter to record Los Alamos in 1945. She becomes the only artist to witness the first atomic bomb.",
+  "plot": "In 1945, Ruth Halloran, a struggling New Mexico landscape painter, is hired by the Army to paint the secret laboratory at Los Alamos for the official record. Forbidden to ask what the scientists are building, she paints the mesa, the barracks and the exhausted physicists, and falls into a friendship with a young chemist who begins to fear the weapon. On the morning of the Trinity test she is driven into the desert to paint the explosion. What she puts on the canvas horrifies the generals, and when they order her paintings destroyed, Ruth must decide whether to hide the only artistic record of the moment the world changed."
+ },
+ {
+  "seed": "Ratatouille (2007)",
+  "cluster": 17,
+  "title": "Last Service",
+  "logline": "Twelve chefs, one underground tournament, and every loser forfeits their restaurant.",
+  "plot": "Every year a secretive billionaire invites twelve of the world's best chefs to a cooking tournament in a locked mansion. The prize is a fortune, but each chef must stake their restaurant, and every round, the worst dish is eliminated. Marguerite, a gifted cook from a failing family bistro in Lyon, enters to save her late father's restaurant. As the rounds grow crueler, with blind tastings, sabotaged kitchens and dishes cooked in the dark, the chefs realize the host is betting on them, and the losers are not being allowed to leave. To survive the final service, Marguerite must cook the meal of her life."
+ },
+ {
+  "seed": "A Bug's Life (1998)",
+  "cluster": 89,
+  "title": "Local 1911",
+  "logline": "An animated colony of ants living beneath a New York garment factory goes on strike.",
+  "plot": "Beneath the floorboards of a garment factory in 1911 New York lives a colony of animated ants who survive on the crumbs of the immigrant girls sewing upstairs. Based on the true story of the Triangle Shirtwaist Factory, where a fire killed 146 workers behind locked doors, the film follows Rosa, a young worker ant who watches the girls of the Lower East Side organize a strike. When the fire breaks out, the ants help the workers escape. Inspired by the real women who marched down Fifth Avenue afterwards, Rosa leads her colony to stand up to the greedy beetles who take their food."
+ },
+ {
+  "seed": "Green Book (2018)",
+  "cluster": 98,
+  "title": "Township Jazz",
+  "logline": "In 1976, an American jazz legend touring South Africa must decide whether to play for whites-only crowds.",
+  "plot": "In 1976, as the apartheid government in Pretoria forces Black South Africans into townships and bans their music from the radio, a young pianist from Soweto plays in illegal shebeens and dreams of leaving. When the government invites an American jazz star for a segregated tour, the pianist is hired as his accompanist. The students of Soweto march against Afrikaans in their schools and the police open fire, and the musicians must decide whether to play the whites-only concert halls or join the protest. A story of jazz, resistance and the musicians who fought apartheid with their songs."
+ },
+ {
+  "seed": "The Curious Case of Benjamin Button (2008)",
+  "cluster": 42,
+  "title": "Ingénue",
+  "logline": "An actress who never ages has played the young lead for a hundred years, under a dozen different names.",
+  "plot": "Since 1925, the same woman has starred in Hollywood pictures under a dozen different names, playing the young romantic lead in silent films, Technicolor musicals and, today, a streaming series. She does not age. Every twenty years she retires, fakes her death and reinvents herself, leaving behind the directors, husbands and co-stars who grew old. When a young film historian notices that a 1950s starlet and today's breakout actress have the same face, he begins to dig through old studio archives. As he gets closer to the truth, she must decide whether to vanish again or finally let someone see her grow old."
  },
  {
   "seed": "Ready Player One (2018)",
   "cluster": 67,
-  "title": "Summit.exe",
-  "logline": "In 2045, a gamer chasing a dead billionaire's virtual prize learns the final key is hidden on the real summit of K2.",
-  "plot": "In 2045, a teenage gamer who escapes his poverty in a virtual reality world learns that its late creator's fortune goes to whoever can reach the summit of K2, the real mountain, and bring back the key hidden there. He and his online friends, who have never met in person, fly to Pakistan and join a team of Sherpa guides and veteran mountaineers at base camp. Fighting avalanches, crevasses, frostbite and the frozen death zone without oxygen, they race a corporation's well-funded climbing expedition that will cut fixed ropes to win. The gamers, who know every route from the virtual replica, must learn real mountaineering on a climb where a fall cannot be reset."
+  "title": "Avatar on Everest",
+  "logline": "A paralyzed climber attempts Everest through a robot body, and the robot gets stranded in the death zone.",
+  "plot": "Four years after a fall left her paralyzed, champion mountaineer Kaia Brandt is offered the chance to climb again. A tech company has built a humanoid robot that she controls through a virtual-reality rig from a lab in California, and it is going to Everest. Through the robot's eyes she climbs the Khumbu Icefall, crosses the crevasses and reaches the death zone with a team of Sherpa guides who distrust the machine. When a storm hits and a human climber collapses near the summit, the company orders her to save its robot. Kaia, feeling every gust of wind through the headset, must choose between the machine and a life."
  },
  {
-  "seed": "Back to the Future (1985)",
-  "cluster": 33,
-  "title": "Freedom Summer, Again",
-  "logline": "A Black teenager accidentally sent back to 1964 Mississippi must make sure his civil-rights worker grandparents meet, or he will never exist.",
-  "plot": "Marcus, a Black teenager who plays guitar, is a friend of an eccentric scientist who has built a time machine from a souped-up Cadillac. When the car's plutonium-powered engine is fired up in a mall parking lot, Marcus is accidentally sent back thirty years to 1964 in a small Mississippi town. He interferes with his parents' first meeting at the high school dance, and his teenage mother falls in love with him instead. With the help of the young version of the scientist, Marcus must get his parents together and survive the town's segregation and the bully who leads its white gang, then catch a bolt of lightning striking the courthouse clock tower to power the car back to the future."
+  "seed": "The Hunger Games (2012)",
+  "cluster": 152,
+  "title": "Color War",
+  "logline": "At an elite summer camp, the end-of-summer color war turns out to be a real one.",
+  "plot": "In a near-future country ruled by a single party, every teenager spends one summer at a state camp, and every camp ends with the color war, broadcast live to the nation. Officially it is capture the flag in the woods. In truth the regime uses it to find soldiers and punish dissent. Tess, a sharp-tongued sixteen-year-old whose parents were arrested for protesting, is placed on the Blue team with a cabin of misfits. When the counselors change the rules and campers begin to disappear in the forest, Tess must lead her cabin through the games, expose the camp on its own broadcast and spark a revolt."
  },
  {
-  "seed": "The Curious Case of Benjamin Button (2008)",
-  "cluster": 19,
-  "title": "Citizen in Reverse",
-  "logline": "A man born old in Paris in 1789 grows younger through the French Revolution, the Terror and Napoleon, while the woman he loves grows old.",
-  "plot": "On the night the Bastille falls a child is born with the body of an old man, abandoned on the steps of a convent and raised by a nun. Lucien grows younger every year. As a white-haired youth he is taken for a nobleman and nearly guillotined; in his middle age he fights in the revolutionary armies; as a young man again he serves Napoleon. All his life he loves Marianne, an actress who ages as he grows young, and they meet only once in the middle, both forty, for a few happy years. Told from her deathbed as she reads his diary, it is a story of time running in two directions through a world turned upside down."
+  "seed": "San Andreas (2015)",
+  "cluster": 148,
+  "title": "Fault Line",
+  "logline": "A massive earthquake under Los Angeles opens a cavern where prehistoric animals have survived for ten thousand years.",
+  "plot": "Seismologists have warned for years that the Big One is coming, and when the magnitude 9.1 earthquake strikes Los Angeles, it tears the city apart: freeways collapse, fires spread and the ground splits open beneath the La Brea tar pits. Inside the chasm is a cavern sealed since the Ice Age, where sabre-toothed cats, giant ground sloths and dire wolves have survived. As aftershocks shake the ruins, a paleontologist, a firefighter and a busload of stranded schoolchildren must cross a collapsing city overrun with prehistoric predators to reach the evacuation point on the coast before the next quake."
  },
  {
-  "seed": "Top Gun (1986)",
-  "cluster": 10,
-  "title": "Wingmen FC",
-  "logline": "A cocky Navy fighter pilot is grounded and ordered to captain the base's hopeless soccer team in the armed forces World Cup.",
-  "plot": "Lieutenant Jake 'Striker' Reyes is the best pilot at the Navy's elite fighter school and knows it, until a reckless stunt over the carrier gets his wingman hurt and him grounded. His commander sentences him to captain the base soccer team, a ragtag squad of mechanics and cooks, in the international military football championship. Reyes treats every match like a dogfight and alienates his team, while falling for the civilian coach the Navy hired to tame him. To beat the elite French paratroopers in the final, he must learn to pass the ball and trust a wingman again."
+  "seed": "Cast Away (2000)",
+  "cluster": 79,
+  "title": "Field Guide",
+  "logline": "An autistic teenager survives alone in the Alaskan wilderness after a plane crash, using the encyclopedia in his head.",
+  "plot": "Fifteen-year-old Owen, who is autistic and knows every page of his field guide to North American plants and animals by heart, is the only survivor when a bush plane crashes in the Alaskan wilderness. Alone, with no tools and a broken arm, he must find water, build shelter and survive a winter that is coming fast. The routines and knowledge that made him an outsider at school keep him alive: he knows which berries are poisonous and how bears behave. Inspired by real survival stories, the film follows his months alone, while his mother refuses to let the searchers give up."
  },
  {
-  "seed": "Joker (2019)",
-  "cluster": 32,
-  "title": "Prime Time",
-  "logline": "A mentally ill party clown becomes the star of a hidden-camera prank show, and the network keeps filming as he falls apart.",
-  "plot": "Arthur, a failed stand-up comedian and party clown with a neurological condition that makes him laugh uncontrollably, lives with his ailing mother in a decaying city where the social services that gave him his medication have just been cut. After he kills three wealthy young men who beat him on the subway, a clip of his stand-up act is mocked on the late-night talk show of his idol, and the network books him as a guest because the ratings will be huge. While masked protesters in clown makeup riot in the streets, the producers prepare a live broadcast of the joke, and Arthur arrives at the studio ready to give them the most-watched moment in television history."
+  "seed": "Saving Private Ryan (1998)",
+  "cluster": 148,
+  "title": "Island 9",
+  "logline": "In 1944, a squad of Marines sent to an uncharted Pacific island finds it ruled by prehistoric beasts.",
+  "plot": "In the summer of 1944, a squad of eight Marines is sent to scout an uncharted island in the South Pacific where a reconnaissance plane went down. They expect a Japanese garrison. Instead they find the garrison destroyed, and a jungle full of creatures that have survived since the age of the dinosaurs. With their radio broken and their sergeant wounded, the young Marines must cross the island to reach the downed pilots, forced into an uneasy truce with the last surviving Japanese soldiers, as the creatures hunt them all through the jungle."
  },
  {
-  "seed": "The Lord of the Rings: The Return of the King (2003)",
-  "cluster": 103,
-  "title": "The Last Fleet of Eldmar",
-  "logline": "As the dark lord's ironclad navy sails on the last free kingdom, a small sailor must carry a cursed compass to the sea where it was forged.",
-  "plot": "The shadow realm in the east has built a fleet of black ironclad warships and is sailing on the last free harbor of men and elves. While the exiled king gathers the scattered ships of the alliance for one great sea battle, a halfling cabin boy and his loyal friend carry a cursed compass, the source of the dark lord's power, aboard a stolen fishing boat toward the burning sea where it was forged. Storms, sea serpents and the compass's whispering corrupt them as the fleets meet in a naval war of fire and rams. Only if the compass is destroyed can the free peoples' ships survive."
- },
- {
-  "seed": "Dunkirk (2017)",
-  "cluster": 53,
-  "title": "The Last Legion",
-  "logline": "In 410 AD, Rome's last legion in Britain is trapped on a beach as barbarians close in, waiting for ships that may never come.",
-  "plot": "The Roman Empire is collapsing and the emperor has ordered his legions home from Britannia. Thousands of soldiers are trapped on a beach on the southern coast with Saxon raiders closing in from the land. The story is told in three overlapping threads: a young legionary trying to get aboard any ship that will take him, over one week; a Gaulish merchant who sails his trading boat across the channel to rescue them, over one day; and a cavalry officer holding the dunes against the raiders, over one hour. With almost no dialogue, the film follows the end of four hundred years of Roman Britain in the struggle simply to survive and get home."
- },
- {
-  "seed": "Mulan (1998)",
-  "cluster": 94,
-  "title": "The Examiner's Daughter",
-  "logline": "In imperial China a young woman disguises herself as a man to sit the imperial exams and teach at the emperor's academy, in an animated musical.",
-  "plot": "When the Emperor orders one man from every family to join the army against the invading Huns, Lin, the spirited daughter of an old war hero, disguises herself as a man and takes her father's place. Instead of the battlefield she is sent to the imperial military academy, where a stern young captain must turn a class of hopeless recruits into soldiers in time for the war. Watched over by her ancestors and a small, boastful dragon spirit, Lin struggles through drills, lessons and the final examination. When her secret is discovered, she is expelled in disgrace, but only she knows the Huns are already inside the city, and she must save her teacher and the Emperor."
- },
- {
-  "seed": "Parasite (2019)",
-  "cluster": 12,
-  "title": "Cage Home",
-  "logline": "A Hong Kong family living in a subdivided 'cage home' worms its way into the household of a rich family on the Peak.",
-  "plot": "The Kims, an unemployed family of four in Hong Kong, live in a subdivided cage home in Sham Shui Po, folding pizza boxes for money and stealing the neighbors' wifi. When the son forges a university diploma to tutor the daughter of the wealthy Park family in their modern mansion on the Peak, the family schemes, one by one, to get the driver and the housekeeper fired and take their jobs. Then, on a night of typhoon rains when the Parks are away, the old housekeeper returns and reveals that her husband has been living secretly in a bunker beneath the house. A birthday garden party, a smell the rich can't stand and a knife bring the two families' worlds together in violence."
- },
- {
-  "seed": "Ratatouille (2007)",
-  "cluster": 101,
-  "title": "Comrade Chef",
-  "logline": "In 1950s Moscow, a rat with a gift for cooking secretly runs the kitchen of a state restaurant feeding Party officials.",
-  "plot": "Remy, a rat with an extraordinary sense of taste and smell, dreams of becoming a chef like his late idol, whose cookbook says that anyone can cook. Separated from his family, he ends up in the kitchen of the idol's famous restaurant in 1950s Moscow, where he helps Linguini, a clumsy young garbage boy, by hiding under his chef's hat and steering him by pulling his hair. Their soup becomes the talk of the city. But the scheming head chef wants the restaurant for himself, Remy's colony of rats wants to raid the pantry, and a feared food critic from the Party arrives to review the restaurant on the night that will decide whether a rat can be a chef."
- },
- {
-  "seed": "Monsters, Inc. (2001)",
-  "cluster": 58,
-  "title": "Blackout in Hollowtown",
-  "logline": "A city of monsters powered by children's screams faces collapse when an earthquake cracks its scream reactor.",
-  "plot": "Hollowtown, a city of cheerful monsters, runs on energy collected from the screams of human children through closet doors. When a massive earthquake hits during the morning shift, the cracked scream reactor threatens a meltdown, the doors to the human world jam shut and the city's power grid fails. Two coworkers from the scare floor, a big furry veteran and his one-eyed best friend, are trapped in the collapsing plant with a lost human toddler. As floods and aftershocks tear through the city and the company's boss hides the danger to protect profits, they race to stop the meltdown and get the child home."
- },
- {
-  "seed": "The Godfather (1972)",
-  "cluster": 19,
-  "title": "The Family of the Rue Saint-Denis",
-  "logline": "In 1789 Paris, the youngest son of a smuggling family is drawn into the family business as the Revolution turns the city upside down.",
-  "plot": "The aging patriarch of a powerful crime family, Don Vito Corsini, receives petitioners on his daughter's wedding day and refuses to join the other families in the dangerous new trade in smuggled opium. When rivals try to assassinate him, his youngest son Michel, a war hero who wanted no part of the family business, kills a corrupt police captain and a rival boss in a restaurant and hides in Corsica, where his young wife is killed by a bomb meant for him. Returning to Paris in 1789 as the Revolution begins, Michel becomes the new Don, and while he stands as godfather at his nephew's baptism, his men murder the heads of the other families."
+  "seed": "War for the Planet of the Apes (2017)",
+  "cluster": 16,
+  "title": "The Ape City",
+  "logline": "Archaeologists in the Congo uncover a ten-thousand-year-old city built by apes.",
+  "plot": "Deep in the rainforest of the Congo, an archaeologist and her team uncover the ruins of a stone city that carbon dating places ten thousand years before the first human cities. The carvings on the walls show apes building it. As the team digs into the tombs and decodes the carvings, they learn that an intelligent ape civilization rose and fell long before humanity, and why it vanished. When a mining company arrives to destroy the site and the chimpanzees of the surrounding forest begin to behave strangely, the archaeologist must protect the discovery and the apes who may still remember it."
  }
 ]
