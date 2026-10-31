@@ -507,7 +507,7 @@ a { color: var(--link); }
           <ol class="list" id="unmadeList"></ol>
           <div class="stack" id="unmadeBody"></div>
           <span class="cap" style="margin-top:6px">Film deserts: start from a film</span>
-          <p class="help">Pick a film and see the emptiest places between it and other kinds of film: blends of its plot with a nearby cluster that nothing on the map comes close to. Computed ahead of time in the model's full space, with no AI running live. Some deserts have a pitch written by AI (marked ✎), checked the same way as the ones above.</p>
+          <p class="help">Pick a film and see the emptiest places between films like it and other kinds of film: blends of that kind of story with a nearby cluster that nothing on the map comes close to. Computed ahead of time in the model's full space, with no AI running live. Some deserts have a pitch written by AI (marked ✎), checked the same way as the ones above.</p>
           <input id="desertQ" type="search" placeholder="Type a film you like" autocomplete="off">
           <p class="mini" id="desertTry"></p>
           <ol class="list" id="desertList"></ol>
@@ -1648,18 +1648,20 @@ a { color: var(--link); }
       .sort((a, b) => (lift.get(b) || 0) - (lift.get(a) || 0)).slice(0, 2).map((t) => man.keywords[t]);
     const own = m.cluster[seed], pitch = (man.unmade || []).findIndex((u) => u.parents.includes(own) && u.parents.includes(cl));
     const sim = new Map(near.map((n, j) => [n, sims[j]]));
-    const dp = deserts.pitches?.[seed]?.[cl];
+    const dp = deserts.pitches?.[seed]?.[cl], like = (deserts.hoods?.[seed] || []).slice(0, 3);
     $("desertBody").innerHTML = `
-      <p class="desert-what">What if ${esc(g.name[seed])}${kws.length ? ` (${kws.map(esc).join(", ")})` : ""} met <button class="region-pill" type="button" data-c="${cl}" style="margin:0;font-size:inherit">${esc(c.label)}</button>?</p>
+      <p class="desert-what">What if films like ${esc(g.name[seed])}${kws.length ? ` (${kws.map(esc).join(", ")})` : ""} met <button class="region-pill" type="button" data-c="${cl}" style="margin:0;font-size:inherit">${esc(c.label)}</button>?</p>
+      ${like.length ? `<p class="mini" style="margin:0">Films like it: ${like.map((j) => `<button class="region-pill" type="button" data-i="${j}" style="margin:0 4px 0 0">${esc(g.name[j])}</button>`).join("")}</p>` : ""}
       <p class="mini" style="margin:0">Nothing on the map is made of both. This blend is emptier than ${desertPct(gap)}% of film deserts; its nearest film is ${Math.round(nearest * 100)}% similar. Like ${esc(c.examples)}.</p>
       ${dp ? `<div class="desert-pitch"><span class="cap">A pitch for this desert</span><h4>${esc(dp.title)}</h4><p class="logline">${esc(dp.logline)}</p><p>${esc(dp.plot)}</p>
-        <p class="mini">Written by AI, then embedded with the map's model: its plot lands closer to this blend than to ${esc(g.name[seed])} or the cluster.</p></div>` : ""}
+        <p class="mini">Written by AI, then embedded with the map's model: its plot lands closer to this blend than to films like ${esc(g.name[seed])} or to the cluster, and closer to that kind of film than to ${esc(g.name[seed])} itself.</p></div>` : ""}
       ${pitch >= 0 ? `<button class="btn ghost" type="button" id="desertPitch">Read the AI pitch for this gap: ${esc(man.unmade[pitch].title)}</button>` : ""}
       <span class="cap">Closest thing already made</span>
       <ol class="list" id="desertNear">${listHtml(near, (i) => `${g.year[i] ?? ""} · ${Math.round(sim.get(i) * 100)}%`)}</ol>
       <button class="btn ghost" type="button" id="desertClear">Clear</button>`;
     bindList($("desertNear"));
     $("desertBody").querySelector(".region-pill").addEventListener("click", () => showRegion("fine", cl));
+    $("desertBody").querySelectorAll("button[data-i]").forEach((b) => b.addEventListener("click", () => select(+b.dataset.i, true)));
     if (pitch >= 0) $("desertPitch").addEventListener("click", () => { state.desert = null; showUnmade(pitch); });
     $("desertClear").addEventListener("click", () => { state.desert = null; $("desertBody").innerHTML = ""; $("desertList").innerHTML = ""; $("desertQ").value = ""; setHighlight(null); });
     // Light up the seed, the other cluster and the films nearest the empty spot, then fly there.

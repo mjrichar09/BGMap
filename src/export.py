@@ -48,6 +48,15 @@ ROUTE_K = 15
 POSTER_PREFIX = "https://image.tmdb.org/t/p/w185/"
 BLURB_CHARS = 320
 CAST = 4  # top-billed actors kept per film for the people lens
+SPORTS_GENERAL = {"sports", "sport", "sport competition", "sports documentary", "high school sports", "college sports"}
+SPORTS = SPORTS_GENERAL | {  # TMDB keywords that name a sport (see with_sports)
+    "motorsport",
+    "racing", "car race", "race car driver", "nascar", "american football", "football (soccer)", "baseball", "basketball",
+    "ice hockey", "hockey", "boxing", "boxer", "boxing match", "olympic games", "olympics", "tennis", "golf", "wrestling",
+    "pro wrestling", "surfing", "skateboarding", "skiing", "snowboarding", "cycling", "marathon", "gymnastics",
+    "figure skating", "rugby", "cricket", "volleyball", "world cup", "super bowl", "horse racing", "jockey", "bowling",
+    "dodgeball", "track and field", "lacrosse", "softball", "rodeo", "bull riding", "cheerleading",
+}
 CERTS = ["G", "PG", "PG-13", "R", "NC-17", "NR"]
 # TMDB's original_language codes ("cn" is TMDB's code for Cantonese); others show as the code.
 LANG_NAMES = {
@@ -111,10 +120,21 @@ def vocab_indices(series: pd.Series, min_count: int = 1) -> tuple[list[str], lis
     return vocab, [[index[t] for t in tags if t in index] for tags in series]
 
 
+def with_sports(genres: pd.Series, keywords: pd.Series) -> pd.Series:
+    """TMDB has no sports genre; add "Sports" to films tagged as sports in general ("sports", "sports documentary"),
+    or with two or more keywords naming a sport. One alone is usually a scene, not the film: Cast Away's
+    volleyball, The Big Lebowski's bowling, Mulan's cricket (the insect). Ambiguous keywords (chess, poker,
+    fishing, swimming, cheerleader, sports car, ...) don't count at all, and martial arts films aren't sports."""
+    def sporty(ks):
+        return any(k in SPORTS_GENERAL for k in ks) or sum(k in SPORTS for k in ks) >= 2
+    return pd.Series([g + ["Sports"] if sporty(ks) and "Sports" not in g else g
+                      for g, ks in zip(genres, keywords)], index=genres.index)
+
+
 def films_payload(df: pd.DataFrame, source: str) -> tuple[dict, dict]:
     rating_col, votes_col = RATINGS[source]
     tags = lambda col: df[col].map(lambda a: list(a) if a is not None else [])
-    genre_vocab, genres = vocab_indices(tags("genres"))
+    genre_vocab, genres = vocab_indices(with_sports(tags("genres"), tags("keywords")))
     kw_vocab, kws = vocab_indices(tags("keywords").map(lambda a: a[:8]), min_count=2)
     # One people vocabulary for directors and cast, so the lens can search both.
     directors, cast = tags("directors"), tags("cast").map(lambda a: a[:CAST])
@@ -368,7 +388,8 @@ def main() -> None:
         pitch_path = base / "gaps" / "desert_pitches.json"
         for p in json.loads(pitch_path.read_text(encoding="utf-8")) if pitch_path.exists() else []:
             pitches.setdefault(str(ids[p["seed"]]), {})[str(p["cluster"])] = {k: p[k] for k in ("title", "logline", "plot")}
-        (data_dir / "deserts.json").write_text(json.dumps({"seedVotes": d["seed_votes"], "seeds": seeds, "clusters": clusters, "pitches": pitches},
+        hoods = {str(ids[int(fid)]): [ids[i] for i in h if i in ids] for fid, h in d.get("hoods", {}).items()}  # "films like ..."
+        (data_dir / "deserts.json").write_text(json.dumps({"seedVotes": d["seed_votes"], "seeds": seeds, "clusters": clusters, "pitches": pitches, "hoods": hoods},
                                                           separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
     scale = IMDB_SCALE if args.private else carry_scale(first)
     for u in unmade:  # film ids -> row indices, which is what the page works in
@@ -381,6 +402,7 @@ def main() -> None:
     page = (ROOT / "web" / f"{args.domain}_map.html").read_text(encoding="utf-8")
     (out / "index.html").write_text(page.replace("<title>Massive Movie Map</title>", f"<title>{args.title}</title>", 1), encoding="utf-8")
     shutil.copytree(ROOT / "web" / "assets", out / "assets", dirs_exist_ok=True)
+    shutil.copytree(ROOT / "web" / "root", out, dirs_exist_ok=True)  # robots.txt, sitemap.xml
     sizes = ", ".join(f"{p.name} {p.stat().st_size / 1e6:.1f} MB" for p in sorted(data_dir.glob("*.json")))
     print(f"{len(first):,} items, {len(layouts)} layout(s), {source} ratings -> {out} ({sizes})")
     print(f"rating cutoffs: {json.dumps(scale)}")

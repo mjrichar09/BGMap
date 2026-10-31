@@ -1,0 +1,108 @@
+<!doctype html>
+<!-- Social image of one person's films on the map, filled by videos/tools/person_card.py: it sets window.DATA
+     (name, eyebrow, sub, tiles, groups of film labels with their map points, image paths) before load. The
+     page fits the title and places each label beside its films without overlapping anything else. 1080x1350. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face { font-family: 'Limelight'; src: url("../mmm-same-director/assets/fonts/captured-XLYkIZL7aopJVbZJHDuoOulHjHUmTQ.woff2") format('woff2'); }
+@font-face { font-family: 'Oswald'; font-weight: 200 700; src: url("../mmm-same-director/assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2'); }
+@font-face { font-family: 'Work Sans'; src: url("../mmm-same-director/assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2'); }
+@font-face { font-family: 'Courier Prime'; font-weight: 700; src: url("../mmm-same-director/assets/fonts/captured-u-4k0q2lgwslOqpF_6gQ8kELY7pMT-Dfq9PrNX0.woff2") format('woff2'); }
+:root { --ground: #0B0807; --ink: #F3E6D0; --muted: #B9A88E; --amber: #FFB547; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1350px; background: var(--ground); overflow: hidden; }
+#c { position: relative; width: 1080px; height: 1350px; overflow: hidden; background: var(--ground); color: var(--ink); }
+.map { position: absolute; }
+#base { opacity: .32; filter: saturate(.8); }
+#hl { mix-blend-mode: lighten; }
+#eyebrow { position: absolute; left: 34px; top: 30px; font: 600 24px/1 'Oswald'; letter-spacing: .14em; text-transform: uppercase; color: var(--amber); }
+h1 { position: absolute; left: 30px; top: 64px; font: 400 76px/1 'Limelight'; color: var(--amber); text-transform: uppercase; white-space: nowrap; }
+#sub { position: absolute; left: 34px; top: 152px; font: 400 30px/1.2 'Work Sans'; color: var(--ink); }
+#tiles { position: absolute; left: 30px; right: 30px; top: 214px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.tile { border: 3px solid rgba(255,181,71,.6); background: rgba(11,8,7,.85); padding: 14px 14px 16px; }
+.tile b { display: block; font: 700 54px/1 'Courier Prime'; color: var(--amber); white-space: nowrap; }
+.tile span { display: block; font: 600 22px/1.15 'Oswald'; text-transform: uppercase; letter-spacing: .03em; margin-top: 8px; color: var(--ink); }
+.lab { position: absolute; font: 600 26px/1.1 'Oswald'; text-transform: uppercase; color: #FFF3DE; white-space: nowrap;
+  -webkit-text-stroke: 8px #0B0807; paint-order: stroke fill; }
+#url { position: absolute; right: 30px; bottom: 44px; font: 700 28px/1 'Courier Prime'; color: var(--ink); }
+#src { position: absolute; left: 32px; right: 30px; bottom: 14px; font: 400 15px/1.3 'Work Sans'; color: var(--muted); }
+</style>
+</head>
+<body>
+<div id="c">
+  <img class="map" id="base" alt="">
+  <img class="map" id="hl" alt="">
+  <div id="eyebrow"></div>
+  <h1 id="name"></h1>
+  <div id="sub"></div>
+  <div id="tiles"></div>
+  <div id="url">massive-movie-map.mjrfx.com</div>
+  <div id="src"></div>
+</div>
+<script>
+(() => {
+  const D = window.DATA, $ = (id) => document.getElementById(id);
+  for (const id of ["base", "hl"]) {
+    const el = $(id);
+    el.src = D[id]; Object.assign(el.style, { left: D.mx + "px", top: D.my + "px", width: 2000 * D.s + "px", height: 2000 * D.s + "px" });
+  }
+  $("eyebrow").textContent = D.eyebrow; $("name").textContent = D.name; $("sub").textContent = D.sub; $("src").textContent = D.src;
+  $("tiles").innerHTML = D.tiles.map(([big, small]) => `<div class="tile"><b></b><span></span></div>`).join("");
+  [...$("tiles").children].forEach((t, k) => { t.querySelector("b").textContent = D.tiles[k][0]; t.querySelector("span").textContent = D.tiles[k][1]; });
+
+  window.layout = () => {
+    // Fit the name and the tile numbers to their boxes.
+    const h1 = $("name");
+    for (let f = 76; f > 40 && h1.getBoundingClientRect().right > 1050; f -= 2) h1.style.fontSize = f + "px";
+    for (const b of document.querySelectorAll(".tile b"))
+      for (let f = 54; f > 30 && b.scrollWidth > b.parentElement.clientWidth - 28; f -= 2) b.style.fontSize = f + "px";
+    // Things labels may not cover: the header, tiles, footer, and every film marker of the person.
+    const box = (el) => { const r = el.getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom }; };
+    const taken = ["eyebrow", "name", "sub", "tiles", "url", "src"].map((id) => box($(id)));
+    const pad = (b, p) => ({ l: b.l - p, t: b.t - p, r: b.r + p, b: b.b + p });
+    const hits = (a) => taken.some((b) => a.l < b.r && a.r > b.l && a.t < b.b && a.b > b.t);
+    taken.push(...D.points.map(([x, y]) => ({ l: x - 11, t: y - 11, r: x + 11, b: y + 11 })));
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    Object.assign(svg.style, { position: "absolute", inset: "0", width: "1080px", height: "1350px", pointerEvents: "none" });
+    $("c").appendChild(svg);
+    // Candidate spots: rings of widening distance around the films, sideways first; past the first ring the
+    // label gets a thin leader line back to its films.
+    const spots = (x, y, w, h) => {
+      const out = [];
+      for (const d of [20, 46, 80, 120])
+        for (const a of [0, 180, -30, 30, 150, -150, -60, 60, 120, -120, -90, 90]) {
+          const c = Math.cos(a * Math.PI / 180), s = Math.sin(a * Math.PI / 180);
+          const cx = x + c * (d + w / 2), cy = y + s * (d + h / 2);
+          out.push({ l: cx - w / 2, t: cy - h / 2, r: cx + w / 2, b: cy + h / 2, d });
+        }
+      return out;
+    };
+    const esc = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
+    const placed = [];
+    for (const g of D.groups) {
+      for (const lines of [g.lines, [g.lines[0].split(" · ")[0]]]) {   // whole group, else just its best-known title
+        const el = document.createElement("div");
+        el.className = "lab"; el.innerHTML = lines.map(esc).join("<br>");
+        $("c").appendChild(el);
+        const w = el.offsetWidth, h = el.offsetHeight, [x, y] = g.at;
+        const ok = spots(x, y, w, h).find((b) => b.l >= 12 && b.r <= 1068 && b.t >= 12 && b.b <= 1338 && !hits(pad(b, 4)));
+        if (!ok) { el.remove(); continue; }
+        el.style.left = ok.l + "px"; el.style.top = ok.t + "px";
+        if (ok.d > 20) {
+          const px = Math.max(ok.l, Math.min(x, ok.r)), py = Math.max(ok.t, Math.min(y, ok.b));
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          Object.entries({ x1: x, y1: y, x2: px, y2: py, stroke: "#FFF3DE", "stroke-width": 2, opacity: 0.75 }).forEach(([k, v]) => line.setAttribute(k, v));
+          svg.appendChild(line);
+        }
+        taken.push(ok); placed.push(lines.join(" / "));
+        break;
+      }
+    }
+    return placed;
+  };
+})();
+</script>
+</body>
+</html>
