@@ -58,16 +58,14 @@ def hood(v, s):
 
 
 def check(base, domain):
-    from sentence_transformers import SentenceTransformer
+    from src.pitch import embed_texts  # masks and erases like the films' text, if the embedding did
 
     m, v, meta = load(base)
     c, cent = centroids(m, v)
     pitches = json.loads((ROOT / "content" / f"{domain}_deserts.json").read_text(encoding="utf-8"))
     deserts = json.loads((base / "gaps" / "deserts.json").read_text(encoding="utf-8"))["seeds"]
     row = {f"{n} ({int(y)})": j for j, (n, y) in reversed(list(enumerate(zip(m["name"], m["year"]))))}
-    model = SentenceTransformer(meta["model"], device="cuda", model_kwargs={"torch_dtype": torch.float16})
-    emb = model.encode([f"{p['title']}. {p['plot']}" for p in pitches], normalize_embeddings=True,
-                       prompt=f"Instruct: {meta['instruct']}\nQuery: ").astype(np.float32)
+    emb = embed_texts(base, meta, [f"{p['title']}. {p['plot']}" for p in pitches])
     kept = []
     for p, e in zip(pitches, emb):
         s, k = row[p["seed"]], p["cluster"]
