@@ -1,0 +1,89 @@
+<!doctype html>
+<!-- Key image for the r/dataisbeautiful post: key-map.png (videos/tools/key_image.py, map labels hidden) with a
+     title, region labels, callouts and sources, sized to read on a phone (the image shows ~400px wide there).
+     Map points are the capture's projected positions x2, shifted down 440px for the title band. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face { font-family: 'Limelight'; src: url("../mmm-same-director/assets/fonts/captured-XLYkIZL7aopJVbZJHDuoOulHjHUmTQ.woff2") format('woff2'); }
+@font-face { font-family: 'Oswald'; font-weight: 200 700; src: url("../mmm-same-director/assets/fonts/captured-TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2") format('woff2'); }
+@font-face { font-family: 'Work Sans'; src: url("../mmm-same-director/assets/fonts/captured-QGYsz_wNahGAdqQ43Rh_fKDptfpA4Q.woff2") format('woff2'); }
+@font-face { font-family: 'Courier Prime'; font-weight: 700; src: url("../mmm-same-director/assets/fonts/captured-u-4k0q2lgwslOqpF_6gQ8kELY7pMT-Dfq9PrNX0.woff2") format('woff2'); }
+:root { --ground: #0B0807; --ink: #F3E6D0; --muted: #B9A88E; --amber: #FFB547; --red: #FF5A64; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 2000px; height: 2560px; background: var(--ground); overflow: hidden; }
+#c { position: relative; width: 2000px; height: 2560px; background: var(--ground); color: var(--ink); }
+#map { position: absolute; left: 0; top: 440px; width: 2000px; height: 2000px; }
+h1 { position: absolute; left: 70px; top: 60px; font: 400 132px/1.02 'Limelight'; color: var(--amber); text-transform: uppercase; }
+.dek { position: absolute; left: 74px; top: 345px; font: 600 52px/1 'Oswald'; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
+.region { position: absolute; transform: translate(-50%, -50%); font: 700 58px/1 'Oswald'; text-transform: uppercase; color: #FFF3DE; white-space: nowrap;
+  -webkit-text-stroke: 14px #0B0807; paint-order: stroke fill; }
+svg#lines { position: absolute; inset: 0; width: 2000px; height: 2560px; }
+.box { position: absolute; background: rgba(11,8,7,.92); border: 5px solid var(--amber); padding: 22px 30px 26px; }
+.box.red { border-color: var(--red); }
+.box .k { font: 600 40px/1 'Oswald'; letter-spacing: .08em; text-transform: uppercase; color: var(--amber); }
+.box.red .k { color: var(--red); }
+.box .t { font: 400 66px/1.05 'Limelight'; text-transform: uppercase; margin-top: 12px; }
+.box .s { font: 400 48px/1.15 'Work Sans'; margin-top: 10px; }
+#url { position: absolute; left: 70px; bottom: 74px; font: 700 58px/1 'Courier Prime'; color: var(--ink); }
+#src { position: absolute; left: 72px; bottom: 30px; font: 400 28px/1 'Work Sans'; color: var(--muted); }
+</style>
+</head>
+<body>
+<div id="c">
+  <img id="map" src="key-map.png" alt="">
+  <h1>36,841 movies,<br>mapped by plot</h1>
+  <div class="dek">No genres. No tags. Just the stories.</div>
+
+  <div class="region" style="left:1033px; top:1094px">Romance</div>
+  <div class="region" style="left:560px; top:1395px">Crime</div>
+  <div class="region" style="left:575px; top:1060px">Westerns</div>
+  <div class="region" style="left:807px; top:1854px">Horror</div>
+  <div class="region" style="left:999px; top:1554px">War</div>
+  <div class="region" style="left:1208px; top:2170px">Sci-fi</div>
+  <div class="region" style="left:1460px; top:1751px">Animation</div>
+  <div class="region" style="left:1330px; top:1260px">Christmas romances</div>
+  <div class="region" style="left:1299px; top:756px">Sports</div>
+
+  <svg id="lines" viewBox="0 0 2000 2560">
+    <g fill="none" stroke-width="7" style="filter: drop-shadow(0 0 4px #000) drop-shadow(0 0 8px #000)">
+      <path d="M300 800 L505 1222" stroke="#FFB547"/>
+      <circle cx="518" cy="1237" r="30" stroke="#FFB547"/>
+      <path d="M300 1720 L374 1616" stroke="#FFB547"/>
+      <circle cx="383" cy="1588" r="30" stroke="#FFB547"/>
+      <path d="M650 2120 L751 2121" stroke="#FFB547"/>
+      <circle cx="781" cy="2121" r="30" stroke="#FFB547"/>
+      <path d="M1380 2110 L1120 1688" stroke="#FF5A64" stroke-dasharray="22 12"/>
+      <circle cx="1094" cy="1664" r="36" stroke="#FF5A64"/>
+    </g>
+    <text x="1094" y="1680" fill="#FF5A64" text-anchor="middle" font-family="Oswald" font-weight="700" font-size="44">?</text>
+  </svg>
+
+  <div class="box" style="left:50px; top:500px; width:720px">
+    <div class="k">Found by plot alone</div>
+    <div class="t">GoodFellas</div>
+    <div class="s">lands next to The Irishman</div>
+  </div>
+
+  <div class="box" style="left:50px; top:1720px; width:600px">
+    <div class="k">Same year, same plot</div>
+    <div class="s" style="margin-top:12px">Olympus Has Fallen &amp; White House Down</div>
+  </div>
+
+  <div class="box" style="left:50px; top:2010px; width:600px">
+    <div class="k">Most retold</div>
+    <div class="t">Dracula</div>
+    <div class="s">32 near-identical films</div>
+  </div>
+
+  <div class="box red" style="left:1330px; top:2110px; width:630px">
+    <div class="k">Empty space</div>
+    <div class="s" style="margin-top:12px">WWII + dinosaurs: nobody's made it yet</div>
+  </div>
+
+  <div id="url">massive-movie-map.mjrfx.com</div>
+  <div id="src">Data: TMDB, Wikipedia (CC BY-SA) · Qwen3 embeddings, UMAP, HDBSCAN · Uses the TMDB API; not endorsed or certified by TMDB.</div>
+</div>
+</body>
+</html>
