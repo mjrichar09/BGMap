@@ -433,6 +433,10 @@ a { color: var(--link); }
             <div><label class="cap" for="roiMin">Return min ×</label><input id="roiMin" type="number" min="0" step="0.5" placeholder="any"></div>
             <div><label class="cap" for="langFilter">Language</label><select id="langFilter"><option value="">Any</option></select></div>
           </div>
+          <div class="row">
+            <div><label class="cap" for="formatFilter">Format</label><select id="formatFilter"><option value="">Any</option><option value="0">Live action</option><option value="1">Animated</option></select></div>
+            <div></div>
+          </div>
           <p class="help">Box office and budget are TMDB's figures, not adjusted for inflation, and known for about a third of films. Setting a money filter hides films without that figure.</p>
         </div>
       </details>
@@ -593,7 +597,7 @@ a { color: var(--link); }
   const state = {
     manifest: null, films: null, blurbs: null, models: {}, model: null, n: 0,
     colorBy: "cluster", genre: 0, sizePop: true, showTiles: true,
-    filters: { yearMin: null, yearMax: null, rMin: null, rMax: null, genre: null, ratingMin: null, votesMin: null, revMin: null, budMax: null, roiMin: null, lang: null },
+    filters: { yearMin: null, yearMax: null, rMin: null, rMax: null, genre: null, ratingMin: null, votesMin: null, revMin: null, budMax: null, roiMin: null, lang: null, format: null },
     selected: null, viewState: null,
     highlight: null, route: null, routeStop: null, routeMode: "influence", routeFrom: null, routeTo: null,
     likes: [], gnSeeds: [], timeYear: null, unmade: null, desert: null, view3d: false, spin: false, latestYear: 9999,
@@ -823,6 +827,7 @@ a { color: var(--link); }
       if (f.rMin != null && (r == null || r < f.rMin)) ok = false;
       if (f.rMax != null && (r == null || r > f.rMax)) ok = false;
       if (f.genre != null && !genreSets[i].has(f.genre)) ok = false;
+      if (f.format != null && (g.anim ? g.anim[i] : 0) !== f.format) ok = false;  // animation is a format, not a genre
       // A minimum or maximum on a figure hides films without that figure.
       const atLeast = (v, lo) => lo == null || (v != null && v >= lo), atMost = (v, hi) => hi == null || (v != null && v <= hi);
       if (!atLeast(g.rating[i], f.ratingMin) || !atLeast(g.votes[i], f.votesMin) || !atLeast(g.revenue[i], f.revMin)
@@ -1969,13 +1974,14 @@ a { color: var(--link); }
     ["yearMin", "yearMax", "rMin", "rMax", "ratingMin", "votesMin", "revMin", "budMax", "roiMin"].forEach((id) => $(id).addEventListener("input", () => { state.filters[id] = num(id); refreshAll(); }));
     $("genreFilter").addEventListener("change", () => { state.filters.genre = num("genreFilter"); refreshAll(); });
     $("langFilter").addEventListener("change", () => { state.filters.lang = num("langFilter"); refreshAll(); });
+    $("formatFilter").addEventListener("change", () => { state.filters.format = num("formatFilter"); refreshAll(); });
     $("sizePop").addEventListener("change", (e) => { state.sizePop = e.target.checked; resize(); redraw(); });
     $("showTiles").addEventListener("change", (e) => { state.showTiles = e.target.checked; redraw(); });
     $("view3d").checked = state.view3d; $("spin").disabled = !state.view3d;
     $("view3d").addEventListener("change", (e) => setView3d(e.target.checked));
     $("spin").addEventListener("change", (e) => setSpin(e.target.checked));
     $("reset").addEventListener("click", () => {
-      ["yearMin", "yearMax", "rMin", "rMax", "genreFilter", "ratingMin", "votesMin", "revMin", "budMax", "roiMin", "langFilter"].forEach((id) => { $(id).value = ""; });
+      ["yearMin", "yearMax", "rMin", "rMax", "genreFilter", "ratingMin", "votesMin", "revMin", "budMax", "roiMin", "langFilter", "formatFilter"].forEach((id) => { $(id).value = ""; });
       Object.keys(state.filters).forEach((k) => { state.filters[k] = null; });
       refreshAll();
     });

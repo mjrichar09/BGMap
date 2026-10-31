@@ -47,6 +47,7 @@ def main() -> None:
     ap.add_argument("--domain", required=True)
     ap.add_argument("--model", default="qwen3", choices=MODELS)
     ap.add_argument("--text", default="text", help="items.parquet column to embed")
+    ap.add_argument("--items", default="items.parquet", help="table to read the text column from, e.g. texts.parquet (src.mask)")
     ap.add_argument("--token-budget", type=int, default=32768, help="padded tokens per batch")
     ap.add_argument("--limit", type=int, help="only embed the first N rows (for testing)")
     ap.add_argument(
@@ -64,7 +65,7 @@ def main() -> None:
 
     spec = MODELS[args.model]
     base = domain_dir(args.domain)
-    items = pd.read_parquet(base / "items.parquet", columns=["id", "name", args.text])
+    items = pd.read_parquet(base / args.items, columns=["id", "name", args.text])
     if args.limit:
         items = items.head(args.limit)
     texts = items[args.text].fillna("").tolist()

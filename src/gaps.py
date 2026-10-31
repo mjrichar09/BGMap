@@ -33,8 +33,8 @@ import pandas as pd
 
 from src.common import ROOT, domain_dir
 
-EMBEDDING = "qwen3__text_plot__inst"
-MAP = "qwen3__text_plot__inst__nn30_md0.05"
+EMBEDDING = "qwen3__plot_masked_meta__inst__noanimation"  # masked plot + keywords + tagline, animation erased (src.mask, src.erase)
+MAP = "qwen3__plot_masked_meta__inst__noanimation__nn30_md0.05"
 NONFICTION = {"Documentary", "Music", "TV Movie"}
 MIN_SIZE = 60  # films a parent cluster needs
 TOP = 20
@@ -126,17 +126,13 @@ def find(base, out_dir):
 
 
 def check(base, out_dir, domain):
-    from sentence_transformers import SentenceTransformer
-    import torch
+    from src.pitch import embed_texts  # masks and erases like the films' text, if the embedding did
 
     m, v, meta = load(base)
     c, cent = centroids(m, v)
     df, stats, sims = rank(m, v, cent)
     pitches = json.loads((ROOT / "content" / f"{domain}_unmade.json").read_text(encoding="utf-8"))
-    model = SentenceTransformer(meta["model"], device="cuda", model_kwargs={"torch_dtype": torch.float16})
-    prompt = f"Instruct: {meta['instruct']}\nQuery: "
-    texts = [f"{p['title']}. {p['plot']}" for p in pitches]
-    emb = model.encode(texts, normalize_embeddings=True, prompt=prompt).astype(np.float32)
+    emb = embed_texts(base, meta, [f"{p['title']}. {p['plot']}" for p in pitches])
 
     unmade = []
     for p, e in zip(pitches, emb):

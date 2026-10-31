@@ -117,16 +117,13 @@ def fit(base):
 def score(base, path):
     """Embed pitches ({title, plot} list) with the map's model and score them with the fitted models,
     with each score's percentile among real films' out-of-fold predictions."""
-    import torch
-    from sentence_transformers import SentenceTransformer
+    from src.pitch import embed_texts  # masks and erases like the films' text, if the embedding did
 
     _, _, meta = load(base)
     models = joblib.load(base / "fit" / "models.joblib")
     preds = pd.read_parquet(base / "fit" / "preds.parquet")
     pitches = json.loads(path.read_text(encoding="utf-8"))
-    model = SentenceTransformer(meta["model"], device="cuda", model_kwargs={"torch_dtype": torch.float16})
-    emb = model.encode([f"{p['title']}. {p['plot']}" for p in pitches], normalize_embeddings=True,
-                       prompt=f"Instruct: {meta['instruct']}\nQuery: ").astype(np.float32)
+    emb = embed_texts(base, meta, [f"{p['title']}. {p['plot']}" for p in pitches])
     scored = []
     for p, e in zip(pitches, emb):
         parts, row = [], {**p}

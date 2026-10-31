@@ -1,107 +1,65 @@
 [
  {
   "seed": "The Social Network (2010)",
-  "cluster": 58,
+  "cluster": 18,
   "title": "Launch Day",
   "logline": "A startup's earthquake-warning app goes live on the morning of the big one.",
   "plot": "Three college dropouts in San Francisco have spent two years and every dollar their investors gave them building an app that can warn phones seconds before an earthquake. Their lead investor wants a flashier product, the board is ready to fire the founder, and the launch party is set for a Monday morning. At 9:41 a.m., as the app goes live to a million users, the San Andreas fault ruptures. Buildings fall, the servers in their basement are failing, and their alerts are the only thing reaching people across a city with no power. Trapped in their collapsing office, the founders must keep the system running and decide who gets warned first."
  },
  {
   "seed": "The Theory of Everything (2014)",
-  "cluster": 33,
+  "cluster": 21,
   "title": "The Equation",
   "logline": "In 1962, the first Black physics student at a Mississippi university solves a problem his professors can't, and the state wants him gone.",
   "plot": "In 1962, a brilliant young physicist from the Mississippi Delta becomes the first Black graduate student at the state university, escorted onto campus by federal marshals through a crowd of rioters. His advisor, a famous cosmologist, refuses to supervise him, and his classmates won't sit near him. Working alone at night in the library, he solves an equation about the birth of the universe that the department has chased for a decade. When his professor tries to publish the work under his own name, and the governor's men threaten the young man's family, he must fight for his discovery and his right to stay, as the civil rights movement marches through the town."
  },
  {
   "seed": "The Day After Tomorrow (2004)",
-  "cluster": 6,
+  "cluster": 7,
   "title": "Category Five",
   "logline": "Big-wave surfers chase the largest swell ever recorded, straight into a hurricane.",
   "plot": "A record-breaking hurricane is spinning toward Hawaii, and meteorologists are ordering everyone off the North Shore. For a handful of professional big-wave surfers, it is also the biggest swell in recorded history, and a surf brand has offered a fortune to whoever rides the largest wave. As the storm intensifies beyond any forecast, a retired champion, her estranged son who is chasing the title, and a rookie with nothing to lose paddle out with jet skis and safety teams. When the storm surge floods the island and the rescue helicopters are grounded, the surfers become the only ones who can reach people trapped along the coast."
  },
  {
-  "seed": "The Simpsons Movie (2007)",
-  "cluster": 33,
-  "title": "Lunch Counter",
-  "logline": "An animated comedy about a hopeless suburban family in 1963 Alabama, whose youngest daughter joins a sit-in.",
-  "plot": "The Pruitts are a loud, lazy, lovable cartoon family in 1963 Birmingham, Alabama, a segregated city where Black citizens cannot eat at the same lunch counters or attend the same schools as whites. Junie, the too-smart eight-year-old daughter, befriends a Black girl from across town whose family is organizing with Dr. King's movement, and joins the students sitting in at the five-and-dime. Police dogs, fire hoses and the Klan come to town, and her father, a bumbling bottle-plant worker terrified of losing his job, must choose between his racist neighbors and his daughter, in a satirical animated comedy about an ordinary family during the civil rights movement."
- },
- {
   "seed": "Oppenheimer (2023)",
-  "cluster": 23,
+  "cluster": 13,
   "title": "Trinity in Color",
   "logline": "The Army hires a painter to record Los Alamos in 1945. She becomes the only artist to witness the first atomic bomb.",
   "plot": "In 1945, Ruth Halloran, a struggling New Mexico landscape painter, is hired by the Army to paint the secret laboratory at Los Alamos for the official record. Forbidden to ask what the scientists are building, she paints the mesa, the barracks and the exhausted physicists, and falls into a friendship with a young chemist who begins to fear the weapon. On the morning of the Trinity test she is driven into the desert to paint the explosion. What she puts on the canvas horrifies the generals, and when they order her paintings destroyed, Ruth must decide whether to hide the only artistic record of the moment the world changed."
  },
  {
-  "seed": "Ratatouille (2007)",
-  "cluster": 17,
-  "title": "Last Service",
-  "logline": "Twelve chefs, one underground tournament, and every loser forfeits their restaurant.",
-  "plot": "Every year a secretive billionaire invites twelve of the world's best chefs to a cooking tournament in a locked mansion. The prize is a fortune, but each chef must stake their restaurant, and every round, the worst dish is eliminated. Marguerite, a gifted cook from a failing family bistro in Lyon, enters to save her late father's restaurant. As the rounds grow crueler, with blind tastings, sabotaged kitchens and dishes cooked in the dark, the chefs realize the host is betting on them, and the losers are not being allowed to leave. To survive the final service, Marguerite must cook the meal of her life."
- },
- {
-  "seed": "A Bug's Life (1998)",
-  "cluster": 89,
-  "title": "Local 1911",
-  "logline": "An animated colony of ants living beneath a New York garment factory goes on strike.",
-  "plot": "Beneath the floorboards of a garment factory in 1911 New York lives a colony of animated ants who survive on the crumbs of the immigrant girls sewing upstairs. Based on the true story of the Triangle Shirtwaist Factory, where a fire killed 146 workers behind locked doors, the film follows Rosa, a young worker ant who watches the girls of the Lower East Side organize a strike. When the fire breaks out, the ants help the workers escape. Inspired by the real women who marched down Fifth Avenue afterwards, Rosa leads her colony to stand up to the greedy beetles who take their food."
- },
- {
   "seed": "Green Book (2018)",
-  "cluster": 98,
+  "cluster": 72,
   "title": "Township Jazz",
   "logline": "In 1976, an American jazz legend touring South Africa must decide whether to play for whites-only crowds.",
   "plot": "In 1976, as the apartheid government in Pretoria forces Black South Africans into townships and bans their music from the radio, a young pianist from Soweto plays in illegal shebeens and dreams of leaving. When the government invites an American jazz star for a segregated tour, the pianist is hired as his accompanist. The students of Soweto march against Afrikaans in their schools and the police open fire, and the musicians must decide whether to play the whites-only concert halls or join the protest. A story of jazz, resistance and the musicians who fought apartheid with their songs."
  },
  {
   "seed": "The Curious Case of Benjamin Button (2008)",
-  "cluster": 42,
+  "cluster": 32,
   "title": "Ingénue",
   "logline": "An actress who never ages has played the young lead for a hundred years, under a dozen different names.",
   "plot": "Since 1925, the same woman has starred in Hollywood pictures under a dozen different names, playing the young romantic lead in silent films, Technicolor musicals and, today, a streaming series. She does not age. Every twenty years she retires, fakes her death and reinvents herself, leaving behind the directors, husbands and co-stars who grew old. When a young film historian notices that a 1950s starlet and today's breakout actress have the same face, he begins to dig through old studio archives. As he gets closer to the truth, she must decide whether to vanish again or finally let someone see her grow old."
  },
  {
-  "seed": "Ready Player One (2018)",
-  "cluster": 67,
-  "title": "Avatar on Everest",
-  "logline": "A paralyzed climber attempts Everest through a robot body, and the robot gets stranded in the death zone.",
-  "plot": "Four years after a fall left her paralyzed, champion mountaineer Kaia Brandt is offered the chance to climb again. A tech company has built a humanoid robot that she controls through a virtual-reality rig from a lab in California, and it is going to Everest. Through the robot's eyes she climbs the Khumbu Icefall, crosses the crevasses and reaches the death zone with a team of Sherpa guides who distrust the machine. When a storm hits and a human climber collapses near the summit, the company orders her to save its robot. Kaia, feeling every gust of wind through the headset, must choose between the machine and a life."
- },
- {
   "seed": "The Hunger Games (2012)",
-  "cluster": 152,
+  "cluster": 79,
   "title": "Color War",
   "logline": "At an elite summer camp, the end-of-summer color war turns out to be a real one.",
   "plot": "In a near-future country ruled by a single party, every teenager spends one summer at a state camp, and every camp ends with the color war, broadcast live to the nation. Officially it is capture the flag in the woods. In truth the regime uses it to find soldiers and punish dissent. Tess, a sharp-tongued sixteen-year-old whose parents were arrested for protesting, is placed on the Blue team with a cabin of misfits. When the counselors change the rules and campers begin to disappear in the forest, Tess must lead her cabin through the games, expose the camp on its own broadcast and spark a revolt."
  },
  {
-  "seed": "San Andreas (2015)",
-  "cluster": 148,
-  "title": "Fault Line",
-  "logline": "A massive earthquake under Los Angeles opens a cavern where prehistoric animals have survived for ten thousand years.",
-  "plot": "Seismologists have warned for years that the Big One is coming, and when the magnitude 9.1 earthquake strikes Los Angeles, it tears the city apart: freeways collapse, fires spread and the ground splits open beneath the La Brea tar pits. Inside the chasm is a cavern sealed since the Ice Age, where sabre-toothed cats, giant ground sloths and dire wolves have survived. As aftershocks shake the ruins, a paleontologist, a firefighter and a busload of stranded schoolchildren must cross a collapsing city overrun with prehistoric predators to reach the evacuation point on the coast before the next quake."
- },
- {
   "seed": "Cast Away (2000)",
-  "cluster": 79,
+  "cluster": 77,
   "title": "Field Guide",
   "logline": "An autistic teenager survives alone in the Alaskan wilderness after a plane crash, using the encyclopedia in his head.",
   "plot": "Fifteen-year-old Owen, who is autistic and knows every page of his field guide to North American plants and animals by heart, is the only survivor when a bush plane crashes in the Alaskan wilderness. Alone, with no tools and a broken arm, he must find water, build shelter and survive a winter that is coming fast. The routines and knowledge that made him an outsider at school keep him alive: he knows which berries are poisonous and how bears behave. Inspired by real survival stories, the film follows his months alone, while his mother refuses to let the searchers give up."
  },
  {
   "seed": "Saving Private Ryan (1998)",
-  "cluster": 148,
+  "cluster": 65,
   "title": "Island 9",
   "logline": "In 1944, a squad of Marines sent to an uncharted Pacific island finds it ruled by prehistoric beasts.",
   "plot": "In the summer of 1944, a squad of eight Marines is sent to scout an uncharted island in the South Pacific where a reconnaissance plane went down. They expect a Japanese garrison. Instead they find the garrison destroyed, and a jungle full of creatures that have survived since the age of the dinosaurs. With their radio broken and their sergeant wounded, the young Marines must cross the island to reach the downed pilots, forced into an uneasy truce with the last surviving Japanese soldiers, as the creatures hunt them all through the jungle."
- },
- {
-  "seed": "War for the Planet of the Apes (2017)",
-  "cluster": 16,
-  "title": "The Ape City",
-  "logline": "Archaeologists in the Congo uncover a ten-thousand-year-old city built by apes.",
-  "plot": "Deep in the rainforest of the Congo, an archaeologist and her team uncover the ruins of a stone city that carbon dating places ten thousand years before the first human cities. The carvings on the walls show apes building it. As the team digs into the tombs and decodes the carvings, they learn that an intelligent ape civilization rose and fell long before humanity, and why it vanished. When a mining company arrives to destroy the site and the chimpanzees of the surrounding forest begin to behave strangely, the archaeologist must protect the discovery and the apes who may still remember it."
  }
 ]

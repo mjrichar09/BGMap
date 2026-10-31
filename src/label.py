@@ -18,6 +18,7 @@ except the long text columns.
 """
 
 import argparse
+import re
 import sys
 from collections import Counter
 
@@ -48,11 +49,15 @@ LONG_TEXT = ["text", "plot", "text_plot"]
 EXAMPLES = 3
 
 
+# Animation is a medium, not a kind of story: its genre and keywords (anime, 3d animation, cartoon, ...) never name a cluster.
+MEDIUM_TAG = re.compile(r"anim|anime|manga|cartoon|stop motion|claymation|cgi|hand drawn", re.I)
+
+
 def tag_sets(items: pd.DataFrame, columns: list[str], stop: set[str]) -> list[set[str]]:
     sets = [set() for _ in range(len(items))]
     for col in columns:
         for i, tags in enumerate(items[col]):
-            sets[i].update(t.lower() for t in (tags if tags is not None else []) if t.lower() not in stop)
+            sets[i].update(t.lower() for t in (tags if tags is not None else []) if t.lower() not in stop and not MEDIUM_TAG.search(t))
     return sets
 
 

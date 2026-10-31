@@ -159,6 +159,7 @@ def films_payload(df: pd.DataFrame, source: str) -> tuple[dict, dict]:
         # The shared CDN prefix is restored by the page.
         "thumb": df["thumbnail"].fillna("").str.removeprefix(POSTER_PREFIX).tolist(),
         "genre": genres,
+        "anim": df["animated"].astype(int).tolist() if "animated" in df else [0] * len(df),
         "kw": kws,
         "dir": [[person[p] for p in a] for a in directors],
         "cast": [[person[p] for p in a] for a in cast],
@@ -335,6 +336,10 @@ def main() -> None:
     data_dir.mkdir(parents=True, exist_ok=True)
 
     frames = {m: pd.read_parquet(base / "maps" / f"{m}.parquet") for m in args.map}
+    for df in frames.values():  # Animation is a medium, not a genre: a Format filter on the page, never a genre tag
+        g = df["genres"].map(lambda a: list(a) if a is not None else [])
+        df["animated"] = g.map(lambda a: "Animation" in a)
+        df["genres"] = g.map(lambda a: [x for x in a if x != "Animation"])
     first = frames[args.map[0]]
     ids = {i: k for k, i in enumerate(first["id"])}
     unmade_path = base / "gaps" / "unmade.json"
