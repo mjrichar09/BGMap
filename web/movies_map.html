@@ -130,7 +130,6 @@ body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 var(-
   var(--accent); }
 h1 { margin: 0; font: 400 25px/1.1 var(--font-display); letter-spacing: var(--title-track); text-transform: var(--title-case); }
 .note { margin: 0; color: var(--muted); font-size: 12.5px; }
-#themeBtn { margin-left: auto; background: none; border: var(--border-w) solid var(--soft-line); border-radius: var(--radius-sm); color: var(--muted); font: 500 11.5px var(--font-label); letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 8px; cursor: pointer; }
 .cap, label.cap { display: block; font: 700 11.5px var(--font-data); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 0 0 5px; }
 input, select, button { font: inherit; color: var(--fg); }
 input[type="search"], input[type="text"], input[type="number"], select {
@@ -207,6 +206,10 @@ input:disabled, button:disabled { opacity: 0.55; cursor: not-allowed; }
 #detail .meta { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
 .desert-bar { display: block; height: 5px; margin-top: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--accent) var(--w), var(--soft-line) var(--w)); }
 .desert-what { margin: 0; font: 400 17px/1.3 var(--font-display); }
+.fit-table { width: 100%; border-collapse: collapse; }
+.fit-table th, .fit-table td { text-align: left; padding: 3px 6px 3px 0; border-bottom: var(--border-w) solid var(--soft-line); }
+.fit-bars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-top: 4px; }
+.fit-bars i { display: block; height: 5px; border-radius: 3px; background: linear-gradient(90deg, var(--accent) var(--w), var(--soft-line) var(--w)); }
 .desert-pitch { border-left: 3px solid var(--accent); padding: 2px 0 2px 10px; }
 .desert-pitch h4 { margin: 2px 0 4px; font: 400 18px/1.2 var(--font-display); }
 .desert-pitch p { margin: 0 0 6px; font-size: 13px; line-height: 1.45; }
@@ -254,6 +257,44 @@ a { color: var(--link); }
 #timeKey i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 3px; vertical-align: -1px; }
 #status { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); z-index: 1; font: 15px var(--font-data); }
 #toolsBtn { display: none; }
+#aboutBtn { display: none; }
+#aboutBtn .sm { display: none; }
+.about-link { background: none; border: 0; padding: 0; color: inherit; font: inherit; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+#about:focus { outline: none; }
+#themeBtn, #aboutBtn { background: none; border: var(--border-w) solid var(--soft-line); border-radius: var(--radius-sm); color: var(--muted); font: 500 11.5px var(--font-label); letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 8px; cursor: pointer; }
+#themeBtn { margin-left: auto; white-space: nowrap; }
+/* Loading screen: a spinning reel and the download's progress, over the empty field. */
+#loader { position: fixed; inset: 0; z-index: 8; display: grid; place-items: center; padding: 16px; transition: opacity 0.45s;
+  background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(4px); }
+#loader.done { opacity: 0; pointer-events: none; }
+#loader .card.loader-card { position: relative; width: min(360px, 100%); box-sizing: border-box; padding: 26px 22px 20px 34px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+/* A popcorn bucket that fills kernel by kernel with the progress bar. */
+.loader-corn { width: 84px; height: auto; overflow: visible; }
+.loader-corn .k { transform: scale(0); transform-box: fill-box; transform-origin: center; transition: transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.loader-corn .k.on { transform: scale(1); }
+.loader-title { margin: 4px 0 0; font: 400 26px/1.1 var(--font-display); letter-spacing: var(--title-track); text-transform: var(--title-case); }
+.loader-tag { margin: 0; color: var(--muted); font-size: 13px; }
+.loader-bar { width: 100%; height: 8px; margin-top: 6px; border-radius: 4px; background: var(--soft-line); overflow: hidden; }
+.loader-bar i { display: block; height: 100%; width: 2%; border-radius: 4px; background: var(--accent); transition: width 0.25s; }
+.loader-step { margin: 0; min-height: 1.4em; font: 12.5px var(--font-data); color: var(--muted); font-variant-numeric: tabular-nums; }
+/* About: a dialog over everything, readable at phone width. */
+#about { width: min(680px, calc(100vw - 32px)); max-height: min(86dvh, 900px); box-sizing: border-box; padding: 0; color: var(--fg);
+  background: var(--panel-2); background: color-mix(in srgb, var(--bg) 92%, var(--panel)); border: var(--border-w) solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: none; flex-direction: column; }
+#about[open] { display: flex; }
+#about::backdrop { background: rgba(10, 6, 4, 0.55); backdrop-filter: blur(2px); }
+.about-head { display: flex; align-items: center; gap: 10px; padding: 16px 20px 10px; border-bottom: var(--border-w) solid var(--soft-line); }
+.about-head h2 { margin: 0; font: 400 24px/1.1 var(--font-display); letter-spacing: var(--title-track); text-transform: var(--title-case); }
+.about-head .close { margin-left: auto; }
+.about-body { overflow: auto; padding: 4px 20px 20px; font-size: 14.5px; line-height: 1.55; overscroll-behavior: contain; }
+.about-body h3 { margin: 18px 0 6px; font: 600 15px var(--font-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.about-body p { margin: 0 0 8px; }
+.about-body ul { margin: 0 0 8px; padding-left: 20px; }
+.about-body li { margin: 0 0 6px; }
+.about-body li ul { margin-top: 6px; }
+.about-body a { color: inherit; }
+.about-lede { font-size: 16px; margin-top: 12px !important; }
 /* Phones: a compact top bar with the search; Tools opens the rest. The film card is a bottom sheet. */
 @media (max-width: 720px) {
   #controls { left: max(8px, env(safe-area-inset-left, 0px)); right: max(8px, env(safe-area-inset-right, 0px)); width: auto;
@@ -266,6 +307,12 @@ a { color: var(--link); }
   #toolsBtn { display: inline-block; margin-left: auto; background: var(--accent); color: var(--accent-ink); border: var(--border-w) solid var(--accent);
     border-radius: var(--radius-sm); font: 600 12px var(--font-label); letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 10px; cursor: pointer; }
   #themeBtn { margin-left: 0; padding: 7px 8px; white-space: nowrap; }
+  #toolsBtn { margin-left: 0; }
+  #aboutBtn { display: inline-block; margin-left: auto; padding: 7px 10px; }
+  #aboutBtn .lg { display: none; }
+  #aboutBtn .sm { display: inline; }
+  .about-head { padding: 12px 14px 8px; }
+  .about-body { padding: 2px 16px 16px; font-size: 14px; }
   .searchbox label { display: none; }
   /* 16px inputs stop iOS from zooming the page when one is focused. */
   input[type="search"], input[type="text"], input[type="number"], select { font-size: 16px; padding: 8px 10px; }
@@ -349,16 +396,83 @@ a { color: var(--link); }
   </g>
 </svg>
 <div id="map" aria-label="Map of movies"></div>
-<div id="status">Loading map…</div>
+<div id="status" hidden></div>
+<div id="loader" role="status" aria-live="polite">
+  <div class="card loader-card">
+    <svg id="loaderCorn" class="loader-corn" aria-hidden="true" viewBox="40 -10 220 340">
+      <defs><clipPath id="lcBucket"><path d="M62 128 L238 128 L212 330 L88 330 Z"/></clipPath>
+        <g id="lcK"><circle r="15"/><circle cx="12" cy="-6" r="12"/><circle cx="-11" cy="-8" r="11"/><circle cx="2" cy="-16" r="10"/></g></defs>
+      <g fill="#f6e7c4" stroke="#c9a46a" stroke-width="2"><use class="k" href="#lcK" x="86" y="116"/><use class="k" href="#lcK" x="222" y="116"/><use class="k" href="#lcK" x="192" y="98"/><use class="k" href="#lcK" x="120" y="96"/><use class="k" href="#lcK" x="156" y="88"/><use class="k" href="#lcK" x="208" y="80"/><use class="k" href="#lcK" x="104" y="76"/><use class="k" href="#lcK" x="178" y="66"/><use class="k" href="#lcK" x="142" y="62"/><use class="k" href="#lcK" x="124" y="42"/><use class="k" href="#lcK" x="162" y="38"/><use class="k" href="#lcK" x="146" y="16"/></g>
+      <g clip-path="url(#lcBucket)"><rect x="40" y="120" width="220" height="220" fill="#efe6d2"/>
+        <g fill="#c8102e"><path d="M70 120 L100 120 L104 340 L84 340 Z"/><path d="M128 120 L158 120 L156 340 L132 340 Z"/><path d="M186 120 L216 120 L200 340 L180 340 Z"/><path d="M236 120 L260 120 L240 340 L224 340 Z"/></g></g>
+      <path d="M62 128 L238 128 L212 330 L88 330 Z" fill="none" stroke="#2a1a14" stroke-width="5"/>
+      <path d="M56 120 H244 L240 138 H60 Z" fill="#c8102e" stroke="#2a1a14" stroke-width="4"/>
+    </svg>
+    <h2 class="loader-title">Massive Movie Map</h2>
+    <p class="loader-tag">Every film placed by what its story is about</p>
+    <div class="loader-bar" aria-hidden="true"><i id="loaderFill"></i></div>
+    <p class="loader-step" id="loaderStep">Warming up the projector…</p>
+    <button class="btn ghost" type="button" data-about>What am I looking at?</button>
+  </div>
+</div>
+<dialog id="about" aria-labelledby="aboutTitle">
+  <div class="about-head">
+    <h2 id="aboutTitle">About the map</h2>
+    <button class="close" type="button" id="aboutClose" aria-label="Close">Close ✕</button>
+  </div>
+  <div class="about-body">
+    <p class="about-lede">Every dot is a film, <span class="aboutCount">36,841</span> of them. Films sit close together when their <em>stories</em> are alike: not because they share a genre label, a director, a star or a franchise, but because of what happens in them.</p>
+
+    <h3>How the films are placed</h3>
+    <p>An AI text model (Qwen3-Embedding) reads each film's plot summary, keywords and tagline, and turns it into 1,024 numbers that describe its themes, setting, tone and kind of story. Before it reads, the names of people, franchise places and things (Hogwarts, Jedi), genre words and mentions of animation are hidden. A wizard school story lands near other coming-of-age-with-magic stories whether or not it's Hogwarts, and a cartoon sits next to live-action films with the same plot.</p>
+    <p>Those 1,024 numbers are then squeezed into the three dimensions you see (with UMAP), keeping each film beside the films most like it. <b>Nearby means similar.</b> Long distances and the overall shape are only rough: two regions far apart are different, but how far isn't a measure of how different.</p>
+
+    <h3>What you're seeing</h3>
+    <ul>
+      <li><b>Dots</b> are films. Their size is how many people rated them on TMDB, a stand-in for how widely they were seen. Their color follows <i>Color by</i>: regions by default, or rating, box office, budget, return on budget, year, language, originality or a genre.</li>
+      <li><b>Regions</b> are groups of films the map found by itself (clustering), named by the keywords most typical of them. Zoom in and the big regions split into finer ones.</li>
+      <li><b>Layouts</b> (Map tab) give three views of the same films:
+        <ul>
+          <li><i>Story map</i>: the similarity map described above.</li>
+          <li><i>Axes</i>: the three directions in which plots differ most, each end named by the films found there.</li>
+          <li><i>Fit</i>: films placed by what their plot alone predicts: rating across, box office up and popularity in depth. The rings are movies nobody has made yet, placed the same way.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>What you can learn from it</h3>
+    <ul>
+      <li><b>Your next film.</b> Click any film: its card lists its nearest neighbors, the films whose stories are closest, often from other decades, countries and genres. <i>I like these together</i> and <i>Movie night</i> find films close to several picks at once.</li>
+      <li><b>How original a film is.</b> Originality is how far a film sits from its nearest neighbors. Dots alone at the edge of a region are stories few others have told.</li>
+      <li><b>Which stories audiences love, and which make money.</b> Color by rating, then by box office or return on budget, and compare. They don't line up: true stories and documentaries rate highest, while superheroes and martial-arts epics earn most. <i>Predicting a hit</i> measures how much of a film's rating, box office and popularity its plot alone predicts.</li>
+      <li><b>How cinema changed.</b> Color by year, or play the <i>Time-lapse</i>, and watch regions fill up decade by decade. Color by language to see which stories each film industry tells.</li>
+      <li><b>A filmmaker's range.</b> The <i>People lens</i> lights up one director's or actor's films: some stay in one region their whole career, others are scattered across the map.</li>
+      <li><b>How one kind of film leads to another.</b> <i>Route between films</i> finds a chain of similar films linking any two; influence routes only step forward in time.</li>
+      <li><b>Overlooked films.</b> <i>Hidden gems</i> are highly rated films few people have rated.</li>
+      <li><b>Films nobody has made.</b> <i>Unmade movies</i> are empty places between two kinds of film. Each has an AI-written pitch, placed by the same model to check that it really lands in the gap.</li>
+    </ul>
+
+    <h3>What it can't tell you</h3>
+    <ul>
+      <li>Placement only reflects the plot summary, and summaries vary in length and quality. A film with a thin summary can land somewhere odd.</li>
+      <li>Similarity is a model's reading of the text, not a critic's judgement. It sees what a film is about, not how well it's made.</li>
+      <li>Box office and budgets are TMDB's figures, known for about a third of films and not adjusted for inflation. Predictions in the Fit view come from the plot alone and are not forecasts.</li>
+    </ul>
+
+    <h3>Credits</h3>
+    <p>Film details, ratings and posters from <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>; plot summaries from Wikipedia and TMDB. This website uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB. Made by <a href="https://mjrfx.com" target="_blank" rel="noopener">MJR FX</a>.</p>
+  </div>
+</dialog>
 
 <section id="controls" class="card" aria-label="Map controls">
   <div class="brand">
     <div class="brand-mark" aria-hidden="true"></div>
     <h1 id="title">Massive Movie Map</h1>
     <button id="toolsBtn" type="button" aria-expanded="false" aria-controls="controls">Tools</button>
+    <button id="aboutBtn" type="button" data-about aria-label="About this map"><span class="lg">About</span><span class="sm" aria-hidden="true">?</span></button>
     <button id="themeBtn" type="button">Theme</button>
   </div>
-  <p class="note" id="note"></p>
+  <p class="note"><span id="note"></span> · <button class="about-link" type="button" data-about>About this map</button></p>
   <a class="mjrfx-link" href="https://mjrfx.com" target="_blank" rel="noopener">
       <svg viewBox="0 10 428 80" role="img" aria-label="MJR FX" fill="none" stroke-width="18" stroke-linecap="butt"><g stroke="#ededf2" stroke-linejoin="miter"><path d="M9 92V10L48 62L87 10V92"/><path d="M128 19H152V81H117V62"/><path d="M184 92V19H228L240 31V43L228 55H184"/><path d="M213 55L250 92"/></g><g stroke="#ff5a36"><path d="M295 92V19H340L413 92" stroke-linejoin="bevel"/><path d="M346 92L416 8"/><path d="M295 55H377"/></g></svg>
       <span>See more projects here</span>
@@ -507,6 +621,18 @@ a { color: var(--link); }
           <button id="routeClear" class="btn ghost" type="button" hidden>Clear route</button>
         </div>
       </details>
+      <details class="tool" id="fitTool">
+        <summary>Predicting a hit <small>what the plot predicts</small></summary>
+        <div class="stack">
+          <p class="help">Models that read only a film's plot (names, franchises, genre words and the animation medium hidden) predict its rating, box office and popularity. The Fit view places every film by those predictions.</p>
+          <div id="fitSummary"></div>
+          <button class="btn ghost" type="button" id="fitShow">Show the fit plot</button>
+          <span class="cap">Movies nobody has made, scored</span>
+          <p class="help" style="margin:0">Bars: rating, box office, popularity percentiles.</p>
+          <div class="stack" id="fitBody"></div>
+          <ol class="list" id="fitList"></ol>
+        </div>
+      </details>
       <details class="tool" id="unmadeTool">
         <summary>Unmade movies <small>gaps in the space</small></summary>
         <div class="stack">
@@ -600,7 +726,7 @@ a { color: var(--link); }
     filters: { yearMin: null, yearMax: null, rMin: null, rMax: null, genre: null, ratingMin: null, votesMin: null, revMin: null, budMax: null, roiMin: null, lang: null, format: null },
     selected: null, viewState: null,
     highlight: null, route: null, routeStop: null, routeMode: "influence", routeFrom: null, routeTo: null,
-    likes: [], gnSeeds: [], timeYear: null, unmade: null, desert: null, view3d: false, spin: false, latestYear: 9999,
+    likes: [], gnSeeds: [], timeYear: null, unmade: null, desert: null, proposal: null, view3d: false, spin: false, latestYear: 9999,
   };
   let S = null;  // the rating source and its cutoffs (manifest.ratings)
   let deckgl = null, colors = null, radii = null, icons = null, passes = null, genreSets = null, adjacency = null, bins = null, atlas = null, T = null;
@@ -860,7 +986,8 @@ a { color: var(--link); }
     } else {
       el.innerHTML = `<span class="mini">${state.models[state.model].labels.length} clusters in ${state.models[state.model].coarseLabels.length} regions</span>`;
     }
-    if (isAxes()) el.innerHTML += `<p class="mini" style="margin:6px 0 0">Axes view: films placed along the model's main directions (PCA), labelled by the genres at each end. Position along an axis means something; dots side by side aren't necessarily similar. Switch to the plot map for neighbours.</p>`;
+    if (isFit()) el.innerHTML += `<p class="mini" style="margin:6px 0 0">Fit view: every film placed by what its plot predicts, from models that never see names or franchises: rating across, box office up${state.view3d ? ", popularity in depth" : ""}. Rings are movies nobody has made, placed by their predicted percentiles. See Explore → Predicting a hit.</p>`;
+    else if (isAxes()) el.innerHTML += `<p class="mini" style="margin:6px 0 0">Axes view: films placed along the model's main directions (PCA), labelled by the genres at each end. Position along an axis means something; dots side by side aren't necessarily similar. Switch to the plot map for neighbours.</p>`;
   }
 
   // ---------- hex grid: region bins, drawn as soft region tints ----------
@@ -904,7 +1031,9 @@ a { color: var(--link); }
   const iconAt = (i) => (colors[i * 4 + 3] === 2 ? "ring" : icons[i]);
   // An unmade movie's spot on the current layout, and an axis-pole's label position.
   const unmadePos = (k) => { const p = state.models[state.model].unmade[k]; return state.view3d ? [p[2], p[3], p[4]] : [p[0], p[1], 0]; };
-  const isAxes = () => state.models[state.model].kind === "pca";
+  const isAxes = () => ["pca", "fit"].includes(state.models[state.model].kind);
+  const isFit = () => state.models[state.model].kind === "fit";
+  const propPos = (k) => { const p = state.models[state.model].proposals[k]; return state.view3d ? [p[2], p[3], p[4]] : [p[0], p[1], 0]; };
 
   function layers() {
     const out = [], atlasProps = { iconAtlas: atlas.url, iconMapping: atlas.mapping };
@@ -985,7 +1114,7 @@ a { color: var(--link); }
       }));
     }
     out.push(new deck.TextLayer({
-      id: "labels", data: visibleLabels(), characterSet: "auto", pickable: true,
+      id: "labels", data: isFit() ? [] : visibleLabels(),  // cluster names mean nothing where films sit by prediction characterSet: "auto", pickable: true,
       getPosition: (d) => [d.x, d.y, d.z], getText: (d) => d.text, getSize: (d) => d.px, sizeUnits: "pixels", parameters: FLAT,
       fontFamily: "Oswald, Work Sans, sans-serif",
       fontWeight: 600, lineHeight: 1.15, getColor: T.label.concat(255),
@@ -994,6 +1123,7 @@ a { color: var(--link); }
       updateTriggers: { getColor: [T.dark], getText: [state.model, T.dark], getPosition: [state.view3d, labelCache.key] },
     }));
     out.push(...unmadeLayers(atlasProps));
+    out.push(...proposalLayers(atlasProps));
     out.push(...desertLayers(atlasProps));
     // Markers replace the films they stand on: liked films get tickets; the selected film (or current route stop) gets the main marker.
     const markers = state.likes.map((i) => ({ i, icon: "ticketMk" }));
@@ -1195,7 +1325,8 @@ a { color: var(--link); }
       if (!d || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 6 || performance.now() - d.t > 800) return;
       if (document.body.classList.contains("tools-open")) return setTools(false);  // phones: the first tap just uncovers the map
       const r = el.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
-      const info = deckgl.pickObject({ x, y, radius: 4, layerIds: ["markers", "labels"] });
+      const info = deckgl.pickObject({ x, y, radius: 4, layerIds: ["proposals", "markers", "labels"] });
+      if (info && info.layer && info.layer.id === "proposals") return showProposal(info.object.k);
       if (info && info.layer && info.layer.id === "labels") return showRegion(info.object.kind, info.object.id);
       if (info && info.layer && info.layer.id === "markers") return mapClick(info.object.i);
       const i = filmAt(x, y, 4);
@@ -1254,6 +1385,11 @@ a { color: var(--link); }
     const el = $("detail"), i = state.selected;
     document.body.classList.toggle("has-detail", i != null);
     if (i == null) { el.hidden = true; return; }
+    // Plot blurbs (4 MB) load the first time a film card opens, not with the map: most of a visit never needs them.
+    if (!state.blurbs && !state.blurbsLoading) {
+      state.blurbsLoading = true;
+      fetch("data/blurbs.json").then((r) => r.json()).then((d) => { state.blurbs = d; if (state.selected != null) renderDetail(); }).catch(() => {});
+    }
     const g = state.films, m = state.models[state.model], man = state.manifest, cl = m.cluster[i], b = state.blurbs;
     const tags = g.genre[i].map((t) => `<span class="tag"><b>${esc(man.genres[t])}</b></span>`)
       .concat(g.kw[i].slice(0, 6).map((t) => `<span class="tag">${esc(man.keywords[t])}</span>`)).join("");
@@ -1273,7 +1409,7 @@ a { color: var(--link); }
         <div class="stat"><b>${fmt(g.runtime[i])}</b><span>Min</span></div>
         <div class="stat"><b>${esc(certName(i) || "–")}</b><span>Rated</span></div>
       </div>
-      <p class="mini" style="margin:-4px 0 10px">${g.revenue[i] != null ? `Box office ${money(g.revenue[i])}` : "Box office unknown"}${g.budget[i] != null ? ` · budget ${money(g.budget[i])}` : ""}${g.roi[i] != null ? ` · ${MEASURES.roi.fmt(g.roi[i])} return` : ""}<br>Originality ${g.orig[i].toFixed(2)} (more original than ${Math.round(100 * origRank(i))}% of films)</p>
+      <p class="mini" style="margin:-4px 0 10px">${g.revenue[i] != null ? `Box office ${money(g.revenue[i])}` : "Box office unknown"}${g.budget[i] != null ? ` · budget ${money(g.budget[i])}` : ""}${g.roi[i] != null ? ` · ${MEASURES.roi.fmt(g.roi[i])} return` : ""}<br>Originality ${g.orig[i].toFixed(2)} (more original than ${Math.round(100 * origRank(i))}% of films)${g.pred && g.pred[i] && g.pred[i][0] >= 0 ? `<br>Its plot predicts: rating ${ordinal(g.pred[i][0])} percentile · box office ${ordinal(g.pred[i][1])} · popularity ${ordinal(g.pred[i][2])}` : ""}</p>
       ${blurb ? `<p class="blurb">${blurb}</p>` : ""}
       <div class="tags">${tags}</div>
       <div class="actions">
@@ -1750,6 +1886,71 @@ a { color: var(--link); }
         outlineColor: T.bg.concat(230), fontSettings: { sdf: true }, characterSet: "auto" }),
     ];
   }
+  // Fit view: the scored movies nobody has made, as rings with their titles; the chosen one is drawn larger.
+  function proposalLayers(atlasProps) {
+    const m = state.models[state.model];
+    if (!isFit() || !m.proposals || !state.manifest.proposals) return [];
+    const data = m.proposals.map((_, k) => ({ k, at: propPos(k) }));
+    const on = (d) => d.k === state.proposal, named = new Set(fitOrder.slice(0, 5));  // titles: the chosen one and the top five
+    return [
+      new deck.IconLayer({ id: "proposals", data, ...atlasProps, pickable: true, getIcon: () => "ring", sizeUnits: "pixels",
+        getSize: (d) => (on(d) ? 48 : 32), getPosition: (d) => d.at, getColor: T.alt.concat(255),
+        updateTriggers: { getSize: [state.proposal], getPosition: [state.view3d] } }),
+      new deck.TextLayer({ id: "proposal-titles", data: data.filter((d) => on(d) || named.has(d.k)), getPosition: (d) => d.at, getText: (d) => state.manifest.proposals[d.k].title.toUpperCase(),
+        getSize: (d) => (on(d) ? 15 : 12.5), sizeUnits: "pixels", getPixelOffset: (d) => [0, on(d) ? 34 : 26], fontFamily: "Oswald, sans-serif",
+        fontWeight: 600, getColor: T.text.concat(255), outlineWidth: 4, outlineColor: T.bg.concat(230), fontSettings: { sdf: true },
+        characterSet: "auto", updateTriggers: { getSize: [state.proposal], getPixelOffset: [state.proposal], getPosition: [state.view3d] } }),
+    ];
+  }
+  // The 'Predicting a hit' panel: what the models explain, and the movies nobody has made, ranked.
+  const ordinal = (n) => `${n}${n % 100 >= 11 && n % 100 <= 13 ? "th" : ({ 1: "st", 2: "nd", 3: "rd" })[n % 10] || "th"}`;
+  let fitOrder = [];
+  function initFit() {
+    const man = state.manifest, f = man.fit;
+    if (!f || !man.proposals || !man.models.some((m) => m.key === "fit")) { $("fitTool").hidden = true; return; }
+    const pct = (x) => `${Math.round(x * 100)}%`;
+    $("fitSummary").innerHTML = `
+      <table class="mini fit-table"><thead><tr><th></th><th>Plot</th><th>Genre</th></tr></thead><tbody>
+        ${f.targets.map((t) => `<tr><td>${esc(t.name)}</td><td><b>${pct(t.plot)}</b></td><td>${pct(t.genres)}</td></tr>`).join("")}
+      </tbody></table>
+      <p class="help" style="margin:0">Share of the differences between films each model explains, tested on films it never saw (cross-validated R²), on ${Math.min(...f.targets.map((t) => t.films)).toLocaleString()} to ${Math.max(...f.targets.map((t) => t.films)).toLocaleString()} films outside franchises. Most of a film's fate isn't in its plot: stars, marketing and craft aren't in the text.</p>
+      ${f.targets.filter((t) => t.key !== "roi_original").map((t) => `<p class="mini" style="margin:0"><b>${esc(t.name)}</b> rises with ${t.top.slice(0, 3).map(esc).join("; ")}. Falls with ${t.bottom.slice(0, 3).map(esc).join("; ")}.</p>`).join("")}`;
+    const score = (p) => p.pct.rating + p.pct.box + p.pct.votes;
+    const order = man.proposals.map((_, k) => k).sort((a, b) => score(man.proposals[b]) - score(man.proposals[a]));
+    fitOrder = order;
+    $("fitList").innerHTML = order.map((k, r) => {
+      const p = man.proposals[k];
+      return `<li><button type="button" data-k="${k}"><span class="n">${r + 1}</span><span class="nm">${esc(p.title)}
+        <span class="fit-bars" title="predicted percentiles: rating ${p.pct.rating}, box office ${p.pct.box}, popularity ${p.pct.votes}">
+          <i style="--w:${p.pct.rating}%"></i><i style="--w:${p.pct.box}%"></i><i style="--w:${p.pct.votes}%"></i></span></span></button></li>`;
+    }).join("");
+    $("fitList").querySelectorAll("button[data-k]").forEach((b) => b.addEventListener("click", () => showProposal(+b.dataset.k)));
+    $("fitShow").addEventListener("click", () => openFit());
+  }
+  async function openFit() {
+    if (state.model === "fit") return;
+    $("status").hidden = false; $("status").textContent = "Loading the fit view…";
+    await loadModel("fit"); $("status").hidden = true;
+    $("model").value = "fit"; switchModel("fit");
+    state.viewState = fitView(state.models.fit);
+    deckgl.setProps({ initialViewState: state.viewState }); redraw();
+  }
+  async function showProposal(k) {
+    await openFit();
+    const p = state.manifest.proposals[k];
+    state.proposal = k;
+    const tile = (v, label) => `<div class="stat"><b>${ordinal(v)}</b><span>${label}</span></div>`;
+    $("fitBody").innerHTML = `
+      <div class="desert-pitch"><span class="cap">${p.kind === "desert" ? "Film desert" : p.kind === "horror" ? "Horror × history gap" : "Unmade movie"} · between ${p.between.map(esc).join(" and ")}</span>
+        <h4>${esc(p.title)}</h4><p class="logline">${esc(p.logline)}</p><p>${esc(p.plot)}</p></div>
+      <div class="stats three">${tile(p.pct.rating, "Rating")}${tile(p.pct.box, "Box office")}${tile(p.pct.votes, "Popularity")}</div>
+      <p class="mini" style="margin:0">Predicted percentiles among real films scored the same way, from their plot alone. A prediction from a plot, not a forecast: it can't see who would make it or how well.</p>
+      <button class="btn ghost" type="button" id="fitClear">Clear</button>`;
+    $("fitClear").addEventListener("click", () => { state.proposal = null; $("fitBody").innerHTML = ""; redraw(); });
+    $("fitBody").scrollIntoView({ block: "nearest", behavior: "smooth" });
+    redraw();
+    flyTo(propPos(k), Math.max(state.viewState.zoom, state.labelSwitchZoom + 0.3));
+  }
   // Axes (PCA) layout: the three main directions of the embedding, each end named by its dominant genres.
   function axisLayers() {
     const m = state.models[state.model], dims = state.view3d ? 3 : 2;
@@ -1760,7 +1961,7 @@ a { color: var(--link); }
       const [lo, hi] = ext(keys[d]), a = [0, 0, 0], b = [0, 0, 0];
       a[d] = lo; b[d] = hi;
       lines.push({ a, b });
-      const name = (p) => `${p.genres.join(" · ").toUpperCase()}\n${p.examples.slice(0, 2).join(", ")}`;
+      const name = (p) => `${(p.title || p.genres.join(" · ")).toUpperCase()}\n${p.examples.slice(0, 2).join(", ")}`;
       labels.push({ at: a, text: name(m.axes[d].low), axis: d, end: "low" }, { at: b, text: name(m.axes[d].high), axis: d, end: "high" });
     }
     return [
@@ -1889,20 +2090,74 @@ a { color: var(--link); }
     recolor(); renderDetail(); redraw();
   }
 
+  // Loading screen. DATA_SIZES (uncompressed bytes of the first files, written in by src/export.py) turns the
+  // bytes received into a progress bar; without it the bar uses rough sizes.
+  const DATA_SIZES = null;
+  const LOADER_LINES = ["Warming up the projector…", "Threading the reels…", "Popping the popcorn…", "Dimming the house lights…"];
+  const loaderStep = (text, frac) => {
+    $("loaderStep").textContent = text;
+    if (frac == null) return;
+    $("loaderFill").style.width = `${Math.round(frac * 100)}%`;
+    const ks = document.querySelectorAll("#loaderCorn .k");   // the bucket fills as the bar does
+    ks.forEach((k, i) => k.classList.toggle("on", frac >= (i + 1) / ks.length - 0.001));
+  };
+  async function fetchJSON(url, onBytes) {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`${url}: ${r.status}`);
+    if (!r.body || !window.TextDecoder) return r.json();
+    const reader = r.body.getReader(), parts = [];
+    let n = 0;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      parts.push(value); n += value.length; onBytes(n);
+    }
+    const all = new Uint8Array(n);
+    let o = 0;
+    for (const part of parts) { all.set(part, o); o += part.length; }
+    return JSON.parse(new TextDecoder().decode(all));
+  }
+  function openAbout() { const d = $("about"); if (!d.open) { if (d.showModal) d.showModal(); else d.setAttribute("open", ""); } }
+  function initAbout() {
+    const d = $("about");
+    document.querySelectorAll("[data-about]").forEach((b) => b.addEventListener("click", openAbout));
+    $("aboutClose").addEventListener("click", () => (d.close ? d.close() : d.removeAttribute("open")));
+    d.addEventListener("click", (e) => { if (e.target === d) d.close(); });   // a click on the backdrop
+    d.addEventListener("close", () => { if (location.hash === "#about") history.replaceState(null, "", location.pathname + location.search); });
+    if (location.hash === "#about") openAbout();
+  }
+
   async function init() {
     T = themeColors();
+    initAbout();
     let manifest, films;
+    const first = (DATA_SIZES && DATA_SIZES.first) || "layout0";
+    const files = ["manifest.json", "films.json", `${first}.json`];
+    const total = files.reduce((t, f) => t + ((DATA_SIZES && DATA_SIZES.bytes[f]) || 6e6), 0);
+    const got = {};
+    const progress = (f) => (n) => {
+      got[f] = n;
+      const sum = Object.values(got).reduce((a, b) => a + b, 0);
+      const frac = Math.min(1, sum / total);
+      loaderStep(LOADER_LINES[Math.min(LOADER_LINES.length - 1, Math.floor(frac * LOADER_LINES.length))], 0.02 + 0.88 * frac);
+    };
+    let firstLayout;
     try {
-      [manifest, films] = await Promise.all([fetch("data/manifest.json").then((r) => r.json()), fetch("data/films.json").then((r) => r.json())]);
+      [manifest, films, firstLayout] = await Promise.all(files.map((f) => fetchJSON(`data/${f}`, progress(f))));
     } catch (err) {
-      $("status").textContent = "The map data didn't load. Run src/export.py, then serve this folder over HTTP.";
+      $("loader").classList.add("loader-error");
+      loaderStep("The map data didn't load. Check your connection and reload the page.", 0);
       return;
     }
+    if (manifest.models[0].key === first) state.models[first] = firstLayout;
+    loaderStep("Finding everyone a seat…", 0.93);
+    await new Promise((r) => setTimeout(r, 30));   // let the step paint before the heavy setup
     Object.assign(state, { manifest, films, n: films.id.length, model: manifest.models[0].key });
     const man = state.manifest;
     $("title").textContent = man.title;
     document.title = man.title;
     $("note").textContent = `${state.n.toLocaleString()} films placed by what their plots say`;
+    document.querySelectorAll(".aboutCount").forEach((el) => { el.textContent = state.n.toLocaleString(); });
     S = man.ratings;
     document.querySelectorAll(".src").forEach((el) => { el.textContent = S.source; });
     $("colorRating").textContent = `${S.source} rating`;
@@ -1926,7 +2181,6 @@ a { color: var(--link); }
     films.dir.forEach((ds, i) => new Set(ds.concat(films.cast[i])).forEach((d) => { personCounts[d]++; }));
     const peopleSource = { names: man.people, lower: man.people.map(fold), counts: personCounts };
     // Overviews are the biggest file and only the film card needs them, so they arrive after the map.
-    fetch("data/blurbs.json").then((r) => r.json()).then((b) => { state.blurbs = b; if (state.selected != null) renderDetail(); }).catch(() => {});
 
     const m = await loadModel(state.model);
     computeOriginality();
@@ -1954,7 +2208,11 @@ a { color: var(--link); }
       },
       getCursor: ({ isHovering, isDragging }) => (isDragging ? "grabbing" : isHovering ? "pointer" : armed ? "crosshair" : "grab"),
     });
-    $("status").hidden = true;
+    loaderStep("Roll film!", 1);
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      $("loader").classList.add("done");
+      setTimeout(() => { $("loader").hidden = true; }, 500);
+    }));
     initClicks();
     initNav();
     updateNavHelp();
@@ -2026,6 +2284,7 @@ a { color: var(--link); }
     $("gemsBtn").addEventListener("click", toggleGems);
     renderUnmadeList();
     initDeserts();
+    initFit();
     $("gnGo").addEventListener("click", curate);
     window.addEventListener("resize", hideSuggest);
 

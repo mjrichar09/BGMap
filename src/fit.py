@@ -6,6 +6,8 @@ Targets (TMDB data only):
     box      log10 box office relative to the median film of its release year (so 1 = ten times a typical
              film that year; a rough stand-in for inflation and market size), films with MIN_REVENUE+ revenue
     roi      log10(box office / budget), films with MIN_REVENUE+ revenue and budget
+    votes    popularity: log10 TMDB vote count relative to the median film of its release year (how many
+             people rated it, a stand-in for how many watched it)
     *_original  the same, fitted only on films that aren't part of a franchise (TMDB collection): the
              embedding carries names, and a famous one ("Avengers", "Hogwarts") predicts box office far
              better than any story does, so these answer "what kind of story", with brand names out
@@ -53,8 +55,12 @@ def targets(m):
     out["box"] = (box, ok & np.isfinite(box))
     roi_ok = ok & (bud >= MIN_REVENUE)
     out["roi"] = (np.log10(np.where(roi_ok, rev, 1) / np.where(roi_ok, bud, 1)), roi_ok)
+    vc = m["vote_count"].to_numpy(dtype=float)
+    vok = (vc > 0) & (yr >= YEARS[0]) & (yr <= YEARS[1])
+    lv = np.log10(np.where(vok, vc, 1))
+    out["votes"] = (lv - pd.Series(yr).map(pd.Series(lv[vok]).groupby(yr[vok]).median()).to_numpy(), vok)
     original = m["collection"].isna().to_numpy() | (m["collection"].astype(str).str.len() == 0).to_numpy()
-    for k in ("rating", "box", "roi"):
+    for k in ("rating", "box", "roi", "votes"):
         out[k + "_original"] = (out[k][0], out[k][1] & original)
     return out
 
@@ -114,14 +120,38 @@ def fit(base):
     print(f"wrote {out}")
 
 
+REFERENCE = 1000  # real films scored the way pitches are, to rank pitches against
+
+
+def reference(base, meta, models):
+    """Predictions for REFERENCE real non-franchise films embedded from their plot alone, as a pitch is.
+    A film's map vector also carries its keywords and tagline, which pitches don't have; scored from the
+    plot alone, real films come out lower (median -5 percentile points on rating, -10 on box office, -23 on
+    popularity), so a pitch is ranked among these, not among the map vectors. Cached per fit."""
+    from src.mask import body
+    from src.pitch import embed_texts
+
+    path = base / "fit" / "pitch_reference.parquet"
+    if path.exists() and path.stat().st_mtime > (base / "fit" / "models.joblib").stat().st_mtime:
+        return pd.read_parquet(path)
+    m, _, _ = load(base)
+    items = pd.read_parquet(base / "items.parquet", columns=["id", "name", "text_plot", "collection"]).set_index("id").loc[m["id"]]
+    ok = np.flatnonzero(items["collection"].isna().to_numpy() & (items["text_plot"].fillna("").str.len() > 400).to_numpy())
+    idx = np.random.default_rng(SEED).choice(ok, REFERENCE, replace=False)
+    e = embed_texts(base, meta, [f"{n}. {body(n, t)}" for n, t in zip(items["name"].iloc[idx], items["text_plot"].iloc[idx])])
+    ref = pd.DataFrame({name: mdl.predict(e) for name, mdl in models.items()})
+    ref.to_parquet(path)
+    return ref
+
+
 def score(base, path):
     """Embed pitches ({title, plot} list) with the map's model and score them with the fitted models,
-    with each score's percentile among real films' out-of-fold predictions."""
+    with each score's percentile among real films scored the same way (reference())."""
     from src.pitch import embed_texts  # masks and erases like the films' text, if the embedding did
 
     _, _, meta = load(base)
     models = joblib.load(base / "fit" / "models.joblib")
-    preds = pd.read_parquet(base / "fit" / "preds.parquet")
+    ref = reference(base, meta, models)
     pitches = json.loads(path.read_text(encoding="utf-8"))
     emb = embed_texts(base, meta, [f"{p['title']}. {p['plot']}" for p in pitches])
     scored = []
@@ -129,7 +159,7 @@ def score(base, path):
         parts, row = [], {**p}
         for name, mdl in models.items():
             s = float(mdl.predict(e[None])[0])
-            pct = (preds[name].to_numpy() < s).mean() * 100
+            pct = (ref[name].to_numpy() < s).mean() * 100
             parts.append(f"{name} {s:.2f} (p{pct:.0f})")
             row[name] = {"score": round(s, 3), "pct": round(pct, 1)}
         scored.append(row)

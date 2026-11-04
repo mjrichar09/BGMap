@@ -293,6 +293,42 @@ def pca_layout(df: pd.DataFrame, vecs: np.ndarray) -> tuple[pd.DataFrame, PCA, f
     return out, pca, scale, axes
 
 
+FIT_ENDS = {"rating": ("Lower rated", "Higher rated"), "box": ("Smaller box office", "Bigger box office"),
+            "votes": ("Fewer viewers", "More viewers")}
+
+
+def fit_layout(df: pd.DataFrame, base) -> tuple[pd.DataFrame, float, list[dict]] | None:
+    """The Fit view: every film placed by its plot's scores on the OPLS rating, box office and popularity axes
+    (src.opls, brand-free models), scaled to the UMAP map's spread; x = rating, y = box office, z = popularity."""
+    if not (base / "fit" / "opls_axes.npz").exists():
+        return None
+    from src.opls import AXES, axis_scores
+
+    _, v, _ = __import__("src.gaps", fromlist=["load"]).load(base)
+    z = axis_scores(base, v)
+    scale = float(df[["x", "y"]].to_numpy().std())
+    out = df[["cluster_fine", "cluster_coarse", "label_fine", "label_coarse"]].copy()
+    out["x"], out["y"] = z["rating"] * scale, z["box"] * scale
+    out["x3"], out["y3"], out["z3"] = z["rating"] * scale, z["box"] * scale, z["votes"] * scale
+    axes = []
+    for a in AXES:
+        poles = axis_poles(df, z[a])
+        lo, hi = FIT_ENDS[a]
+        axes.append({"key": a, "low": {**poles["low"], "title": lo}, "high": {**poles["high"], "title": hi}})
+    return out, scale, axes
+
+
+def fit_summary(base) -> dict:
+    """What the Fit panel says about the models: CV R^2 of plot vs genre per brand-free target (src.fit), and
+    the clusters at each end of each OPLS axis (src.opls)."""
+    fit = json.loads((base / "fit" / "fit.json").read_text(encoding="utf-8"))
+    opls = json.loads((base / "fit" / "opls.json").read_text(encoding="utf-8"))
+    names = {"rating_original": "Rating", "box_original": "Box office", "votes_original": "Popularity", "roi_original": "Return on budget"}
+    return {"targets": [{"key": t, "name": n, "films": fit[t]["n"], "plot": fit[t]["cv_r2"]["plot"], "genres": fit[t]["cv_r2"]["genres"],
+                         "top": [c["label"] for c in opls[t]["top_clusters"][:4]], "bottom": [c["label"] for c in opls[t]["bottom_clusters"][:4]]}
+                        for t, n in names.items() if t in fit and t in opls]}
+
+
 def unmade_positions(df: pd.DataFrame, unmade: list[dict], ids: dict, place) -> list[list[float]]:
     """Where each unmade movie sits on a layout: `place(u)` if given, else the mean of the films nearest its blend."""
     cols = ["x", "y"] + (["x3", "y3", "z3"] if "z3" in df else [])
@@ -356,11 +392,11 @@ def main() -> None:
         key = f"layout{k}"
         nbrs = nearest_neighbors(vecs, ROUTE_K)
         if k == 0:
-            first_vecs, first_sims = vecs, nbrs[1]  # for the people stats
+            first_vecs, first_sims, nbrs_first = vecs, nbrs[1], nbrs  # for the people stats and the Fit view
         payload = layout_payload(df, *nbrs)
         payload["unmade"] = unmade_positions(df, unmade, ids, None)
         (data_dir / f"{key}.json").write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
-        layouts.append({"key": key, "label": (args.labels or [])[k] if k < len(args.labels or []) else m, "source": m})
+        layouts.append({"key": key, "label": (args.labels or [])[k] if k < len(args.labels or []) else "Story map" if k == 0 else m, "source": m})
         if k == 0 and not args.no_pca:
             pdf, pca, pca_scale, axes = pca_layout(df, vecs)
             cl, cent = centroids(df, vecs)
@@ -372,9 +408,29 @@ def main() -> None:
             pca_entry = {"key": "axes", "label": "Axes (PCA)", "source": f"PCA of {emb}"}
     if not args.no_pca:
         layouts.append(pca_entry)
+    fit = fit_layout(first, base)
+    proposals, fit_info = [], None
+    if fit is not None:
+        fdf, fscale, faxes = fit
+        prop_path = base / "fit" / "proposals.json"
+        proposals = json.loads(prop_path.read_text(encoding="utf-8")) if prop_path.exists() else []
+        place = lambda p: [p["axes"]["rating"] * fscale, p["axes"]["box"] * fscale, p["axes"]["rating"] * fscale, p["axes"]["box"] * fscale, p["axes"]["votes"] * fscale]
+        payload = layout_payload(fdf, *nbrs_first)
+        payload["kind"], payload["axes"] = "fit", faxes
+        payload["proposals"] = [[round(float(t), 3) for t in place(p)] for p in proposals]
+        by_title = {p["title"]: place(p) for p in proposals}
+        payload["unmade"] = [[round(float(t), 3) for t in by_title.get(u["title"], [0, 0, 0, 0, 0])] for u in unmade]
+        (data_dir / "fit.json").write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
+        layouts.append({"key": "fit", "label": "Fit: rating × box office × popularity", "source": "OPLS axes (src.opls)"})
+        fit_info = fit_summary(base)
 
     source = "IMDb" if args.private else "TMDB"
     films, vocab = films_payload(first, source)
+    preds_path = base / "fit" / "preds.parquet"
+    if preds_path.exists():  # what each film's plot predicts (src.fit, brand-free models): percentiles among all films
+        pr = pd.read_parquet(preds_path).set_index("id").reindex(first["id"])
+        films["pred"] = [list(row) for row in zip(*[(pr[c].rank(pct=True) * 100).round().fillna(-1).astype(int).tolist()
+                                                     for c in ("rating_original", "box_original", "votes_original")])]
     people = people_stats(first, first_vecs, first_sims, vocab["people"], RATINGS[source][0])
     (data_dir / "people.json").write_text(json.dumps({str(k): v for k, v in people.items()}, separators=(",", ":")), encoding="utf-8")
     (data_dir / "films.json").write_text(json.dumps(films, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
@@ -401,11 +457,18 @@ def main() -> None:
         for key in ("closest_to_blend", "pitch_neighbors"):
             u[key] = [{"i": ids[c["id"]], "sim": c["sim"]} for c in u[key]]
     manifest = {"title": args.title, "count": len(first), "posterPrefix": POSTER_PREFIX, "models": layouts,
-                "ratings": {"source": source, **scale}, "unmade": [u for u in unmade if u["lands"]], **vocab}
+                "ratings": {"source": source, **scale}, "unmade": [u for u in unmade if u["lands"]], **vocab,
+                "proposals": [{k: p[k] for k in ("kind", "title", "logline", "plot", "between", "pct")} for p in proposals],
+                **({"fit": fit_info} if fit_info else {})}
     (data_dir / "manifest.json").write_text(json.dumps(manifest, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
 
     page = (ROOT / "web" / f"{args.domain}_map.html").read_text(encoding="utf-8")
-    (out / "index.html").write_text(page.replace("<title>Massive Movie Map</title>", f"<title>{args.title}</title>", 1), encoding="utf-8")
+    page = page.replace("<title>Massive Movie Map</title>", f"<title>{args.title}</title>", 1)
+    # The loading screen's progress bar: uncompressed sizes of the files the page fetches first.
+    first_files = ["manifest.json", "films.json", f"{layouts[0]['key']}.json"]
+    sizes_js = json.dumps({"first": layouts[0]["key"], "bytes": {f: (data_dir / f).stat().st_size for f in first_files}})
+    page = page.replace("const DATA_SIZES = null;", f"const DATA_SIZES = {sizes_js};", 1)
+    (out / "index.html").write_text(page, encoding="utf-8")
     shutil.copytree(ROOT / "web" / "assets", out / "assets", dirs_exist_ok=True)
     shutil.copytree(ROOT / "web" / "root", out, dirs_exist_ok=True)  # robots.txt, sitemap.xml
     sizes = ", ".join(f"{p.name} {p.stat().st_size / 1e6:.1f} MB" for p in sorted(data_dir.glob("*.json")))
