@@ -449,6 +449,7 @@ a { color: var(--link); }
       <li><b>A filmmaker's range.</b> The <i>People lens</i> lights up one director's or actor's films: some stay in one region their whole career, others are scattered across the map.</li>
       <li><b>How one kind of film leads to another.</b> <i>Route between films</i> finds a chain of similar films linking any two; influence routes only step forward in time.</li>
       <li><b>Overlooked films.</b> <i>Hidden gems</i> are highly rated films few people have rated.</li>
+      <li><b>Share what you find.</b> The link button (bottom right, with the zoom buttons) copies a link that opens the map as you see it: the film you picked, the colors, the layout and the filters.</li>
       <li><b>Films nobody has made.</b> <i>Unmade movies</i> are empty places between two kinds of film. Each has an AI-written pitch, placed by the same model to check that it really lands in the gap.</li>
     </ul>
 
@@ -710,6 +711,7 @@ a { color: var(--link); }
     <button type="button" id="navCenter" aria-label="Center on the selected film" title="Center on the selected film">◎</button>
     <button type="button" id="navReset" aria-label="Reset the view" title="Reset the view">⟲</button>
     <button type="button" id="navSpin" aria-label="Slowly rotate the map" title="Slowly rotate the map" aria-pressed="false">↻</button>
+    <button type="button" id="navLink" aria-label="Copy a link to this view" title="Copy a link to this view"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg></button>
   </div>
 </section>
 
@@ -1046,7 +1048,7 @@ a { color: var(--link); }
         updateTriggers: { getColor: [state.model, T.dark] },
       }));
     }
-    if (isAxes()) out.push(...axisLayers());
+    if (isAxes() && !isFit()) out.push(...axisLayers());
     const common = { data: indexData(), ...atlasProps, sizeUnits: "pixels", parameters: FLAT, getPosition: (_, { index }) => pos(index), getIcon: (_, { index }) => iconAt(index) };
     const triggers = { getPosition: [state.model, state.view3d], getSize: [state.sizePop, colors, T.dark], getColor: [colors], getIcon: [colors, T.dark] };
     if (!T.dark) {
@@ -1136,6 +1138,7 @@ a { color: var(--link); }
         updateTriggers: { getPosition: [state.model, state.view3d] },
       }));
     }
+    if (isFit()) out.push(...fitAxisLayers());   // over the films, so the dense middle can't hide an axis
     return out;
   }
 
@@ -1192,7 +1195,7 @@ a { color: var(--link); }
     lines.push(line);
     return lines.join("\n");
   }
-  function redraw() { if (deckgl) deckgl.setProps({ layers: layers() }); }
+  function redraw() { if (deckgl) deckgl.setProps({ layers: layers() }); scheduleUrl(); }
 
   // ---------- helpers ----------
   const neighbors = (i) => { const m = state.models[state.model]; return m.neighbors.slice(i * m.k, i * m.k + m.k); };
@@ -1215,6 +1218,7 @@ a { color: var(--link); }
   }
   function bindList(el) { el.querySelectorAll("button[data-i]").forEach((b) => b.addEventListener("click", () => select(+b.dataset.i, true))); }
   function setHighlight(set) {
+    state.person = null;
     state.highlight = set && set.size ? set : null;
     $("clearHL").hidden = !state.highlight;
     recolor(); redraw();
@@ -1976,6 +1980,120 @@ a { color: var(--link); }
         outlineWidth: 4, outlineColor: T.bg.concat(235), fontSettings: { sdf: true }, updateTriggers: { getPosition: [state.view3d], getTextAnchor: [state.view3d], getAlignmentBaseline: [state.view3d], getPixelOffset: [state.view3d] } }),
     ];
   }
+  // Fit plot axes: a chart frame along the low edges (2D) or from the low corner (3D), ticked at the
+  // percentiles of films along each axis, titled with what the axis predicts.
+  const FIT_TICKS = [0.1, 0.25, 0.5, 0.75, 0.9];
+  const FIT_TITLES = ["Predicted rating", "Predicted box office", "Predicted popularity"];
+  function fitQuantiles(m, key) {
+    m._q = m._q || {};
+    if (!m._q[key]) {
+      const v = Float64Array.from(m[key]).sort(), at = (q) => v[Math.floor(q * (v.length - 1))];
+      m._q[key] = { lo: at(0.01), hi: at(0.99), ticks: FIT_TICKS.map(at) };
+    }
+    return m._q[key];
+  }
+  function fitAxisLayers() {
+    const m = state.models[state.model], d3 = state.view3d;
+    const keys = d3 ? ["x3", "y3", "z3"] : ["x", "y"], q = keys.map((k) => fitQuantiles(m, k));
+    const span = Math.max(...q.map((a) => a.hi - a.lo)), pad = span * 0.04, tick = span * 0.012;
+    const origin = q.map((a) => a.lo - pad);
+    const at = (d, v, off = []) => { const o = origin.slice(); o[d] = v; off.forEach(([k, dv]) => { o[k] += dv; }); return d3 ? o : [o[0], o[1], 0]; };
+    const lines = [], ticks = [], titles = [];
+    keys.forEach((_, d) => {
+      lines.push({ a: at(d, origin[d]), b: at(d, q[d].hi + pad) });
+      const across = d === 0 ? 1 : 0;   // tick marks point away from the plot
+      q[d].ticks.forEach((v, k) => {
+        lines.push({ a: at(d, v), b: at(d, v, [[across, -tick]]) });
+        ticks.push({ at: at(d, v, [[across, -tick]]), text: FIT_TICKS[k] === 0.5 ? "median" : ordinal(Math.round(FIT_TICKS[k] * 100)), d });
+      });
+      titles.push({ at: d3 ? at(d, q[d].hi + pad * 2.2) : at(d, (q[d].lo + q[d].hi) / 2, [[across, -tick]]), text: `${FIT_TITLES[d].toUpperCase()} →`, d });
+    });
+    const text = { fontFamily: "Oswald, Work Sans, sans-serif", fontWeight: 600, characterSet: "auto", fontSettings: { sdf: true },
+      getColor: T.text.concat(255), outlineWidth: 4, outlineColor: T.bg.concat(235), sizeUnits: "pixels" };
+    const trig = { getPosition: [state.view3d, state.model], getSourcePosition: [state.view3d, state.model], getTargetPosition: [state.view3d, state.model] };
+    return [
+      new deck.LineLayer({ id: "fit-axes", data: lines, parameters: FLAT, getSourcePosition: (l) => l.a, getTargetPosition: (l) => l.b,
+        getColor: T.text.concat(210), getWidth: 2, widthUnits: "pixels", updateTriggers: trig }),
+      new deck.TextLayer({ id: "fit-ticks", data: ticks, ...text, parameters: FLAT, getPosition: (t) => t.at, getText: (t) => t.text, getSize: 12.5,
+        getColor: T.text.concat(225), fontWeight: 500,
+        getTextAnchor: (t) => (d3 ? "middle" : t.d === 0 ? "middle" : "end"), getAlignmentBaseline: (t) => (d3 ? "center" : t.d === 0 ? "top" : "center"),
+        getPixelOffset: (t) => (d3 ? [0, 12] : t.d === 0 ? [0, 4] : [-6, 0]), updateTriggers: { ...trig, getTextAnchor: [state.view3d], getAlignmentBaseline: [state.view3d], getPixelOffset: [state.view3d] } }),
+      new deck.TextLayer({ id: "fit-titles", data: titles, ...text, parameters: FLAT, getPosition: (t) => t.at, getText: (t) => t.text, getSize: 15,
+        getAngle: (t) => (!d3 && t.d === 1 ? 90 : 0), getTextAnchor: () => "middle", getAlignmentBaseline: (t) => (d3 ? "center" : t.d === 0 ? "top" : "bottom"),
+        getPixelOffset: (t) => (d3 ? [0, 0] : t.d === 0 ? [0, 24] : [-62, 0]),
+        updateTriggers: { ...trig, getAngle: [state.view3d], getAlignmentBaseline: [state.view3d], getPixelOffset: [state.view3d] } }),
+    ];
+  }
+  // ---------- shareable links ----------
+  // The map's state lives in the URL, so any view can be shared, and anyone (or any AI) can build a link that
+  // opens the map just so. Parameters (all optional): film=<TMDB id>, layout=story|axes|fit, view=2d|3d,
+  // color=<Color by value> (with colorGenre=<genre> for color=genre), ids=<TMDB ids, comma-separated>,
+  // person=<director or actor>, from/to=<years>, genre=<genre filter>, minRating, minVotes.
+  const LAYOUT_NAMES = { story: () => state.manifest.models[0].key, axes: () => "axes", fit: () => "fit" };
+  const layoutName = (key) => (key === state.manifest.models[0].key ? "story" : key);
+  let urlTimer = null, urlReady = false;
+  function scheduleUrl() { if (!urlReady) return; clearTimeout(urlTimer); urlTimer = setTimeout(writeUrl, 400); }
+  function viewParams() {
+    const g = state.films, f = state.filters, man = state.manifest, u = new URLSearchParams();
+    if (state.selected != null) u.set("film", g.id[state.selected]);
+    if (state.model !== man.models[0].key) u.set("layout", layoutName(state.model));
+    if (!state.view3d && has3d()) u.set("view", "2d");
+    if (state.colorBy !== "cluster") u.set("color", state.colorBy);
+    if (state.colorBy === "genre") u.set("colorGenre", man.genres[state.genre]);
+    if (state.person) u.set("person", state.person);
+    else if (state.highlight && state.highlight.size <= 100) u.set("ids", [...state.highlight].map((i) => g.id[i]).join(","));
+    if (f.yearMin != null) u.set("from", f.yearMin);
+    if (f.yearMax != null) u.set("to", f.yearMax);
+    if (f.genre != null) u.set("genre", man.genres[f.genre]);
+    if (f.ratingMin != null) u.set("minRating", f.ratingMin);
+    if (f.votesMin != null) u.set("minVotes", f.votesMin);
+    return u;
+  }
+  function writeUrl() {
+    const q = viewParams().toString().replace(/%2C/g, ","), next = location.pathname + (q ? `?${q}` : "") + location.hash;
+    if (next !== location.pathname + location.search + location.hash) history.replaceState(null, "", next);
+  }
+  async function applyUrl() {
+    const u = new URLSearchParams(location.search), g = state.films, man = state.manifest;
+    const byId = new Map(g.id.map((id, i) => [String(id), i]));
+    const genreIx = (name) => { const k = man.genres.findIndex((t) => fold(t) === fold(name || "")); return k >= 0 ? k : null; };
+    const layout = LAYOUT_NAMES[u.get("layout")];
+    if (layout && man.models.some((m) => m.key === layout())) {
+      const key = layout();
+      await loadModel(key); $("model").value = key; switchModel(key);
+      $("viewRow").hidden = !has3d();
+    }
+    if (u.get("view") === "2d" || u.get("view") === "3d") setView3d(u.get("view") === "3d");
+    else if (layout) setView3d(state.view3d);
+    const color = u.get("color");
+    if (color && [...$("colorBy").options].some((o) => o.value === color)) {
+      state.colorBy = color; $("colorBy").value = color; $("genreWrap").hidden = color !== "genre";
+      const cg = genreIx(u.get("colorGenre"));
+      if (cg != null) { state.genre = cg; $("genreSel").value = cg; }
+    }
+    const num = (k) => { const v = u.get(k); return v != null && v !== "" && isFinite(+v) ? +v : null; };
+    [["from", "yearMin"], ["to", "yearMax"], ["minRating", "ratingMin"], ["minVotes", "votesMin"]].forEach(([k, id]) => {
+      const v = num(k); if (v != null) { state.filters[id] = v; $(id).value = v; }
+    });
+    const fg = genreIx(u.get("genre"));
+    if (fg != null) { state.filters.genre = fg; $("genreFilter").value = fg; }
+    if (["ratingMin", "votesMin"].some((k) => state.filters[k] != null)) $("moreFilters").open = true;
+    applyFilters(); recolor();
+    const person = u.get("person");
+    const pIx = person ? man.people.findIndex((n) => fold(n) === fold(person)) : -1;
+    const ids = (u.get("ids") || "").split(",").map((t) => byId.get(t.trim())).filter((i) => i != null);
+    if (pIx >= 0) { selectTab("explore"); $("designerQ").closest("details").open = true; personPicked(pIx, $("designerQ")); }
+    else if (ids.length) { setHighlight(new Set(ids)); if (!u.get("film")) fitTo(ids); }
+    const film = byId.get(u.get("film") || "");
+    if (film != null) select(film, true);
+    redraw();
+  }
+  function copyLink() {
+    writeUrl();
+    const done = () => { const b = $("navLink"); b.classList.add("on"); b.title = "Link copied"; setTimeout(() => { b.classList.remove("on"); b.title = "Copy a link to this view"; }, 1400); };
+    if (navigator.clipboard) navigator.clipboard.writeText(location.href).then(done, () => prompt("Copy this link:", location.href));
+    else prompt("Copy this link:", location.href);
+  }
   // Stats for the director or actor in the lens: precomputed by export.py (data/people.json) for everyone with enough
   // films on the map. Percentiles compare directors with directors and actors with actors.
   let people = null;
@@ -2011,6 +2129,7 @@ a { color: var(--link); }
     $("designerList").innerHTML = listHtml(hits);
     bindList($("designerList"));
     setHighlight(new Set(hits));
+    state.person = state.manifest.people[d];
     fitTo(hits);
   }
 
@@ -2019,7 +2138,29 @@ a { color: var(--link); }
     if (!state.models[key]) state.models[key] = await (await fetch(`data/${key}.json`)).json();
     return state.models[key];
   }
+  // The Fit plot is framed like a chart: the plot and its axes fit in the part of the screen the panels leave free.
+  function fitPlotView(m) {
+    const W = window.innerWidth, H = window.innerHeight, c = $("controls").getBoundingClientRect(), kb = $("keybar").getBoundingClientRect();
+    const side = c.width < W * 0.5;
+    const area = { l: side ? c.right + 12 : 12, t: side ? 12 : c.bottom + 12, r: W - 12, b: kb.height ? Math.min(H, kb.top) - 12 : H - 12 };
+    const keys = state.view3d ? ["x3", "y3", "z3"] : ["x", "y"], q = keys.map((k) => fitQuantiles(m, k));
+    const span = Math.max(...q.map((a) => a.hi - a.lo)), pad = span * 0.04;
+    const lo = q.map((a) => a.lo - pad), hi = q.map((a) => a.hi + pad);
+    if (state.view3d) {
+      const target = lo.map((v, k) => (v + hi[k]) / 2), size = Math.max(...hi.map((h, k) => h - lo[k]));
+      const zoom = Math.log2(Math.min(area.r - area.l, area.b - area.t) / size * 0.55);
+      state.minZoom = zoom - 1.5; state.labelSwitchZoom = zoom + 1.2;
+      return { target, zoom, minZoom: zoom - 1.5, maxZoom: 14, rotationX: 18, rotationOrbit: -32 };
+    }
+    const ML = 92, MB = 52, MT = 16, MR = 16;   // room for tick labels and axis titles
+    const scale = Math.min((area.r - area.l - ML - MR) / (hi[0] - lo[0]), (area.b - area.t - MB - MT) / (hi[1] - lo[1]));
+    const zoom = Math.log2(scale);
+    state.minZoom = zoom - 1.5; state.labelSwitchZoom = zoom + 1.2;
+    const target = [lo[0] - (area.l + ML - W / 2) / scale, lo[1] + (area.b - MB - H / 2) / scale, 0];
+    return { target, zoom, minZoom: zoom - 1.5, maxZoom: 14 };
+  }
   function fitView(m) {
+    if (m.kind === "fit") return fitPlotView(m);
     const pct = (arr, q) => { const v = Float64Array.from(arr).sort(); return v[Math.floor(q * (v.length - 1))]; };
     const keys = state.view3d ? ["x3", "y3", "z3"] : ["x", "y"];
     const lo = keys.map((k) => pct(m[k], 0.01)), hi = keys.map((k) => pct(m[k], 0.99));
@@ -2042,7 +2183,7 @@ a { color: var(--link); }
     state.viewState = fitView(state.models[state.model]);
     labelCache.key = null;
     if (deckgl) { deckgl.setProps({ views: makeView(), initialViewState: state.viewState, controller: controllerFor() }); redraw(); }
-    updateNavHelp();
+    updateNavHelp(); scheduleUrl();
   }
   function updateNavHelp() {
     $("navHelp").textContent = state.view3d
@@ -2208,6 +2349,7 @@ a { color: var(--link); }
       },
       getCursor: ({ isHovering, isDragging }) => (isDragging ? "grabbing" : isHovering ? "pointer" : armed ? "crosshair" : "grab"),
     });
+    $("navLink").addEventListener("click", copyLink);
     loaderStep("Roll film!", 1);
     requestAnimationFrame(() => requestAnimationFrame(() => {
       $("loader").classList.add("done");
@@ -2226,6 +2368,7 @@ a { color: var(--link); }
       await loadModel(e.target.value);
       $("status").hidden = true;
       switchModel(e.target.value);
+      if (isFit()) { state.viewState = fitView(state.models.fit); deckgl.setProps({ initialViewState: state.viewState }); redraw(); }
       if (state.selected != null) flyTo(pos(state.selected));
     });
     const num = (id) => { const v = $(id).value; return v === "" ? null : +v; };
@@ -2290,6 +2433,8 @@ a { color: var(--link); }
 
     matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => setTheme());
     new MutationObserver(() => { if (isDark() !== T.dark) setTheme(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    try { await applyUrl(); } catch (e) { console.warn("link parameters", e); }
+    urlReady = true; scheduleUrl();
   }
 
   init();
