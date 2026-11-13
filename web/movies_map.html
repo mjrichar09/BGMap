@@ -147,7 +147,7 @@ input:disabled, button:disabled { opacity: 0.55; cursor: not-allowed; }
 #suggest li[aria-selected="true"], #suggest li:hover { background: color-mix(in srgb, var(--accent) 22%, transparent); }
 #suggest .yr { color: var(--muted); font: 12.5px var(--font-data); flex: none; }
 .tabs { display: flex; gap: 4px; }
-.tab { flex: 1; background: var(--panel-2); border: var(--border-w) solid var(--line); border-bottom-width: 0; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+.tab { flex: 1; min-width: 0; background: var(--panel-2); border: var(--border-w) solid var(--line); border-bottom-width: 0; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
   font: 600 13px var(--font-label); letter-spacing: 0.06em; text-transform: uppercase; padding: 7px 4px; cursor: pointer; color: var(--muted); }
 .tab[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
 .tabpanel { border: var(--border-w) solid var(--line); border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--panel-2); padding: 12px; display: flex; flex-direction: column; gap: 12px; }
@@ -257,6 +257,33 @@ a { color: var(--link); }
 #timeKey i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 3px; vertical-align: -1px; }
 #status { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); z-index: 1; font: 15px var(--font-data); }
 #toolsBtn { display: none; }
+/* A round close button: the film card's (pinned to the card's top as it scrolls) and the Filters window's. */
+.x-close { flex: none; width: 34px; height: 34px; padding: 0; display: grid; place-items: center; border-radius: 50%; cursor: pointer;
+  border: var(--border-w) solid var(--line); background: var(--panel-2); color: var(--fg); font: 600 16px/1 var(--font-body); box-shadow: var(--shadow-sm); }
+.x-close:hover, .x-close:focus-visible { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.detail-x { position: sticky; top: 0; float: right; margin: -6px -8px 4px 10px; z-index: 2; background: var(--panel); }
+.search-row { display: flex; gap: 8px; }
+.search-row input { flex: 1; min-width: 0; }
+#filtersBtn { flex: none; display: flex; align-items: center; gap: 6px; padding: 0 10px; cursor: pointer; border-radius: var(--radius-sm);
+  border: var(--border-w) solid var(--line); background: var(--panel-2); font: 600 12.5px var(--font-label); letter-spacing: 0.06em; text-transform: uppercase; }
+#filtersBtn.active, #filtersBtn[aria-expanded="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+#filterBadge { min-width: 18px; height: 18px; padding: 0 4px; box-sizing: border-box; border-radius: 9px; background: var(--accent-ink); color: var(--accent);
+  font: 700 11px/18px var(--font-data); text-align: center; }
+#filters { top: calc(14px + env(safe-area-inset-top, 0px)); left: calc(max(14px, env(safe-area-inset-left, 0px)) + min(344px, 100vw - 28px) + 12px);
+  width: 300px; max-height: calc(100% - 28px - env(safe-area-inset-top, 0px)); overflow: auto; box-sizing: border-box; z-index: 4;
+  padding: 14px 16px 16px 30px; display: flex; flex-direction: column; gap: 12px; }
+.filters-head { display: flex; align-items: center; gap: 10px; }
+.filters-head h2 { margin: 0; font: 400 21px/1.1 var(--font-display); letter-spacing: var(--title-track); text-transform: var(--title-case); }
+.filters-head .x-close { margin-left: auto; }
+.filters-foot { display: flex; align-items: center; gap: 8px; }
+.filters-foot #count { flex: 1; }
+#filterPill { top: calc(14px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); z-index: 3; white-space: nowrap;
+  padding: 6px 8px 6px 14px; display: flex; align-items: center; gap: 8px; font: 12.5px var(--font-data); border-radius: 999px; }
+#filterPill::before { display: none; }
+#filterPill b { color: var(--accent); }
+#filterPill button { cursor: pointer; border: var(--border-w) solid var(--line); border-radius: 999px; background: var(--panel-2); padding: 3px 10px;
+  font: 600 11.5px var(--font-label); letter-spacing: 0.06em; text-transform: uppercase; }
+#filterPill button:hover { background: var(--accent); color: var(--accent-ink); }
 #aboutBtn { display: none; }
 #aboutBtn .sm { display: none; }
 .about-link { background: none; border: 0; padding: 0; color: inherit; font: inherit; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
@@ -308,6 +335,11 @@ a { color: var(--link); }
     border-radius: var(--radius-sm); font: 600 12px var(--font-label); letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 10px; cursor: pointer; }
   #themeBtn { margin-left: 0; padding: 7px 8px; white-space: nowrap; }
   #toolsBtn { margin-left: 0; }
+  .x-close { width: 40px; height: 40px; font-size: 18px; }
+  #filtersBtn { padding: 0 9px; }
+  #filters { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-height: 70dvh; z-index: 6; border-radius: var(--radius) var(--radius) 0 0;
+    border-bottom-width: 0; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); overscroll-behavior: contain; }
+  #filterPill { display: none; }
   #aboutBtn { display: inline-block; margin-left: auto; padding: 7px 10px; }
   #aboutBtn .lg { display: none; }
   #aboutBtn .sm { display: inline; }
@@ -480,7 +512,10 @@ a { color: var(--link); }
     </a>
   <div class="searchbox">
     <label class="cap" for="q">Find a film</label>
-    <input id="q" type="search" placeholder="Type a title, or click the map" autocomplete="off">
+    <div class="search-row">
+      <input id="q" type="search" placeholder="Type a title, or click the map" autocomplete="off">
+      <button id="filtersBtn" type="button" aria-expanded="false" aria-controls="filters">Filters <span id="filterBadge" hidden></span></button>
+    </div>
   </div>
 
   <div>
@@ -488,6 +523,7 @@ a { color: var(--link); }
       <button class="tab" role="tab" id="tab-map" aria-controls="panel-map" aria-selected="true" type="button">Map</button>
       <button class="tab" role="tab" id="tab-personal" aria-controls="panel-personal" aria-selected="false" type="button">Personal</button>
       <button class="tab" role="tab" id="tab-explore" aria-controls="panel-explore" aria-selected="false" type="button">Explore</button>
+      <button class="tab" role="tab" id="tab-fit" aria-controls="panel-fit" aria-selected="false" type="button">Fit</button>
     </div>
 
     <div class="tabpanel" role="tabpanel" id="panel-map" aria-labelledby="tab-map">
@@ -510,6 +546,11 @@ a { color: var(--link); }
               <option value="year">Year</option>
               <option value="runtime">Runtime</option>
             </optgroup>
+            <optgroup label="Plot vs. reality" id="missGroup">
+              <option value="missR">Rating vs. its plot</option>
+              <option value="missB">Box office vs. its plot</option>
+              <option value="missV">Popularity vs. its plot</option>
+            </optgroup>
             <optgroup label="Other">
               <option value="cert">US rating</option>
             </optgroup>
@@ -526,41 +567,7 @@ a { color: var(--link); }
       </div>
       <div id="legend" aria-live="polite"></div>
       <div class="row">
-        <div><label class="cap" for="yearMin">Year from</label><input id="yearMin" type="number" placeholder="any"></div>
-        <div><label class="cap" for="yearMax">to</label><input id="yearMax" type="number" placeholder="any"></div>
-      </div>
-      <div class="row">
-        <div><label class="cap" for="rMin">Runtime min</label><input id="rMin" type="number" min="0" step="10" placeholder="any"></div>
-        <div><label class="cap" for="rMax">max</label><input id="rMax" type="number" min="0" step="10" placeholder="any"></div>
-      </div>
-      <details class="tool" id="moreFilters">
-        <summary>More filters</summary>
-        <div class="stack">
-          <div class="row">
-            <div><label class="cap" for="ratingMin">Rating min</label><input id="ratingMin" type="number" min="0" max="10" step="0.5" placeholder="any"></div>
-            <div><label class="cap" for="votesMin">Votes min</label><input id="votesMin" type="number" min="0" step="100" placeholder="any"></div>
-          </div>
-          <div class="row">
-            <div><label class="cap" for="revMin">Box office min $M</label><input id="revMin" type="number" min="0" step="10" placeholder="any"></div>
-            <div><label class="cap" for="budMax">Budget max $M</label><input id="budMax" type="number" min="0" step="5" placeholder="any"></div>
-          </div>
-          <div class="row">
-            <div><label class="cap" for="roiMin">Return min ×</label><input id="roiMin" type="number" min="0" step="0.5" placeholder="any"></div>
-            <div><label class="cap" for="langFilter">Language</label><select id="langFilter"><option value="">Any</option></select></div>
-          </div>
-          <div class="row">
-            <div><label class="cap" for="formatFilter">Format</label><select id="formatFilter"><option value="">Any</option><option value="0">Live action</option><option value="1">Animated</option></select></div>
-            <div></div>
-          </div>
-          <p class="help">Box office and budget are TMDB's figures, not adjusted for inflation, and known for about a third of films. Setting a money filter hides films without that figure.</p>
-        </div>
-      </details>
-      <div class="row">
-        <div>
-          <label class="cap" for="genreFilter">Genre</label>
-          <select id="genreFilter"><option value="">Any genre</option></select>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 14px">
+        <div style="display: flex; flex-direction: row; gap: 16px; gap: 4px; padding-top: 0">
           <label class="mini"><input id="sizePop" type="checkbox" checked> Size by <span class="src"></span> votes</label>
           <label class="mini"><input id="showTiles" type="checkbox" checked> Region tint</label>
         </div>
@@ -570,7 +577,6 @@ a { color: var(--link); }
         <label class="mini"><input id="view3d" type="checkbox"> 3D view</label>
         <label class="mini"><input id="spin" type="checkbox"> Slow spin</label>
       </div>
-      <button id="reset" class="btn ghost" type="button">Reset filters</button>
     </div>
 
     <div class="tabpanel" role="tabpanel" id="panel-personal" aria-labelledby="tab-personal" hidden>
@@ -622,18 +628,6 @@ a { color: var(--link); }
           <button id="routeClear" class="btn ghost" type="button" hidden>Clear route</button>
         </div>
       </details>
-      <details class="tool" id="fitTool">
-        <summary>Predicting a hit <small>what the plot predicts</small></summary>
-        <div class="stack">
-          <p class="help">Models that read only a film's plot (names, franchises, genre words and the animation medium hidden) predict its rating, box office and popularity. The Fit view places every film by those predictions.</p>
-          <div id="fitSummary"></div>
-          <button class="btn ghost" type="button" id="fitShow">Show the fit plot</button>
-          <span class="cap">Movies nobody has made, scored</span>
-          <p class="help" style="margin:0">Bars: rating, box office, popularity percentiles.</p>
-          <div class="stack" id="fitBody"></div>
-          <ol class="list" id="fitList"></ol>
-        </div>
-      </details>
       <details class="tool" id="unmadeTool">
         <summary>Unmade movies <small>gaps in the space</small></summary>
         <div class="stack">
@@ -677,8 +671,29 @@ a { color: var(--link); }
         </div>
       </details>
     </div>
+
+    <div class="tabpanel" role="tabpanel" id="panel-fit" aria-labelledby="tab-fit" hidden>
+      <div class="stack">
+          <p class="help">Models that read only a film's plot (names, franchises, genre words and the animation medium hidden) predict its rating, box office and popularity. The Fit view places every film by those predictions.</p>
+          <div id="fitSummary"></div>
+          <button class="btn ghost" type="button" id="fitShow">Show the fit plot</button>
+          <span class="cap">What the plot gets wrong</span>
+          <p class="help" style="margin:0">Each film's actual percentile against the one its plot predicts. The big misses show what a plot can't see: stars, sequels, marketing, craft, and films that went straight to streaming.</p>
+          <div class="seg" role="group" aria-label="Measure" id="missSeg">
+            <button type="button" data-k="0" aria-pressed="true">Rating</button><button type="button" data-k="1" aria-pressed="false">Box office</button><button type="button" data-k="2" aria-pressed="false">Popularity</button>
+          </div>
+          <button class="btn ghost" type="button" id="missColor">Color the map by this</button>
+          <span class="cap">Did better than its plot</span>
+          <ol class="list" id="missBeat"></ol>
+          <span class="cap">Did worse than its plot</span>
+          <ol class="list" id="missFell"></ol>
+          <span class="cap">Movies nobody has made, scored</span>
+          <p class="help" style="margin:0">Bars: rating, box office, popularity percentiles.</p>
+          <div class="stack" id="fitBody"></div>
+          <ol class="list" id="fitList"></ol>
+      </div>
+    </div>
   </div>
-  <div id="count"></div>
   <button id="clearHL" class="btn ghost" type="button" hidden>Clear highlight</button>
   <footer class="credits">
     <a href="https://www.themoviedb.org/" target="_blank" rel="noopener"><img src="assets/tmdb.svg" alt="TMDB"></a>
@@ -691,6 +706,57 @@ a { color: var(--link); }
 </section>
 
 <aside id="detail" class="card" hidden aria-live="polite"></aside>
+<section id="filters" class="card" hidden aria-label="Filters">
+  <div class="filters-head">
+    <h2>Filters</h2>
+    <button class="x-close" type="button" id="filtersClose" aria-label="Close filters" title="Close (Esc)">✕</button>
+  </div>
+  <p class="help" style="margin:-6px 0 0">Filters apply everywhere: the map, every tab and every list.</p>
+  <div class="row">
+        <div><label class="cap" for="yearMin">Year from</label><input id="yearMin" type="number" placeholder="any"></div>
+        <div><label class="cap" for="yearMax">to</label><input id="yearMax" type="number" placeholder="any"></div>
+      </div>
+      <div class="row">
+        <div><label class="cap" for="rMin">Runtime min</label><input id="rMin" type="number" min="0" step="10" placeholder="any"></div>
+        <div><label class="cap" for="rMax">max</label><input id="rMax" type="number" min="0" step="10" placeholder="any"></div>
+      </div>
+  <div class="row">
+    <div><label class="cap" for="genreFilter">Genre</label><select id="genreFilter"><option value="">Any genre</option></select></div>
+    <div><label class="cap" for="formatFilter">Format</label><select id="formatFilter"><option value="">Any</option><option value="0">Live action</option><option value="1">Animated</option></select></div>
+  </div>
+      <details class="tool" id="moreFilters">
+        <summary>More filters</summary>
+        <div class="stack">
+          <div class="row">
+            <div><label class="cap" for="ratingMin">Rating min</label><input id="ratingMin" type="number" min="0" max="10" step="0.5" placeholder="any"></div>
+            <div><label class="cap" for="votesMin">Votes min</label><input id="votesMin" type="number" min="0" step="100" placeholder="any"></div>
+          </div>
+          <div class="row">
+            <div><label class="cap" for="revMin">Box office min $M</label><input id="revMin" type="number" min="0" step="10" placeholder="any"></div>
+            <div><label class="cap" for="budMax">Budget max $M</label><input id="budMax" type="number" min="0" step="5" placeholder="any"></div>
+          </div>
+          <div class="row">
+            <div><label class="cap" for="roiMin">Return min ×</label><input id="roiMin" type="number" min="0" step="0.5" placeholder="any"></div>
+            <div><label class="cap" for="langFilter">Language</label><select id="langFilter"><option value="">Any</option></select></div>
+          </div>
+          <p class="help">Box office and budget are TMDB's figures, not adjusted for inflation, and known for about a third of films. Setting a money filter hides films without that figure.</p>
+        </div>
+      </details>
+  <div>
+    <span class="cap">Films filtered out</span>
+    <div class="seg" role="group" aria-label="Films filtered out">
+      <button type="button" id="fmGrey" aria-pressed="true">Grey them out</button>
+      <button type="button" id="fmHide" aria-pressed="false">Hide them</button>
+    </div>
+  </div>
+  <div class="filters-foot"><span id="count"></span><button id="reset" class="btn ghost" type="button">Clear all</button></div>
+</section>
+<div id="filterPill" class="card" hidden role="status">
+  <span id="pillText"></span>
+  <button type="button" id="pillEdit">Edit</button>
+  <button type="button" id="pillClear">Clear</button>
+</div>
+
 <section id="timebar" class="card" hidden aria-label="Time slider">
   <button id="timePlay" class="btn" type="button" aria-label="Play">Play</button>
   <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
@@ -881,6 +947,17 @@ a { color: var(--link); }
     roi: { log: true, fmt: (v) => `${v < 1 ? v.toFixed(2) : v < 10 ? v.toFixed(1) : Math.round(v)}×` },
     orig: { fmt: (v) => v.toFixed(2), ends: ["typical", "original"] },
   };
+  // Plot vs. reality: actual percentile minus the one the plot predicts, on a diverging scale with grey for "as predicted".
+  const MISS = { div: true, fixed: [-60, 60], fmt: (v) => `${v > 0 ? "+" : ""}${Math.round(v)}`, ends: ["below its plot", "above its plot"],
+    note: "Percentile points above or below what the film's plot predicts (src.fit's brand-free models). Grey: about as predicted. Faint: no figure to compare." };
+  MEASURES.missR = MISS; MEASURES.missB = MISS; MEASURES.missV = MISS;
+  const DIV_LO = [52, 112, 201], DIV_HI = [232, 125, 20];
+  function diverge(t) {
+    t = Math.min(1, Math.max(0, t));
+    const mid = T.dark ? [120, 108, 98] : [184, 176, 166], [a, b, f] = t < 0.5 ? [DIV_LO, mid, t * 2] : [mid, DIV_HI, (t - 0.5) * 2];
+    return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
+  }
+  const rampFor = (ms) => (ms && ms.div ? diverge : ramp);
   const LANG_COLORS = [[86, 180, 233], [230, 159, 0], [0, 158, 115], [204, 121, 167], [213, 94, 0], [240, 228, 66], [0, 114, 178], [160, 110, 230]];
 
   function recolor() {
@@ -888,7 +965,7 @@ a { color: var(--link); }
     colors = new Uint8ClampedArray(n * 4);
     const ms = MEASURES[state.colorBy];
     const val = ms && ((i) => { const v = g[state.colorBy][i]; return v == null || (ms.log && v <= 0) ? null : ms.log ? Math.log10(v) : v; });
-    const range = ms ? quantiles(Array.from({ length: n }, (_, i) => val(i))) : null;
+    const range = ms ? ms.fixed || quantiles(Array.from({ length: n }, (_, i) => val(i))) : null;
     for (let i = 0; i < n; i++) {
       let c = T.grey, a = 230;
       if (state.colorBy === "cluster") {
@@ -896,7 +973,7 @@ a { color: var(--link); }
         if (cl >= 0) c = clusterColor(cl); else a = 150;
       } else if (range) {
         const v = val(i);
-        if (v != null) c = ramp((v - range[0]) / (range[1] - range[0] || 1)); else a = 60;
+        if (v != null) c = rampFor(ms)((v - range[0]) / (range[1] - range[0] || 1)); else a = 60;
       } else if (state.colorBy === "cert") {
         const v = g.cert[i];
         if (v != null) c = CERT_COLORS[v]; else a = 110;
@@ -913,7 +990,8 @@ a { color: var(--link); }
           c = mix(c, T.grey, f * 0.9); a = Math.round(255 - f * 180);
         }
       }
-      if (!passes[i] || (hl && !hl.has(i))) { c = T.grey; a = a === 2 ? 2 : Math.min(a, T.dim); }
+      if (!passes[i] && state.filterHide) a = 0;   // hidden, not greyed
+      else if (!passes[i] || (hl && !hl.has(i))) { c = T.grey; a = a === 2 ? 2 : Math.min(a, T.dim); }
       if (marked.has(i)) a = 0;
       colors.set([c[0], c[1], c[2], a], i * 4);
     }
@@ -966,16 +1044,37 @@ a { color: var(--link); }
     }
     state.passCount = count;
     $("count").textContent = `${count.toLocaleString()} of ${state.n.toLocaleString()} films shown`;
+    updateFilterUi();
+    if (state.missK != null) renderMisses();
   }
+  // The Filters window and the signs that filters are on: a count on the Filters button and, on wide screens, a pill
+  // at the top of the map, so filters set in one place are never a surprise in another.
+  const activeFilters = () => Object.values(state.filters).filter((v) => v != null).length;
+  function updateFilterUi() {
+    const k = activeFilters(), open = !$("filters").hidden;
+    $("filterBadge").hidden = !k; $("filterBadge").textContent = k;
+    $("filtersBtn").classList.toggle("active", k > 0);
+    $("filtersBtn").setAttribute("aria-expanded", String(open));
+    $("filterPill").hidden = !k || open;
+    $("pillText").innerHTML = `${k} filter${k === 1 ? "" : "s"} on · <b>${(state.passCount ?? 0).toLocaleString()}</b> of ${state.n.toLocaleString()} films${state.filterHide ? "" : " lit"}`;
+    $("fmGrey").setAttribute("aria-pressed", String(!state.filterHide)); $("fmHide").setAttribute("aria-pressed", String(!!state.filterHide));
+  }
+  function openFilters(on) {
+    $("filters").hidden = !on;
+    if (on && phone.matches) setTools(false);
+    updateFilterUi();
+    if (on && !phone.matches) $("filters").querySelector("input, select").focus({ preventScroll: true });
+  }
+  function setFilterHide(on) { state.filterHide = on; recolor(); redraw(); updateFilterUi(); scheduleUrl(); }
 
   function renderLegend(range) {
     const el = $("legend");
     if (range) {
       const ms = MEASURES[state.colorBy];
-      const stops = [0, 0.25, 0.5, 0.75, 1].map((t) => `rgb(${ramp(t).map(Math.round).join(",")})`).join(",");
+      const stops = [0, 0.25, 0.5, 0.75, 1].map((t) => `rgb(${rampFor(ms)(t).map(Math.round).join(",")})`).join(",");
       const end = (k) => (ms.ends ? `${ms.ends[k]} ${ms.fmt(range[k])}` : ms.fmt(ms.log ? 10 ** range[k] : range[k]));
       const known = state.films[state.colorBy].filter((v) => v != null).length;
-      const note = state.colorBy === "orig"
+      const note = ms.note ? ms.note : state.colorBy === "orig"
         ? "How unlike its 15 nearest neighbours a film's plot is, measured in the full embedding, not on this map."
         : known < state.n * 0.9 ? `Known for ${known.toLocaleString()} films; the rest are faint.${["revenue", "budget", "roi"].includes(state.colorBy) ? " Not adjusted for inflation." : ""}` : "";
       el.innerHTML = `<div class="bar" style="background:linear-gradient(90deg,${stops})"></div><div class="ends"><span>${end(0)}</span><span>${end(1)}</span></div>${note ? `<span class="mini">${note}</span>` : ""}`;
@@ -988,7 +1087,7 @@ a { color: var(--link); }
     } else {
       el.innerHTML = `<span class="mini">${state.models[state.model].labels.length} clusters in ${state.models[state.model].coarseLabels.length} regions</span>`;
     }
-    if (isFit()) el.innerHTML += `<p class="mini" style="margin:6px 0 0">Fit view: every film placed by what its plot predicts, from models that never see names or franchises: rating across, box office up${state.view3d ? ", popularity in depth" : ""}. Rings are movies nobody has made, placed by their predicted percentiles. See Explore → Predicting a hit.</p>`;
+    if (isFit()) el.innerHTML += `<p class="mini" style="margin:6px 0 0">Fit view: every film placed by what its plot predicts, from models that never see names or franchises: as predicted percentiles: rating across, box office up${state.view3d ? ", popularity in depth" : ""}. Rings are movies nobody has made, placed by their predicted percentiles. More in the Fit tab.</p>`;
     else if (isAxes()) el.innerHTML += `<p class="mini" style="margin:6px 0 0">Axes view: films placed along the model's main directions (PCA), labelled by the genres at each end. Position along an axis means something; dots side by side aren't necessarily similar. Switch to the plot map for neighbours.</p>`;
   }
 
@@ -1049,6 +1148,7 @@ a { color: var(--link); }
       }));
     }
     if (isAxes() && !isFit()) out.push(...axisLayers());
+    if (isFit()) out.push(...fitPlaneLayers(false));
     const common = { data: indexData(), ...atlasProps, sizeUnits: "pixels", parameters: FLAT, getPosition: (_, { index }) => pos(index), getIcon: (_, { index }) => iconAt(index) };
     const triggers = { getPosition: [state.model, state.view3d], getSize: [state.sizePop, colors, T.dark], getColor: [colors], getIcon: [colors, T.dark] };
     if (!T.dark) {
@@ -1138,7 +1238,7 @@ a { color: var(--link); }
         updateTriggers: { getPosition: [state.model, state.view3d] },
       }));
     }
-    if (isFit()) out.push(...fitAxisLayers());   // over the films, so the dense middle can't hide an axis
+    if (isFit()) out.push(...(state.view3d ? [] : fitPlaneLayers(true)), ...fitAxisLayers());   // over the films, so the dense middle can't hide an axis
     return out;
   }
 
@@ -1287,7 +1387,7 @@ a { color: var(--link); }
   function renderColorKey(range) {
     const el = $("colorKey"), label = $("colorBy").selectedOptions[0].textContent;
     if (range) {
-      const ms = MEASURES[state.colorBy], stops = [0, 0.5, 1].map((t) => `rgb(${ramp(t).map(Math.round).join(",")})`).join(",");
+      const ms = MEASURES[state.colorBy], stops = [0, 0.5, 1].map((t) => `rgb(${rampFor(ms)(t).map(Math.round).join(",")})`).join(",");
       const end = (k) => (ms.ends ? ms.ends[k] : ms.fmt(ms.log ? 10 ** range[k] : range[k]));
       el.innerHTML = `<span>${esc(label)}</span><div class="bar" style="background:linear-gradient(90deg,${stops})"></div><div class="ends"><span>${end(0)}</span><span>${end(1)}</span></div>`;
     } else {
@@ -1401,6 +1501,7 @@ a { color: var(--link); }
     const blurb = b ? `${b.tagline[i] ? `<i>${esc(b.tagline[i])}</i>` : ""}${esc(b.overview[i])}` : "";
     const wiki = b && b.wiki[i] ? ` · <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(b.wiki[i].replace(/ /g, "_"))}" target="_blank" rel="noopener">Wikipedia</a>` : "";
     el.innerHTML = `
+      <button class="x-close detail-x" type="button" id="closeDetail" aria-label="Close this film" title="Close (Esc)">✕</button>
       <div class="head">${thumb(i) ? `<img src="${thumb(i)}" alt="">` : ""}
         <div><h2>${esc(g.name[i])}</h2>
           <div class="meta">${g.year[i] ?? "Year unknown"}${g.dir[i].length ? ` · ${people(g.dir[i])}` : ""}</div>
@@ -1413,7 +1514,7 @@ a { color: var(--link); }
         <div class="stat"><b>${fmt(g.runtime[i])}</b><span>Min</span></div>
         <div class="stat"><b>${esc(certName(i) || "–")}</b><span>Rated</span></div>
       </div>
-      <p class="mini" style="margin:-4px 0 10px">${g.revenue[i] != null ? `Box office ${money(g.revenue[i])}` : "Box office unknown"}${g.budget[i] != null ? ` · budget ${money(g.budget[i])}` : ""}${g.roi[i] != null ? ` · ${MEASURES.roi.fmt(g.roi[i])} return` : ""}<br>Originality ${g.orig[i].toFixed(2)} (more original than ${Math.round(100 * origRank(i))}% of films)${g.pred && g.pred[i] && g.pred[i][0] >= 0 ? `<br>Its plot predicts: rating ${ordinal(g.pred[i][0])} percentile · box office ${ordinal(g.pred[i][1])} · popularity ${ordinal(g.pred[i][2])}` : ""}</p>
+      <p class="mini" style="margin:-4px 0 10px">${g.revenue[i] != null ? `Box office ${money(g.revenue[i])}` : "Box office unknown"}${g.budget[i] != null ? ` · budget ${money(g.budget[i])}` : ""}${g.roi[i] != null ? ` · ${MEASURES.roi.fmt(g.roi[i])} return` : ""}<br>Originality ${g.orig[i].toFixed(2)} (more original than ${Math.round(100 * origRank(i))}% of films)${g.fit && g.fit[i][0] >= 0 ? `<br>Plot predicts → actual (percentile): ${["rating", "box office", "popularity"].map((t, k) => `${t} ${ordinal(g.fit[i][2 * k])}${g.fit[i][2 * k + 1] >= 0 ? ` → <b>${ordinal(g.fit[i][2 * k + 1])}</b>` : ""}`).join(" · ")}` : ""}</p>
       ${blurb ? `<p class="blurb">${blurb}</p>` : ""}
       <div class="tags">${tags}</div>
       <div class="actions">
@@ -1423,8 +1524,7 @@ a { color: var(--link); }
       </div>
       <span class="cap">Nearest neighbors</span>
       <ol class="list" id="dNbs">${listHtml(neighbors(i).slice(0, 10))}</ol>
-      <div class="links"><span>${g.imdb[i] ? `<a href="https://www.imdb.com/title/tt${g.imdb[i]}/" target="_blank" rel="noopener">IMDb</a> · ` : ""}<a href="https://www.themoviedb.org/movie/${g.id[i]}" target="_blank" rel="noopener">TMDB</a>${wiki}</span>
-        <button class="close" type="button" id="closeDetail">Close</button></div>`;
+      <div class="links"><span>${g.imdb[i] ? `<a href="https://www.imdb.com/title/tt${g.imdb[i]}/" target="_blank" rel="noopener">IMDb</a> · ` : ""}<a href="https://www.themoviedb.org/movie/${g.id[i]}" target="_blank" rel="noopener">TMDB</a>${wiki}</span></div>`;
     el.hidden = false;
     bindList($("dNbs"));
     $("dRegion").addEventListener("click", () => showRegion("fine", cl));
@@ -1437,7 +1537,7 @@ a { color: var(--link); }
 
   function openTool(tab, toolId) { selectTab(tab); if (toolId) $(toolId).open = true; }
   function selectTab(name) {
-    ["map", "personal", "explore"].forEach((t) => { $("tab-" + t).setAttribute("aria-selected", String(t === name)); $("panel-" + t).hidden = t !== name; });
+    ["map", "personal", "explore", "fit"].forEach((t) => { $("tab-" + t).setAttribute("aria-selected", String(t === name)); $("panel-" + t).hidden = t !== name; });
   }
 
   // ---------- search: one floating suggestion list for every film box ----------
@@ -1911,7 +2011,7 @@ a { color: var(--link); }
   let fitOrder = [];
   function initFit() {
     const man = state.manifest, f = man.fit;
-    if (!f || !man.proposals || !man.models.some((m) => m.key === "fit")) { $("fitTool").hidden = true; return; }
+    if (!f || !man.proposals || !man.models.some((m) => m.key === "fit")) { $("tab-fit").hidden = true; return; }
     const pct = (x) => `${Math.round(x * 100)}%`;
     $("fitSummary").innerHTML = `
       <table class="mini fit-table"><thead><tr><th></th><th>Plot</th><th>Genre</th></tr></thead><tbody>
@@ -1931,6 +2031,32 @@ a { color: var(--link); }
     $("fitList").querySelectorAll("button[data-k]").forEach((b) => b.addEventListener("click", () => showProposal(+b.dataset.k)));
     $("fitShow").addEventListener("click", () => openFit());
   }
+  // What the plot gets wrong: the films furthest above and below their predicted percentile. Rating and box office
+  // only list films with 1,000+ votes, so the names are ones people know.
+  const MISS_KEYS = ["missR", "missB", "missV"];
+  function renderMisses() {
+    const g = state.films, k = state.missK, diff = g[MISS_KEYS[k]];
+    const ok = [];
+    for (let i = 0; i < state.n; i++) if (diff[i] != null && passes[i] && (k === 2 || (g.votes[i] ?? 0) >= 1000)) ok.push(i);
+    const by = (sign) => ok.slice().sort((a, b) => sign * (diff[b] - diff[a]) || (g.votes[b] ?? 0) - (g.votes[a] ?? 0)).slice(0, 10);
+    const extra = (i) => `${ordinal(g.fit[i][2 * k])} → ${ordinal(g.fit[i][2 * k + 1])}`;
+    $("missBeat").innerHTML = listHtml(by(1), extra); $("missFell").innerHTML = listHtml(by(-1), extra);
+    bindList($("missBeat")); bindList($("missFell"));
+    $("missSeg").querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(+b.dataset.k === k)));
+  }
+  function initMisses() {
+    const g = state.films;
+    if (!g.fit) { $("missGroup").remove(); return; }
+    MISS_KEYS.forEach((key, k) => { g[key] = g.fit.map((r) => (r[2 * k] >= 0 && r[2 * k + 1] >= 0 ? r[2 * k + 1] - r[2 * k] : null)); });
+    state.missK = 0;
+    $("missSeg").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+      state.missK = +b.dataset.k; renderMisses();
+      if (MISS_KEYS.includes(state.colorBy)) setColorBy(MISS_KEYS[state.missK]);
+    }));
+    $("missColor").addEventListener("click", () => setColorBy(MISS_KEYS[state.missK]));
+    renderMisses();
+  }
+  function setColorBy(v) { state.colorBy = v; $("colorBy").value = v; $("genreWrap").hidden = v !== "genre"; recolor(); redraw(); }
   async function openFit() {
     if (state.model === "fit") return;
     $("status").hidden = false; $("status").textContent = "Loading the fit view…";
@@ -1980,47 +2106,71 @@ a { color: var(--link); }
         outlineWidth: 4, outlineColor: T.bg.concat(235), fontSettings: { sdf: true }, updateTriggers: { getPosition: [state.view3d], getTextAnchor: [state.view3d], getAlignmentBaseline: [state.view3d], getPixelOffset: [state.view3d] } }),
     ];
   }
-  // Fit plot axes: a chart frame along the low edges (2D) or from the low corner (3D), ticked at the
-  // percentiles of films along each axis, titled with what the axis predicts.
-  const FIT_TICKS = [0.1, 0.25, 0.5, 0.75, 0.9];
+  // Fit plot axes: films sit at their predicted percentiles on a 0-100 cube (m.side map units a side), so the axes
+  // run 0 to 100 and nothing falls outside them. Faint planes on the three back walls (one in 2D) carry gridlines
+  // at every 25 for eyeballing; axis lines, ticks and titles draw over the films.
+  const FIT_TICKS = [0, 0.25, 0.5, 0.75, 1];
   const FIT_TITLES = ["Predicted rating", "Predicted box office", "Predicted popularity"];
-  function fitQuantiles(m, key) {
-    m._q = m._q || {};
-    if (!m._q[key]) {
-      const v = Float64Array.from(m[key]).sort(), at = (q) => v[Math.floor(q * (v.length - 1))];
-      m._q[key] = { lo: at(0.01), hi: at(0.99), ticks: FIT_TICKS.map(at) };
-    }
-    return m._q[key];
+  const FIT_SHORT = ["RATING", "BOX OFFICE", "POPULARITY"];   // 3D titles sit at the axis ends, where long ones run off a phone
+  function fitQuantiles(m) {
+    const side = m.side || 1;
+    return { lo: 0, hi: side, ticks: FIT_TICKS.map((t) => t * side) };
+  }
+  function fitFrame() {
+    const m = state.models[state.model], d3 = state.view3d, dims = d3 ? 3 : 2, side = m.side || 1, pad = side * 0.03;
+    const at = (vals) => (d3 ? vals : [vals[0], vals[1], 0]);
+    return { m, d3, dims, side, pad, o: -pad, end: side + pad, at };
+  }
+  // The planes go under the films; so do the 3D walls' gridlines (they're behind the cloud). In 2D the gridlines are
+  // drawn again over the films, faintly, so they can be read across the dense middle.
+  function fitPlaneLayers(over) {
+    const { d3, dims, side, o, end, at } = fitFrame();
+    const walls = d3 ? [[0, 1, 2], [1, 2, 0], [0, 2, 1]] : [[0, 1, 2]];   // [u axis, v axis, fixed axis at the origin]
+    const quad = ([u, v, w]) => [[o, o], [end, o], [end, end], [o, end]].map(([a, b]) => { const p = [0, 0, 0]; p[u] = a; p[v] = b; p[w] = o; return at(p); });
+    const grid = [];
+    walls.forEach(([u, v, w]) => FIT_TICKS.slice(1).forEach((t) => {
+      [[u, v], [v, u]].forEach(([along, across]) => {
+        const a = [0, 0, 0], b = [0, 0, 0];
+        a[across] = b[across] = t * side; a[along] = o; b[along] = end; a[w] = b[w] = o;
+        grid.push({ a: at(a), b: at(b), mid: t === 0.5 });
+      });
+    }));
+    const trig = { getPolygon: [state.view3d, state.model], getSourcePosition: [state.view3d, state.model], getTargetPosition: [state.view3d, state.model] };
+    const gridLayer = new deck.LineLayer({ id: over ? "fit-grid-over" : "fit-grid", data: grid, getSourcePosition: (l) => l.a, getTargetPosition: (l) => l.b,
+      parameters: FLAT, getColor: (l) => T.text.concat(over ? (l.mid ? 95 : 60) : (l.mid ? 70 : 40)), getWidth: (l) => (l.mid ? 1.3 : 1), widthUnits: "pixels", updateTriggers: trig });
+    if (over) return [gridLayer];
+    return [
+      new deck.PolygonLayer({ id: "fit-planes", data: walls.map(quad), getPolygon: (q) => q, filled: true, stroked: false, parameters: FLAT,
+        getFillColor: T.text.concat(T.dark ? 14 : 16), updateTriggers: trig }),
+      gridLayer,
+    ];
   }
   function fitAxisLayers() {
-    const m = state.models[state.model], d3 = state.view3d;
-    const keys = d3 ? ["x3", "y3", "z3"] : ["x", "y"], q = keys.map((k) => fitQuantiles(m, k));
-    const span = Math.max(...q.map((a) => a.hi - a.lo)), pad = span * 0.04, tick = span * 0.012;
-    const origin = q.map((a) => a.lo - pad);
-    const at = (d, v, off = []) => { const o = origin.slice(); o[d] = v; off.forEach(([k, dv]) => { o[k] += dv; }); return d3 ? o : [o[0], o[1], 0]; };
-    const lines = [], ticks = [], titles = [];
-    keys.forEach((_, d) => {
-      lines.push({ a: at(d, origin[d]), b: at(d, q[d].hi + pad) });
+    const { d3, dims, side, pad, o, end, at } = fitFrame();
+    const tick = side * 0.015, lines = [], ticks = [], titles = [];
+    for (let d = 0; d < dims; d++) {
+      const p = (v, off) => { const q = [o, o, o]; q[d] = v; if (off) q[off[0]] += off[1]; return at(q); };
       const across = d === 0 ? 1 : 0;   // tick marks point away from the plot
-      q[d].ticks.forEach((v, k) => {
-        lines.push({ a: at(d, v), b: at(d, v, [[across, -tick]]) });
-        ticks.push({ at: at(d, v, [[across, -tick]]), text: FIT_TICKS[k] === 0.5 ? "median" : ordinal(Math.round(FIT_TICKS[k] * 100)), d });
+      lines.push({ a: p(o), b: p(end) });
+      FIT_TICKS.forEach((t) => {
+        lines.push({ a: p(t * side), b: p(t * side, [across, -tick]) });
+        ticks.push({ at: p(t * side, [across, -tick]), text: String(Math.round(t * 100)), d });
       });
-      titles.push({ at: d3 ? at(d, q[d].hi + pad * 2.2) : at(d, (q[d].lo + q[d].hi) / 2, [[across, -tick]]), text: `${FIT_TITLES[d].toUpperCase()} →`, d });
-    });
+      titles.push({ at: d3 ? p(end + pad * 2) : p(side / 2, [across, -tick]), text: d3 ? FIT_SHORT[d] : `${FIT_TITLES[d].toUpperCase()} (PERCENTILE)`, d });
+    }
     const text = { fontFamily: "Oswald, Work Sans, sans-serif", fontWeight: 600, characterSet: "auto", fontSettings: { sdf: true },
-      getColor: T.text.concat(255), outlineWidth: 4, outlineColor: T.bg.concat(235), sizeUnits: "pixels" };
+      getColor: T.text.concat(255), outlineWidth: 4, outlineColor: T.bg.concat(235), sizeUnits: "pixels", parameters: FLAT };
     const trig = { getPosition: [state.view3d, state.model], getSourcePosition: [state.view3d, state.model], getTargetPosition: [state.view3d, state.model] };
     return [
       new deck.LineLayer({ id: "fit-axes", data: lines, parameters: FLAT, getSourcePosition: (l) => l.a, getTargetPosition: (l) => l.b,
         getColor: T.text.concat(210), getWidth: 2, widthUnits: "pixels", updateTriggers: trig }),
-      new deck.TextLayer({ id: "fit-ticks", data: ticks, ...text, parameters: FLAT, getPosition: (t) => t.at, getText: (t) => t.text, getSize: 12.5,
+      new deck.TextLayer({ id: "fit-ticks", data: ticks, ...text, getPosition: (t) => t.at, getText: (t) => t.text, getSize: 12.5,
         getColor: T.text.concat(225), fontWeight: 500,
         getTextAnchor: (t) => (d3 ? "middle" : t.d === 0 ? "middle" : "end"), getAlignmentBaseline: (t) => (d3 ? "center" : t.d === 0 ? "top" : "center"),
         getPixelOffset: (t) => (d3 ? [0, 12] : t.d === 0 ? [0, 4] : [-6, 0]), updateTriggers: { ...trig, getTextAnchor: [state.view3d], getAlignmentBaseline: [state.view3d], getPixelOffset: [state.view3d] } }),
-      new deck.TextLayer({ id: "fit-titles", data: titles, ...text, parameters: FLAT, getPosition: (t) => t.at, getText: (t) => t.text, getSize: 15,
+      new deck.TextLayer({ id: "fit-titles", data: titles, ...text, getPosition: (t) => t.at, getText: (t) => t.text, getSize: 14,
         getAngle: (t) => (!d3 && t.d === 1 ? 90 : 0), getTextAnchor: () => "middle", getAlignmentBaseline: (t) => (d3 ? "center" : t.d === 0 ? "top" : "bottom"),
-        getPixelOffset: (t) => (d3 ? [0, 0] : t.d === 0 ? [0, 24] : [-62, 0]),
+        getPixelOffset: (t) => (d3 ? [0, 0] : t.d === 0 ? [0, 24] : [-44, 0]),
         updateTriggers: { ...trig, getAngle: [state.view3d], getAlignmentBaseline: [state.view3d], getPixelOffset: [state.view3d] } }),
     ];
   }
@@ -2047,6 +2197,7 @@ a { color: var(--link); }
     if (f.genre != null) u.set("genre", man.genres[f.genre]);
     if (f.ratingMin != null) u.set("minRating", f.ratingMin);
     if (f.votesMin != null) u.set("minVotes", f.votesMin);
+    if (state.filterHide) u.set("filtered", "hide");
     return u;
   }
   function writeUrl() {
@@ -2078,6 +2229,7 @@ a { color: var(--link); }
     const fg = genreIx(u.get("genre"));
     if (fg != null) { state.filters.genre = fg; $("genreFilter").value = fg; }
     if (["ratingMin", "votesMin"].some((k) => state.filters[k] != null)) $("moreFilters").open = true;
+    if (u.get("filtered") === "hide") state.filterHide = true;
     applyFilters(); recolor();
     const person = u.get("person");
     const pIx = person ? man.people.findIndex((n) => fold(n) === fold(person)) : -1;
@@ -2143,13 +2295,16 @@ a { color: var(--link); }
     const W = window.innerWidth, H = window.innerHeight, c = $("controls").getBoundingClientRect(), kb = $("keybar").getBoundingClientRect();
     const side = c.width < W * 0.5;
     const area = { l: side ? c.right + 12 : 12, t: side ? 12 : c.bottom + 12, r: W - 12, b: kb.height ? Math.min(H, kb.top) - 12 : H - 12 };
-    const keys = state.view3d ? ["x3", "y3", "z3"] : ["x", "y"], q = keys.map((k) => fitQuantiles(m, k));
-    const span = Math.max(...q.map((a) => a.hi - a.lo)), pad = span * 0.04;
+    const keys = state.view3d ? ["x3", "y3", "z3"] : ["x", "y"], q = keys.map(() => fitQuantiles(m));
+    const span = Math.max(...q.map((a) => a.hi - a.lo)), pad = span * 0.05;
     const lo = q.map((a) => a.lo - pad), hi = q.map((a) => a.hi + pad);
     if (state.view3d) {
       const target = lo.map((v, k) => (v + hi[k]) / 2), size = Math.max(...hi.map((h, k) => h - lo[k]));
-      const zoom = Math.log2(Math.min(area.r - area.l, area.b - area.t) / size * 0.55);
+      const zoom = Math.log2(Math.min(area.r - area.l, area.b - area.t) / size * 0.5);
       state.minZoom = zoom - 1.5; state.labelSwitchZoom = zoom + 1.2;
+      // Centre the cube in the free area, not the window: shift the orbit target along x, which faces mostly
+      // across the screen at this angle (cos 32° of it does).
+      target[0] -= ((area.l + area.r) / 2 - W / 2) / 2 ** zoom / Math.cos(32 * Math.PI / 180);
       return { target, zoom, minZoom: zoom - 1.5, maxZoom: 14, rotationX: 18, rotationOrbit: -32 };
     }
     const ML = 92, MB = 52, MT = 16, MR = 16;   // room for tick labels and axis titles
@@ -2387,6 +2542,19 @@ a { color: var(--link); }
       refreshAll();
     });
     ["map", "personal", "explore"].forEach((t) => $("tab-" + t).addEventListener("click", () => selectTab(t)));
+    $("tab-fit").addEventListener("click", () => { selectTab("fit"); openFit(); });
+    $("filtersBtn").addEventListener("click", () => openFilters($("filters").hidden));
+    $("filtersClose").addEventListener("click", () => openFilters(false));
+    $("pillEdit").addEventListener("click", () => openFilters(true));
+    $("pillClear").addEventListener("click", () => $("reset").click());
+    $("fmGrey").addEventListener("click", () => setFilterHide(false));
+    $("fmHide").addEventListener("click", () => setFilterHide(true));
+    // Esc closes the Filters window, then the film card (not while typing, and not under the About dialog).
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape" || $("about").open || /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+      if (!$("filters").hidden) openFilters(false);
+      else if (state.selected != null) closeDetail();
+    });
     $("themeBtn").addEventListener("click", () => setTheme(isDark() ? "light" : "dark"));
     $("toolsBtn").addEventListener("click", () => setTools(!document.body.classList.contains("tools-open")));
     phone.addEventListener("change", () => setTools(false));
@@ -2427,7 +2595,7 @@ a { color: var(--link); }
     $("gemsBtn").addEventListener("click", toggleGems);
     renderUnmadeList();
     initDeserts();
-    initFit();
+    initFit(); initMisses();
     $("gnGo").addEventListener("click", curate);
     window.addEventListener("resize", hideSuggest);
 
