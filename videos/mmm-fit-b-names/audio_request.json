@@ -1,0 +1,34 @@
+{
+  "provider": "kokoro",
+  "speed": "1.1",
+  "lines": [
+    {
+      "id": "01",
+      "text": "Can an AI predict a hit from the plot alone? Same plot, two names."
+    },
+    {
+      "id": "02",
+      "text": "The Vanguard: sixty-fifth percentile. Call them the Avengers: ninety-seventh."
+    },
+    {
+      "id": "03",
+      "text": "An orphan wizard: seventeenth. Harry Potter: ninety-eighth."
+    },
+    {
+      "id": "04",
+      "text": "The name was doing the work. So I hid every name."
+    },
+    {
+      "id": "05",
+      "text": "With the names gone, what sells? Superheroes, true sports stories, martial-arts epics."
+    },
+    {
+      "id": "06",
+      "text": "What would your story score? Massive Movie Map."
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  },
+  "voice": "af_heart"
+}

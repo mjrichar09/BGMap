@@ -1,0 +1,30 @@
+{
+  "provider": "kokoro",
+  "speed": "1.1",
+  "lines": [
+    {
+      "id": "01",
+      "text": "What stories do audiences rate highest? Concert films, nature documentaries, music documentaries."
+    },
+    {
+      "id": "02",
+      "text": "What makes money? Superheroes, martial-arts epics, ancient Rome."
+    },
+    {
+      "id": "03",
+      "text": "I scored thirty-six thousand plots on both. Being loved and making money are almost unrelated."
+    },
+    {
+      "id": "04",
+      "text": "And the stories rated lowest? Gore, psycho killers and horror anthologies."
+    },
+    {
+      "id": "05",
+      "text": "Explore the plot fit yourself. Massive Movie Map."
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  },
+  "voice": "af_heart"
+}

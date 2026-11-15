@@ -1,0 +1,466 @@
+{
+  "bgm": {
+    "path": "assets/bgm/track.wav",
+    "volume": 0.27,
+    "duration_s": 25.36,
+    "query": "take 11 part A + sustained takes C_11, C_47 (Stable Audio Open, local)"
+  },
+  "bgm_pending": false,
+  "voices": [
+    {
+      "frame": 1,
+      "path": "assets/voice/01.wav",
+      "duration_s": 5.479,
+      "words": [
+        {
+          "id": "01-0",
+          "text": "I",
+          "start": 0.0,
+          "end": 0.62
+        },
+        {
+          "id": "01-1",
+          "text": "found",
+          "start": 0.62,
+          "end": 0.84
+        },
+        {
+          "id": "01-2",
+          "text": "the",
+          "start": 0.84,
+          "end": 0.94
+        },
+        {
+          "id": "01-3",
+          "text": "gaps",
+          "start": 0.94,
+          "end": 1.2
+        },
+        {
+          "id": "01-4",
+          "text": "on",
+          "start": 1.2,
+          "end": 1.36
+        },
+        {
+          "id": "01-5",
+          "text": "the",
+          "start": 1.36,
+          "end": 1.44
+        },
+        {
+          "id": "01-6",
+          "text": "map,",
+          "start": 1.44,
+          "end": 1.74
+        },
+        {
+          "id": "01-7",
+          "text": "stories",
+          "start": 1.86,
+          "end": 2.34
+        },
+        {
+          "id": "01-8",
+          "text": "nobody",
+          "start": 2.34,
+          "end": 2.68
+        },
+        {
+          "id": "01-9",
+          "text": "has",
+          "start": 2.68,
+          "end": 2.96
+        },
+        {
+          "id": "01-10",
+          "text": "filmed,",
+          "start": 2.96,
+          "end": 3.28
+        },
+        {
+          "id": "01-11",
+          "text": "and",
+          "start": 3.5,
+          "end": 3.78
+        },
+        {
+          "id": "01-12",
+          "text": "had",
+          "start": 3.78,
+          "end": 3.94
+        },
+        {
+          "id": "01-13",
+          "text": "the",
+          "start": 3.94,
+          "end": 4.06
+        },
+        {
+          "id": "01-14",
+          "text": "AI",
+          "start": 4.06,
+          "end": 4.38
+        },
+        {
+          "id": "01-15",
+          "text": "score",
+          "start": 4.38,
+          "end": 4.78
+        },
+        {
+          "id": "01-16",
+          "text": "them.",
+          "start": 4.78,
+          "end": 4.98
+        }
+      ],
+      "lead_s": 0.5
+    },
+    {
+      "frame": 2,
+      "path": "assets/voice/02.wav",
+      "duration_s": 2.506,
+      "words": [
+        {
+          "id": "02-0",
+          "text": "Most",
+          "start": 0.0,
+          "end": 0.42
+        },
+        {
+          "id": "02-1",
+          "text": "would",
+          "start": 0.42,
+          "end": 0.54
+        },
+        {
+          "id": "02-2",
+          "text": "be",
+          "start": 0.54,
+          "end": 0.64
+        },
+        {
+          "id": "02-3",
+          "text": "liked,",
+          "start": 0.64,
+          "end": 0.94
+        },
+        {
+          "id": "02-4",
+          "text": "but",
+          "start": 1.14,
+          "end": 1.22
+        },
+        {
+          "id": "02-5",
+          "text": "not",
+          "start": 1.22,
+          "end": 1.4
+        },
+        {
+          "id": "02-6",
+          "text": "watched.",
+          "start": 1.4,
+          "end": 1.8
+        }
+      ],
+      "lead_s": 0.15
+    },
+    {
+      "frame": 3,
+      "path": "assets/voice/03.wav",
+      "duration_s": 5.087,
+      "words": [
+        {
+          "id": "03-0",
+          "text": "Township",
+          "start": 0.0,
+          "end": 0.56
+        },
+        {
+          "id": "03-1",
+          "text": "Jazz:",
+          "start": 0.56,
+          "end": 0.9
+        },
+        {
+          "id": "03-2",
+          "text": "rated",
+          "start": 1.18,
+          "end": 1.64
+        },
+        {
+          "id": "03-3",
+          "text": "in",
+          "start": 1.64,
+          "end": 1.82
+        },
+        {
+          "id": "03-4",
+          "text": "the",
+          "start": 1.82,
+          "end": 1.92
+        },
+        {
+          "id": "03-5",
+          "text": "top",
+          "start": 1.92,
+          "end": 2.14
+        },
+        {
+          "id": "03-6",
+          "text": "three",
+          "start": 2.14,
+          "end": 2.36
+        },
+        {
+          "id": "03-7",
+          "text": "percent,",
+          "start": 2.36,
+          "end": 2.78
+        },
+        {
+          "id": "03-8",
+          "text": "watched",
+          "start": 2.98,
+          "end": 3.36
+        },
+        {
+          "id": "03-9",
+          "text": "by",
+          "start": 3.36,
+          "end": 3.58
+        },
+        {
+          "id": "03-10",
+          "text": "almost",
+          "start": 3.58,
+          "end": 3.92
+        },
+        {
+          "id": "03-11",
+          "text": "nobody.",
+          "start": 3.92,
+          "end": 4.38
+        }
+      ],
+      "lead_s": 0.15
+    },
+    {
+      "frame": 4,
+      "path": "assets/voice/04.wav",
+      "duration_s": 7.028,
+      "words": [
+        {
+          "id": "04-0",
+          "text": "But",
+          "start": 0.0,
+          "end": 0.26
+        },
+        {
+          "id": "04-1",
+          "text": "one",
+          "start": 0.26,
+          "end": 0.48
+        },
+        {
+          "id": "04-2",
+          "text": "does",
+          "start": 0.48,
+          "end": 0.66
+        },
+        {
+          "id": "04-3",
+          "text": "it",
+          "start": 0.66,
+          "end": 0.78
+        },
+        {
+          "id": "04-4",
+          "text": "all:",
+          "start": 0.78,
+          "end": 1.0
+        },
+        {
+          "id": "04-5",
+          "text": "a",
+          "start": 1.22,
+          "end": 1.62
+        },
+        {
+          "id": "04-6",
+          "text": "Roman",
+          "start": 1.62,
+          "end": 1.92
+        },
+        {
+          "id": "04-7",
+          "text": "legionary",
+          "start": 1.92,
+          "end": 2.6
+        },
+        {
+          "id": "04-8",
+          "text": "and",
+          "start": 2.6,
+          "end": 2.82
+        },
+        {
+          "id": "04-9",
+          "text": "a",
+          "start": 2.82,
+          "end": 2.92
+        },
+        {
+          "id": "04-10",
+          "text": "Syrian",
+          "start": 2.92,
+          "end": 3.22
+        },
+        {
+          "id": "04-11",
+          "text": "refugee,",
+          "start": 3.22,
+          "end": 3.86
+        },
+        {
+          "id": "04-12",
+          "text": "crossing",
+          "start": 4.14,
+          "end": 4.6
+        },
+        {
+          "id": "04-13",
+          "text": "the",
+          "start": 4.6,
+          "end": 4.76
+        },
+        {
+          "id": "04-14",
+          "text": "same",
+          "start": 4.76,
+          "end": 5.0
+        },
+        {
+          "id": "04-15",
+          "text": "border",
+          "start": 5.0,
+          "end": 5.28
+        },
+        {
+          "id": "04-16",
+          "text": "nineteen",
+          "start": 5.28,
+          "end": 5.58
+        },
+        {
+          "id": "04-17",
+          "text": "hundred",
+          "start": 5.58,
+          "end": 5.9
+        },
+        {
+          "id": "04-18",
+          "text": "years",
+          "start": 5.9,
+          "end": 6.16
+        },
+        {
+          "id": "04-19",
+          "text": "apart.",
+          "start": 6.16,
+          "end": 6.48
+        }
+      ],
+      "lead_s": 0.15
+    },
+    {
+      "frame": 5,
+      "path": "assets/voice/05.wav",
+      "duration_s": 4.863,
+      "words": [
+        {
+          "id": "05-0",
+          "text": "What",
+          "start": 0.0,
+          "end": 0.44
+        },
+        {
+          "id": "05-1",
+          "text": "would",
+          "start": 0.44,
+          "end": 0.54
+        },
+        {
+          "id": "05-2",
+          "text": "you",
+          "start": 0.54,
+          "end": 0.62
+        },
+        {
+          "id": "05-3",
+          "text": "make?",
+          "start": 0.62,
+          "end": 0.9
+        },
+        {
+          "id": "05-4",
+          "text": "Massive",
+          "start": 1.06,
+          "end": 1.54
+        },
+        {
+          "id": "05-5",
+          "text": "Movie",
+          "start": 1.54,
+          "end": 1.78
+        },
+        {
+          "id": "05-6",
+          "text": "Map.",
+          "start": 1.78,
+          "end": 2.06
+        }
+      ],
+      "lead_s": 0.3
+    }
+  ],
+  "sfx": [
+    {
+      "frame": 1,
+      "file": "assets/sfx/click.mp3",
+      "offset_s": 0.0,
+      "duration_s": 2.0,
+      "volume": 0.4
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/pop.mp3",
+      "offset_s": 0.64,
+      "duration_s": 2.0,
+      "volume": 0.3
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/ping.mp3",
+      "offset_s": 2.14,
+      "duration_s": 2.0,
+      "volume": 0.3
+    },
+    {
+      "frame": 4,
+      "file": "assets/sfx/impact-bass-2.mp3",
+      "offset_s": 0.78,
+      "duration_s": 2.0,
+      "volume": 0.35
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/impact-bass-1.mp3",
+      "offset_s": 1.06,
+      "duration_s": 2.0,
+      "volume": 0.35
+    }
+  ]
+}
