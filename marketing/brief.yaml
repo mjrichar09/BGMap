@@ -1,0 +1,100 @@
+# Massive Movie Map: promotion brief, read by promo-pipeline (mjrichar09/PromoPipeline).
+# This repo owns these facts; the pipeline only reads them. Paths are relative to marketing/.
+# Unknown values are TODO. `pnpm check massive-movie-map` in promo-pipeline validates this file.
+slug: massive-movie-map
+name: Massive Movie Map
+url: https://massive-movie-map.mjrfx.com
+status: live
+one_liner: "An AI read 36,841 movie plots and drew a map of cinema. Search a film, then explore its neighbours."
+
+audience:
+  - film fans who like lists, rankings and "what should I watch next"
+  - people curious about data or AI, with no ML background
+
+hooks:
+  # used in the three X videos (videos/massive-movie-map, mmm-same-director, mmm-hollywood-pays)
+  - "An AI read every plot and found things nobody told it"
+  - "Search a film and meet its nearest neighbours (GoodFellas → American Gangster, Carlito's Way, The Irishman)"
+  - "Hollywood keeps making the same movie (Olympus Has Fallen and White House Down, same year)"
+  - "The least original story on the map is Dracula"
+  - "Some directors never repeat themselves; some stars always do (Ridley Scott vs Jason Statham)"
+  - "Audiences rate original films higher, but the money follows familiar ones"
+  - "Movies nobody has made yet, found in the map's empty spaces"
+  # still-image series (.claude/skills/person-map-image)
+  - "<Director or actor>'s films, placed by an AI that read every plot. Whose map next?"
+  # planned (videos/mmm-predict-a-hit/PLAN.md)
+  - "Can an AI predict a hit from the plot alone?"
+
+features:
+  - name: Search any film and see its nearest plot neighbours
+    demo: TODO   # a clip; the capture tools are videos/tools/capture_map.py
+  - name: 3D map of 20 regions and 126 clusters
+    demo: TODO
+  - name: Colour by rating, box office or originality
+    demo: TODO
+  - name: People lens (a director's or actor's films lit up, with a stats card)
+    demo: TODO
+  - name: Time slider (how the mix of films changed)
+    demo: TODO
+  - name: Routes between two films
+    demo: TODO
+  - name: Hidden gems, film deserts and unmade-movie pitches
+    demo: TODO
+
+# Things the map shows, each with where it was checked. Re-check against the current map
+# (videos/make_video_stats.py) before a post quotes them; they move when the map is rebuilt.
+facts:
+  - text: "36,841 films, released 1900–2026, each with 50+ TMDB votes"
+    source: "Movie Map Demo Video — Plan.md (map qwen3__text_plot__inst__nn30_md0.05)"
+  - text: "30,253 Wikipedia plots, median 515 words"
+    source: "Movie Map Demo Video — Plan.md, scene 3"
+  - text: "Each plot becomes 1,024 numbers (Qwen3-Embedding), squeezed into 3D with UMAP"
+    source: "Movie Map Demo Video — Plan.md, scene 3"
+  - text: "The Godfather's nearest neighbours: Part II (0.96), Part III (0.93), Gotti (0.88)"
+    source: "Movie Map Demo Video — Plan.md, scene 2"
+  - text: "Olympus Has Fallen and White House Down (both 2013) are 0.92 similar"
+    source: "videos/massive-movie-map/STORYBOARD.md, frame 6"
+  - text: "Dracula (1931) is the least original film on the map; 32 films are at least 0.90 similar to it"
+    source: "videos/massive-movie-map/STORYBOARD.md, frame 7"
+  - text: "In the 2010s, 93% of each year's ten biggest hits were franchise films (1970s: 51%)"
+    source: "videos/massive-movie-map/STORYBOARD.md, frame 5 (TMDB revenue and collections)"
+  - text: "Sci-fi is 7% of films but draws 18% of all TMDB votes"
+    source: "Movie Map Demo Video — Plan.md, scene 4"
+  - text: "Shark movies are the worst-rated neighbourhood (mean TMDB 5.5)"
+    source: "Movie Map Demo Video — Plan.md, scene 6"
+
+proof: []   # real traction numbers only, added by Mark
+
+monetization:
+  model: donations            # Ko-fi on mjrfx.com; the map itself must stay non-commercial (TMDB/IMDb terms)
+  cta: "Go get lost"
+
+platforms: [instagram, youtube, tiktok, x]
+
+avoid:
+  - "IMDb data of any kind (ratings, votes); use TMDB only"
+  - trailer footage, studio logos or copyrighted music
+  - posters larger than a small credited card
+  - any wording that says the map earns money, or ads on the map
+  - "\"would earn\" for model predictions: say \"the model predicts\""
+
+licensed_media:
+  - what: TMDB poster images
+    terms: "Small and credited. Credit TMDB on the end card; posters stay out of git (videos/.gitignore)."
+  - what: Wikipedia plot text
+    terms: "CC BY-SA; credit on the end card."
+
+credits:
+  - "This product uses the TMDB API but is not endorsed or certified by TMDB."
+  - "Plots from Wikipedia, CC BY-SA."
+
+data_rules:
+  - "Ratings, votes, box office and budgets come from TMDB."
+  - "Box office is not adjusted for inflation; say so on screen wherever money appears."
+  - "\"Popular\" means either most films made (count) or most watched (share of TMDB votes); say which."
+  - "Predictions are from plot text: \"the model predicts\", never \"would earn\"."
+
+assets:
+  logo: TODO                     # no standalone logo yet
+  screenshots: ../web/assets/share.png
+  clips: TODO                    # renders and captures are gitignored; point at a folder once one exists
