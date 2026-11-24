@@ -94,6 +94,16 @@ data_rules:
   - "\"Popular\" means either most films made (count) or most watched (share of TMDB votes); say which."
   - "Predictions are from plot text: \"the model predicts\", never \"would earn\"."
 
+render_notes:
+  - "Match the earlier videos (videos/massive-movie-map, mmm-same-director, mmm-hollywood-pays): reuse their frame.md and .hyperframes/ helpers."
+  - "Look: Late Show base (near-black #0b0807, amber #ffb547, film grain, projector beam); Matinee ticket-stub stat cards (cream #efe6d2, marquee red #c8102e)."
+  - "Fonts: Limelight, Abril Fatface, Oswald, Courier Prime, Work Sans."
+  - "Narrator: Kokoro af_heart at 1.1x (local), warm late-night film-buff voice. Calm phrase subtitles, no word highlighting."
+  - "Music: the first video's Stable Audio sections, quiet bed with projector-click accents."
+  - "Map footage: frame-exact captures of the real site (videos/tools/capture_map.py); charts from videos/make_video_stats.py."
+  - "End card: TMDB logo + notice and the Wikipedia credit."
+  - "Person images: .claude/skills/person-map-image (check labels and tiles before use)."
+
 assets:
   logo: TODO                     # no standalone logo yet
   screenshots: ../web/assets/share.png
