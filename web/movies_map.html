@@ -19,11 +19,11 @@
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 <script defer src="/_vercel/insights/script.js"></script>
 <!-- PostHog (alongside Vercel Web Analytics): UTM-tagged visits and history past 31 days. Cookieless, pageviews only,
-     no replay/autocapture/profiles. Off while POSTHOG_KEY is empty. /ingest is proxied to PostHog by vercel.json
+     no replay/autocapture/profiles. Set POSTHOG_KEY to "" to turn it off. /ingest is proxied to PostHog by vercel.json
      (web/root), so ad-blockers don't drop it; for an EU project, switch "us" to "eu" here and in vercel.json. -->
 <script>
 (function () {
-  var POSTHOG_KEY = "";
+  var POSTHOG_KEY = "phc_zayBDM3ByqNEFQN2HqwzTWV3PLtrbhuKxbNjrdSSLYt8"; // public project key (write-only)
   var REGION = "us";
   if (!POSTHOG_KEY) return;
   var s = document.createElement("script");
