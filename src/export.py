@@ -503,7 +503,7 @@ def main() -> None:
     page = page.replace("const DATA_SIZES = null;", f"const DATA_SIZES = {sizes_js};", 1)
     (out / "index.html").write_text(page, encoding="utf-8")
     shutil.copytree(ROOT / "web" / "assets", out / "assets", dirs_exist_ok=True)
-    shutil.copytree(ROOT / "web" / "root", out, dirs_exist_ok=True)  # robots.txt, sitemap.xml
+    shutil.copytree(ROOT / "web" / "root", out, dirs_exist_ok=True)  # robots.txt, sitemap.xml, vercel.json (PostHog proxy)
     sizes = ", ".join(f"{p.name} {p.stat().st_size / 1e6:.1f} MB" for p in sorted(data_dir.glob("*.json")))
     print(f"{len(first):,} items, {len(layouts)} layout(s), {source} ratings -> {out} ({sizes})")
     print(f"rating cutoffs: {json.dumps(scale)}")

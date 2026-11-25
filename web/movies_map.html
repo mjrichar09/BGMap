@@ -18,6 +18,38 @@
 <!-- Vercel Web Analytics (cookieless page views; enabled per project in the Vercel dashboard) -->
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 <script defer src="/_vercel/insights/script.js"></script>
+<!-- PostHog (alongside Vercel Web Analytics): UTM-tagged visits and history past 31 days. Cookieless, pageviews only,
+     no replay/autocapture/profiles. Set POSTHOG_KEY to "" to turn it off. /ingest is proxied to PostHog by vercel.json
+     (web/root), so ad-blockers don't drop it; for an EU project, switch "us" to "eu" here and in vercel.json. -->
+<script>
+(function () {
+  var POSTHOG_KEY = "phc_zayBDM3ByqNEFQN2HqwzTWV3PLtrbhuKxbNjrdSSLYt8"; // public project key (write-only)
+  var REGION = "us";
+  if (!POSTHOG_KEY) return;
+  var s = document.createElement("script");
+  s.async = true;
+  s.src = "/ingest/static/array.full.no-external.js";
+  s.onload = function () {
+    try {
+      window.posthog.init(POSTHOG_KEY, {
+        api_host: "/ingest",
+        ui_host: "https://" + REGION + ".posthog.com",
+        defaults: "2026-01-30",
+        cookieless_mode: "always",
+        person_profiles: "never",
+        capture_pageview: true,
+        capture_pageleave: false,
+        autocapture: false,
+        disable_session_recording: true,
+        disable_surveys: true,
+        advanced_disable_flags: true,
+        disable_external_dependency_loading: true
+      });
+    } catch (e) {}
+  };
+  document.head.appendChild(s);
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Limelight&family=Oswald:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap">
