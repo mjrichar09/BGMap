@@ -1,0 +1,664 @@
+{
+  "total_duration_s": 24.963,
+  "width": 1080,
+  "height": 1920,
+  "groups": [
+    {
+      "id": "caption-group-0",
+      "frame": 1,
+      "start": 0,
+      "end": 0.84,
+      "text": "I found",
+      "words": [
+        {
+          "id": "caption-word-0-0",
+          "text": "I",
+          "start": 0,
+          "end": 0.62
+        },
+        {
+          "id": "caption-word-0-1",
+          "text": "found",
+          "start": 0.62,
+          "end": 0.84
+        }
+      ]
+    },
+    {
+      "id": "caption-group-1",
+      "frame": 1,
+      "start": 0.84,
+      "end": 1.2,
+      "text": "the gaps",
+      "words": [
+        {
+          "id": "caption-word-1-0",
+          "text": "the",
+          "start": 0.84,
+          "end": 0.94
+        },
+        {
+          "id": "caption-word-1-1",
+          "text": "gaps",
+          "start": 0.94,
+          "end": 1.2
+        }
+      ]
+    },
+    {
+      "id": "caption-group-2",
+      "frame": 1,
+      "start": 1.2,
+      "end": 1.44,
+      "text": "on the",
+      "words": [
+        {
+          "id": "caption-word-2-0",
+          "text": "on",
+          "start": 1.2,
+          "end": 1.36
+        },
+        {
+          "id": "caption-word-2-1",
+          "text": "the",
+          "start": 1.36,
+          "end": 1.44
+        }
+      ]
+    },
+    {
+      "id": "caption-group-3",
+      "frame": 1,
+      "start": 1.44,
+      "end": 1.86,
+      "text": "map,",
+      "words": [
+        {
+          "id": "caption-word-3-0",
+          "text": "map,",
+          "start": 1.44,
+          "end": 1.74
+        }
+      ]
+    },
+    {
+      "id": "caption-group-4",
+      "frame": 1,
+      "start": 1.86,
+      "end": 2.96,
+      "text": "stories nobody has",
+      "words": [
+        {
+          "id": "caption-word-4-0",
+          "text": "stories",
+          "start": 1.86,
+          "end": 2.34
+        },
+        {
+          "id": "caption-word-4-1",
+          "text": "nobody",
+          "start": 2.34,
+          "end": 2.68
+        },
+        {
+          "id": "caption-word-4-2",
+          "text": "has",
+          "start": 2.68,
+          "end": 2.96
+        }
+      ]
+    },
+    {
+      "id": "caption-group-5",
+      "frame": 1,
+      "start": 2.96,
+      "end": 3.4,
+      "text": "filmed,",
+      "words": [
+        {
+          "id": "caption-word-5-0",
+          "text": "filmed,",
+          "start": 2.96,
+          "end": 3.28
+        }
+      ]
+    },
+    {
+      "id": "caption-group-6",
+      "frame": 1,
+      "start": 3.5,
+      "end": 3.94,
+      "text": "and had",
+      "words": [
+        {
+          "id": "caption-word-6-0",
+          "text": "and",
+          "start": 3.5,
+          "end": 3.78
+        },
+        {
+          "id": "caption-word-6-1",
+          "text": "had",
+          "start": 3.78,
+          "end": 3.94
+        }
+      ]
+    },
+    {
+      "id": "caption-group-7",
+      "frame": 1,
+      "start": 3.94,
+      "end": 4.38,
+      "text": "the AI",
+      "words": [
+        {
+          "id": "caption-word-7-0",
+          "text": "the",
+          "start": 3.94,
+          "end": 4.06
+        },
+        {
+          "id": "caption-word-7-1",
+          "text": "AI",
+          "start": 4.06,
+          "end": 4.38
+        }
+      ]
+    },
+    {
+      "id": "caption-group-8",
+      "frame": 1,
+      "start": 4.38,
+      "end": 5.1,
+      "text": "score them.",
+      "words": [
+        {
+          "id": "caption-word-8-0",
+          "text": "score",
+          "start": 4.38,
+          "end": 4.78
+        },
+        {
+          "id": "caption-word-8-1",
+          "text": "them.",
+          "start": 4.78,
+          "end": 4.98
+        }
+      ]
+    },
+    {
+      "id": "caption-group-9",
+      "frame": 2,
+      "start": 5.479,
+      "end": 6.019,
+      "text": "Most would",
+      "words": [
+        {
+          "id": "caption-word-9-0",
+          "text": "Most",
+          "start": 5.479,
+          "end": 5.899
+        },
+        {
+          "id": "caption-word-9-1",
+          "text": "would",
+          "start": 5.899,
+          "end": 6.019
+        }
+      ]
+    },
+    {
+      "id": "caption-group-10",
+      "frame": 2,
+      "start": 6.019,
+      "end": 6.539,
+      "text": "be liked,",
+      "words": [
+        {
+          "id": "caption-word-10-0",
+          "text": "be",
+          "start": 6.019,
+          "end": 6.119
+        },
+        {
+          "id": "caption-word-10-1",
+          "text": "liked,",
+          "start": 6.119,
+          "end": 6.419
+        }
+      ]
+    },
+    {
+      "id": "caption-group-11",
+      "frame": 2,
+      "start": 6.619,
+      "end": 7.399,
+      "text": "but not watched.",
+      "words": [
+        {
+          "id": "caption-word-11-0",
+          "text": "but",
+          "start": 6.619,
+          "end": 6.699
+        },
+        {
+          "id": "caption-word-11-1",
+          "text": "not",
+          "start": 6.699,
+          "end": 6.879
+        },
+        {
+          "id": "caption-word-11-2",
+          "text": "watched.",
+          "start": 6.879,
+          "end": 7.279
+        }
+      ]
+    },
+    {
+      "id": "caption-group-12",
+      "frame": 3,
+      "start": 7.985,
+      "end": 9.005,
+      "text": "Township Jazz:",
+      "words": [
+        {
+          "id": "caption-word-12-0",
+          "text": "Township",
+          "start": 7.985,
+          "end": 8.545
+        },
+        {
+          "id": "caption-word-12-1",
+          "text": "Jazz:",
+          "start": 8.545,
+          "end": 8.885
+        }
+      ]
+    },
+    {
+      "id": "caption-group-13",
+      "frame": 3,
+      "start": 9.165,
+      "end": 9.805,
+      "text": "rated in",
+      "words": [
+        {
+          "id": "caption-word-13-0",
+          "text": "rated",
+          "start": 9.165,
+          "end": 9.625
+        },
+        {
+          "id": "caption-word-13-1",
+          "text": "in",
+          "start": 9.625,
+          "end": 9.805
+        }
+      ]
+    },
+    {
+      "id": "caption-group-14",
+      "frame": 3,
+      "start": 9.805,
+      "end": 10.125,
+      "text": "the top",
+      "words": [
+        {
+          "id": "caption-word-14-0",
+          "text": "the",
+          "start": 9.805,
+          "end": 9.905
+        },
+        {
+          "id": "caption-word-14-1",
+          "text": "top",
+          "start": 9.905,
+          "end": 10.125
+        }
+      ]
+    },
+    {
+      "id": "caption-group-15",
+      "frame": 3,
+      "start": 10.125,
+      "end": 10.885,
+      "text": "three percent,",
+      "words": [
+        {
+          "id": "caption-word-15-0",
+          "text": "three",
+          "start": 10.125,
+          "end": 10.345
+        },
+        {
+          "id": "caption-word-15-1",
+          "text": "percent,",
+          "start": 10.345,
+          "end": 10.765
+        }
+      ]
+    },
+    {
+      "id": "caption-group-16",
+      "frame": 3,
+      "start": 10.965,
+      "end": 11.565,
+      "text": "watched by",
+      "words": [
+        {
+          "id": "caption-word-16-0",
+          "text": "watched",
+          "start": 10.965,
+          "end": 11.345
+        },
+        {
+          "id": "caption-word-16-1",
+          "text": "by",
+          "start": 11.345,
+          "end": 11.565
+        }
+      ]
+    },
+    {
+      "id": "caption-group-17",
+      "frame": 3,
+      "start": 11.565,
+      "end": 12.485,
+      "text": "almost nobody.",
+      "words": [
+        {
+          "id": "caption-word-17-0",
+          "text": "almost",
+          "start": 11.565,
+          "end": 11.905
+        },
+        {
+          "id": "caption-word-17-1",
+          "text": "nobody.",
+          "start": 11.905,
+          "end": 12.365
+        }
+      ]
+    },
+    {
+      "id": "caption-group-18",
+      "frame": 4,
+      "start": 13.072,
+      "end": 13.552,
+      "text": "But one",
+      "words": [
+        {
+          "id": "caption-word-18-0",
+          "text": "But",
+          "start": 13.072,
+          "end": 13.332
+        },
+        {
+          "id": "caption-word-18-1",
+          "text": "one",
+          "start": 13.332,
+          "end": 13.552
+        }
+      ]
+    },
+    {
+      "id": "caption-group-19",
+      "frame": 4,
+      "start": 13.552,
+      "end": 13.852,
+      "text": "does it",
+      "words": [
+        {
+          "id": "caption-word-19-0",
+          "text": "does",
+          "start": 13.552,
+          "end": 13.732
+        },
+        {
+          "id": "caption-word-19-1",
+          "text": "it",
+          "start": 13.732,
+          "end": 13.852
+        }
+      ]
+    },
+    {
+      "id": "caption-group-20",
+      "frame": 4,
+      "start": 13.852,
+      "end": 14.192,
+      "text": "all:",
+      "words": [
+        {
+          "id": "caption-word-20-0",
+          "text": "all:",
+          "start": 13.852,
+          "end": 14.072
+        }
+      ]
+    },
+    {
+      "id": "caption-group-21",
+      "frame": 4,
+      "start": 14.292,
+      "end": 15.672,
+      "text": "a Roman legionary",
+      "words": [
+        {
+          "id": "caption-word-21-0",
+          "text": "a",
+          "start": 14.292,
+          "end": 14.692
+        },
+        {
+          "id": "caption-word-21-1",
+          "text": "Roman",
+          "start": 14.692,
+          "end": 14.992
+        },
+        {
+          "id": "caption-word-21-2",
+          "text": "legionary",
+          "start": 14.992,
+          "end": 15.672
+        }
+      ]
+    },
+    {
+      "id": "caption-group-22",
+      "frame": 4,
+      "start": 15.672,
+      "end": 15.992,
+      "text": "and a",
+      "words": [
+        {
+          "id": "caption-word-22-0",
+          "text": "and",
+          "start": 15.672,
+          "end": 15.892
+        },
+        {
+          "id": "caption-word-22-1",
+          "text": "a",
+          "start": 15.892,
+          "end": 15.992
+        }
+      ]
+    },
+    {
+      "id": "caption-group-23",
+      "frame": 4,
+      "start": 15.992,
+      "end": 17.052,
+      "text": "Syrian refugee,",
+      "words": [
+        {
+          "id": "caption-word-23-0",
+          "text": "Syrian",
+          "start": 15.992,
+          "end": 16.292
+        },
+        {
+          "id": "caption-word-23-1",
+          "text": "refugee,",
+          "start": 16.292,
+          "end": 16.932
+        }
+      ]
+    },
+    {
+      "id": "caption-group-24",
+      "frame": 4,
+      "start": 17.212,
+      "end": 17.832,
+      "text": "crossing the",
+      "words": [
+        {
+          "id": "caption-word-24-0",
+          "text": "crossing",
+          "start": 17.212,
+          "end": 17.672
+        },
+        {
+          "id": "caption-word-24-1",
+          "text": "the",
+          "start": 17.672,
+          "end": 17.832
+        }
+      ]
+    },
+    {
+      "id": "caption-group-25",
+      "frame": 4,
+      "start": 17.832,
+      "end": 18.352,
+      "text": "same border",
+      "words": [
+        {
+          "id": "caption-word-25-0",
+          "text": "same",
+          "start": 17.832,
+          "end": 18.072
+        },
+        {
+          "id": "caption-word-25-1",
+          "text": "border",
+          "start": 18.072,
+          "end": 18.352
+        }
+      ]
+    },
+    {
+      "id": "caption-group-26",
+      "frame": 4,
+      "start": 18.352,
+      "end": 18.972,
+      "text": "nineteen hundred",
+      "words": [
+        {
+          "id": "caption-word-26-0",
+          "text": "nineteen",
+          "start": 18.352,
+          "end": 18.652
+        },
+        {
+          "id": "caption-word-26-1",
+          "text": "hundred",
+          "start": 18.652,
+          "end": 18.972
+        }
+      ]
+    },
+    {
+      "id": "caption-group-27",
+      "frame": 4,
+      "start": 18.972,
+      "end": 19.672,
+      "text": "years apart.",
+      "words": [
+        {
+          "id": "caption-word-27-0",
+          "text": "years",
+          "start": 18.972,
+          "end": 19.232
+        },
+        {
+          "id": "caption-word-27-1",
+          "text": "apart.",
+          "start": 19.232,
+          "end": 19.552
+        }
+      ]
+    },
+    {
+      "id": "caption-group-28",
+      "frame": 5,
+      "start": 20.1,
+      "end": 20.64,
+      "text": "What would",
+      "words": [
+        {
+          "id": "caption-word-28-0",
+          "text": "What",
+          "start": 20.1,
+          "end": 20.54
+        },
+        {
+          "id": "caption-word-28-1",
+          "text": "would",
+          "start": 20.54,
+          "end": 20.64
+        }
+      ]
+    },
+    {
+      "id": "caption-group-29",
+      "frame": 5,
+      "start": 20.64,
+      "end": 21.12,
+      "text": "you make?",
+      "words": [
+        {
+          "id": "caption-word-29-0",
+          "text": "you",
+          "start": 20.64,
+          "end": 20.72
+        },
+        {
+          "id": "caption-word-29-1",
+          "text": "make?",
+          "start": 20.72,
+          "end": 21
+        }
+      ]
+    },
+    {
+      "id": "caption-group-30",
+      "frame": 5,
+      "start": 21.16,
+      "end": 22.28,
+      "text": "Massive Movie Map.",
+      "words": [
+        {
+          "id": "caption-word-30-0",
+          "text": "Massive",
+          "start": 21.16,
+          "end": 21.64
+        },
+        {
+          "id": "caption-word-30-1",
+          "text": "Movie",
+          "start": 21.64,
+          "end": 21.88
+        },
+        {
+          "id": "caption-word-30-2",
+          "text": "Map.",
+          "start": 21.88,
+          "end": 22.16
+        }
+      ]
+    }
+  ]
+}

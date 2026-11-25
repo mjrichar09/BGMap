@@ -1,0 +1,40 @@
+# Massive Movie Map
+
+> An interactive 3D map of 36,841 films, placed by what their plots are about. Films sit close together when their stories are alike, not because they share a genre, director, star or franchise. Site: https://massive-movie-map.mjrfx.com
+
+An AI text-embedding model (Qwen3-Embedding) reads each film's plot summary, keywords and tagline, with people's names, franchise names, genre words and mentions of animation hidden, and UMAP lays the result out in 3D. Nearby means similar; long distances are only rough. Regions are clusters named by their most typical keywords. Other layouts: Axes (the main directions in which plots differ) and Fit (films placed by the rating, box office and popularity their plot alone predicts, with AI-written pitches for "unmade movies" in empty parts of the space).
+
+Film details, ratings and posters come from TMDB (this website uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB). Plot summaries are from Wikipedia (CC BY-SA 4.0) and TMDB.
+
+## Linking to a view of the map
+
+Every view can be opened from a URL. To show someone something on the map, build a link from these query parameters (all optional, combine freely):
+
+- `film` - a TMDB movie id to select and fly to, e.g. `film=157336` (Interstellar)
+- `layout` - `story` (default), `axes` or `fit`
+- `view` - `3d` (default) or `2d`
+- `color` - what colors the dots: `cluster` (regions, default), `orig` (originality), `genre`, `lang` (original language), `rating`, `votes` (popularity), `revenue` (box office), `budget`, `roi` (return on budget), `year`, `runtime`, `cert` (US rating)
+- `colorGenre` - the genre to color when `color=genre`, e.g. `colorGenre=Horror`
+- `ids` - TMDB movie ids to highlight, comma-separated (up to 100), e.g. `ids=157336,286217,496243`
+- `person` - a director or actor whose films to highlight, e.g. `person=Christopher Nolan`
+- `from`, `to` - release-year range, e.g. `from=1970&to=1989`
+- `genre` - show only one genre: Drama, Comedy, Thriller, Action, Romance, Horror, Crime, Adventure, Science Fiction, Family, Fantasy, Mystery, History, Documentary, TV Movie, Music, War, Sports, Western
+- `minRating` - minimum TMDB rating (0-10); `minVotes` - minimum number of TMDB votes
+
+Add `#about` to open the page with its explanation showing.
+
+Examples:
+
+- https://massive-movie-map.mjrfx.com/?film=157336&color=rating - Interstellar among its neighbors, colored by rating
+- https://massive-movie-map.mjrfx.com/?person=Christopher%20Nolan&view=2d - one director's films on the map
+- https://massive-movie-map.mjrfx.com/?genre=Horror&from=1970&to=1989&color=year - 1970s and 1980s horror
+- https://massive-movie-map.mjrfx.com/?layout=fit&view=2d - films placed by what their plots predict
+
+TMDB movie ids are the number in a film's themoviedb.org URL (https://www.themoviedb.org/movie/157336 is Interstellar).
+
+## Using what you see
+
+- A film's nearest neighbors on the map are the films with the most similar stories.
+- Originality is one minus a film's average similarity to its 15 nearest neighbors.
+- Box office and budgets are TMDB's figures, known for about a third of films and not adjusted for inflation.
+- Fit-view predictions come from the plot text alone and are not forecasts.

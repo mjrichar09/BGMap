@@ -1,0 +1,30 @@
+{
+  "provider": "kokoro",
+  "speed": "1.1",
+  "lines": [
+    {
+      "id": "01",
+      "text": "I trained an AI to predict a movie's box office from its plot alone."
+    },
+    {
+      "id": "02",
+      "text": "Its biggest misses? The Irishman. Marriage Story. The Trial of the Chicago 7. The Two Popes."
+    },
+    {
+      "id": "03",
+      "text": "Their plots look like hits: top five percent. Their box office: the bottom fifth."
+    },
+    {
+      "id": "04",
+      "text": "The AI isn't wrong about the stories. It just can't see that Netflix barely put them in cinemas."
+    },
+    {
+      "id": "05",
+      "text": "See what your favorite movie's plot predicts. Massive Movie Map."
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  },
+  "voice": "af_heart"
+}

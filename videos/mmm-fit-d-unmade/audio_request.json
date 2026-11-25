@@ -1,0 +1,30 @@
+{
+  "provider": "kokoro",
+  "speed": "1.1",
+  "lines": [
+    {
+      "id": "01",
+      "text": "I found the gaps on the map, stories nobody has filmed, and had the AI score them."
+    },
+    {
+      "id": "02",
+      "text": "Most would be liked, but not watched."
+    },
+    {
+      "id": "03",
+      "text": "Township Jazz: rated in the top three percent, watched by almost nobody."
+    },
+    {
+      "id": "04",
+      "text": "But one does it all: a Roman legionary and a Syrian refugee, crossing the same border nineteen hundred years apart."
+    },
+    {
+      "id": "05",
+      "text": "What would you make? Massive Movie Map."
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  },
+  "voice": "af_heart"
+}

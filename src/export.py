@@ -298,24 +298,57 @@ FIT_ENDS = {"rating": ("Lower rated", "Higher rated"), "box": ("Smaller box offi
 
 
 def fit_layout(df: pd.DataFrame, base) -> tuple[pd.DataFrame, float, list[dict]] | None:
-    """The Fit view: every film placed by its plot's scores on the OPLS rating, box office and popularity axes
-    (src.opls, brand-free models), scaled to the UMAP map's spread; x = rating, y = box office, z = popularity."""
-    if not (base / "fit" / "opls_axes.npz").exists():
+    """The Fit view: every film placed by the percentile its plot predicts (src.fit's brand-free models, the same
+    numbers as the film cards), x = rating, y = box office, z = popularity, on a 0-100 cube of side FIT_SIDE map
+    units (scaled to the UMAP map's spread). Percentiles keep every film inside the axes and match the ticks."""
+    preds_path = base / "fit" / "preds.parquet"
+    if not (base / "fit" / "opls_axes.npz").exists() or not preds_path.exists():
         return None
     from src.opls import AXES, axis_scores
 
     _, v, _ = __import__("src.gaps", fromlist=["load"]).load(base)
     z = axis_scores(base, v)
-    scale = float(df[["x", "y"]].to_numpy().std())
+    side = float(df[["x", "y"]].to_numpy().std()) * 5
+    pct = fit_pred_pct(df, base, preds_path)
     out = df[["cluster_fine", "cluster_coarse", "label_fine", "label_coarse"]].copy()
-    out["x"], out["y"] = z["rating"] * scale, z["box"] * scale
-    out["x3"], out["y3"], out["z3"] = z["rating"] * scale, z["box"] * scale, z["votes"] * scale
+    at = {t: pct[t][0] / 100 * side for t in ("rating", "box", "votes")}
+    out["x"], out["y"] = at["rating"], at["box"]
+    out["x3"], out["y3"], out["z3"] = at["rating"], at["box"], at["votes"]
     axes = []
     for a in AXES:
         poles = axis_poles(df, z[a])
         lo, hi = FIT_ENDS[a]
         axes.append({"key": a, "low": {**poles["low"], "title": lo}, "high": {**poles["high"], "title": hi}})
-    return out, scale, axes
+    return out, side, axes
+
+
+def fit_pred_pct(first: pd.DataFrame, base, preds_path) -> dict:
+    """Per target, (predicted, actual) percentile arrays in first's row order, unrounded, NaN where unknown. Both are
+    ranked among the films that have an actual value, so they compare directly."""
+    from src.fit import targets
+    from src.gaps import load
+
+    m, _, _ = load(base)
+    pr = pd.read_parquet(preds_path).set_index("id")
+    tg = targets(m)
+    order = pd.Index(m["id"]).get_indexer(first["id"])
+    pct = lambda ref, v: (np.searchsorted(ref, v, side="left") + np.searchsorted(ref, v, side="right")) / 2 / len(ref) * 100
+    out = {}
+    for t in ("rating", "box", "votes"):
+        y, ok = tg[t]                                       # the actual value, for every film that has one (franchises too)
+        p = pr[f"{t}_original"].reindex(m["id"]).to_numpy()
+        pp = np.where(np.isfinite(p), pct(np.sort(p[ok]), np.nan_to_num(p)), np.nan)
+        pa = np.where(ok, pct(np.sort(y[ok]), np.where(ok, y, 0)), np.nan)
+        out[t] = (pp[order].clip(0, 100), pa[order])
+    return out
+
+
+def fit_percentiles(first: pd.DataFrame, base, preds_path) -> list[list[int]]:
+    """Per film, [predicted, actual] percentile for rating, box office and popularity (fit_pred_pct), flattened to six
+    ints, -1 where unknown: actual minus predicted is how far a film beat its plot."""
+    pct = fit_pred_pct(first, base, preds_path)
+    cols = [np.where(np.isnan(a), -1, np.round(a)).astype(int) for t in ("rating", "box", "votes") for a in pct[t]]
+    return [[int(v) for v in row] for row in zip(*cols)]
 
 
 def fit_summary(base) -> dict:
@@ -414,9 +447,11 @@ def main() -> None:
         fdf, fscale, faxes = fit
         prop_path = base / "fit" / "proposals.json"
         proposals = json.loads(prop_path.read_text(encoding="utf-8")) if prop_path.exists() else []
-        place = lambda p: [p["axes"]["rating"] * fscale, p["axes"]["box"] * fscale, p["axes"]["rating"] * fscale, p["axes"]["box"] * fscale, p["axes"]["votes"] * fscale]
+        # a pitch sits at its calibrated percentiles (src.opls --proposals), on the same 0-100 cube as the films
+        place = lambda p: [p["pct"]["rating"] / 100 * fscale, p["pct"]["box"] / 100 * fscale,
+                           p["pct"]["rating"] / 100 * fscale, p["pct"]["box"] / 100 * fscale, p["pct"]["votes"] / 100 * fscale]
         payload = layout_payload(fdf, *nbrs_first)
-        payload["kind"], payload["axes"] = "fit", faxes
+        payload["kind"], payload["axes"], payload["side"] = "fit", faxes, round(fscale, 4)
         payload["proposals"] = [[round(float(t), 3) for t in place(p)] for p in proposals]
         by_title = {p["title"]: place(p) for p in proposals}
         payload["unmade"] = [[round(float(t), 3) for t in by_title.get(u["title"], [0, 0, 0, 0, 0])] for u in unmade]
@@ -427,10 +462,8 @@ def main() -> None:
     source = "IMDb" if args.private else "TMDB"
     films, vocab = films_payload(first, source)
     preds_path = base / "fit" / "preds.parquet"
-    if preds_path.exists():  # what each film's plot predicts (src.fit, brand-free models): percentiles among all films
-        pr = pd.read_parquet(preds_path).set_index("id").reindex(first["id"])
-        films["pred"] = [list(row) for row in zip(*[(pr[c].rank(pct=True) * 100).round().fillna(-1).astype(int).tolist()
-                                                     for c in ("rating_original", "box_original", "votes_original")])]
+    if preds_path.exists():
+        films["fit"] = fit_percentiles(first, base, preds_path)
     people = people_stats(first, first_vecs, first_sims, vocab["people"], RATINGS[source][0])
     (data_dir / "people.json").write_text(json.dumps({str(k): v for k, v in people.items()}, separators=(",", ":")), encoding="utf-8")
     (data_dir / "films.json").write_text(json.dumps(films, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")

@@ -1,0 +1,469 @@
+{
+  "bgm": {
+    "path": "assets/bgm/track.wav",
+    "volume": 0.27,
+    "duration_s": 28.62,
+    "query": "take 11 part A + sustained takes C_11, C_47 (Stable Audio Open, local)"
+  },
+  "bgm_pending": false,
+  "voices": [
+    {
+      "frame": 1,
+      "path": "assets/voice/01.wav",
+      "duration_s": 4.818,
+      "words": [
+        {
+          "id": "01-0",
+          "text": "Can",
+          "start": 0.0,
+          "end": 0.64
+        },
+        {
+          "id": "01-1",
+          "text": "an",
+          "start": 0.64,
+          "end": 0.8
+        },
+        {
+          "id": "01-2",
+          "text": "AI",
+          "start": 0.8,
+          "end": 1.06
+        },
+        {
+          "id": "01-3",
+          "text": "predict",
+          "start": 1.06,
+          "end": 1.5
+        },
+        {
+          "id": "01-4",
+          "text": "a",
+          "start": 1.5,
+          "end": 1.66
+        },
+        {
+          "id": "01-5",
+          "text": "hit",
+          "start": 1.66,
+          "end": 1.8
+        },
+        {
+          "id": "01-6",
+          "text": "from",
+          "start": 1.8,
+          "end": 1.96
+        },
+        {
+          "id": "01-7",
+          "text": "the",
+          "start": 1.96,
+          "end": 2.08
+        },
+        {
+          "id": "01-8",
+          "text": "plot",
+          "start": 2.08,
+          "end": 2.28
+        },
+        {
+          "id": "01-9",
+          "text": "alone?",
+          "start": 2.28,
+          "end": 2.58
+        },
+        {
+          "id": "01-10",
+          "text": "Same",
+          "start": 2.94,
+          "end": 3.34
+        },
+        {
+          "id": "01-11",
+          "text": "plot,",
+          "start": 3.34,
+          "end": 3.66
+        },
+        {
+          "id": "01-12",
+          "text": "two",
+          "start": 3.86,
+          "end": 3.94
+        },
+        {
+          "id": "01-13",
+          "text": "names.",
+          "start": 3.94,
+          "end": 4.24
+        }
+      ],
+      "lead_s": 0.5
+    },
+    {
+      "frame": 2,
+      "path": "assets/voice/02.wav",
+      "duration_s": 5.194,
+      "words": [
+        {
+          "id": "02-0",
+          "text": "The",
+          "start": 0.0,
+          "end": 0.24
+        },
+        {
+          "id": "02-1",
+          "text": "Vanguard:",
+          "start": 0.24,
+          "end": 0.56
+        },
+        {
+          "id": "02-2",
+          "text": "65th",
+          "start": 0.56,
+          "end": 1.46
+        },
+        {
+          "id": "02-3",
+          "text": "percentile.",
+          "start": 1.46,
+          "end": 2.06
+        },
+        {
+          "id": "02-4",
+          "text": "Call",
+          "start": 2.34,
+          "end": 2.7
+        },
+        {
+          "id": "02-5",
+          "text": "them",
+          "start": 2.7,
+          "end": 2.88
+        },
+        {
+          "id": "02-6",
+          "text": "the",
+          "start": 2.88,
+          "end": 3.04
+        },
+        {
+          "id": "02-7",
+          "text": "Avengers:",
+          "start": 3.04,
+          "end": 3.48
+        },
+        {
+          "id": "02-8",
+          "text": "97th.",
+          "start": 3.48,
+          "end": 3.88
+        }
+      ],
+      "lead_s": 0.15
+    },
+    {
+      "frame": 3,
+      "path": "assets/voice/03.wav",
+      "duration_s": 4.149,
+      "words": [
+        {
+          "id": "03-0",
+          "text": "An",
+          "start": 0.0,
+          "end": 0.28
+        },
+        {
+          "id": "03-1",
+          "text": "orphan",
+          "start": 0.28,
+          "end": 0.54
+        },
+        {
+          "id": "03-2",
+          "text": "wizard:",
+          "start": 0.54,
+          "end": 0.98
+        },
+        {
+          "id": "03-3",
+          "text": "17th.",
+          "start": 0.98,
+          "end": 2.06
+        },
+        {
+          "id": "03-4",
+          "text": "Harry",
+          "start": 2.06,
+          "end": 2.36
+        },
+        {
+          "id": "03-5",
+          "text": "Potter:",
+          "start": 2.36,
+          "end": 2.68
+        },
+        {
+          "id": "03-6",
+          "text": "98th.",
+          "start": 2.68,
+          "end": 3.08
+        }
+      ],
+      "lead_s": 0.15
+    },
+    {
+      "frame": 4,
+      "path": "assets/voice/04.wav",
+      "duration_s": 3.274,
+      "words": [
+        {
+          "id": "04-0",
+          "text": "The",
+          "start": 0.0,
+          "end": 0.26
+        },
+        {
+          "id": "04-1",
+          "text": "name",
+          "start": 0.26,
+          "end": 0.44
+        },
+        {
+          "id": "04-2",
+          "text": "was",
+          "start": 0.44,
+          "end": 0.64
+        },
+        {
+          "id": "04-3",
+          "text": "doing",
+          "start": 0.64,
+          "end": 0.84
+        },
+        {
+          "id": "04-4",
+          "text": "the",
+          "start": 0.84,
+          "end": 0.98
+        },
+        {
+          "id": "04-5",
+          "text": "work.",
+          "start": 0.98,
+          "end": 1.28
+        },
+        {
+          "id": "04-6",
+          "text": "So",
+          "start": 1.42,
+          "end": 1.66
+        },
+        {
+          "id": "04-7",
+          "text": "I",
+          "start": 1.66,
+          "end": 1.82
+        },
+        {
+          "id": "04-8",
+          "text": "hid",
+          "start": 1.82,
+          "end": 2.02
+        },
+        {
+          "id": "04-9",
+          "text": "every",
+          "start": 2.02,
+          "end": 2.32
+        },
+        {
+          "id": "04-10",
+          "text": "name.",
+          "start": 2.32,
+          "end": 2.56
+        }
+      ],
+      "lead_s": 0.15
+    },
+    {
+      "frame": 5,
+      "path": "assets/voice/05.wav",
+      "duration_s": 5.513,
+      "words": [
+        {
+          "id": "05-0",
+          "text": "With",
+          "start": 0.0,
+          "end": 0.26
+        },
+        {
+          "id": "05-1",
+          "text": "the",
+          "start": 0.26,
+          "end": 0.36
+        },
+        {
+          "id": "05-2",
+          "text": "names",
+          "start": 0.36,
+          "end": 0.6
+        },
+        {
+          "id": "05-3",
+          "text": "gone,",
+          "start": 0.6,
+          "end": 0.94
+        },
+        {
+          "id": "05-4",
+          "text": "what",
+          "start": 1.16,
+          "end": 1.24
+        },
+        {
+          "id": "05-5",
+          "text": "sells?",
+          "start": 1.24,
+          "end": 1.54
+        },
+        {
+          "id": "05-6",
+          "text": "Superheroes,",
+          "start": 2.36,
+          "end": 2.92
+        },
+        {
+          "id": "05-7",
+          "text": "true",
+          "start": 2.98,
+          "end": 3.12
+        },
+        {
+          "id": "05-8",
+          "text": "sports",
+          "start": 3.12,
+          "end": 3.42
+        },
+        {
+          "id": "05-9",
+          "text": "stories,",
+          "start": 3.42,
+          "end": 3.8
+        },
+        {
+          "id": "05-10",
+          "text": "martial-arts",
+          "start": 3.8,
+          "end": 4.6
+        },
+        {
+          "id": "05-11",
+          "text": "epics.",
+          "start": 4.6,
+          "end": 5.04
+        }
+      ],
+      "lead_s": 0.15
+    },
+    {
+      "frame": 6,
+      "path": "assets/voice/06.wav",
+      "duration_s": 5.268,
+      "words": [
+        {
+          "id": "06-0",
+          "text": "What",
+          "start": 0.0,
+          "end": 0.44
+        },
+        {
+          "id": "06-1",
+          "text": "would",
+          "start": 0.44,
+          "end": 0.54
+        },
+        {
+          "id": "06-2",
+          "text": "your",
+          "start": 0.54,
+          "end": 0.64
+        },
+        {
+          "id": "06-3",
+          "text": "story",
+          "start": 0.64,
+          "end": 0.92
+        },
+        {
+          "id": "06-4",
+          "text": "score?",
+          "start": 0.92,
+          "end": 1.28
+        },
+        {
+          "id": "06-5",
+          "text": "Massive",
+          "start": 1.48,
+          "end": 1.98
+        },
+        {
+          "id": "06-6",
+          "text": "Movie",
+          "start": 1.98,
+          "end": 2.2
+        },
+        {
+          "id": "06-7",
+          "text": "Map.",
+          "start": 2.2,
+          "end": 2.5
+        }
+      ],
+      "lead_s": 0.3
+    }
+  ],
+  "sfx": [
+    {
+      "frame": 1,
+      "file": "assets/sfx/click.mp3",
+      "offset_s": 0.0,
+      "duration_s": 2.0,
+      "volume": 0.4
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/whoosh-short.mp3",
+      "offset_s": 2.94,
+      "duration_s": 2.0,
+      "volume": 0.3
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/whoosh-short.mp3",
+      "offset_s": 1.96,
+      "duration_s": 2.0,
+      "volume": 0.3
+    },
+    {
+      "frame": 4,
+      "file": "assets/sfx/impact-bass-2.mp3",
+      "offset_s": 1.82,
+      "duration_s": 2.0,
+      "volume": 0.35
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/pop.mp3",
+      "offset_s": 2.36,
+      "duration_s": 2.0,
+      "volume": 0.3
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/impact-bass-1.mp3",
+      "offset_s": 1.48,
+      "duration_s": 2.0,
+      "volume": 0.35
+    }
+  ]
+}

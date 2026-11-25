@@ -1,0 +1,670 @@
+{
+  "total_duration_s": 28.216,
+  "width": 1080,
+  "height": 1920,
+  "groups": [
+    {
+      "id": "caption-group-0",
+      "frame": 1,
+      "start": 0,
+      "end": 1.06,
+      "text": "Can an AI",
+      "words": [
+        {
+          "id": "caption-word-0-0",
+          "text": "Can",
+          "start": 0,
+          "end": 0.64
+        },
+        {
+          "id": "caption-word-0-1",
+          "text": "an",
+          "start": 0.64,
+          "end": 0.8
+        },
+        {
+          "id": "caption-word-0-2",
+          "text": "AI",
+          "start": 0.8,
+          "end": 1.06
+        }
+      ]
+    },
+    {
+      "id": "caption-group-1",
+      "frame": 1,
+      "start": 1.06,
+      "end": 1.66,
+      "text": "predict a",
+      "words": [
+        {
+          "id": "caption-word-1-0",
+          "text": "predict",
+          "start": 1.06,
+          "end": 1.5
+        },
+        {
+          "id": "caption-word-1-1",
+          "text": "a",
+          "start": 1.5,
+          "end": 1.66
+        }
+      ]
+    },
+    {
+      "id": "caption-group-2",
+      "frame": 1,
+      "start": 1.66,
+      "end": 1.96,
+      "text": "hit from",
+      "words": [
+        {
+          "id": "caption-word-2-0",
+          "text": "hit",
+          "start": 1.66,
+          "end": 1.8
+        },
+        {
+          "id": "caption-word-2-1",
+          "text": "from",
+          "start": 1.8,
+          "end": 1.96
+        }
+      ]
+    },
+    {
+      "id": "caption-group-3",
+      "frame": 1,
+      "start": 1.96,
+      "end": 2.28,
+      "text": "the plot",
+      "words": [
+        {
+          "id": "caption-word-3-0",
+          "text": "the",
+          "start": 1.96,
+          "end": 2.08
+        },
+        {
+          "id": "caption-word-3-1",
+          "text": "plot",
+          "start": 2.08,
+          "end": 2.28
+        }
+      ]
+    },
+    {
+      "id": "caption-group-4",
+      "frame": 1,
+      "start": 2.28,
+      "end": 2.7,
+      "text": "alone?",
+      "words": [
+        {
+          "id": "caption-word-4-0",
+          "text": "alone?",
+          "start": 2.28,
+          "end": 2.58
+        }
+      ]
+    },
+    {
+      "id": "caption-group-5",
+      "frame": 1,
+      "start": 2.94,
+      "end": 3.78,
+      "text": "Same plot,",
+      "words": [
+        {
+          "id": "caption-word-5-0",
+          "text": "Same",
+          "start": 2.94,
+          "end": 3.34
+        },
+        {
+          "id": "caption-word-5-1",
+          "text": "plot,",
+          "start": 3.34,
+          "end": 3.66
+        }
+      ]
+    },
+    {
+      "id": "caption-group-6",
+      "frame": 1,
+      "start": 3.86,
+      "end": 4.36,
+      "text": "two names.",
+      "words": [
+        {
+          "id": "caption-word-6-0",
+          "text": "two",
+          "start": 3.86,
+          "end": 3.94
+        },
+        {
+          "id": "caption-word-6-1",
+          "text": "names.",
+          "start": 3.94,
+          "end": 4.24
+        }
+      ]
+    },
+    {
+      "id": "caption-group-7",
+      "frame": 2,
+      "start": 4.818,
+      "end": 5.378,
+      "text": "The Vanguard:",
+      "words": [
+        {
+          "id": "caption-word-7-0",
+          "text": "The",
+          "start": 4.818,
+          "end": 5.058
+        },
+        {
+          "id": "caption-word-7-1",
+          "text": "Vanguard:",
+          "start": 5.058,
+          "end": 5.378
+        }
+      ]
+    },
+    {
+      "id": "caption-group-8",
+      "frame": 2,
+      "start": 5.378,
+      "end": 6.998,
+      "text": "65th percentile.",
+      "words": [
+        {
+          "id": "caption-word-8-0",
+          "text": "65th",
+          "start": 5.378,
+          "end": 6.278
+        },
+        {
+          "id": "caption-word-8-1",
+          "text": "percentile.",
+          "start": 6.278,
+          "end": 6.878
+        }
+      ]
+    },
+    {
+      "id": "caption-group-9",
+      "frame": 2,
+      "start": 7.158,
+      "end": 7.698,
+      "text": "Call them",
+      "words": [
+        {
+          "id": "caption-word-9-0",
+          "text": "Call",
+          "start": 7.158,
+          "end": 7.518
+        },
+        {
+          "id": "caption-word-9-1",
+          "text": "them",
+          "start": 7.518,
+          "end": 7.698
+        }
+      ]
+    },
+    {
+      "id": "caption-group-10",
+      "frame": 2,
+      "start": 7.698,
+      "end": 8.298,
+      "text": "the Avengers:",
+      "words": [
+        {
+          "id": "caption-word-10-0",
+          "text": "the",
+          "start": 7.698,
+          "end": 7.858
+        },
+        {
+          "id": "caption-word-10-1",
+          "text": "Avengers:",
+          "start": 7.858,
+          "end": 8.298
+        }
+      ]
+    },
+    {
+      "id": "caption-group-11",
+      "frame": 2,
+      "start": 8.298,
+      "end": 8.818,
+      "text": "97th.",
+      "words": [
+        {
+          "id": "caption-word-11-0",
+          "text": "97th.",
+          "start": 8.298,
+          "end": 8.698
+        }
+      ]
+    },
+    {
+      "id": "caption-group-12",
+      "frame": 3,
+      "start": 10.012,
+      "end": 10.552,
+      "text": "An orphan",
+      "words": [
+        {
+          "id": "caption-word-12-0",
+          "text": "An",
+          "start": 10.012,
+          "end": 10.292
+        },
+        {
+          "id": "caption-word-12-1",
+          "text": "orphan",
+          "start": 10.292,
+          "end": 10.552
+        }
+      ]
+    },
+    {
+      "id": "caption-group-13",
+      "frame": 3,
+      "start": 10.552,
+      "end": 10.992,
+      "text": "wizard:",
+      "words": [
+        {
+          "id": "caption-word-13-0",
+          "text": "wizard:",
+          "start": 10.552,
+          "end": 10.992
+        }
+      ]
+    },
+    {
+      "id": "caption-group-14",
+      "frame": 3,
+      "start": 10.992,
+      "end": 12.072,
+      "text": "17th.",
+      "words": [
+        {
+          "id": "caption-word-14-0",
+          "text": "17th.",
+          "start": 10.992,
+          "end": 12.072
+        }
+      ]
+    },
+    {
+      "id": "caption-group-15",
+      "frame": 3,
+      "start": 12.072,
+      "end": 12.692,
+      "text": "Harry Potter:",
+      "words": [
+        {
+          "id": "caption-word-15-0",
+          "text": "Harry",
+          "start": 12.072,
+          "end": 12.372
+        },
+        {
+          "id": "caption-word-15-1",
+          "text": "Potter:",
+          "start": 12.372,
+          "end": 12.692
+        }
+      ]
+    },
+    {
+      "id": "caption-group-16",
+      "frame": 3,
+      "start": 12.692,
+      "end": 13.212,
+      "text": "98th.",
+      "words": [
+        {
+          "id": "caption-word-16-0",
+          "text": "98th.",
+          "start": 12.692,
+          "end": 13.092
+        }
+      ]
+    },
+    {
+      "id": "caption-group-17",
+      "frame": 4,
+      "start": 14.161,
+      "end": 14.601,
+      "text": "The name",
+      "words": [
+        {
+          "id": "caption-word-17-0",
+          "text": "The",
+          "start": 14.161,
+          "end": 14.421
+        },
+        {
+          "id": "caption-word-17-1",
+          "text": "name",
+          "start": 14.421,
+          "end": 14.601
+        }
+      ]
+    },
+    {
+      "id": "caption-group-18",
+      "frame": 4,
+      "start": 14.601,
+      "end": 15.001,
+      "text": "was doing",
+      "words": [
+        {
+          "id": "caption-word-18-0",
+          "text": "was",
+          "start": 14.601,
+          "end": 14.801
+        },
+        {
+          "id": "caption-word-18-1",
+          "text": "doing",
+          "start": 14.801,
+          "end": 15.001
+        }
+      ]
+    },
+    {
+      "id": "caption-group-19",
+      "frame": 4,
+      "start": 15.001,
+      "end": 15.561,
+      "text": "the work.",
+      "words": [
+        {
+          "id": "caption-word-19-0",
+          "text": "the",
+          "start": 15.001,
+          "end": 15.141
+        },
+        {
+          "id": "caption-word-19-1",
+          "text": "work.",
+          "start": 15.141,
+          "end": 15.441
+        }
+      ]
+    },
+    {
+      "id": "caption-group-20",
+      "frame": 4,
+      "start": 15.581,
+      "end": 15.981,
+      "text": "So I",
+      "words": [
+        {
+          "id": "caption-word-20-0",
+          "text": "So",
+          "start": 15.581,
+          "end": 15.821
+        },
+        {
+          "id": "caption-word-20-1",
+          "text": "I",
+          "start": 15.821,
+          "end": 15.981
+        }
+      ]
+    },
+    {
+      "id": "caption-group-21",
+      "frame": 4,
+      "start": 15.981,
+      "end": 16.841,
+      "text": "hid every name.",
+      "words": [
+        {
+          "id": "caption-word-21-0",
+          "text": "hid",
+          "start": 15.981,
+          "end": 16.181
+        },
+        {
+          "id": "caption-word-21-1",
+          "text": "every",
+          "start": 16.181,
+          "end": 16.481
+        },
+        {
+          "id": "caption-word-21-2",
+          "text": "name.",
+          "start": 16.481,
+          "end": 16.721
+        }
+      ]
+    },
+    {
+      "id": "caption-group-22",
+      "frame": 5,
+      "start": 17.435,
+      "end": 17.795,
+      "text": "With the",
+      "words": [
+        {
+          "id": "caption-word-22-0",
+          "text": "With",
+          "start": 17.435,
+          "end": 17.695
+        },
+        {
+          "id": "caption-word-22-1",
+          "text": "the",
+          "start": 17.695,
+          "end": 17.795
+        }
+      ]
+    },
+    {
+      "id": "caption-group-23",
+      "frame": 5,
+      "start": 17.795,
+      "end": 18.495,
+      "text": "names gone,",
+      "words": [
+        {
+          "id": "caption-word-23-0",
+          "text": "names",
+          "start": 17.795,
+          "end": 18.035
+        },
+        {
+          "id": "caption-word-23-1",
+          "text": "gone,",
+          "start": 18.035,
+          "end": 18.375
+        }
+      ]
+    },
+    {
+      "id": "caption-group-24",
+      "frame": 5,
+      "start": 18.595,
+      "end": 19.095,
+      "text": "what sells?",
+      "words": [
+        {
+          "id": "caption-word-24-0",
+          "text": "what",
+          "start": 18.595,
+          "end": 18.675
+        },
+        {
+          "id": "caption-word-24-1",
+          "text": "sells?",
+          "start": 18.675,
+          "end": 18.975
+        }
+      ]
+    },
+    {
+      "id": "caption-group-25",
+      "frame": 5,
+      "start": 19.795,
+      "end": 20.415,
+      "text": "Superheroes,",
+      "words": [
+        {
+          "id": "caption-word-25-0",
+          "text": "Superheroes,",
+          "start": 19.795,
+          "end": 20.355
+        }
+      ]
+    },
+    {
+      "id": "caption-group-26",
+      "frame": 5,
+      "start": 20.415,
+      "end": 20.855,
+      "text": "true sports",
+      "words": [
+        {
+          "id": "caption-word-26-0",
+          "text": "true",
+          "start": 20.415,
+          "end": 20.555
+        },
+        {
+          "id": "caption-word-26-1",
+          "text": "sports",
+          "start": 20.555,
+          "end": 20.855
+        }
+      ]
+    },
+    {
+      "id": "caption-group-27",
+      "frame": 5,
+      "start": 20.855,
+      "end": 21.235,
+      "text": "stories,",
+      "words": [
+        {
+          "id": "caption-word-27-0",
+          "text": "stories,",
+          "start": 20.855,
+          "end": 21.235
+        }
+      ]
+    },
+    {
+      "id": "caption-group-28",
+      "frame": 5,
+      "start": 21.235,
+      "end": 22.595,
+      "text": "martial-arts epics.",
+      "words": [
+        {
+          "id": "caption-word-28-0",
+          "text": "martial-arts",
+          "start": 21.235,
+          "end": 22.035
+        },
+        {
+          "id": "caption-word-28-1",
+          "text": "epics.",
+          "start": 22.035,
+          "end": 22.475
+        }
+      ]
+    },
+    {
+      "id": "caption-group-29",
+      "frame": 6,
+      "start": 22.948,
+      "end": 23.488,
+      "text": "What would",
+      "words": [
+        {
+          "id": "caption-word-29-0",
+          "text": "What",
+          "start": 22.948,
+          "end": 23.388
+        },
+        {
+          "id": "caption-word-29-1",
+          "text": "would",
+          "start": 23.388,
+          "end": 23.488
+        }
+      ]
+    },
+    {
+      "id": "caption-group-30",
+      "frame": 6,
+      "start": 23.488,
+      "end": 23.868,
+      "text": "your story",
+      "words": [
+        {
+          "id": "caption-word-30-0",
+          "text": "your",
+          "start": 23.488,
+          "end": 23.588
+        },
+        {
+          "id": "caption-word-30-1",
+          "text": "story",
+          "start": 23.588,
+          "end": 23.868
+        }
+      ]
+    },
+    {
+      "id": "caption-group-31",
+      "frame": 6,
+      "start": 23.868,
+      "end": 24.348,
+      "text": "score?",
+      "words": [
+        {
+          "id": "caption-word-31-0",
+          "text": "score?",
+          "start": 23.868,
+          "end": 24.228
+        }
+      ]
+    },
+    {
+      "id": "caption-group-32",
+      "frame": 6,
+      "start": 24.428,
+      "end": 25.568,
+      "text": "Massive Movie Map.",
+      "words": [
+        {
+          "id": "caption-word-32-0",
+          "text": "Massive",
+          "start": 24.428,
+          "end": 24.928
+        },
+        {
+          "id": "caption-word-32-1",
+          "text": "Movie",
+          "start": 24.928,
+          "end": 25.148
+        },
+        {
+          "id": "caption-word-32-2",
+          "text": "Map.",
+          "start": 25.148,
+          "end": 25.448
+        }
+      ]
+    }
+  ]
+}

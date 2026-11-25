@@ -1,0 +1,2 @@
+{"pad": {"1": [0.5, 0.35], "3": [0.15, 0.5], "5": [0.3, 2.6]}, "seam_frames": [4],
+ "sfx": [[1, "click", 0.0, 0, 0.4], [2, "pop", "Superheroes", 0, 0.3], [3, "impact-bass-2", "unrelated", 0.1, 0.35], [4, "whoosh-short", 0.0, 0, 0.3], [5, "impact-bass-1", "Massive", 0, 0.35]]}
